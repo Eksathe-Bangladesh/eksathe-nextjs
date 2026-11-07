@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 import { createListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareListingImage(event: FormEvent<HTMLFormElement>) {
+  async function prepareListingImage(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (!selectedFile || uploadedFile.current === selectedFile) return;
     event.preventDefault();

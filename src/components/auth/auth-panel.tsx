@@ -2,7 +2,7 @@
 
 import { ArrowLeftIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { cloneElement, useId, useState, type FormEvent, type ReactElement } from "react";
+import { cloneElement, useId, useState, type SubmitEvent, type ReactElement } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,7 @@ export function AuthPanel({
             ? t("auth.resetPassword")
             : t("auth.verifyTitle");
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError("");
@@ -114,7 +114,7 @@ export function AuthPanel({
 
   return (
     <Card className="w-full max-w-lg">
-      <CardHeader>
+      <CardHeader className="flex flex-col items-center">
         <BrandLogo className="mb-2 size-24" />
         <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>

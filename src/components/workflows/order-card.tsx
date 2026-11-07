@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import {
   confirmPaymentAction,
@@ -288,7 +288,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareReceipt(event: FormEvent<HTMLFormElement>) {
+  async function prepareReceipt(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (!selectedFile || uploadedFile.current === selectedFile) return;
     event.preventDefault();

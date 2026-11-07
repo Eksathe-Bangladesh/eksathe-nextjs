@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import {
   addMilestoneAction,
@@ -267,7 +267,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareDocument(event: FormEvent<HTMLFormElement>) {
+  async function prepareDocument(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (selectedFile && uploadedFile.current === selectedFile) return;
     event.preventDefault();
@@ -357,7 +357,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function preparePhoto(event: FormEvent<HTMLFormElement>) {
+  async function preparePhoto(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (selectedFile && uploadedFile.current === selectedFile) return;
     event.preventDefault();

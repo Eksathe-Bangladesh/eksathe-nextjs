@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import { updateProviderStorefrontAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
     }
   }, [state.status]);
 
-  async function prepareUpload(event: FormEvent<HTMLFormElement>) {
+  async function prepareUpload(event: SubmitEvent<HTMLFormElement>) {
     const form = event.currentTarget;
     const files = [
       {
