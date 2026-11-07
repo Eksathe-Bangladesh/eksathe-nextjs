@@ -11,7 +11,7 @@ import {
   XIcon,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { signOutAction } from "@/app/actions/session";
 import { BrandLogo } from "@/components/brand-logo";
@@ -35,7 +35,21 @@ export function SiteHeaderUserMenu({
   isAgroAdmin = false,
 }: SiteHeaderUserProps) {
   const t = useTranslations();
+  const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !menuRef.current?.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [menuOpen]);
 
   if (!signedIn) {
     return (
@@ -58,13 +72,13 @@ export function SiteHeaderUserMenu({
   }
 
   return (
-    <div className="relative shrink-0">
+    <div ref={menuRef} className="relative shrink-0">
       <button
         type="button"
         aria-expanded={menuOpen}
         aria-haspopup="menu"
         onClick={() => setMenuOpen((open) => !open)}
-        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/20 px-3 text-sm font-semibold hover:bg-white/10"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/20 px-3 text-sm font-semibold text-white hover:bg-white/10"
       >
         <UserRoundIcon aria-hidden="true" className="size-4" />
         <span className="max-w-32 truncate">{userName ?? t("auth.signIn")}</span>
@@ -110,7 +124,7 @@ export function SiteHeaderUserMenu({
             <button
               role="menuitem"
               type="submit"
-              className="hover:bg-muted inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm"
+              className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-red-500/20"
             >
               <LogOutIcon aria-hidden="true" className="size-4" />
               {t("nav.signOut")}
@@ -203,7 +217,7 @@ export function SiteHeader({
             </Link>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-white/20 pt-3 xl:flex-nowrap xl:justify-self-end xl:border-0 xl:pt-0">
-            <div className="hidden xl:block [&_button]:size-11">
+            <div className="hidden xl:block [&_button]:size-9">
               <ThemeToggle />
             </div>
             <div className="hidden items-center xl:flex [&_button]:h-7 **:[[role=group]]:h-9">
