@@ -11,6 +11,7 @@ import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import {
   constructionServiceCategories,
@@ -222,19 +223,21 @@ export function ConstructionHome({
               className="pl-9"
             />
           </div>
-          <select
+          <NativeSelect
             value={category}
             onChange={(event) => setCategory(event.target.value)}
             aria-label={t("inline.filter_by_service_area_17ejr7w")}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="all">{t("inline.all_service_areas_1x8orpz")}</option>
+            <NativeSelectOption value="all">
+              {t("inline.all_service_areas_1x8orpz")}
+            </NativeSelectOption>
             {constructionServiceCategories.map((item) => (
-              <option key={item.id} value={item.id}>
+              <NativeSelectOption key={item.id} value={item.id}>
                 {t(`constructionCategories.${item.id}` as never)}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         {services.length === 0 ? (
           <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">

@@ -8,6 +8,7 @@ import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import type { AgricultureMarketFilters, AgricultureMarketResult } from "@/lib/listings";
 import type { AgricultureProductCategory } from "@/lib/listings";
@@ -88,32 +89,32 @@ export function AgricultureMarket({
             placeholder={t("inline.search_products_or_sellers_xino0q")}
           />
         </div>
-        <select
+        <NativeSelect
           name="category"
           defaultValue={filters.category ?? ""}
           aria-label={t("inline.category_s1i10e")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("inline.all_categories_1fiilwv")}</option>
+          <NativeSelectOption value="">{t("inline.all_categories_1fiilwv")}</NativeSelectOption>
           {categoryOptions.map((item) => (
-            <option key={item.value} value={item.value}>
+            <NativeSelectOption key={item.value} value={item.value}>
               {bn ? item.bn : item.en}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
-        <select
+        </NativeSelect>
+        <NativeSelect
           name="district"
           defaultValue={filters.district ?? ""}
           aria-label={t("inline.district_135um58")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("workflow.allDistricts")}</option>
+          <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
           {result.districts.map((district) => (
-            <option key={district} value={district}>
+            <NativeSelectOption key={district} value={district}>
               {district}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
         <Input
           name="minPrice"
           type="number"
@@ -132,16 +133,20 @@ export function AgricultureMarket({
           aria-label={t("inline.maximum_price_x46h1l")}
           placeholder={t("inline.max_bdt_1kgb5of")}
         />
-        <select
+        <NativeSelect
           name="sort"
           defaultValue={filters.sort ?? "newest"}
           aria-label={t("inline.sort_dj8kwt")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="newest">{t("inline.newest_1g4bhr8")}</option>
-          <option value="price-asc">{t("inline.price_low_to_high_186nc0k")}</option>
-          <option value="price-desc">{t("inline.price_high_to_low_1lcdsbe")}</option>
-        </select>
+          <NativeSelectOption value="newest">{t("inline.newest_1g4bhr8")}</NativeSelectOption>
+          <NativeSelectOption value="price-asc">
+            {t("inline.price_low_to_high_186nc0k")}
+          </NativeSelectOption>
+          <NativeSelectOption value="price-desc">
+            {t("inline.price_high_to_low_1lcdsbe")}
+          </NativeSelectOption>
+        </NativeSelect>
         <input type="hidden" name="page" value="1" />
         <Button type="submit" className="lg:col-span-7">
           <SearchIcon data-icon="inline-start" />

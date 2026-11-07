@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
@@ -458,14 +459,18 @@ function DisputeResolutionForm({ orderId }: { orderId: string }) {
     <form action={action} className="grid gap-3 sm:grid-cols-[180px_minmax(0,1fr)_auto]">
       <input type="hidden" name="orderId" value={orderId} />
       <Field id={`dispute-outcome-${orderId}`} label={t("inline.resolution_m1aqc1")}>
-        <select
+        <NativeSelect
           id={`dispute-outcome-${orderId}`}
           name="decision"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="COMPLETE">{t("inline.mark_completed_1cdw36l")}</option>
-          <option value="CANCEL">{t("inline.cancel_and_release_stock_omouxg")}</option>
-        </select>
+          <NativeSelectOption value="COMPLETE">
+            {t("inline.mark_completed_1cdw36l")}
+          </NativeSelectOption>
+          <NativeSelectOption value="CANCEL">
+            {t("inline.cancel_and_release_stock_omouxg")}
+          </NativeSelectOption>
+        </NativeSelect>
       </Field>
       <Field id={`dispute-note-${orderId}`} label={t("workflow.details")}>
         <Input id={`dispute-note-${orderId}`} name="note" maxLength={1000} />
@@ -587,28 +592,36 @@ function StaffGrantForm() {
         <Input id="staff-email" name="email" type="email" required />
       </Field>
       <Field id="staff-permission" label={t("workflow.staffPermission")}>
-        <select
+        <NativeSelect
           id="staff-permission"
           name="permission"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="OPERATIONS">{t("inline.operations_1t8z18")}</option>
-          <option value="FINANCE">{t("inline.finance_1rfbk3d")}</option>
-          <option value="USERS">{t("workflow.permissionUsers")}</option>
-          <option value="PANELS">{t("workflow.permissionPanels")}</option>
-          <option value="REPORTS">{t("workflow.permissionReports")}</option>
-        </select>
+          <NativeSelectOption value="OPERATIONS">
+            {t("inline.operations_1t8z18")}
+          </NativeSelectOption>
+          <NativeSelectOption value="FINANCE">{t("inline.finance_1rfbk3d")}</NativeSelectOption>
+          <NativeSelectOption value="USERS">{t("workflow.permissionUsers")}</NativeSelectOption>
+          <NativeSelectOption value="PANELS">{t("workflow.permissionPanels")}</NativeSelectOption>
+          <NativeSelectOption value="REPORTS">{t("workflow.permissionReports")}</NativeSelectOption>
+        </NativeSelect>
       </Field>
       <Field id="staff-scope" label={t("workflow.staffScope")}>
-        <select
+        <NativeSelect
           id="staff-scope"
           name="scope"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="global">{t("inline.platform_wide_10jjm12")}</option>
-          <option value="agriculture-labor">{t("inline.agriculture_labor_r0zc6k")}</option>
-          <option value="construction">{t("inline.construction_1bp2bxr")}</option>
-        </select>
+          <NativeSelectOption value="global">
+            {t("inline.platform_wide_10jjm12")}
+          </NativeSelectOption>
+          <NativeSelectOption value="agriculture-labor">
+            {t("inline.agriculture_labor_r0zc6k")}
+          </NativeSelectOption>
+          <NativeSelectOption value="construction">
+            {t("inline.construction_1bp2bxr")}
+          </NativeSelectOption>
+        </NativeSelect>
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-3">
         <ActionFeedback state={state} />

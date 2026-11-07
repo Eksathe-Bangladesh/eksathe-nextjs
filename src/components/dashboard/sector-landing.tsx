@@ -9,6 +9,7 @@ import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import type { PublicListing } from "@/lib/listings";
 import type { agricultureListings, constructionListings, SectorDefinition } from "@/lib/sectors";
@@ -110,19 +111,19 @@ export function SectorLanding({
               placeholder={t("workflow.searchListings")}
               aria-label={t("workflow.searchListings")}
             />
-            <select
+            <NativeSelect
               value={district}
               onChange={(event) => setDistrict(event.target.value)}
               aria-label={t("workflow.district")}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="">{t("workflow.allDistricts")}</option>
+              <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
               {districts.map((item) => (
-                <option key={item} value={item}>
+                <NativeSelectOption key={item} value={item}>
                   {item}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </div>
           {unavailable && (
             <p

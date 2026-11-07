@@ -9,6 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import type { ConstructionMarketFilters, ConstructionMarketResult } from "@/lib/listings";
 
@@ -94,50 +95,54 @@ export function ConstructionMarket({
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-type">{t("inline.type_nja194")}</FieldLabel>
-            <select
+            <NativeSelect
               id="construction-type"
               name="type"
               defaultValue={filters.kind ?? ""}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="">{t("inline.all_construction_listings_12pacdx")}</option>
-              <option value="CONSTRUCTION_SERVICE">
+              <NativeSelectOption value="">
+                {t("inline.all_construction_listings_12pacdx")}
+              </NativeSelectOption>
+              <NativeSelectOption value="CONSTRUCTION_SERVICE">
                 {t("inline.professionals_services_bc0tiy")}
-              </option>
-              <option value="CONSTRUCTION_MATERIAL">{t("inline.building_materials_j98vuw")}</option>
-            </select>
+              </NativeSelectOption>
+              <NativeSelectOption value="CONSTRUCTION_MATERIAL">
+                {t("inline.building_materials_j98vuw")}
+              </NativeSelectOption>
+            </NativeSelect>
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-category">{t("inline.category_nstxaj")}</FieldLabel>
-            <select
+            <NativeSelect
               id="construction-category"
               name="category"
               defaultValue={filters.category ?? ""}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="">{t("inline.all_categories_qpnbu")}</option>
+              <NativeSelectOption value="">{t("inline.all_categories_qpnbu")}</NativeSelectOption>
               {result.categories.map((category) => (
-                <option key={category} value={category}>
+                <NativeSelectOption key={category} value={category}>
                   {category}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-district">{t("inline.district_135um58")}</FieldLabel>
-            <select
+            <NativeSelect
               id="construction-district"
               name="district"
               defaultValue={filters.district ?? ""}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="">{t("inline.all_districts_1tgqg9q")}</option>
+              <NativeSelectOption value="">{t("inline.all_districts_1tgqg9q")}</NativeSelectOption>
               {result.districts.map((district) => (
-                <option key={district} value={district}>
+                <NativeSelectOption key={district} value={district}>
                   {district}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-min-price">
@@ -169,16 +174,20 @@ export function ConstructionMarket({
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-sort">{t("inline.sort_by_18j78x6")}</FieldLabel>
-            <select
+            <NativeSelect
               id="construction-sort"
               name="sort"
               defaultValue={filters.sort ?? "newest"}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="newest">{t("inline.newest_j0ladc")}</option>
-              <option value="price-asc">{t("inline.price_low_to_high_katpc0")}</option>
-              <option value="price-desc">{t("inline.price_high_to_low_arcd6i")}</option>
-            </select>
+              <NativeSelectOption value="newest">{t("inline.newest_j0ladc")}</NativeSelectOption>
+              <NativeSelectOption value="price-asc">
+                {t("inline.price_low_to_high_katpc0")}
+              </NativeSelectOption>
+              <NativeSelectOption value="price-desc">
+                {t("inline.price_high_to_low_arcd6i")}
+              </NativeSelectOption>
+            </NativeSelect>
           </Field>
         </FieldGroup>
         <div className="mt-4 flex flex-wrap items-center gap-2">

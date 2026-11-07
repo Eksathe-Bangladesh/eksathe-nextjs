@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@/i18n/navigation";
 import type {
@@ -486,20 +491,20 @@ function SelectField({
   return (
     <Field className="min-w-0">
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      <select
+      <NativeSelect
         id={id}
         name={name}
         defaultValue={defaultValue}
         className="border-input bg-background h-9 w-full rounded-lg border px-3 text-sm"
       >
-        <optgroup label={label}>
+        <NativeSelectOptGroup label={label}>
           {options.map(([value, title]) => (
-            <option key={`${value}-${title}`} value={value}>
+            <NativeSelectOption key={`${value}-${title}`} value={value}>
               {title}
-            </option>
+            </NativeSelectOption>
           ))}
-        </optgroup>
-      </select>
+        </NativeSelectOptGroup>
+      </NativeSelect>
     </Field>
   );
 }

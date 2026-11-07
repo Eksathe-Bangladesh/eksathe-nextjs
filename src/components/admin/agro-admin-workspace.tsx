@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import {
@@ -242,18 +243,18 @@ function CreateUserForm({
             </Field>
             <Field>
               <FieldLabel htmlFor="agro-user-account-type">{t("workflow.accountType")}</FieldLabel>
-              <select
+              <NativeSelect
                 id="agro-user-account-type"
                 name="accountType"
                 defaultValue="customer"
                 className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
               >
                 {accountTypeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <NativeSelectOption key={option.value} value={option.value}>
                     {option.label}
-                  </option>
+                  </NativeSelectOption>
                 ))}
-              </select>
+              </NativeSelect>
             </Field>
           </FieldGroup>
           <div className="flex flex-col gap-2">
@@ -292,35 +293,35 @@ function UserUpdateForm({
       <FieldGroup className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
         <Field>
           <FieldLabel htmlFor={`account-type-${userId}`}>{t("workflow.accountType")}</FieldLabel>
-          <select
+          <NativeSelect
             id={`account-type-${userId}`}
             name="accountType"
             defaultValue={accountType}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {accountTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
+              <NativeSelectOption key={option.value} value={option.value}>
                 {option.label}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field>
           <FieldLabel htmlFor={`account-status-${userId}`}>
             {t("workflow.accountStatus")}
           </FieldLabel>
-          <select
+          <NativeSelect
             id={`account-status-${userId}`}
             name="status"
             defaultValue={status}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
+              <NativeSelectOption key={option.value} value={option.value}>
                 {option.label}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Button type="submit" disabled={pending} className="self-end">
           {pending ? t("common.loading") : t("inline.update_1raohb6")}

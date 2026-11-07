@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { uploadPrivateFile } from "@/lib/client-upload";
@@ -341,16 +342,20 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
         />
       </Field>
       <Field id={`payment-method-${orderId}`} label={t("workflow.paymentMethod")}>
-        <select
+        <NativeSelect
           id={`payment-method-${orderId}`}
           name="method"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="CASH">{t("inline.cash_1yvb5lv")}</option>
-          <option value="BANK_TRANSFER">{t("inline.bank_transfer_1wr4ny5")}</option>
-          <option value="MOBILE_WALLET">{t("inline.mobile_wallet_o4hwx8")}</option>
-          <option value="OTHER">{t("inline.other_meu6yg")}</option>
-        </select>
+          <NativeSelectOption value="CASH">{t("inline.cash_1yvb5lv")}</NativeSelectOption>
+          <NativeSelectOption value="BANK_TRANSFER">
+            {t("inline.bank_transfer_1wr4ny5")}
+          </NativeSelectOption>
+          <NativeSelectOption value="MOBILE_WALLET">
+            {t("inline.mobile_wallet_o4hwx8")}
+          </NativeSelectOption>
+          <NativeSelectOption value="OTHER">{t("inline.other_meu6yg")}</NativeSelectOption>
+        </NativeSelect>
       </Field>
       <Field id={`payment-reference-${orderId}`} label={t("workflow.paymentReference")}>
         <Input id={`payment-reference-${orderId}`} name="reference" maxLength={120} />
@@ -419,17 +424,17 @@ function ReviewForm({ orderId }: { orderId: string }) {
     >
       <input type="hidden" name="orderId" value={orderId} />
       <Field id={`review-rating-${orderId}`} label={t("workflow.reviewRating")}>
-        <select
+        <NativeSelect
           id={`review-rating-${orderId}`}
           name="rating"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           {[5, 4, 3, 2, 1].map((rating) => (
-            <option key={rating} value={rating}>
+            <NativeSelectOption key={rating} value={rating}>
               {rating} / 5
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
       </Field>
       <Field id={`review-comment-${orderId}`} label={t("workflow.reviewText")}>
         <Input id={`review-comment-${orderId}`} name="comment" maxLength={1200} />

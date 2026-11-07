@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link, useRouter } from "@/i18n/navigation";
 import { localizedPath } from "@/i18n/paths";
 import { agricultureAccountTypes } from "@/lib/agriculture/account-types";
@@ -164,7 +165,7 @@ export function AuthPanel({
           )}
           {mode === "register" && (
             <Field label={t("workflow.accountType")}>
-              <select
+              <NativeSelect
                 autoComplete="off"
                 required
                 value={accountType}
@@ -176,16 +177,28 @@ export function AuthPanel({
                 }
                 className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
               >
-                <option value="customer">{t("workflow.customerAccount")}</option>
-                <option value="farmer">{t("workflow.farmerAccount")}</option>
-                <option value="agro_laborer">{t("workflow.agroLaborerAccount")}</option>
-                <option value="agronomist">{t("workflow.agronomistAccount")}</option>
-                <option value="veterinarian">{t("workflow.veterinarianAccount")}</option>
-                <option value="agro_seller">{t("workflow.agroSellerAccount")}</option>
-                <option value="agriculture_professional">
+                <NativeSelectOption value="customer">
+                  {t("workflow.customerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="farmer">
+                  {t("workflow.farmerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agro_laborer">
+                  {t("workflow.agroLaborerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agronomist">
+                  {t("workflow.agronomistAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="veterinarian">
+                  {t("workflow.veterinarianAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agro_seller">
+                  {t("workflow.agroSellerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agriculture_professional">
                   {t("workflow.agricultureProfessionalAccount")}
-                </option>
-              </select>
+                </NativeSelectOption>
+              </NativeSelect>
             </Field>
           )}
           {(mode === "register" || mode === "login" || mode === "reset") && (

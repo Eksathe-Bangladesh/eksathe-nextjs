@@ -12,6 +12,7 @@ import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import type { AgriculturePublicService } from "@/lib/agriculture/admin";
 import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
@@ -218,19 +219,19 @@ export function AgricultureHome({
               className="pl-9"
             />
           </div>
-          <select
+          <NativeSelect
             value={category}
             onChange={(event) => setCategory(event.target.value)}
             aria-label={t("inline.filter_by_category_r4wwg6")}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="all">{t("inline.all_categories_qpnbu")}</option>
+            <NativeSelectOption value="all">{t("inline.all_categories_qpnbu")}</NativeSelectOption>
             {agricultureServiceCategories.map((item) => (
-              <option key={item.id} value={item.id}>
+              <NativeSelectOption key={item.id} value={item.id}>
                 {t(`agricultureCategories.${item.id}` as never)}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         {services.length === 0 ? (
           <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">

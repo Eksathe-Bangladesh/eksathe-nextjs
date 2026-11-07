@@ -7,6 +7,7 @@ import { createListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { agricultureListings, constructionListings } from "@/lib/sectors";
@@ -88,7 +89,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="listing-sector" label={t("inline.service_sector_1l9k566")}>
-          <select
+          <NativeSelect
             id="listing-sector"
             name="sectorSlug"
             value={sectorSlug}
@@ -96,25 +97,25 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {sectorOptions.map((sector) => (
-              <option key={sector} value={sector}>
+              <NativeSelectOption key={sector} value={sector}>
                 {sector === "construction" ? t("home.construction") : t("home.agriculture")}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="listing-kind" label={t("workflow.category")}>
-          <select
+          <NativeSelect
             id="listing-kind"
             name="kind"
             required
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {serviceOptions.map((service) => (
-              <option key={service.kind} value={service.kind}>
+              <NativeSelectOption key={service.kind} value={service.kind}>
                 {t(`marketplaceServices.${service.slug}` as never)}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="listing-title-bn" label={t("workflow.titleBn")}>
           <Input id="listing-title-bn" name="titleBn" required maxLength={120} />

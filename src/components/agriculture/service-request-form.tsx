@@ -8,6 +8,7 @@ import { createAgricultureServiceRequestAction } from "@/app/actions/agriculture
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { Link } from "@/i18n/navigation";
@@ -201,7 +202,7 @@ export function ServiceRequestForm({
           if (field.type === "select")
             return (
               <Field key={field.name} id={`answer-${field.name}`} label={label} error={error}>
-                <select
+                <NativeSelect
                   id={`answer-${field.name}`}
                   name={`answer.${field.name}`}
                   required={field.required}
@@ -209,15 +210,17 @@ export function ServiceRequestForm({
                   disabled={!canSubmit}
                   className="border-input bg-background h-10 rounded-lg border px-3 text-sm"
                 >
-                  <option value="">{t("inline.choose_an_option_5bc3rc")}</option>
+                  <NativeSelectOption value="">
+                    {t("inline.choose_an_option_5bc3rc")}
+                  </NativeSelectOption>
                   {field.options.map((option, index) => (
-                    <option key={option.value} value={option.value}>
+                    <NativeSelectOption key={option.value} value={option.value}>
                       {t(
                         `agricultureServices.${service.slug}.fields.${field.name}.options.option_${index}.label` as never,
                       )}
-                    </option>
+                    </NativeSelectOption>
                   ))}
-                </select>
+                </NativeSelect>
               </Field>
             );
           return (

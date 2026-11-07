@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { useRouter } from "@/i18n/navigation";
 import { uploadPrivateFile } from "@/lib/client-upload";
@@ -102,15 +103,19 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
         <Input id={`package-label-${projectId}`} name="label" maxLength={120} required />
       </Field>
       <Field id={`package-kind-${projectId}`} label={t("inline.package_type_1ql3wh2")}>
-        <select
+        <NativeSelect
           id={`package-kind-${projectId}`}
           name="kind"
           defaultValue="CONSTRUCTION_SERVICE"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="CONSTRUCTION_SERVICE">{t("inline.professional_service_c7s4sh")}</option>
-          <option value="CONSTRUCTION_MATERIAL">{t("inline.building_materials_j98vuw")}</option>
-        </select>
+          <NativeSelectOption value="CONSTRUCTION_SERVICE">
+            {t("inline.professional_service_c7s4sh")}
+          </NativeSelectOption>
+          <NativeSelectOption value="CONSTRUCTION_MATERIAL">
+            {t("inline.building_materials_j98vuw")}
+          </NativeSelectOption>
+        </NativeSelect>
       </Field>
       <Field id={`package-description-${projectId}`} label={t("workflow.projectDescription")}>
         <Input id={`package-description-${projectId}`} name="description" maxLength={1200} />
@@ -142,19 +147,19 @@ export function AddMilestoneForm({
     >
       <input type="hidden" name="projectId" value={projectId} />
       <Field id={`milestone-provider-${projectId}`} label={t("workflow.assignedProvider")}>
-        <select
+        <NativeSelect
           id={`milestone-provider-${projectId}`}
           name="assignedProviderId"
           required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("inline.choose_a_provider_1my4w7f")}</option>
+          <NativeSelectOption value="">{t("inline.choose_a_provider_1my4w7f")}</NativeSelectOption>
           {providers.map((provider) => (
-            <option key={provider.id} value={provider.id}>
+            <NativeSelectOption key={provider.id} value={provider.id}>
               {locale === "bn" ? provider.nameBn : provider.nameEn}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
       </Field>
       <Field id={`milestone-title-${projectId}`} label={t("workflow.milestoneTitle")}>
         <Input id={`milestone-title-${projectId}`} name="title" required maxLength={120} />

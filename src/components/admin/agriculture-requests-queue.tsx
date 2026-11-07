@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
@@ -43,54 +44,54 @@ export function AgricultureRequestsQueue({
         className="bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-3"
       >
         <Field id="ag-filter-service" label={t("inline.service_1m16zkb")}>
-          <select
+          <NativeSelect
             id="ag-filter-service"
             name="agService"
             defaultValue={filters.serviceSlug ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="">{t("inline.all_services_1pdbxg7")}</option>
+            <NativeSelectOption value="">{t("inline.all_services_1pdbxg7")}</NativeSelectOption>
             {agricultureServiceRegistry.map((service) => (
-              <option key={service.slug} value={service.slug}>
+              <NativeSelectOption key={service.slug} value={service.slug}>
                 {t(`agricultureServices.${service.slug}.title` as never)}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="ag-filter-district" label={t("inline.district_135um58")}>
           <Input id="ag-filter-district" name="agDistrict" defaultValue={filters.district ?? ""} />
         </Field>
         <Field id="ag-filter-status" label={t("inline.status_qhepgk")}>
-          <select
+          <NativeSelect
             id="ag-filter-status"
             name="agStatus"
             defaultValue={filters.status ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="">{t("inline.all_statuses_153nc2f")}</option>
+            <NativeSelectOption value="">{t("inline.all_statuses_153nc2f")}</NativeSelectOption>
             {["NEW", "REVIEWING", "ASSIGNED", "COMPLETED", "REJECTED", "CANCELLED"].map(
               (status) => (
-                <option key={status} value={status}>
+                <NativeSelectOption key={status} value={status}>
                   {statusLabel(status, t)}
-                </option>
+                </NativeSelectOption>
               ),
             )}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="ag-filter-assignee" label={t("inline.assignee_1g6jeev")}>
-          <select
+          <NativeSelect
             id="ag-filter-assignee"
             name="agAssignee"
             defaultValue={filters.assigneeId ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="">{t("inline.anyone_itav5z")}</option>
+            <NativeSelectOption value="">{t("inline.anyone_itav5z")}</NativeSelectOption>
             {staff.map((person) => (
-              <option key={person.id} value={person.id}>
+              <NativeSelectOption key={person.id} value={person.id}>
                 {person.name} · {person.email}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="ag-filter-from" label={t("inline.from_date_172hp5u")}>
           <Input
@@ -242,21 +243,21 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           <input type="hidden" name="requestId" value={request.id} />
           <input type="hidden" name="locale" value={locale} />
           <Field id={`ag-status-${request.id}`} label={t("inline.status_qhepgk")}>
-            <select
+            <NativeSelect
               id={`ag-status-${request.id}`}
               name="status"
               defaultValue={request.status}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
               {choices.map((status) => (
-                <option key={status} value={status}>
+                <NativeSelectOption key={status} value={status}>
                   {statusLabel(status, t)}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
           <Field id={`ag-assignee-${request.id}`} label={t("inline.assign_to_staff_od32ej")}>
-            <select
+            <NativeSelect
               id={`ag-assignee-${request.id}`}
               name="assignedToId"
               defaultValue={request.assignedTo?.id ?? staff[0]?.id ?? ""}
@@ -264,11 +265,11 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               required
             >
               {staff.map((person) => (
-                <option key={person.id} value={person.id}>
+                <NativeSelectOption key={person.id} value={person.id}>
                   {person.name} · {person.email}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
           <Field
             id={`ag-market-match-${request.id}`}
