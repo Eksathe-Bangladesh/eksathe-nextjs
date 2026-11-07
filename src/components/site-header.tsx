@@ -37,6 +37,7 @@ export function SiteHeaderUserMenu({
   const t = useTranslations();
   const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const displayName = userName?.trim().split(/\s+/).slice(0, 2).join(" ");
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -81,7 +82,7 @@ export function SiteHeaderUserMenu({
         className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/20 px-3 text-sm font-semibold text-white hover:bg-white/10"
       >
         <UserRoundIcon aria-hidden="true" className="size-4" />
-        <span className="max-w-32 truncate">{userName ?? t("auth.signIn")}</span>
+        <span className="max-w-32 truncate">{displayName ?? t("auth.signIn")}</span>
         <ChevronDownIcon aria-hidden="true" className="size-4" />
       </button>
       {menuOpen && (
