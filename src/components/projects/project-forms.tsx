@@ -13,6 +13,7 @@ import {
   updateMilestoneAction,
 } from "@/app/actions/projects";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
@@ -64,10 +65,10 @@ export function CreateProjectForm({
         <Input id="project-budget" name="budget" type="number" min="0" step="0.01" />
       </Field>
       <Field id="project-start" label={t("workflow.startDate")}>
-        <Input id="project-start" name="startsAt" type="date" />
+        <DatePicker id="project-start" name="startsAt" />
       </Field>
       <Field id="project-end" label={t("workflow.endDate")}>
-        <Input id="project-end" name="targetEndsAt" type="date" />
+        <DatePicker id="project-end" name="targetEndsAt" />
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor="project-description">{t("workflow.projectDescription")}</Label>
@@ -174,7 +175,7 @@ export function AddMilestoneForm({
         />
       </Field>
       <Field id={`milestone-due-${projectId}`} label={t("inline.due_date_1yoc6no")}>
-        <Input id={`milestone-due-${projectId}`} name="dueAt" type="date" />
+        <DatePicker id={`milestone-due-${projectId}`} name="dueAt" />
       </Field>
       <Field id={`milestone-description-${projectId}`} label={t("workflow.milestoneDescription")}>
         <Input id={`milestone-description-${projectId}`} name="description" maxLength={1200} />
@@ -217,7 +218,7 @@ export function ProjectExpenseForm({ projectId }: { projectId: string }) {
         />
       </Field>
       <Field id={`expense-date-${projectId}`} label={t("workflow.startDate")}>
-        <Input id={`expense-date-${projectId}`} name="occurredAt" type="date" />
+        <DatePicker id={`expense-date-${projectId}`} name="occurredAt" />
       </Field>
       <div className="flex flex-col justify-end gap-2">
         <ActionFeedback state={state} />

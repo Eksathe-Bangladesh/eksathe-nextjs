@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import { updateAgricultureServiceRequestAction } from "@/app/actions/agriculture";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
@@ -94,15 +95,10 @@ export function AgricultureRequestsQueue({
           </NativeSelect>
         </Field>
         <Field id="ag-filter-from" label={t("inline.from_date_172hp5u")}>
-          <Input
-            id="ag-filter-from"
-            name="agFrom"
-            type="date"
-            defaultValue={filters.dateFrom ?? ""}
-          />
+          <DatePicker id="ag-filter-from" name="agFrom" defaultValue={filters.dateFrom ?? ""} />
         </Field>
         <Field id="ag-filter-to" label={t("inline.to_date_8xio37")}>
-          <Input id="ag-filter-to" name="agTo" type="date" defaultValue={filters.dateTo ?? ""} />
+          <DatePicker id="ag-filter-to" name="agTo" defaultValue={filters.dateTo ?? ""} />
         </Field>
         <div className="flex gap-2 sm:col-span-2 lg:col-span-3">
           <Button type="submit" variant="outline">

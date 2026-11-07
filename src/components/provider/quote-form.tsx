@@ -5,6 +5,7 @@ import { useActionState } from "react";
 
 import { submitQuoteAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
@@ -62,7 +63,7 @@ export function QuoteForm({
       </div>
       <div className="flex flex-col gap-2">
         <Label htmlFor={`quote-expiry-${request.id}`}>{t("workflow.reference")}</Label>
-        <Input id={`quote-expiry-${request.id}`} name="expiresAt" type="date" />
+        <DatePicker id={`quote-expiry-${request.id}`} name="expiresAt" />
       </div>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor={`quote-note-${request.id}`}>{t("workflow.quoteNote")}</Label>

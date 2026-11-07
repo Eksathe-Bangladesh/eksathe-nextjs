@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import { saveAgriculturePublicationAction } from "@/app/actions/agriculture-publishing";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -204,11 +205,10 @@ function PriceForm({
               defaultValue={initial?.price}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-observed`}
               name="observedAt"
               label={t("inline.observed_on_19fm3vl")}
-              type="date"
               defaultValue={initial?.observedAt}
               required
             />
@@ -312,19 +312,17 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               defaultValue={initial?.titleEn}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-published`}
               name="publishedAt"
               label={t("inline.publication_date_e9a51j")}
-              type="date"
               defaultValue={initial?.publishedAt}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-expiry`}
               name="expiresAt"
               label={t("inline.expiry_date_required_for_weather_alerts_104m02b")}
-              type="date"
               defaultValue={initial?.expiresAt}
             />
             <TextField
@@ -448,6 +446,27 @@ function TextField({
         min={min}
         step={step}
       />
+    </Field>
+  );
+}
+
+function DateField({
+  id,
+  name,
+  label,
+  defaultValue,
+  required,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  defaultValue?: string;
+  required?: boolean;
+}) {
+  return (
+    <Field className="min-w-0">
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <DatePicker id={id} name={name} defaultValue={defaultValue} required={required} />
     </Field>
   );
 }

@@ -5,6 +5,7 @@ import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "r
 
 import { updateListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
@@ -170,10 +171,9 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           id={`edit-available-${listing.id}`}
           label={t("inline.available_from_optional_dlhs2f")}
         >
-          <Input
+          <DatePicker
             id={`edit-available-${listing.id}`}
             name="availableFrom"
-            type="date"
             defaultValue={listing.availableFrom?.slice(0, 10) ?? ""}
           />
         </Field>

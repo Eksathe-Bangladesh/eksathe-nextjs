@@ -5,6 +5,7 @@ import { useActionState, useSyncExternalStore } from "react";
 
 import { createMarketplaceRequestAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
@@ -96,23 +97,16 @@ export function ListingRequestForm({
           <>
             <div className="flex flex-col gap-2">
               <Label htmlFor="request-start">{t("workflow.startDate")}</Label>
-              <Input
+              <DatePicker
                 id="request-start"
                 name="requestedStart"
-                type="date"
                 min={today || undefined}
                 required
               />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="request-end">{t("workflow.endDate")}</Label>
-              <Input
-                id="request-end"
-                name="requestedEnd"
-                type="date"
-                min={today || undefined}
-                required
-              />
+              <DatePicker id="request-end" name="requestedEnd" min={today || undefined} required />
             </div>
           </>
         )}

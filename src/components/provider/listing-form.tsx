@@ -5,6 +5,7 @@ import { type SubmitEvent, useActionState, useEffect, useMemo, useRef, useState 
 
 import { createListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
@@ -176,7 +177,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
           />
         </Field>
         <Field id="listing-available-from" label={t("inline.available_from_optional_c5ahok")}>
-          <Input id="listing-available-from" name="availableFrom" type="date" />
+          <DatePicker id="listing-available-from" name="availableFrom" />
         </Field>
       </div>
       <Field id="listing-description-bn" label={t("workflow.descriptionBn")}>
