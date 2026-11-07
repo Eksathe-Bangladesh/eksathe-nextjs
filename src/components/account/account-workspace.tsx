@@ -49,14 +49,20 @@ export function AccountWorkspace({
       label={t("inline.account_navigation_1vkrrr0")}
       items={[
         { id: "profile", label: t("dashboard.profile"), icon: UserRoundIcon },
-        { id: "requests", label: t("inline.requests_1muw0v3"), icon: ClipboardListIcon },
         {
           id: "agriculture-requests",
           label: t("inline.agriculture_service_requests_zyhcii"),
+          navLabel: locale === "bn" ? "কৃষি অনুরোধ" : "Agriculture requests",
           icon: ClipboardListIcon,
         },
+        { id: "requests", label: t("inline.requests_1muw0v3"), icon: ClipboardListIcon },
         { id: "orders", label: t("inline.orders_v5igup"), icon: ShoppingBagIcon },
-        { id: "projects", label: t("workflow.projectTitle"), icon: HardHatIcon },
+        {
+          id: "projects",
+          label: t("workflow.projectTitle"),
+          navLabel: locale === "bn" ? "প্রকল্প" : "Projects",
+          icon: HardHatIcon,
+        },
         { id: "notifications", label: t("dashboard.notifications"), icon: BellIcon },
       ]}
     >

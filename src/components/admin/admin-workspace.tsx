@@ -61,19 +61,32 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               {
                 id: "agriculture-requests",
                 label: t("inline.agriculture_intake_11g2kyy"),
+                navLabel: locale === "bn" ? "কৃষি অনুরোধ" : "Agriculture requests",
               },
             ]
           : []),
         ...(financeEnabled
           ? [
-              { id: "payment-mismatches", label: t("inline.payments_10ntxis") },
+              {
+                id: "payment-mismatches",
+                label: t("inline.payments_10ntxis"),
+                navLabel: locale === "bn" ? "পেমেন্ট" : "Payments",
+              },
               { id: "commission", label: t("inline.commissions_82zxsv") },
             ]
           : []),
         ...(data.access.isSuperAdmin
           ? [
-              { id: "commission-settings", label: t("inline.rates_1hw0rt3") },
-              { id: "staff-access", label: t("workflow.manageStaff") },
+              {
+                id: "commission-settings",
+                label: t("inline.rates_1hw0rt3"),
+                navLabel: locale === "bn" ? "হার" : "Rates",
+              },
+              {
+                id: "staff-access",
+                label: t("workflow.manageStaff"),
+                navLabel: locale === "bn" ? "স্টাফ" : "Staff",
+              },
             ]
           : []),
       ]}

@@ -42,16 +42,20 @@ export function ProviderWorkspace({
         ...(workspace.profile.status === "APPROVED" && capabilities.length > 0
           ? [{ id: "listings", label: t("inline.listings_dq3ohu") }]
           : []),
-        ...(workspace.profile.status === "APPROVED"
-          ? [{ id: "storefront", label: t("inline.storefront_9cgq9q") }]
-          : []),
         { id: "requests", label: t("inline.requests_1muw0v3") },
         { id: "orders", label: t("inline.orders_v5igup") },
         ...(workspace.projectMilestones.length > 0
           ? [{ id: "project-milestones", label: t("workflow.milestones") }]
           : []),
         { id: "commissions", label: t("inline.commissions_82zxsv") },
-        { id: "application", label: t("workflow.providerApplication") },
+        ...(workspace.profile.status === "APPROVED"
+          ? [{ id: "storefront", label: t("inline.storefront_9cgq9q") }]
+          : []),
+        {
+          id: "application",
+          label: t("workflow.providerApplication"),
+          navLabel: locale === "bn" ? "আবেদন" : "Application",
+        },
       ]}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
