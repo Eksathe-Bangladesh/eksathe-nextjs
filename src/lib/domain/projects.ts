@@ -14,6 +14,14 @@ function dateAtUtcStart(date: string) {
   return new Date(`${date}T00:00:00.000Z`);
 }
 
+// Strip path separators and control characters from user-supplied filenames.
+function sanitizeFilename(filename: string) {
+  return filename
+    .replace(/[\\/\p{Cc}]/gu, "_")
+    .trim()
+    .slice(0, 120);
+}
+
 export async function attachProjectDocument(
   actorId: string,
   input: { projectId: string; storageKey: string; filename: string; sizeBytes: string },
@@ -31,10 +39,7 @@ export async function attachProjectDocument(
     Number(input.sizeBytes),
   );
 
-  const filename = input.filename
-    .replace(/[\\/\0-\x1f\x7f]/g, "_")
-    .trim()
-    .slice(0, 120);
+  const filename = sanitizeFilename(input.filename);
   if (!filename) throw new WorkflowError("invalidState");
   const document = await prisma.projectDocument.create({
     data: {
@@ -102,10 +107,7 @@ export async function attachProjectPhoto(
     Number(input.sizeBytes),
   );
 
-  const filename = input.filename
-    .replace(/[\\/\0-\x1f\x7f]/g, "_")
-    .trim()
-    .slice(0, 120);
+  const filename = sanitizeFilename(input.filename);
   if (!filename) throw new WorkflowError("invalidState");
   const photo = await prisma.projectPhoto.create({
     data: {
