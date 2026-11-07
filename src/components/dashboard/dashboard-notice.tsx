@@ -4,5 +4,5 @@ import { useTranslations } from "next-intl";
 
 export function DashboardNotice() {
   const t = useTranslations();
-  return <p className="mb-6 text-sm text-muted-foreground">{t("dashboard.demoNotice")}</p>;
+  return <p className="text-muted-foreground mb-6 text-sm">{t("dashboard.demoNotice")}</p>;
 }

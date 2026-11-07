@@ -1,6 +1,6 @@
 import { AgricultureHome } from "@/components/agriculture/agriculture-home";
-import { getActiveAgricultureServiceCatalog } from "@/lib/agriculture/admin";
 import { getPageMetadata } from "@/i18n/metadata";
+import { getActiveAgricultureServiceCatalog } from "@/lib/agriculture/admin";
 import { getAgriculturePublicInfo } from "@/lib/agriculture/publishing";
 import { getPublicListings } from "@/lib/listings";
 

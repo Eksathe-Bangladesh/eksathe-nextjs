@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { ProjectDetail } from "@/components/projects/project-detail";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";

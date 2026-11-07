@@ -3,11 +3,11 @@
 import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon, MapPinIcon, StarIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { ConstructionService } from "@/lib/construction/service-registry";
 import type { ConstructionMarketResult } from "@/lib/listings";
 
@@ -40,23 +40,23 @@ export function ConstructionServiceDetail({
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
       <Link
         href={routeBase}
-        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("inline.all_construction_services_dtmafp")}
       </Link>
-      <section className="grid gap-6 rounded-[2rem] border border-primary/15 bg-linear-to-br from-secondary/80 via-card to-card p-6 sm:p-9 lg:grid-cols-[1fr_auto] lg:items-end">
+      <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-6 rounded-[2rem] border bg-linear-to-br p-6 sm:p-9 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
           <span aria-hidden="true" className="text-5xl">
             {service.icon}
           </span>
-          <p className="mt-4 text-sm font-semibold text-primary">
+          <p className="text-primary mt-4 text-sm font-semibold">
             {t("inline.construction_service_199i3gz")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
             {t(`constructionServices.${service.slug}.title` as never)}
           </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-3 max-w-3xl text-sm leading-7">
             {t(`constructionServices.${service.slug}.description` as never)}
           </p>
         </div>
@@ -76,7 +76,7 @@ export function ConstructionServiceDetail({
       <section className="flex flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-primary">
+            <p className="text-primary text-sm font-semibold">
               {t("inline.approved_construction_listings_vb7f0k")}
             </p>
             <h2 className="mt-1 text-2xl font-bold">
@@ -98,13 +98,13 @@ export function ConstructionServiceDetail({
         {result.unavailable ? (
           <p
             role="alert"
-            className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive"
+            className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-5 text-sm"
           >
             {t("workflow.dataUnavailable")}
           </p>
         ) : result.items.length === 0 ? (
           <div className="rounded-2xl border border-dashed p-7">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t("inline.there_are_no_approved_listings_for_this_se_1ouvm32")}
             </p>
             <Link href={projectHref} className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>
@@ -133,11 +133,11 @@ export function ConstructionServiceDetail({
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="line-clamp-2 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground line-clamp-2 text-sm">
                     {bn ? listing.descriptionBn : listing.descriptionEn}
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-3">
-                    <span className="font-semibold text-primary">
+                    <span className="text-primary font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
                     </span>
                     {listing.averageRating !== null && (

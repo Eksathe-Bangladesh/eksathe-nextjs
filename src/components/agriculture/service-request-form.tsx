@@ -2,7 +2,6 @@
 
 import { cn } from "cn";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useState, useActionState } from "react";
 
 import { createAgricultureServiceRequestAction } from "@/app/actions/agriculture";
@@ -11,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { Link } from "@/i18n/navigation";
 import type { AgricultureServiceWithContent } from "@/lib/agriculture/service-registry";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -74,7 +74,7 @@ export function ServiceRequestForm({
         </>
       )}
       {!canSubmit && (
-        <div className="flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+        <div className="border-primary/20 bg-primary/5 flex flex-col gap-3 rounded-xl border p-4">
           <p className="text-sm leading-6">
             {t("inline.preview_the_fields_below_sign_in_and_verif_ttja")}
           </p>
@@ -182,13 +182,13 @@ export function ServiceRequestForm({
                   disabled={!canSubmit}
                 />
                 {uploading && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {t("inline.uploading_private_photo_1pwwdgh")}
                   </p>
                 )}
-                {photo && <p className="text-xs text-primary">{t("inline.photo_ready_7n37mt")}</p>}
+                {photo && <p className="text-primary text-xs">{t("inline.photo_ready_7n37mt")}</p>}
                 {uploadError && (
-                  <p role="alert" className="text-xs text-destructive">
+                  <p role="alert" className="text-destructive text-xs">
                     {t("workflow.uploadFailed")}
                   </p>
                 )}
@@ -207,7 +207,7 @@ export function ServiceRequestForm({
                   required={field.required}
                   aria-invalid={Boolean(error)}
                   disabled={!canSubmit}
-                  className="h-10 rounded-lg border border-input bg-background px-3 text-sm"
+                  className="border-input bg-background h-10 rounded-lg border px-3 text-sm"
                 >
                   <option value="">{t("inline.choose_an_option_5bc3rc")}</option>
                   {field.options.map((option, index) => (
@@ -264,15 +264,15 @@ export function ServiceRequestForm({
           disabled={!canSubmit}
         />
       </Field>
-      <p className="text-xs leading-5 text-muted-foreground">
+      <p className="text-muted-foreground text-xs leading-5">
         {t("inline.requesting_coordination_does_not_create_an_1lp8p66")}
       </p>
       <ActionFeedback state={state} />
       {state.status === "success" && state.entityId && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+        <div className="border-primary/20 bg-primary/5 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4">
           <div>
             <p className="text-sm font-semibold">{t("inline.request_reference_15i948e")}</p>
-            <p className="mt-1 font-mono text-primary">{state.referenceCode}</p>
+            <p className="text-primary mt-1 font-mono">{state.referenceCode}</p>
           </div>
           <Link
             href={`/account/agriculture-requests/${state.entityId}`}
@@ -308,9 +308,9 @@ function Field({
     <div className="flex flex-col gap-2">
       <Label htmlFor={id}>{label}</Label>
       {children}
-      {help && <p className="text-xs text-muted-foreground">{help}</p>}
+      {help && <p className="text-muted-foreground text-xs">{help}</p>}
       {error && (
-        <p role="alert" className="text-xs text-destructive">
+        <p role="alert" className="text-destructive text-xs">
           {error}
         </p>
       )}

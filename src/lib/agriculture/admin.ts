@@ -27,8 +27,9 @@ export async function getActiveAgricultureServiceCatalog() {
   return services;
 }
 
-export type AgriculturePublicService =
-  Awaited<ReturnType<typeof getActiveAgricultureServiceCatalog>>[number];
+export type AgriculturePublicService = Awaited<
+  ReturnType<typeof getActiveAgricultureServiceCatalog>
+>[number];
 
 export async function getActiveAgricultureService(slug: string) {
   "use cache";

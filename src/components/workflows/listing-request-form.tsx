@@ -52,7 +52,7 @@ export function ListingRequestForm({
       {projectRequest && <input type="hidden" name="projectId" value={projectId} />}
       {projectRequest && <input type="hidden" name="packageId" value={packageId} />}
       {projectRequest && (
-        <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm">
+        <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm">
           <span className="text-muted-foreground">{t("workflow.workPackage")}: </span>
           <strong>{packageLabel}</strong>
         </p>
@@ -74,7 +74,7 @@ export function ListingRequestForm({
             defaultValue="1"
             required
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {locale === "bn"
               ? `উপলভ্য: ${listing.stock} ${listing.unit}`
               : `Available: ${listing.stock} ${listing.unit}`}
@@ -118,7 +118,7 @@ export function ListingRequestForm({
         )}
       </div>
       {isScheduled && (
-        <p className="-mt-2 text-xs text-muted-foreground">
+        <p className="text-muted-foreground -mt-2 text-xs">
           {t("inline.daily_rates_are_calculated_for_the_selecte_1ulrn0s")}
         </p>
       )}
@@ -129,7 +129,7 @@ export function ListingRequestForm({
           name="details"
           maxLength={2000}
           rows={4}
-          className="min-h-24 resize-y rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 resize-y rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
           placeholder={t("inline.add_requirements_collection_or_transport_d_1cb1842")}
         />
       </div>

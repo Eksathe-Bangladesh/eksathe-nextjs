@@ -1,15 +1,12 @@
 import "server-only";
-
-import { prisma } from "@/lib/prisma";
 import type {
   AgricultureAccountStatus,
   AgricultureAccountType,
 } from "@/lib/agriculture/account-types";
+import { prisma } from "@/lib/prisma";
 
 export class AgricultureAdminError extends Error {
-  constructor(
-    readonly code: "accountNotFound" | "panelNotFound" | "notAllowed" | "invalidState",
-  ) {
+  constructor(readonly code: "accountNotFound" | "panelNotFound" | "notAllowed" | "invalidState") {
     super(code);
   }
 }

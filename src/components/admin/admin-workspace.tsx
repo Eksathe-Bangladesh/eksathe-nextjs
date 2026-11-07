@@ -79,13 +79,13 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       ]}
     >
       <div>
-        <p className="text-sm text-primary">{t("inline.platform_operations_ddluvn")}</p>
+        <p className="text-primary text-sm">{t("inline.platform_operations_ddluvn")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {agricultureManagementEnabled && !operationsEnabled && !financeEnabled
             ? t("workflow.agroAdmin")
             : t("nav.admin")}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-2 text-sm">
           {locale === "bn"
             ? `আপনার বিভাগ: ${[...new Set([...data.access.operationSectors, ...data.access.financeSectors, ...data.access.userManagementSectors, ...data.access.panelManagementSectors, ...data.access.reportSectors])].join(", ") || "সমগ্র প্ল্যাটফর্ম"}`
             : `Your sectors: ${[...new Set([...data.access.operationSectors, ...data.access.financeSectors, ...data.access.userManagementSectors, ...data.access.panelManagementSectors, ...data.access.reportSectors])].join(", ") || "platform-wide"}`}
@@ -93,7 +93,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
         {agricultureManagementEnabled && (
           <Link
             href="/admin/agriculture/management"
-            className="mt-3 inline-flex w-fit items-center rounded-lg border border-primary/30 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/5"
+            className="border-primary/30 text-primary hover:bg-primary/5 mt-3 inline-flex w-fit items-center rounded-lg border px-3 py-2 text-sm font-medium"
           >
             {t("workflow.agricultureManagement")}
           </Link>
@@ -101,7 +101,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
         {agricultureOperationsEnabled && (
           <Link
             href="/admin/agriculture/publishing"
-            className="mt-3 inline-flex w-fit items-center rounded-lg border border-primary/30 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/5"
+            className="border-primary/30 text-primary hover:bg-primary/5 mt-3 inline-flex w-fit items-center rounded-lg border px-3 py-2 text-sm font-medium"
           >
             {t("inline.publish_agriculture_prices_and_updates_1mknp4k")}
           </Link>
@@ -131,7 +131,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <StatusBadge status="PENDING" />
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       {locale === "bn" ? capability.bioBn : capability.bioEn}
                     </p>
                     <p className="text-sm">
@@ -166,7 +166,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <StatusBadge status="PENDING" />
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}
                     </p>
                     <p className="text-sm">
@@ -213,7 +213,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                       </p>
                     )}
                     {request.details && (
-                      <p className="text-sm text-muted-foreground">{request.details}</p>
+                      <p className="text-muted-foreground text-sm">{request.details}</p>
                     )}
                     <p className="text-sm">
                       {request.district} · {request.quantity} {request.unit}
@@ -233,7 +233,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     )}
                     <Link
                       href={`/dashboard/${request.sectorSlug}/providers/${request.providerId}`}
-                      className="w-fit text-sm font-medium text-primary hover:underline"
+                      className="text-primary w-fit text-sm font-medium hover:underline"
                     >
                       {t("inline.view_provider_profile_j41e4t")}
                     </Link>
@@ -264,7 +264,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <StatusBadge status="DISPUTED" />
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
-                    <p className="text-sm text-muted-foreground">{dispute.cancellationReason}</p>
+                    <p className="text-muted-foreground text-sm">{dispute.cancellationReason}</p>
                     <DisputeResolutionForm orderId={dispute.id} />
                   </CardContent>
                 </Card>
@@ -311,13 +311,13 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     </p>
                     {payment.hasReceipt && (
                       <a
-                        className="w-fit text-sm font-medium text-primary hover:underline"
+                        className="text-primary w-fit text-sm font-medium hover:underline"
                         href={`/api/orders/${payment.orderId}/payments/${payment.id}/receipt`}
                       >
                         {t("workflow.viewReceipt")}
                       </a>
                     )}
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {locale === "bn"
                         ? `ক্রেতা নিশ্চিত: ${payment.buyerConfirmed ? "হ্যাঁ" : "না"} · সেবাদাতা নিশ্চিত: ${payment.providerConfirmed ? "হ্যাঁ" : "না"}`
                         : `Customer confirmed: ${payment.buyerConfirmed ? "yes" : "no"} · Provider confirmed: ${payment.providerConfirmed ? "yes" : "no"}`}
@@ -448,7 +448,7 @@ function DisputeResolutionForm({ orderId }: { orderId: string }) {
         <select
           id={`dispute-outcome-${orderId}`}
           name="decision"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="COMPLETE">{t("inline.mark_completed_1cdw36l")}</option>
           <option value="CANCEL">{t("inline.cancel_and_release_stock_omouxg")}</option>
@@ -493,7 +493,7 @@ function RefundForm({ paymentId }: { paymentId: string }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(recordRefundAction, initialWorkflowState);
   return (
-    <details className="rounded-lg border border-border/70 p-3">
+    <details className="border-border/70 rounded-lg border p-3">
       <summary className="cursor-pointer text-sm font-medium">
         {t("inline.record_a_refund_nfyy7b")}
       </summary>
@@ -533,12 +533,12 @@ function CommissionRateForm({ sector }: { sector: AdminWorkspaceData["sectors"][
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-[minmax(0,1fr)_180px_auto]"
+      className="border-border/70 bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-[minmax(0,1fr)_180px_auto]"
     >
       <input type="hidden" name="sectorSlug" value={sector.slug} />
       <div>
         <p className="font-semibold">{locale === "bn" ? sector.titleBn : sector.titleEn}</p>
-        <p className="text-xs text-muted-foreground">{sector.slug}</p>
+        <p className="text-muted-foreground text-xs">{sector.slug}</p>
       </div>
       <Field id={`commission-rate-${sector.slug}`} label={t("inline.commission_rate_12xdjj1")}>
         <Input
@@ -568,7 +568,7 @@ function StaffGrantForm() {
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-3"
+      className="border-border/70 bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-3"
     >
       <Field id="staff-email" label={t("workflow.staffEmail")}>
         <Input id="staff-email" name="email" type="email" required />
@@ -577,7 +577,7 @@ function StaffGrantForm() {
         <select
           id="staff-permission"
           name="permission"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="OPERATIONS">{t("inline.operations_1t8z18")}</option>
           <option value="FINANCE">{t("inline.finance_1rfbk3d")}</option>
@@ -590,7 +590,7 @@ function StaffGrantForm() {
         <select
           id="staff-scope"
           name="scope"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="global">{t("inline.platform_wide_10jjm12")}</option>
           <option value="agriculture-labor">{t("inline.agriculture_labor_r0zc6k")}</option>
@@ -613,7 +613,7 @@ function StaffGrantRow({ grant }: { grant: AdminWorkspaceData["staffGrants"][num
   return (
     <form
       action={action}
-      className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/70 bg-card px-4 py-3"
+      className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-lg border px-4 py-3"
     >
       <input type="hidden" name="id" value={grant.id} />
       <p className="text-sm">
@@ -640,7 +640,7 @@ function Field({ id, label, children }: { id: string; label: string; children: R
 
 function Empty({ text }: { text: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
       {text}
     </div>
   );

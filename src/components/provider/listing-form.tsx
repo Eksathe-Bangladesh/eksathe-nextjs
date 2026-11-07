@@ -84,7 +84,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
       ref={formRef}
       action={action}
       onSubmit={prepareListingImage}
-      className="flex flex-col gap-4 rounded-xl border border-border/70 p-4"
+      className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="listing-sector" label={t("inline.service_sector_1l9k566")}>
@@ -93,7 +93,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             name="sectorSlug"
             value={sectorSlug}
             onChange={(event) => setSectorSlug(event.target.value)}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {sectorOptions.map((sector) => (
               <option key={sector} value={sector}>
@@ -107,7 +107,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             id="listing-kind"
             name="kind"
             required
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {serviceOptions.map((service) => (
               <option key={service.kind} value={service.kind}>
@@ -184,7 +184,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
           name="descriptionBn"
           rows={3}
           maxLength={2000}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id="listing-description-en" label={t("workflow.descriptionEn")}>
@@ -193,7 +193,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
           name="descriptionEn"
           rows={3}
           maxLength={2000}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id="listing-image" label={t("workflow.listingImage")}>
@@ -214,19 +214,19 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
           }}
         />
       </Field>
-      <p className="text-xs text-muted-foreground">{t("workflow.listingImageHelp")}</p>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">{t("workflow.listingImageHelp")}</p>
+      <p className="text-muted-foreground text-xs">
         {t("inline.goods_need_stock_to_sell_worker_and_machin_j3xozu")}
       </p>
       <input type="hidden" name="imageKey" defaultValue="" />
       <input type="hidden" name="imageContentType" defaultValue="" />
       <input type="hidden" name="imageSizeBytes" defaultValue="" />
       {uploadError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-destructive text-sm">
           {t(`workflow.${uploadError}` as never)}
         </p>
       )}
-      <p className="text-xs text-muted-foreground">{t("workflow.pendingApproval")}</p>
+      <p className="text-muted-foreground text-xs">{t("workflow.pendingApproval")}</p>
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending || uploading}>
         {uploading || pending ? t("common.loading") : t("workflow.addListing")}

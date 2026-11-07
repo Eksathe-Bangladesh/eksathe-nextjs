@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useActionState } from "react";
 
 import { archiveListingAction, updateListingStockAction } from "@/app/actions/marketplace";
@@ -19,6 +18,7 @@ import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { OrderCard } from "@/components/workflows/order-card";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
+import { Link } from "@/i18n/navigation";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { ProviderWorkspace as ProviderWorkspaceData } from "@/lib/workspaces";
 
@@ -56,9 +56,9 @@ export function ProviderWorkspace({
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-primary">{t("inline.business_operations_m1nxyg")}</p>
+          <p className="text-primary text-sm">{t("inline.business_operations_m1nxyg")}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{t("nav.provider")}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-sm">
             {locale === "bn" ? workspace.profile.nameBn : workspace.profile.nameEn} ·{" "}
             {workspace.profile.district}
           </p>
@@ -67,12 +67,12 @@ export function ProviderWorkspace({
       </div>
 
       {workspace.profile.status === "PENDING" && (
-        <div className="rounded-xl border border-border/70 bg-muted/40 p-4 text-sm text-muted-foreground">
+        <div className="border-border/70 bg-muted/40 text-muted-foreground rounded-xl border p-4 text-sm">
           {t("workflow.pendingApproval")}
         </div>
       )}
       {workspace.profile.status === "SUSPENDED" && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+        <div className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm">
           {t("inline.this_provider_profile_is_suspended_it_cann_1mz4cnr")}
         </div>
       )}
@@ -88,14 +88,14 @@ export function ProviderWorkspace({
             </CardHeader>
             <CardContent>
               <details>
-                <summary className="mb-4 cursor-pointer text-sm font-semibold text-primary">
+                <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
                   {t("inline.add_a_listing_11diban")}
                 </summary>
                 <ListingForm capabilities={capabilities} />
               </details>
               <div className="mt-5 grid gap-3 md:grid-cols-2">
                 {workspace.listings.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">{t("workflow.noRecords")}</p>
+                  <p className="text-muted-foreground text-sm">{t("workflow.noRecords")}</p>
                 ) : (
                   workspace.listings.map((listing) => (
                     <ListingStockCard key={listing.id} listing={listing} locale={locale} />
@@ -127,7 +127,7 @@ export function ProviderWorkspace({
                 <StatusBadge status={request.status} />
               </CardHeader>
               <CardContent>
-                <p className="text-sm whitespace-pre-line text-muted-foreground">
+                <p className="text-muted-foreground text-sm whitespace-pre-line">
                   {request.details || t("inline.no_additional_details_provided_owxgv9")}
                 </p>
                 {(request.requestedStart || request.requestedEnd) && (
@@ -194,7 +194,7 @@ export function ProviderWorkspace({
             .map((order) => (
               <div
                 key={order.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card p-4 text-sm"
+                className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 text-sm"
               >
                 <span>
                   {locale === "bn" ? order.listing.titleBn : order.listing.titleEn} ·{" "}
@@ -251,7 +251,7 @@ export function ProviderWorkspace({
         </CardHeader>
         <CardContent>
           <details>
-            <summary className="mb-4 cursor-pointer text-sm font-semibold text-primary">
+            <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
               {t("inline.update_profile_or_request_capabilities_18ihx2")}
             </summary>
             <ProviderApplicationForm
@@ -273,12 +273,12 @@ export function ProviderWorkspace({
           {workspace.notifications.slice(0, 5).map((notification) => (
             <div
               key={notification.id}
-              className="rounded-lg border border-border/70 bg-card px-4 py-3 text-sm"
+              className="border-border/70 bg-card rounded-lg border px-4 py-3 text-sm"
             >
               <p className="font-medium">
                 {locale === "bn" ? notification.titleBn : notification.titleEn}
               </p>
-              <p className="mt-1 text-muted-foreground">
+              <p className="text-muted-foreground mt-1">
                 {locale === "bn" ? notification.messageBn : notification.messageEn}
               </p>
             </div>
@@ -300,11 +300,11 @@ function ListingStockCard({
   const [state, action, pending] = useActionState(updateListingStockAction, initialWorkflowState);
   const tracksStock = listing.kind === "PRODUCE" || listing.kind === "CONSTRUCTION_MATERIAL";
   return (
-    <div className="rounded-xl border border-border/70 p-4">
+    <div className="border-border/70 rounded-xl border p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-semibold">{locale === "bn" ? listing.titleBn : listing.titleEn}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             {tracksStock
               ? `${listing.stock} ${listing.unit}`
               : t("inline.availability_is_checked_against_booking_da_1r4mqhw")}{" "}
@@ -314,7 +314,7 @@ function ListingStockCard({
         <StatusBadge status={listing.moderationStatus} />
       </div>
       {listing.archivedAt ? (
-        <p className="mt-3 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-3 text-sm">
           {t("inline.this_listing_is_archived_7cpate")}
         </p>
       ) : (
@@ -340,7 +340,7 @@ function ListingStockCard({
             </form>
           )}
           <details className="mt-4">
-            <summary className="cursor-pointer text-sm font-semibold text-primary">
+            <summary className="text-primary cursor-pointer text-sm font-semibold">
               {t("inline.edit_listing_ynvy0s")}
             </summary>
             <div className="mt-3">
@@ -373,7 +373,7 @@ function ListingArchiveControl({ listingId }: { listingId: string }) {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
       {text}
     </div>
   );

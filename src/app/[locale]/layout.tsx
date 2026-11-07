@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
-import { locale as rootLocale } from "next/root-params";
 import { notFound } from "next/navigation";
+import { locale as rootLocale } from "next/root-params";
 import { Suspense, type ReactNode } from "react";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SiteHeaderUserFallback, SiteHeaderUserServer } from "@/components/site-header-server";
 import { ThemeProvider } from "@/components/theme-provider";
-import { getPageMetadata } from "@/i18n/metadata";
 import { locales } from "@/i18n/locales";
+import { getPageMetadata } from "@/i18n/metadata";
 
 import "../globals.css";
 import "@fontsource/hind-siliguri/300.css";

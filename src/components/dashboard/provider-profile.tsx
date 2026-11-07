@@ -4,13 +4,13 @@ import { cn } from "cn";
 import { ArrowLeftIcon, MapPinIcon, StarIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
+import { Link } from "@/i18n/navigation";
 import type { PublicProvider } from "@/lib/listings";
 import type { SectorDefinition } from "@/lib/sectors";
 
@@ -47,13 +47,13 @@ export function ProviderProfile({
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-8 sm:px-6">
       <Link
         href={base}
-        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("nav.browse")}
       </Link>
       <Card>
-        <div className="relative h-40 overflow-hidden rounded-t-xl bg-linear-to-br from-primary/10 via-secondary to-primary/20 sm:h-56">
+        <div className="from-primary/10 via-secondary to-primary/20 relative h-40 overflow-hidden rounded-t-xl bg-linear-to-br sm:h-56">
           {provider.hasCoverImage && (
             <StorefrontPhoto
               providerId={provider.id}
@@ -73,7 +73,7 @@ export function ProviderProfile({
         </div>
         <CardHeader>
           <div className="flex items-center gap-4">
-            <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-secondary text-3xl shadow-sm sm:size-20">
+            <div className="border-background bg-secondary relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 text-3xl shadow-sm sm:size-20">
               {provider.hasProfileImage ? (
                 <StorefrontPhoto
                   providerId={provider.id}
@@ -105,7 +105,7 @@ export function ProviderProfile({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm leading-7 whitespace-pre-line text-muted-foreground">
+          <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
             {locale === "bn" ? provider.bioBn : provider.bioEn}
           </p>
         </CardContent>
@@ -114,7 +114,7 @@ export function ProviderProfile({
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">{t("inline.services_and_listings_f1v32t")}</h2>
         {provider.listings.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+          <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("workflow.noRecords")}
           </p>
         ) : (
@@ -139,11 +139,11 @@ export function ProviderProfile({
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="line-clamp-3 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground line-clamp-3 text-sm">
                     {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-2">
-                    <span className="text-sm font-semibold text-primary">
+                    <span className="text-primary text-sm font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
                     </span>
                     <Link
@@ -163,7 +163,7 @@ export function ProviderProfile({
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">{t("inline.customer_reviews_1gf1uai")}</h2>
         {provider.reviews.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+          <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("inline.reviews_from_completed_orders_will_appear__1g9e5me")}
           </p>
         ) : (
@@ -174,10 +174,10 @@ export function ProviderProfile({
                   <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
                   {review.rating} / 5
                 </p>
-                <p className="text-sm whitespace-pre-line text-muted-foreground">
+                <p className="text-muted-foreground text-sm whitespace-pre-line">
                   {review.comment}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {formatter.dateTime(new Date(review.createdAt), {
                     dateStyle: "medium",
                     timeZone: "Asia/Dhaka",
@@ -207,7 +207,7 @@ function StorefrontPhoto({
   const [failed, setFailed] = useState(false);
   return failed ? (
     <span
-      className={`flex size-full items-center justify-center bg-secondary text-4xl ${className}`}
+      className={`bg-secondary flex size-full items-center justify-center text-4xl ${className}`}
       aria-hidden="true"
     >
       {fallback}

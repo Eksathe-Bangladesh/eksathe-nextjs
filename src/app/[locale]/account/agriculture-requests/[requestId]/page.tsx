@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { AgricultureRequestDetail } from "@/components/account/agriculture-request-detail";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";

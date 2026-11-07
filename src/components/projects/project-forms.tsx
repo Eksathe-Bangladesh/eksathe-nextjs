@@ -35,7 +35,7 @@ export function CreateProjectForm({
   return (
     <form
       action={action}
-      className="grid gap-4 rounded-2xl border border-border/70 bg-card p-5 sm:grid-cols-2"
+      className="border-border/70 bg-card grid gap-4 rounded-2xl border p-5 sm:grid-cols-2"
     >
       {context?.serviceSlug && (
         <input type="hidden" name="serviceSlug" value={context.serviceSlug} />
@@ -76,7 +76,7 @@ export function CreateProjectForm({
           required
           maxLength={4000}
           rows={5}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </div>
       <div className="flex flex-col gap-3 sm:col-span-2">
@@ -95,7 +95,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-2"
+      className="border-border/70 bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-2"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <Field id={`package-label-${projectId}`} label={t("workflow.workPackage")}>
@@ -106,7 +106,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
           id={`package-kind-${projectId}`}
           name="kind"
           defaultValue="CONSTRUCTION_SERVICE"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="CONSTRUCTION_SERVICE">{t("inline.professional_service_c7s4sh")}</option>
           <option value="CONSTRUCTION_MATERIAL">{t("inline.building_materials_j98vuw")}</option>
@@ -138,7 +138,7 @@ export function AddMilestoneForm({
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 p-4 sm:grid-cols-2"
+      className="border-border/70 grid gap-3 rounded-xl border p-4 sm:grid-cols-2"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <Field id={`milestone-provider-${projectId}`} label={t("workflow.assignedProvider")}>
@@ -146,7 +146,7 @@ export function AddMilestoneForm({
           id={`milestone-provider-${projectId}`}
           name="assignedProviderId"
           required
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="">{t("inline.choose_a_provider_1my4w7f")}</option>
           {providers.map((provider) => (
@@ -190,7 +190,7 @@ export function ProjectExpenseForm({ projectId }: { projectId: string }) {
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-[minmax(0,1fr)_180px_180px_auto]"
+      className="border-border/70 bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-[minmax(0,1fr)_180px_180px_auto]"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <Field id={`expense-description-${projectId}`} label={t("workflow.expenseDescription")}>
@@ -307,7 +307,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
       ref={formRef}
       action={action}
       onSubmit={prepareDocument}
-      className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card p-4"
+      className="border-border/70 bg-card flex flex-col gap-3 rounded-xl border p-4"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <input type="hidden" name="storageKey" defaultValue="" />
@@ -330,7 +330,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
         aria-label={t("workflow.projectDocuments")}
       />
       {uploadError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-destructive text-sm">
           {t(`workflow.${uploadError}` as never)}
         </p>
       )}
@@ -398,7 +398,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
       ref={formRef}
       action={action}
       onSubmit={preparePhoto}
-      className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card p-4"
+      className="border-border/70 bg-card flex flex-col gap-3 rounded-xl border p-4"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <input type="hidden" name="storageKey" defaultValue="" />
@@ -422,7 +422,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
         aria-label={t("workflow.projectPhotos")}
       />
       {uploadError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-destructive text-sm">
           {t(`workflow.${uploadError}` as never)}
         </p>
       )}

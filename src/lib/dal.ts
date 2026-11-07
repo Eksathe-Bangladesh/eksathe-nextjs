@@ -1,7 +1,7 @@
 import "server-only";
-import { cache } from "react";
 import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
+import { cache } from "react";
 
 import { defaultLocale, isLocale, type Locale } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/paths";
@@ -95,7 +95,9 @@ export type StaffAccess = {
   canManageStaff: boolean;
 };
 
-export const getStaffAccess = cache(async function getStaffAccess(user: CurrentUser): Promise<StaffAccess> {
+export const getStaffAccess = cache(async function getStaffAccess(
+  user: CurrentUser,
+): Promise<StaffAccess> {
   const isSuperAdmin = user.role === "super_admin";
   const liveSectorSlugs = sectors
     .filter((sector) => sector.status === "live")

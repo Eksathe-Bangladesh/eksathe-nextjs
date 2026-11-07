@@ -102,7 +102,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
       ref={formRef}
       action={action}
       onSubmit={prepareUpload}
-      className="flex flex-col gap-4 rounded-xl border border-border/70 p-4"
+      className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="storefront-name-bn" label={t("inline.store_name_bangla_1iauw33")}>
@@ -148,7 +148,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           rows={3}
           maxLength={1200}
           defaultValue={profile.bioBn}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id="storefront-bio-en" label={t("inline.about_the_store_english_1sljttu")}>
@@ -158,7 +158,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           rows={3}
           maxLength={1200}
           defaultValue={profile.bioEn}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -181,7 +181,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           />
         </Field>
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         {t("inline.jpg_png_or_webp_up_to_5_mb_leave_blank_to__yke761")} ·{" "}
         {profile.hasProfileImage
           ? t("inline.profile_photo_set_1kznhvi")
@@ -200,7 +200,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         <input key={name} type="hidden" name={name} defaultValue="" />
       ))}
       {uploadError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-destructive text-sm">
           {t("inline.the_image_could_not_be_uploaded_please_try_bnuvif")}
         </p>
       )}

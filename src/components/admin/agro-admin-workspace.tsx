@@ -16,14 +16,14 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
-import { initialWorkflowState } from "@/lib/workflow-state";
-import type { AgricultureAdminWorkspace } from "@/lib/agriculture/admin";
 import {
   agricultureAccountStatuses,
   agricultureAccountTypes,
   type AgricultureAccountStatus,
   type AgricultureAccountType,
 } from "@/lib/agriculture/account-types";
+import type { AgricultureAdminWorkspace } from "@/lib/agriculture/admin";
+import { initialWorkflowState } from "@/lib/workflow-state";
 
 export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }) {
   const t = useTranslations();
@@ -50,11 +50,11 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-4 py-8 sm:px-6">
       <header>
-        <p className="text-sm font-semibold text-primary">{t("workflow.agroAdmin")}</p>
+        <p className="text-primary text-sm font-semibold">{t("workflow.agroAdmin")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {t("workflow.agricultureManagement")}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-2 text-sm">
           {locale === "bn"
             ? "কৃষি বিভাগের অ্যাক্সেস সুপার অ্যাডমিন নির্ধারণ করেন। এই প্যানেলে অ্যাডমিন অ্যাকাউন্ট বা অন্য বিভাগের অনুমতি পরিবর্তন করা যায় না।"
             : "Agriculture access is granted by a Super Admin. This workspace cannot change admin accounts or permissions for other sectors."}
@@ -66,7 +66,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
           <h2 className="text-xl font-bold">{t("workflow.agricultureUserManagement")}</h2>
           <CreateUserForm accountTypeOptions={accountTypeOptions} />
           {data.users.length === 0 ? (
-            <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
               {t("workflow.noManagedAccounts")}
             </p>
           ) : (
@@ -93,7 +93,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                       statusOptions={statusOptions}
                     />
                     {user.hasBusinessData ? (
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {t("workflow.agricultureAccountHasData")}
                       </p>
                     ) : (
@@ -111,7 +111,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
         <section id="panels" className="flex flex-col gap-4">
           <h2 className="text-xl font-bold">{t("workflow.agriculturePanelManagement")}</h2>
           {data.panels.length === 0 ? (
-            <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
               {t("workflow.noServicePanels")}
             </p>
           ) : (
@@ -139,7 +139,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                   )}
                 </p>
                 {data.report.requestGroups.map((group) => (
-                  <p key={group.status} className="text-sm text-muted-foreground">
+                  <p key={group.status} className="text-muted-foreground text-sm">
                     {group.status}: {formatter.number(group.count)}
                   </p>
                 ))}
@@ -157,7 +157,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                     maximumFractionDigits: 2,
                   })}
                 </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-sm">
                   {formatter.number(data.report.commissionCount)} {t("workflow.commissionsDue")}
                 </p>
               </CardContent>
@@ -179,11 +179,7 @@ function DeleteAccountForm({ userId }: { userId: string }) {
     <form
       action={action}
       onSubmit={(event) => {
-        if (
-          !window.confirm(
-              `${t("workflow.confirmAccountDelete")} (${userId})?`,
-          )
-        ) {
+        if (!window.confirm(`${t("workflow.confirmAccountDelete")} (${userId})?`)) {
           event.preventDefault();
         }
       }}
@@ -219,7 +215,14 @@ function CreateUserForm({
           <FieldGroup className="grid gap-3 md:grid-cols-2">
             <Field>
               <FieldLabel htmlFor="agro-user-name">{t("workflow.accountName")}</FieldLabel>
-              <Input id="agro-user-name" name="name" autoComplete="name" minLength={2} maxLength={150} required />
+              <Input
+                id="agro-user-name"
+                name="name"
+                autoComplete="name"
+                minLength={2}
+                maxLength={150}
+                required
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="agro-user-email">{t("workflow.accountEmail")}</FieldLabel>
@@ -227,7 +230,15 @@ function CreateUserForm({
             </Field>
             <Field>
               <FieldLabel htmlFor="agro-user-phone">{t("workflow.accountPhone")}</FieldLabel>
-              <Input id="agro-user-phone" name="phone" type="tel" autoComplete="tel" minLength={7} maxLength={30} required />
+              <Input
+                id="agro-user-phone"
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                minLength={7}
+                maxLength={30}
+                required
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="agro-user-account-type">{t("workflow.accountType")}</FieldLabel>
@@ -235,7 +246,7 @@ function CreateUserForm({
                 id="agro-user-account-type"
                 name="accountType"
                 defaultValue="customer"
-                className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+                className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
               >
                 {accountTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -285,7 +296,7 @@ function UserUpdateForm({
             id={`account-type-${userId}`}
             name="accountType"
             defaultValue={accountType}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {accountTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -295,12 +306,14 @@ function UserUpdateForm({
           </select>
         </Field>
         <Field>
-          <FieldLabel htmlFor={`account-status-${userId}`}>{t("workflow.accountStatus")}</FieldLabel>
+          <FieldLabel htmlFor={`account-status-${userId}`}>
+            {t("workflow.accountStatus")}
+          </FieldLabel>
           <select
             id={`account-status-${userId}`}
             name="status"
             defaultValue={status}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {statusOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -318,11 +331,7 @@ function UserUpdateForm({
   );
 }
 
-function PanelStatusForm({
-  panel,
-}: {
-  panel: AgricultureAdminWorkspace["panels"][number];
-}) {
+function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"][number] }) {
   const t = useTranslations();
   const locale = useLocale();
   const [state, action, pending] = useActionState(
@@ -336,7 +345,9 @@ function PanelStatusForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{locale === "bn" ? panel.titleBn : panel.titleEn}</CardTitle>
+        <CardTitle className="text-base">
+          {locale === "bn" ? panel.titleBn : panel.titleEn}
+        </CardTitle>
         <CardDescription>{panel.slug}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -344,7 +355,9 @@ function PanelStatusForm({
           <input type="hidden" name="panelId" value={panel.id} />
           <FieldGroup className="grid gap-3 sm:grid-cols-2">
             <Field>
-              <FieldLabel htmlFor={`panel-title-bn-${panel.id}`}>{t("workflow.titleBn")}</FieldLabel>
+              <FieldLabel htmlFor={`panel-title-bn-${panel.id}`}>
+                {t("workflow.titleBn")}
+              </FieldLabel>
               <Input
                 id={`panel-title-bn-${panel.id}`}
                 name="titleBn"
@@ -354,7 +367,9 @@ function PanelStatusForm({
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor={`panel-title-en-${panel.id}`}>{t("workflow.titleEn")}</FieldLabel>
+              <FieldLabel htmlFor={`panel-title-en-${panel.id}`}>
+                {t("workflow.titleEn")}
+              </FieldLabel>
               <Input
                 id={`panel-title-en-${panel.id}`}
                 name="titleEn"

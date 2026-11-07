@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useActionState } from "react";
 
 import { withdrawAgricultureServiceRequestAction } from "@/app/actions/agriculture";
@@ -9,6 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
+import { Link } from "@/i18n/navigation";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { getCustomerAgricultureRequest } from "@/lib/workspaces";
 
@@ -37,7 +37,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-8 sm:px-6">
       <Link
         href="/account#agriculture-requests"
-        className="text-sm text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground text-sm"
       >
         ← {t("inline.back_to_account_k3epiu")}
       </Link>
@@ -65,7 +65,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           <StatusBadge status={request.status} />
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
-          <div className="grid gap-3 rounded-xl bg-muted/50 p-4 sm:grid-cols-2">
+          <div className="bg-muted/50 grid gap-3 rounded-xl p-4 sm:grid-cols-2">
             <p className="text-sm">
               <span className="text-muted-foreground">{t("inline.contact_kqf8cd")}:</span>{" "}
               {request.customerName} · {request.phone}
@@ -92,7 +92,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                     const option = field.options?.find((item) => item.value === answer);
                     return (
                       <div key={field.name} className="rounded-lg border p-3">
-                        <dt className="text-xs text-muted-foreground">
+                        <dt className="text-muted-foreground text-xs">
                           {english ? field.labelEn : field.labelBn}
                         </dt>
                         <dd className="mt-1 text-sm">
@@ -111,12 +111,12 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                 {request.attachments.map((attachment) => (
                   <li key={attachment.id}>
                     <a
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="text-primary text-sm font-medium hover:underline"
                       href={`/api/agriculture/requests/${request.id}/attachments/${attachment.id}`}
                     >
                       {attachment.filename}
                     </a>
-                    <span className="ml-2 text-xs text-muted-foreground">
+                    <span className="text-muted-foreground ml-2 text-xs">
                       {(attachment.sizeBytes / 1_000_000).toFixed(2)} MB
                     </span>
                   </li>
@@ -127,20 +127,20 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           <section>
             <h2 className="font-semibold">{t("inline.updates_12jzrl0")}</h2>
             {request.updates.length === 0 ? (
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm">
                 {t("inline.no_updates_yet_105bcq2")}
               </p>
             ) : (
               <ol className="mt-3 space-y-3 border-l pl-4">
                 {request.updates.map((update) => (
                   <li key={update.id} className="relative">
-                    <span className="absolute top-1 left-[-21px] size-2 rounded-full bg-primary" />
+                    <span className="bg-primary absolute top-1 left-[-21px] size-2 rounded-full" />
                     <p className="text-sm">
                       {english
                         ? (update.messageEn ?? update.messageBn)
                         : (update.messageBn ?? update.messageEn)}
                     </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mt-1 text-xs">
                       {update.createdAt
                         ? formatter.dateTime(new Date(update.createdAt), {
                             dateStyle: "medium",

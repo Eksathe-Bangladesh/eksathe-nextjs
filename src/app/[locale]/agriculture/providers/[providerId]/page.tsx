@@ -1,16 +1,12 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
 import { getPublicProviderProfile } from "@/lib/listings";
 import { getSector } from "@/lib/sectors";
 
-async function AgricultureProviderContent({
-  params,
-}: {
-  params: Promise<{ providerId: string }>;
-}) {
+async function AgricultureProviderContent({ params }: { params: Promise<{ providerId: string }> }) {
   const { providerId } = await params;
   const sector = getSector("agriculture-labor");
   if (!sector) notFound();

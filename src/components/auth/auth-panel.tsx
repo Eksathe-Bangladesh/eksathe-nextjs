@@ -31,7 +31,8 @@ export function AuthPanel({
   const callbackURL = localizedPath(locale, next);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [accountType, setAccountType] = useState<(typeof agricultureAccountTypes)[number]>("customer");
+  const [accountType, setAccountType] =
+    useState<(typeof agricultureAccountTypes)[number]>("customer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -173,7 +174,7 @@ export function AuthPanel({
                       "customer",
                   )
                 }
-                className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+                className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
               >
                 <option value="customer">{t("workflow.customerAccount")}</option>
                 <option value="farmer">{t("workflow.farmerAccount")}</option>
@@ -202,7 +203,7 @@ export function AuthPanel({
           {error && (
             <p
               role="alert"
-              className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              className="bg-destructive/10 text-destructive rounded-lg px-3 py-2 text-sm"
             >
               {error}
             </p>
@@ -210,7 +211,7 @@ export function AuthPanel({
           {notice && (
             <p
               role="status"
-              className="rounded-lg bg-secondary px-3 py-2 text-sm text-secondary-foreground"
+              className="bg-secondary text-secondary-foreground rounded-lg px-3 py-2 text-sm"
             >
               {notice}
             </p>
@@ -241,8 +242,12 @@ export function AuthPanel({
               prefetch={true}
               href={
                 mode === "login"
-                  ? (next && next !== "/account" ? `/register?next=${encodeURIComponent(next)}` : "/register")
-                  : (next && next !== "/account" ? `/login?next=${encodeURIComponent(next)}` : "/login")
+                  ? next && next !== "/account"
+                    ? `/register?next=${encodeURIComponent(next)}`
+                    : "/register"
+                  : next && next !== "/account"
+                    ? `/login?next=${encodeURIComponent(next)}`
+                    : "/login"
               }
             >
               {mode === "login" ? t("auth.createAccount") : t("auth.existingAccount")}
@@ -258,7 +263,7 @@ export function AuthPanel({
       <div className="px-6 pb-5">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
           {t("nav.returnHome")}

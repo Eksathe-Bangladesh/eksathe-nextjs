@@ -10,12 +10,12 @@ import {
   UserRoundIcon,
 } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ListingRequestForm } from "@/components/workflows/listing-request-form";
+import { Link } from "@/i18n/navigation";
 import type { PublicListing, PublicProvider } from "@/lib/listings";
 import type { SectorDefinition } from "@/lib/sectors";
 
@@ -61,7 +61,7 @@ export function ListingDetail({
       <div className="flex flex-col gap-6">
         <Link
           href={base}
-          className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
           {t("inline.all_services_1pdbxg7")}
@@ -69,7 +69,7 @@ export function ListingDetail({
         {unavailable ? (
           <p
             role="alert"
-            className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive"
+            className="border-destructive/30 bg-destructive/5 text-destructive rounded-2xl border p-6 text-sm"
           >
             {t("workflow.dataUnavailable")}
           </p>
@@ -81,7 +81,7 @@ export function ListingDetail({
               sizes="(max-width: 1024px) 100vw, 60vw"
             />
             <CardHeader>
-              <p className="text-sm font-medium text-primary">
+              <p className="text-primary text-sm font-medium">
                 {locale === "bn" ? listing.category : listing.category}
               </p>
               <CardTitle className="text-3xl">
@@ -107,18 +107,18 @@ export function ListingDetail({
               )}
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
-              <p className="text-sm leading-7 whitespace-pre-line text-muted-foreground">
+              <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
                 {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
               </p>
-              <div className="grid gap-3 rounded-xl bg-muted/60 p-4 sm:grid-cols-3">
+              <div className="bg-muted/60 grid gap-3 rounded-xl p-4 sm:grid-cols-3">
                 <div>
-                  <p className="text-xs text-muted-foreground">{t("workflow.price")}</p>
+                  <p className="text-muted-foreground text-xs">{t("workflow.price")}</p>
                   <p className="mt-1 font-semibold">
                     {price(listing.unitPrice)} / {listing.unit}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {scheduled ? t("inline.booking_availability_1hl9oqa") : t("workflow.stock")}
                   </p>
                   <p className="mt-1 inline-flex items-center gap-1 font-semibold">
@@ -131,7 +131,7 @@ export function ListingDetail({
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">{t("workflow.district")}</p>
+                  <p className="text-muted-foreground text-xs">{t("workflow.district")}</p>
                   <p className="mt-1 font-semibold">{listing.district}</p>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export function ListingDetail({
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap items-center gap-3">
-                <p className="max-w-2xl text-sm text-muted-foreground">
+                <p className="text-muted-foreground max-w-2xl text-sm">
                   {locale === "bn" ? provider.bioBn : provider.bioEn}
                 </p>
                 <Link
@@ -193,12 +193,12 @@ export function ListingDetail({
                       <Link
                         key={item.id}
                         href={`${base}/listings/${item.id}`}
-                        className="rounded-xl border border-border/70 p-4 hover:border-primary/40"
+                        className="border-border/70 hover:border-primary/40 rounded-xl border p-4"
                       >
                         <p className="font-semibold">
                           {locale === "bn" ? item.titleBn : item.titleEn}
                         </p>
-                        <p className="mt-1 text-sm text-muted-foreground">
+                        <p className="text-muted-foreground mt-1 text-sm">
                           {item.category} · {item.unitPrice} BDT / {item.unit}
                         </p>
                       </Link>
@@ -218,10 +218,10 @@ export function ListingDetail({
                     <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
                     {review.rating} / 5
                   </p>
-                  <p className="text-sm whitespace-pre-line text-muted-foreground">
+                  <p className="text-muted-foreground text-sm whitespace-pre-line">
                     {review.comment}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {formatter.dateTime(new Date(review.createdAt), {
                       dateStyle: "medium",
                       timeZone: "Asia/Dhaka",
@@ -260,7 +260,7 @@ export function ListingDetail({
               />
             ) : (
               <div className="flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground">{t("workflow.signInToRequest")}</p>
+                <p className="text-muted-foreground text-sm">{t("workflow.signInToRequest")}</p>
                 <Link
                   href={`/login?next=${encodeURIComponent(returnTo)}`}
                   className={cn(buttonVariants(), "w-full")}

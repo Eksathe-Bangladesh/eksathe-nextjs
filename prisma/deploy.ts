@@ -1,14 +1,10 @@
 import { spawnSync } from "node:child_process";
 
 const dbUrl =
-  process.env["DATABASE_URL"] ||
-  process.env["POSTGRES_PRISMA_URL"] ||
-  process.env["POSTGRES_URL"];
+  process.env["DATABASE_URL"] || process.env["POSTGRES_PRISMA_URL"] || process.env["POSTGRES_URL"];
 
 if (!dbUrl) {
-  console.warn(
-    "⚠️ DATABASE_URL is not set in this environment. Skipping 'prisma migrate deploy'.",
-  );
+  console.warn("⚠️ DATABASE_URL is not set in this environment. Skipping 'prisma migrate deploy'.");
   process.exit(0);
 }
 

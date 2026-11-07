@@ -2,11 +2,11 @@
 
 import { ArrowLeftIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 import { ServiceRequestForm } from "@/components/agriculture/service-request-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { AgricultureServiceWithContent } from "@/lib/agriculture/service-registry";
 
 export function AgricultureServiceDetail({
@@ -27,7 +27,7 @@ export function AgricultureServiceDetail({
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
       <Link
         href={routeBase}
-        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("inline.all_agriculture_services_170e4nu")}
@@ -38,7 +38,7 @@ export function AgricultureServiceDetail({
             {service.icon}
           </span>
           <div>
-            <p className="text-sm font-semibold text-primary">
+            <p className="text-primary text-sm font-semibold">
               {locale === "bn" ? service.titleBn : service.titleEn}
             </p>
             <CardTitle className="mt-1 text-3xl">
@@ -50,7 +50,7 @@ export function AgricultureServiceDetail({
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <p className="text-sm leading-6 text-muted-foreground">
+          <p className="text-muted-foreground text-sm leading-6">
             {t("inline.service_requests_are_reviewed_and_coordina_cb1lo1")}
           </p>
           <ServiceRequestForm

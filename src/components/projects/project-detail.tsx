@@ -4,7 +4,6 @@ import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { useActionState } from "react";
 
 import { acceptQuoteAction } from "@/app/actions/marketplace";
@@ -21,6 +20,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
+import { Link } from "@/i18n/navigation";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import type { PublicListing } from "@/lib/listings";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -43,7 +43,7 @@ export function ProjectDetail({
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <p
           role="alert"
-          className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive"
+          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-5 text-sm"
         >
           {t("workflow.permissionDenied")}
         </p>
@@ -75,7 +75,7 @@ export function ProjectDetail({
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-8 sm:px-6">
       <Link
         href="/account#projects"
-        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("inline.my_projects_1y5pp50")}
@@ -92,10 +92,10 @@ export function ProjectDetail({
           <StatusBadge status={project.status} />
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <p className="text-sm leading-7 whitespace-pre-line text-muted-foreground">
+          <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
             {project.description}
           </p>
-          <div className="grid gap-3 rounded-xl bg-muted/50 p-4 text-sm sm:grid-cols-3">
+          <div className="bg-muted/50 grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-3">
             <p>
               {t("workflow.budget")}:{" "}
               <strong>
@@ -116,7 +116,7 @@ export function ProjectDetail({
         <section className="flex flex-col gap-3">
           <div>
             <h2 className="text-xl font-bold">{t("inline.work_packages_9k9nnr")}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               {t("inline.compare_several_quotes_per_package_create__fpfw5a")}
             </p>
           </div>
@@ -127,7 +127,7 @@ export function ProjectDetail({
       <section className="flex flex-col gap-4">
         <div>
           <h2 className="text-xl font-bold">{t("inline.quotes_and_work_packages_15oqs9u")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {t("inline.compare_scope_quantity_transport_price_and_9wp0fg")}
           </p>
         </div>
@@ -176,17 +176,17 @@ export function ProjectDetail({
             return (
               <section
                 key={workPackage.id}
-                className="flex flex-col gap-4 rounded-2xl bg-muted/30 p-4"
+                className="bg-muted/30 flex flex-col gap-4 rounded-2xl p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-lg font-semibold">{localizedPackageLabel}</h3>
                     {workPackage.description && (
-                      <p className="mt-1 max-w-3xl text-sm whitespace-pre-line text-muted-foreground">
+                      <p className="text-muted-foreground mt-1 max-w-3xl text-sm whitespace-pre-line">
                         {workPackage.description}
                       </p>
                     )}
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mt-1 text-xs">
                       {workPackage.kind === "CONSTRUCTION_MATERIAL"
                         ? t("inline.building_materials_j98vuw")
                         : workPackage.kind === "CONSTRUCTION_SERVICE"
@@ -220,7 +220,7 @@ export function ProjectDetail({
                           <StatusBadge status={request.status} />
                         </CardHeader>
                         <CardContent className="flex flex-col gap-3">
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground text-sm">
                             {request.details || t("inline.no_additional_scope_details_gxl1ia")}
                           </p>
                           {(request.requestedStart || request.requestedEnd) && (
@@ -230,9 +230,9 @@ export function ProjectDetail({
                             </p>
                           )}
                           {request.quote ? (
-                            <div className="grid gap-3 rounded-xl border border-border/70 bg-muted/30 p-4 sm:grid-cols-2">
+                            <div className="border-border/70 bg-muted/30 grid gap-3 rounded-xl border p-4 sm:grid-cols-2">
                               <div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                   {t("workflow.quantity")}
                                 </p>
                                 <p className="mt-1 font-semibold">
@@ -240,7 +240,7 @@ export function ProjectDetail({
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                   {t("workflow.quotePrice")}
                                 </p>
                                 <p className="mt-1 font-semibold">
@@ -248,7 +248,7 @@ export function ProjectDetail({
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                   {t("workflow.transportFee")}
                                 </p>
                                 <p className="mt-1 font-semibold">
@@ -256,7 +256,7 @@ export function ProjectDetail({
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                   {t("inline.total_bldkfh")}
                                 </p>
                                 <p className="mt-1 font-semibold">
@@ -268,11 +268,11 @@ export function ProjectDetail({
                                 </p>
                               </div>
                               <div className="sm:col-span-2">
-                                <p className="text-sm whitespace-pre-line text-muted-foreground">
+                                <p className="text-muted-foreground text-sm whitespace-pre-line">
                                   {request.quote.note}
                                 </p>
                                 {request.quote.expiresAt && (
-                                  <p className="mt-1 text-xs text-muted-foreground">
+                                  <p className="text-muted-foreground mt-1 text-xs">
                                     {t("inline.expires_w9jxxl")}:{" "}
                                     {request.quote.expiresAt.slice(0, 10)}
                                   </p>
@@ -285,7 +285,7 @@ export function ProjectDetail({
                               )}
                             </div>
                           ) : (
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground text-sm">
                               {t("inline.waiting_for_a_provider_quote_1bh4h77")}
                             </p>
                           )}
@@ -295,12 +295,12 @@ export function ProjectDetail({
                   </div>
                 )}
                 {project.isOwner && !acceptedOrder && (
-                  <div className="flex flex-col gap-3 border-t border-border/70 pt-4">
+                  <div className="border-border/70 flex flex-col gap-3 border-t pt-4">
                     <h4 className="font-semibold">{t("inline.invite_more_providers_6k9q6")}</h4>
                     {listingsUnavailable ? (
                       <p
                         role="alert"
-                        className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
+                        className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
                       >
                         {t("workflow.dataUnavailable")}
                       </p>
@@ -311,17 +311,17 @@ export function ProjectDetail({
                         {candidates.map((listing) => (
                           <div
                             key={listing.id}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card p-4"
+                            className="border-border/70 bg-card flex items-center justify-between gap-3 rounded-xl border p-4"
                           >
                             <div>
                               <p className="font-semibold">
                                 {locale === "bn" ? listing.titleBn : listing.titleEn}
                               </p>
-                              <p className="mt-1 text-xs text-muted-foreground">
+                              <p className="text-muted-foreground mt-1 text-xs">
                                 {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}{" "}
                                 · {listing.district}
                               </p>
-                              <p className="mt-1 text-sm text-primary">
+                              <p className="text-primary mt-1 text-sm">
                                 {formatMoney(listing.unitPrice)} / {listing.unit}
                               </p>
                             </div>
@@ -350,7 +350,7 @@ export function ProjectDetail({
       <section className="flex flex-col gap-4">
         <div>
           <h2 className="text-xl font-bold">{t("workflow.milestones")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {t("inline.providers_submit_progress_for_your_approva_ac16we")}
           </p>
         </div>
@@ -367,7 +367,7 @@ export function ProjectDetail({
           (milestoneProviders.length > 0 ? (
             <AddMilestoneForm projectId={project.id} providers={milestoneProviders} />
           ) : (
-            <p className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">
+            <p className="border-border text-muted-foreground rounded-xl border border-dashed p-4 text-sm">
               {t("inline.accept_a_construction_service_provider_s_q_1s1mhp0")}
             </p>
           ))}
@@ -401,7 +401,7 @@ export function ProjectDetail({
                   {order.payments.map((payment) => (
                     <div
                       key={payment.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/70 px-3 py-2 text-sm"
+                      className="border-border/70 flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm"
                     >
                       <div>
                         <p>
@@ -409,7 +409,7 @@ export function ProjectDetail({
                           {paymentMethodText(payment.method, locale)}
                           {payment.reference ? ` · ${payment.reference}` : ""}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-muted-foreground text-xs">
                           {payment.confirmed
                             ? t("inline.confirmed_by_both_parties_1xd4wdp")
                             : t("inline.awaiting_confirmation_1m2idbp")}
@@ -420,7 +420,7 @@ export function ProjectDetail({
                       </div>
                       {payment.hasReceipt && (
                         <a
-                          className="text-xs font-medium text-primary hover:underline"
+                          className="text-primary text-xs font-medium hover:underline"
                           href={`/api/orders/${order.id}/payments/${payment.id}/receipt`}
                         >
                           {t("workflow.viewReceipt")}
@@ -439,7 +439,7 @@ export function ProjectDetail({
         <ProjectHandoverForm projectId={project.id} />
       )}
       {project.status === "COMPLETED" && project.handedOverAt && (
-        <p className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm">
+        <p className="border-primary/20 bg-primary/5 rounded-xl border p-4 text-sm">
           {t("workflow.handoverConfirmed")} ·{" "}
           {formatter.dateTime(new Date(project.handedOverAt), {
             dateStyle: "medium",
@@ -452,11 +452,11 @@ export function ProjectDetail({
         <section className="flex flex-col gap-4">
           <div>
             <h2 className="text-xl font-bold">{t("workflow.expenses")}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               {t("inline.these_records_are_visible_only_to_the_proj_3oruu6")}
             </p>
           </div>
-          <div className="rounded-xl bg-muted/50 p-4 text-sm">
+          <div className="bg-muted/50 rounded-xl p-4 text-sm">
             <p>
               {t("inline.recorded_project_expenses_gx0grz")}:{" "}
               <strong>
@@ -472,7 +472,7 @@ export function ProjectDetail({
             project.expenses.map((expense) => (
               <div
                 key={expense.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-4 py-3 text-sm"
+                className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3 text-sm"
               >
                 <span>
                   {expense.description} · {expense.occurredAt?.slice(0, 10)}
@@ -488,7 +488,7 @@ export function ProjectDetail({
       <section className="flex flex-col gap-3">
         <div>
           <h2 className="text-xl font-bold">{t("workflow.projectDocuments")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("workflow.projectDocumentsHelp")}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectDocumentsHelp")}</p>
         </div>
         {project.documents.length === 0 ? (
           <Empty text={t("inline.no_project_files_have_been_added_yet_10su81e")} />
@@ -497,7 +497,7 @@ export function ProjectDetail({
             <a
               key={document.id}
               href={`/api/projects/${project.id}/documents/${document.id}`}
-              className="rounded-lg border border-border/70 bg-card px-4 py-3 text-sm font-medium text-primary hover:underline"
+              className="border-border/70 bg-card text-primary rounded-lg border px-4 py-3 text-sm font-medium hover:underline"
             >
               {document.filename}
             </a>
@@ -509,7 +509,7 @@ export function ProjectDetail({
       <section className="flex flex-col gap-3">
         <div>
           <h2 className="text-xl font-bold">{t("workflow.projectPhotos")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("workflow.projectPhotosHelp")}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectPhotosHelp")}</p>
         </div>
         {project.photos.length === 0 ? (
           <Empty text={t("inline.no_project_photos_have_been_added_yet_615c8n")} />
@@ -519,7 +519,7 @@ export function ProjectDetail({
               <a
                 key={photo.id}
                 href={`/api/projects/${project.id}/photos/${photo.id}`}
-                className="overflow-hidden rounded-xl border border-border/70 bg-card"
+                className="border-border/70 bg-card overflow-hidden rounded-xl border"
               >
                 <Image
                   src={`/api/projects/${project.id}/photos/${photo.id}`}
@@ -549,12 +549,12 @@ function ProjectHandoverForm({ projectId }: { projectId: string }) {
   return (
     <form
       action={action}
-      className="flex flex-col gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-5"
+      className="border-primary/20 bg-primary/5 flex flex-col gap-3 rounded-2xl border p-5"
     >
       <input type="hidden" name="projectId" value={projectId} />
       <div>
         <h2 className="text-lg font-semibold">{t("workflow.confirmHandover")}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{t("workflow.handoverBlocked")}</p>
+        <p className="text-muted-foreground mt-1 text-sm">{t("workflow.handoverBlocked")}</p>
       </div>
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending}>
@@ -571,7 +571,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         {t("inline.only_one_quote_can_be_accepted_for_this_wo_1yxvd9d")}
       </p>
       <Button type="submit" size="sm" disabled={pending}>
@@ -607,7 +607,7 @@ function paymentMethodText(method: string, locale: "bn" | "en") {
 
 function Empty({ text }: { text: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
       {text}
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { cn } from "cn";
 import { useTranslations } from "next-intl";
+
 import { Link, usePathname } from "@/i18n/navigation";
 
 export function DashboardTabs() {

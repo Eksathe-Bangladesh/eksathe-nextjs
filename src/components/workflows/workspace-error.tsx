@@ -7,7 +7,7 @@ export function WorkspaceError() {
   return (
     <div
       role="alert"
-      className="mx-auto max-w-3xl rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive"
+      className="border-destructive/30 bg-destructive/5 text-destructive mx-auto max-w-3xl rounded-2xl border p-6 text-sm"
     >
       {t("workflow.dataUnavailable")}
     </div>

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-
-import { localizedCanonical } from "@/i18n/metadata";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { ConstructionServicePage } from "@/components/construction/construction-service-page";
+import { localizedCanonical } from "@/i18n/metadata";
 import {
   constructionServiceRegistry,
   getConstructionService,

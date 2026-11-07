@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { AgricultureServiceDetail } from "@/components/agriculture/agriculture-service-detail";
@@ -64,11 +64,7 @@ async function AgricultureServiceContent({ params }: { params: Promise<{ slug: s
   );
 }
 
-export default function AgricultureServicePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default function AgricultureServicePage({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <Suspense fallback={<DetailPageSkeleton />}>
       <AgricultureServiceContent params={params} />

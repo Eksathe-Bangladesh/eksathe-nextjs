@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useActionState } from "react";
 
 import { saveAgriculturePublicationAction } from "@/app/actions/agriculture-publishing";
@@ -10,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@/i18n/navigation";
 import type {
   AgricultureMarketPriceRecord,
   AgriculturePublishingWorkspaceData,
@@ -29,17 +29,17 @@ export function AgriculturePublishingWorkspace({
     <main className="mx-auto flex w-full max-w-[1400px] flex-col gap-8 px-4 py-8 sm:px-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-primary">
+          <p className="text-primary text-sm font-semibold">
             {t("inline.agriculture_operations_171enbn")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
             {t("inline.publish_prices_and_updates_1h3g253")}
           </h1>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+          <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
             {t("inline.review_submitted_information_add_a_source__1o8xi6a")}
           </p>
         </div>
-        <Link href="/admin" className="text-sm font-medium text-primary hover:underline">
+        <Link href="/admin" className="text-primary text-sm font-medium hover:underline">
           {t("inline.back_to_administration_1395jov")}
         </Link>
       </header>
@@ -49,7 +49,7 @@ export function AgriculturePublishingWorkspace({
           <h2 id="price-heading" className="text-xl font-bold">
             {t("inline.market_prices_1ahmufv")}
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {t("inline.price_submissions_awaiting_review_9p0z43")}
           </p>
         </div>
@@ -66,7 +66,7 @@ export function AgriculturePublishingWorkspace({
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <pre className="max-h-36 overflow-auto rounded-lg bg-muted/60 p-3 text-xs wrap-break-word whitespace-pre-wrap">
+                  <pre className="bg-muted/60 max-h-36 overflow-auto rounded-lg p-3 text-xs wrap-break-word whitespace-pre-wrap">
                     {JSON.stringify(request.answers, null, 2)}
                   </pre>
                 </CardContent>
@@ -85,7 +85,7 @@ export function AgriculturePublishingWorkspace({
           <h2 id="updates-heading" className="text-xl font-bold">
             {t("inline.news_advice_and_weather_alerts_vzz9rb")}
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {t("inline.weather_alerts_require_an_expiry_date_13z2wta")}
           </p>
         </div>
@@ -490,7 +490,7 @@ function SelectField({
         id={id}
         name={name}
         defaultValue={defaultValue}
-        className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm"
+        className="border-input bg-background h-9 w-full rounded-lg border px-3 text-sm"
       >
         <optgroup label={label}>
           {options.map(([value, title]) => (
@@ -511,7 +511,7 @@ function FormFeedback({ state }: { state: "idle" | "success" | "error" }) {
     <p
       role={state === "error" ? "alert" : "status"}
       aria-live="polite"
-      className={state === "error" ? "text-sm text-destructive" : "text-sm text-primary"}
+      className={state === "error" ? "text-destructive text-sm" : "text-primary text-sm"}
     >
       {state === "error"
         ? t("inline.could_not_save_check_the_fields_and_try_ag_1qzk9yl")

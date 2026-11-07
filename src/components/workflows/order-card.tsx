@@ -110,7 +110,7 @@ export function OrderCard({
         <StatusBadge status={order.status} />
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
-        <div className="grid gap-3 rounded-xl bg-muted/50 p-4 text-sm sm:grid-cols-2">
+        <div className="bg-muted/50 grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-2">
           <p>
             {t("inline.quantity_fuyc1w")}:{" "}
             <strong>
@@ -180,7 +180,7 @@ export function OrderCard({
             {order.payments.map((payment) => (
               <div
                 key={payment.id}
-                className="flex flex-col gap-2 rounded-lg border border-border/70 p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+                className="border-border/70 flex flex-col gap-2 rounded-lg border p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
               >
                 <p>
                   {formatMoney(payment.amount)} · {paymentMethod(payment.method, locale)}
@@ -189,13 +189,13 @@ export function OrderCard({
                 <div className="flex items-center gap-2">
                   {payment.hasReceipt && (
                     <a
-                      className="text-xs font-medium text-primary hover:underline"
+                      className="text-primary text-xs font-medium hover:underline"
                       href={`/api/orders/${order.id}/payments/${payment.id}/receipt`}
                     >
                       {t("workflow.viewReceipt")}
                     </a>
                   )}
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     {payment.buyerConfirmedAt && payment.providerConfirmedAt
                       ? t("inline.confirmed_by_both_parties_1xd4wdp")
                       : t("inline.awaiting_confirmation_1m2idbp")}
@@ -212,7 +212,7 @@ export function OrderCard({
         )}
 
         {order.commission && (
-          <div className="flex items-center justify-between rounded-lg border border-border/70 px-3 py-2 text-sm">
+          <div className="border-border/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm">
             <span>
               {t("inline.platform_commission_1lexk9r")}: {formatMoney(order.commission.amount)}
             </span>
@@ -229,7 +229,7 @@ export function OrderCard({
         order.status !== "CANCELLED" ? (
           <CancelOrderForm orderId={order.id} agree />
         ) : order.cancelRequestedById === actorId ? (
-          <p className="rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">
+          <p className="bg-muted text-muted-foreground rounded-lg px-3 py-2 text-sm">
             {t("workflow.cancellationPending")}
           </p>
         ) : order.status !== "COMPLETED" &&
@@ -323,7 +323,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
       ref={formRef}
       action={action}
       onSubmit={prepareReceipt}
-      className="grid gap-3 rounded-xl border border-border/70 p-4 sm:grid-cols-2"
+      className="border-border/70 grid gap-3 rounded-xl border p-4 sm:grid-cols-2"
     >
       <input type="hidden" name="orderId" value={orderId} />
       <input type="hidden" name="receiptKey" defaultValue="" />
@@ -344,7 +344,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
         <select
           id={`payment-method-${orderId}`}
           name="method"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <option value="CASH">{t("inline.cash_1yvb5lv")}</option>
           <option value="BANK_TRANSFER">{t("inline.bank_transfer_1wr4ny5")}</option>
@@ -376,7 +376,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
       <div className="flex flex-col justify-end gap-2">
         <ActionFeedback state={state} />
         {uploadError && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-destructive text-sm">
             {t(`workflow.${uploadError}` as never)}
           </p>
         )}
@@ -384,10 +384,10 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
           {pending || uploading ? t("common.loading") : t("workflow.submitPayment")}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground sm:col-span-2">
+      <p className="text-muted-foreground text-xs sm:col-span-2">
         {t("workflow.paymentReceiptHelp")}
       </p>
-      <p className="text-xs text-muted-foreground sm:col-span-2">
+      <p className="text-muted-foreground text-xs sm:col-span-2">
         {t("inline.pay_the_provider_directly_the_payment_is_n_4e9pq4")}
       </p>
     </form>
@@ -415,14 +415,14 @@ function ReviewForm({ orderId }: { orderId: string }) {
   return (
     <form
       action={action}
-      className="grid gap-3 rounded-xl border border-border/70 p-4 sm:grid-cols-[140px_minmax(0,1fr)_auto]"
+      className="border-border/70 grid gap-3 rounded-xl border p-4 sm:grid-cols-[140px_minmax(0,1fr)_auto]"
     >
       <input type="hidden" name="orderId" value={orderId} />
       <Field id={`review-rating-${orderId}`} label={t("workflow.reviewRating")}>
         <select
           id={`review-rating-${orderId}`}
           name="rating"
-          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           {[5, 4, 3, 2, 1].map((rating) => (
             <option key={rating} value={rating}>
@@ -440,7 +440,7 @@ function ReviewForm({ orderId }: { orderId: string }) {
           {pending ? t("common.loading") : t("workflow.submitReview")}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground sm:col-span-3">
+      <p className="text-muted-foreground text-xs sm:col-span-3">
         {t("inline.you_can_leave_one_review_for_each_complete_1sswryh")}
       </p>
     </form>
@@ -454,7 +454,7 @@ function CancelOrderForm({ orderId, agree = false }: { orderId: string; agree?: 
   );
   const t = useTranslations();
   return (
-    <form action={action} className="flex flex-col gap-2 rounded-xl border border-border/70 p-4">
+    <form action={action} className="border-border/70 flex flex-col gap-2 rounded-xl border p-4">
       <input type="hidden" name="orderId" value={orderId} />
       {agree ? (
         <input type="hidden" name="reason" value="Agreed to the cancellation" />
@@ -466,7 +466,7 @@ function CancelOrderForm({ orderId, agree = false }: { orderId: string; agree?: 
             required
             maxLength={1000}
             rows={2}
-            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
       )}
@@ -486,7 +486,7 @@ function DisputeForm({ orderId }: { orderId: string }) {
   const [state, action, pending] = useActionState(raiseDisputeAction, initialWorkflowState);
   const t = useTranslations();
   return (
-    <details className="rounded-xl border border-border/70 p-4">
+    <details className="border-border/70 rounded-xl border p-4">
       <summary className="cursor-pointer text-sm font-medium">{t("workflow.raiseDispute")}</summary>
       <form action={action} className="mt-3 flex flex-col gap-3">
         <input type="hidden" name="orderId" value={orderId} />
@@ -497,7 +497,7 @@ function DisputeForm({ orderId }: { orderId: string }) {
             required
             maxLength={1000}
             rows={3}
-            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
         <ActionFeedback state={state} />

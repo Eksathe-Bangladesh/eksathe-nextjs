@@ -33,21 +33,21 @@ export function AgricultureRequestsQueue({
     <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
       <div>
         <h2 className="text-xl font-bold">{t("inline.agriculture_service_intake_13v216g")}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           {t("inline.review_requests_coordinate_follow_up_and_k_id40eo")}
         </p>
       </div>
       <form
         method="get"
         action="/admin#agriculture-requests"
-        className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3"
+        className="bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-3"
       >
         <Field id="ag-filter-service" label={t("inline.service_1m16zkb")}>
           <select
             id="ag-filter-service"
             name="agService"
             defaultValue={filters.serviceSlug ?? ""}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             <option value="">{t("inline.all_services_1pdbxg7")}</option>
             {agricultureServiceRegistry.map((service) => (
@@ -65,7 +65,7 @@ export function AgricultureRequestsQueue({
             id="ag-filter-status"
             name="agStatus"
             defaultValue={filters.status ?? ""}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             <option value="">{t("inline.all_statuses_153nc2f")}</option>
             {["NEW", "REVIEWING", "ASSIGNED", "COMPLETED", "REJECTED", "CANCELLED"].map(
@@ -82,7 +82,7 @@ export function AgricultureRequestsQueue({
             id="ag-filter-assignee"
             name="agAssignee"
             defaultValue={filters.assigneeId ?? ""}
-            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             <option value="">{t("inline.anyone_itav5z")}</option>
             {staff.map((person) => (
@@ -109,14 +109,14 @@ export function AgricultureRequestsQueue({
           </Button>
           <Link
             href="/admin#agriculture-requests"
-            className="inline-flex h-9 items-center rounded-lg px-3 text-sm text-muted-foreground hover:bg-muted"
+            className="text-muted-foreground hover:bg-muted inline-flex h-9 items-center rounded-lg px-3 text-sm"
           >
             {t("inline.clear_193qb1d")}
           </Link>
         </div>
       </form>
       {requests.length === 0 ? (
-        <div className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+        <div className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
           {t("inline.no_agriculture_requests_match_these_filter_1wybrur")}
         </div>
       ) : (
@@ -171,10 +171,10 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         <StatusBadge status={request.status} />
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="rounded-lg bg-muted/50 p-3">
+        <div className="bg-muted/50 rounded-lg p-3">
           <p className="text-sm font-medium">{request.details}</p>
           {request.budget && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-xs">
               {t("inline.budget_1cc4s4c")}: ৳{request.budget}
             </p>
           )}
@@ -188,7 +188,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
                 const option = field.options?.find((item) => item.value === answer);
                 return (
                   <div key={field.name} className="rounded-lg border p-3">
-                    <dt className="text-xs text-muted-foreground">
+                    <dt className="text-muted-foreground text-xs">
                       {english ? field.labelEn : field.labelBn}
                     </dt>
                     <dd className="mt-1 text-sm">
@@ -205,7 +205,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
             {request.attachments.map((attachment) => (
               <a
                 key={attachment.id}
-                className="mt-1 block w-fit text-sm text-primary hover:underline"
+                className="text-primary mt-1 block w-fit text-sm hover:underline"
                 href={`/api/agriculture/requests/${request.id}/attachments/${attachment.id}`}
               >
                 {attachment.filename}
@@ -226,7 +226,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
             key={update.id}
             className={`rounded-lg p-3 text-sm ${update.visibility === "INTERNAL" ? "border border-amber-500/30 bg-amber-500/5" : "bg-muted/40 border"}`}
           >
-            <p className="mb-1 text-xs font-semibold text-muted-foreground">
+            <p className="text-muted-foreground mb-1 text-xs font-semibold">
               {update.visibility === "INTERNAL"
                 ? t("inline.internal_note_na2msi")
                 : t("inline.customer_update_1i5e277")}
@@ -246,7 +246,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               id={`ag-status-${request.id}`}
               name="status"
               defaultValue={request.status}
-              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
               {choices.map((status) => (
                 <option key={status} value={status}>
@@ -260,7 +260,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               id={`ag-assignee-${request.id}`}
               name="assignedToId"
               defaultValue={request.assignedTo?.id ?? staff[0]?.id ?? ""}
-              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
+              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
               required
             >
               {staff.map((person) => (

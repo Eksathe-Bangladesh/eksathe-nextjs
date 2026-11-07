@@ -79,7 +79,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
       ref={formRef}
       action={action}
       onSubmit={prepareListingImage}
-      className="flex flex-col gap-4 rounded-xl border border-border/70 p-4"
+      className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <input type="hidden" name="listingId" value={listing.id} />
       <input type="hidden" name="sectorSlug" value={listing.sectorSlug} />
@@ -185,7 +185,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           rows={3}
           maxLength={2000}
           defaultValue={listing.descriptionBn}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field
@@ -198,7 +198,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           rows={3}
           maxLength={2000}
           defaultValue={listing.descriptionEn}
-          className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id={`edit-image-${listing.id}`} label={t("inline.replace_photo_optional_nnrkdd")}>
@@ -210,7 +210,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           disabled={uploading || pending}
         />
       </Field>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         {t("inline.content_and_photo_edits_unpublish_the_list_o1vsj9")}{" "}
         {listing.hasImage ? t("inline.the_current_photo_stays_if_you_do_not_choo_1inaw9o") : ""}
       </p>
@@ -218,7 +218,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
       <input type="hidden" name="imageContentType" defaultValue="" />
       <input type="hidden" name="imageSizeBytes" defaultValue="" />
       {uploadError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-destructive text-sm">
           {t("inline.the_image_could_not_be_uploaded_please_try_bnuvif")}
         </p>
       )}

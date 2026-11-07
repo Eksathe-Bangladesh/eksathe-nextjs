@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { localizedCanonical } from "@/i18n/metadata";
 import { ConstructionProviderPage } from "@/components/construction/construction-listing-page";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { localizedCanonical } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,7 +13,11 @@ export async function generateMetadata({
   const { providerId } = await params;
   return {
     title: "Construction provider | EKsathe Bangladesh",
-    alternates: { canonical: await localizedCanonical(`/construction/providers/${encodeURIComponent(providerId)}`) },
+    alternates: {
+      canonical: await localizedCanonical(
+        `/construction/providers/${encodeURIComponent(providerId)}`,
+      ),
+    },
   };
 }
 

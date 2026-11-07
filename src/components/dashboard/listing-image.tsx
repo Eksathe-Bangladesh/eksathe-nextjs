@@ -40,7 +40,7 @@ export function ListingImage({
   return (
     <div
       data-slot="listing-image"
-      className="relative flex aspect-[16/9] items-center justify-center overflow-hidden rounded-t-xl bg-secondary/50"
+      className="bg-secondary/50 relative flex aspect-[16/9] items-center justify-center overflow-hidden rounded-t-xl"
     >
       {showPhoto ? (
         <Image
@@ -56,7 +56,7 @@ export function ListingImage({
         <div
           role="img"
           aria-label={alt}
-          className="flex size-full items-center justify-center bg-linear-to-br from-primary/5 to-primary/15"
+          className="from-primary/5 to-primary/15 flex size-full items-center justify-center bg-linear-to-br"
         >
           <span aria-hidden="true" className="text-7xl select-none">
             {listingEmoji(listing)}

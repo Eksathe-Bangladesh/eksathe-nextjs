@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
 
 import { defaultLocale, isLocale, locales } from "@/i18n/locales";
 import { routing } from "@/i18n/routing";

@@ -11,13 +11,13 @@ import {
   XIcon,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useState, type ReactNode } from "react";
 
 import { signOutAction } from "@/app/actions/session";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Link } from "@/i18n/navigation";
 
 export type SiteHeaderUserProps = {
   userName?: string;
@@ -73,13 +73,13 @@ export function SiteHeaderUserMenu({
       {menuOpen && (
         <div
           role="menu"
-          className="mt-2 flex min-w-48 flex-col gap-1 rounded-xl border border-border bg-card p-2 text-foreground shadow-lg xl:absolute xl:top-full xl:right-0"
+          className="border-border bg-card text-foreground mt-2 flex min-w-48 flex-col gap-1 rounded-xl border p-2 shadow-lg xl:absolute xl:top-full xl:right-0"
         >
           <Link
             role="menuitem"
             href="/account#profile"
             onClick={() => setMenuOpen(false)}
-            className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted"
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
             <UserRoundIcon aria-hidden="true" className="size-4" />
             {t("dashboard.profile")}
@@ -89,7 +89,7 @@ export function SiteHeaderUserMenu({
               role="menuitem"
               href="/provider"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted"
+              className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
             >
               <BriefcaseBusinessIcon aria-hidden="true" className="size-4" />
               {t("nav.provider")}
@@ -100,7 +100,7 @@ export function SiteHeaderUserMenu({
               role="menuitem"
               href="/admin"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted"
+              className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
             >
               <ShieldCheckIcon aria-hidden="true" className="size-4" />
               {isAgroAdmin ? t("workflow.agroAdmin" as never) : t("nav.admin")}
@@ -110,7 +110,7 @@ export function SiteHeaderUserMenu({
             <button
               role="menuitem"
               type="submit"
-              className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-muted"
+              className="hover:bg-muted inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm"
             >
               <LogOutIcon aria-hidden="true" className="size-4" />
               {t("nav.signOut")}
@@ -145,7 +145,7 @@ export function SiteHeader({
 
   return (
     <header
-      className="sticky top-0 z-40 border-b border-border/70 bg-[#0b5036] text-white shadow-sm"
+      className="border-border/70 sticky top-0 z-40 border-b bg-[#0b5036] text-white shadow-sm"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           if (navigationOpen)

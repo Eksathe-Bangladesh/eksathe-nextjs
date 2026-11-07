@@ -1,7 +1,7 @@
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
-import { locale as rootLocale } from "next/root-params";
 import { notFound } from "next/navigation";
+import { locale as rootLocale } from "next/root-params";
 
 import { routing } from "./routing";
 

@@ -68,11 +68,11 @@ export function AgricultureCommissionCalculator({ ratePercent }: { ratePercent: 
             />
           </Field>
         </FieldGroup>
-        <p className="text-xs leading-5 text-muted-foreground">
+        <p className="text-muted-foreground text-xs leading-5">
           {t("inline.transport_is_excluded_from_the_commission__xx0z4l")}
         </p>
         {commissionCents === null || providerCents === null ? (
-          <p role="status" className="text-sm text-muted-foreground">
+          <p role="status" className="text-muted-foreground text-sm">
             {t("inline.the_agriculture_commission_rate_is_not_ava_w8ww1j")}
           </p>
         ) : (

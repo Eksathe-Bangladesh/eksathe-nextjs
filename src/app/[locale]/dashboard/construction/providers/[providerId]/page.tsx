@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { localizedCanonical } from "@/i18n/metadata";
 import { ConstructionProviderPage } from "@/components/construction/construction-listing-page";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { localizedCanonical } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,16 +13,14 @@ export async function generateMetadata({
   const { providerId } = await params;
   return {
     alternates: {
-      canonical: await localizedCanonical(`/construction/providers/${encodeURIComponent(providerId)}`),
+      canonical: await localizedCanonical(
+        `/construction/providers/${encodeURIComponent(providerId)}`,
+      ),
     },
   };
 }
 
-async function DashboardProviderContent({
-  params,
-}: {
-  params: Promise<{ providerId: string }>;
-}) {
+async function DashboardProviderContent({ params }: { params: Promise<{ providerId: string }> }) {
   const { providerId } = await params;
   return <ConstructionProviderPage providerId={providerId} routeBase="/dashboard/construction" />;
 }

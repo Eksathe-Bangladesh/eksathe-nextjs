@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";

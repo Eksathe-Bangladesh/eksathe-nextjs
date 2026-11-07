@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-import { agricultureAccountStatuses, agricultureAccountTypes } from "@/lib/agriculture/account-types";
+import {
+  agricultureAccountStatuses,
+  agricultureAccountTypes,
+} from "@/lib/agriculture/account-types";
 
 export const agricultureUserUpdateSchema = z.strictObject({
   userId: z.string().trim().min(1).max(64),
@@ -11,7 +14,10 @@ export const agricultureUserUpdateSchema = z.strictObject({
 export const agricultureUserCreateSchema = z.strictObject({
   name: z.string().trim().min(2).max(150),
   email: z.email().transform((value) => value.trim().toLowerCase()),
-  phone: z.string().trim().regex(/^[0-9+ ()-]{7,30}$/),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+ ()-]{7,30}$/),
   accountType: z.enum(agricultureAccountTypes),
 });
 

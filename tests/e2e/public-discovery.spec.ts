@@ -53,7 +53,8 @@ const sectors = [
 test("the service hub links to all 13 sector panels", async ({ page }) => {
   await page.goto("/dashboard");
   for (const slug of sectors) {
-    const route = slug === "agriculture-labor" ? "/bn/dashboard/agriculture" : `/bn/dashboard/${slug}`;
+    const route =
+      slug === "agriculture-labor" ? "/bn/dashboard/agriculture" : `/bn/dashboard/${slug}`;
     await expect(page.locator(`main a[href="${route}"]`)).toHaveCount(1);
   }
 });
