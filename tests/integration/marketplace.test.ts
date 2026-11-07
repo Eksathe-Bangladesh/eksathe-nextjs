@@ -8,7 +8,7 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
 
 const [{ prisma }, marketplace, { getAdminWorkspace }, listings] = await Promise.all([
   import("@/lib/prisma"),
@@ -282,7 +282,7 @@ describe("PostgreSQL marketplace transactions", () => {
     expect(market.items.some((item) => item.id === workerListingId)).toBe(true);
     expect(detail.listing?.id).toBe(workerListingId);
     expect(profile.provider?.listings.some((item) => item.id === workerListingId)).toBe(true);
-    await expect(
+    expect(
       marketplace.updateProviderListingStock(providerUserId, workerListingId, "1"),
     ).rejects.toMatchObject({ code: "invalidState" });
 

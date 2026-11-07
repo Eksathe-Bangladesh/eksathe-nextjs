@@ -61,18 +61,18 @@ export function AccountWorkspace({
       ]}
     >
       <div>
-        <p className="text-primary text-sm">{t("inline.your_account_1fpb5vs")}</p>
+        <p className="text-sm text-primary">{t("inline.your_account_1fpb5vs")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {locale === "bn" ? `স্বাগতম, ${user.name}` : `Welcome, ${user.name}`}
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">{user.email}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{user.email}</p>
       </div>
 
       <section id="profile" className="scroll-mt-24">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <UserRoundIcon aria-hidden="true" className="text-primary size-5" />
+              <UserRoundIcon aria-hidden="true" className="size-5 text-primary" />
               {t("dashboard.profile")}
             </CardTitle>
             <CardDescription>
@@ -88,7 +88,7 @@ export function AccountWorkspace({
       <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
         <div>
           <h2 className="text-xl font-bold">{t("inline.agriculture_service_requests_zyhcii")}</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t("inline.track_request_status_submitted_details_and_12mh9sv")}
           </p>
         </div>
@@ -115,7 +115,7 @@ export function AccountWorkspace({
                 <StatusBadge status={request.status} />
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
-                <p className="text-muted-foreground line-clamp-2 text-sm">{request.details}</p>
+                <p className="line-clamp-2 text-sm text-muted-foreground">{request.details}</p>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href={`/account/agriculture-requests/${request.id}`}
@@ -124,7 +124,7 @@ export function AccountWorkspace({
                     {t("inline.view_request_t2wjgb")}
                   </Link>
                   {request.updates[0] && (
-                    <span className="text-muted-foreground self-center text-xs">
+                    <span className="self-center text-xs text-muted-foreground">
                       {locale === "bn"
                         ? (request.updates[0].messageBn ?? request.updates[0].messageEn)
                         : (request.updates[0].messageEn ?? request.updates[0].messageBn)}
@@ -162,7 +162,7 @@ export function AccountWorkspace({
                 <StatusBadge status={request.status} />
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   {request.details || t("inline.no_additional_details_provided_gccbx2")}
                 </p>
                 {request.requestedStart && request.requestedEnd && (
@@ -172,7 +172,7 @@ export function AccountWorkspace({
                   </p>
                 )}
                 {request.quote && (
-                  <div className="border-primary/20 bg-primary/5 rounded-xl border p-4">
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <h3 className="font-semibold">{t("inline.provider_quote_nzyvip")}</h3>
                       <StatusBadge status={request.quote.status} />
@@ -196,12 +196,12 @@ export function AccountWorkspace({
                       </strong>
                     </p>
                     {request.quote.note && (
-                      <p className="text-muted-foreground mt-2 text-sm whitespace-pre-line">
+                      <p className="mt-2 text-sm whitespace-pre-line text-muted-foreground">
                         {request.quote.note}
                       </p>
                     )}
                     {request.quote.expiresAt && (
-                      <p className="text-muted-foreground mt-2 text-xs">
+                      <p className="mt-2 text-xs text-muted-foreground">
                         {t("inline.expires_w9jxxl")}:{" "}
                         {formatter.dateTime(new Date(request.quote.expiresAt), {
                           dateStyle: "medium",
@@ -236,7 +236,7 @@ export function AccountWorkspace({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-xl font-bold">{t("workflow.projectTitle")}</h2>
-            <p className="text-muted-foreground mt-1 text-sm">
+            <p className="mt-1 text-sm text-muted-foreground">
               {t("inline.track_construction_scope_quotes_milestones_hkmiut")}
             </p>
           </div>
@@ -260,7 +260,7 @@ export function AccountWorkspace({
                 <StatusBadge status={project.status} />
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <p className="text-muted-foreground text-sm whitespace-pre-line">
+                <p className="text-sm whitespace-pre-line text-muted-foreground">
                   {project.description}
                 </p>
                 {project.budget && (
@@ -307,20 +307,20 @@ export function AccountWorkspace({
           workspace.notifications.map((notification) => (
             <div
               key={notification.id}
-              className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-4 py-3"
             >
               <div>
                 <p className="font-medium">
                   {locale === "bn" ? notification.titleBn : notification.titleEn}
                 </p>
-                <p className="text-muted-foreground mt-1 text-sm">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {locale === "bn" ? notification.messageBn : notification.messageEn}
                 </p>
               </div>
               {notification.href && (
                 <Link
                   href={notification.href}
-                  className="text-primary text-sm font-medium hover:underline"
+                  className="text-sm font-medium text-primary hover:underline"
                 >
                   {t("inline.open_3w3yc3")}
                 </Link>
@@ -392,7 +392,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
     <form action={action} className="mt-4 flex flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
-      <p className="text-muted-foreground text-xs">
+      <p className="text-xs text-muted-foreground">
         {t("inline.accepting_confirms_the_quoted_price_quanti_14khsnk")}
       </p>
       <Button type="submit" disabled={pending} className="w-fit">
@@ -417,7 +417,7 @@ function CancelRequestForm({ requestId }: { requestId: string }) {
         variant="ghost"
         size="sm"
         disabled={pending}
-        className="text-muted-foreground w-fit"
+        className="w-fit text-muted-foreground"
       >
         {t("inline.withdraw_request_16j3pnu")}
       </Button>
@@ -441,7 +441,7 @@ function MarkReadForm({ notificationId }: { notificationId: string }) {
 
 function Empty({ text }: { text: string }) {
   return (
-    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
+    <div className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
       {text}
     </div>
   );

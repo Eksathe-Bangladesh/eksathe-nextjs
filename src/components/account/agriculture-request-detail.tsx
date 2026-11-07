@@ -37,7 +37,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-8 sm:px-6">
       <Link
         href="/account#agriculture-requests"
-        className="text-muted-foreground hover:text-foreground text-sm"
+        className="text-sm text-muted-foreground hover:text-foreground"
       >
         ← {t("inline.back_to_account_k3epiu")}
       </Link>
@@ -65,7 +65,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           <StatusBadge status={request.status} />
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
-          <div className="bg-muted/50 grid gap-3 rounded-xl p-4 sm:grid-cols-2">
+          <div className="grid gap-3 rounded-xl bg-muted/50 p-4 sm:grid-cols-2">
             <p className="text-sm">
               <span className="text-muted-foreground">{t("inline.contact_kqf8cd")}:</span>{" "}
               {request.customerName} · {request.phone}
@@ -92,7 +92,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                     const option = field.options?.find((item) => item.value === answer);
                     return (
                       <div key={field.name} className="rounded-lg border p-3">
-                        <dt className="text-muted-foreground text-xs">
+                        <dt className="text-xs text-muted-foreground">
                           {english ? field.labelEn : field.labelBn}
                         </dt>
                         <dd className="mt-1 text-sm">
@@ -111,12 +111,12 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                 {request.attachments.map((attachment) => (
                   <li key={attachment.id}>
                     <a
-                      className="text-primary text-sm font-medium hover:underline"
+                      className="text-sm font-medium text-primary hover:underline"
                       href={`/api/agriculture/requests/${request.id}/attachments/${attachment.id}`}
                     >
                       {attachment.filename}
                     </a>
-                    <span className="text-muted-foreground ml-2 text-xs">
+                    <span className="ml-2 text-xs text-muted-foreground">
                       {(attachment.sizeBytes / 1_000_000).toFixed(2)} MB
                     </span>
                   </li>
@@ -127,20 +127,20 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           <section>
             <h2 className="font-semibold">{t("inline.updates_12jzrl0")}</h2>
             {request.updates.length === 0 ? (
-              <p className="text-muted-foreground mt-2 text-sm">
+              <p className="mt-2 text-sm text-muted-foreground">
                 {t("inline.no_updates_yet_105bcq2")}
               </p>
             ) : (
               <ol className="mt-3 space-y-3 border-l pl-4">
                 {request.updates.map((update) => (
                   <li key={update.id} className="relative">
-                    <span className="bg-primary absolute top-1 -left-[21px] size-2 rounded-full" />
+                    <span className="absolute top-1 left-[-21px] size-2 rounded-full bg-primary" />
                     <p className="text-sm">
                       {english
                         ? (update.messageEn ?? update.messageBn)
                         : (update.messageBn ?? update.messageEn)}
                     </p>
-                    <p className="text-muted-foreground mt-1 text-xs">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       {update.createdAt
                         ? formatter.dateTime(new Date(update.createdAt), {
                             dateStyle: "medium",

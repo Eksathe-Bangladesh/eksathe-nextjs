@@ -25,7 +25,7 @@ export function CommissionCalculator() {
   const provider = amount * 0.9;
 
   return (
-    <div className="bg-card rounded-2xl border p-6 shadow-sm">
+    <div className="rounded-2xl border bg-card p-6 shadow-sm">
       <Label htmlFor="grossAmount">{t("commission.amountLabel")}</Label>
       <Input
         id="grossAmount"

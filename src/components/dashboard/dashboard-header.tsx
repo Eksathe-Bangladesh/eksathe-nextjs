@@ -31,7 +31,7 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
 
   return (
     <>
-      <header className="border-border/70 bg-card/95 sticky top-0 z-40 border-b shadow-xs backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border/70 bg-card/95 shadow-xs backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-360 items-center justify-between gap-2 px-4 sm:px-6">
           {/* Brand */}
           <Link
@@ -47,9 +47,9 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
             <button
               type="button"
               onClick={() => setActiveNotice(t("dashboard.newsFeed"))}
-              className="border-input/70 bg-card text-foreground/90 hover:bg-muted inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-input/70 bg-card px-2.5 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted sm:text-sm"
             >
-              <NewspaperIcon className="text-muted-foreground size-4" />
+              <NewspaperIcon className="size-4 text-muted-foreground" />
               <span className="hidden md:inline">{t("dashboard.newsFeed")}</span>
             </button>
 
@@ -57,9 +57,9 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
             <button
               type="button"
               onClick={() => setActiveNotice(t("dashboard.notifications"))}
-              className="border-input/70 bg-card text-foreground/90 hover:bg-muted inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-input/70 bg-card px-2.5 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted sm:text-sm"
             >
-              <BellIcon className="text-muted-foreground size-4" />
+              <BellIcon className="size-4 text-muted-foreground" />
               <span className="hidden md:inline">{t("dashboard.notifications")}</span>
             </button>
 
@@ -67,9 +67,9 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
             <button
               type="button"
               onClick={() => setActiveNotice(t("dashboard.profile"))}
-              className="border-input/70 bg-card text-foreground/90 hover:bg-muted inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-input/70 bg-card px-2.5 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted sm:text-sm"
             >
-              <UserIcon className="text-muted-foreground size-4" />
+              <UserIcon className="size-4 text-muted-foreground" />
               <span className="hidden md:inline">{t("dashboard.profile")}</span>
             </button>
 
@@ -88,21 +88,21 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
               <button
                 type="button"
                 onClick={() => setRoleOpen(!roleOpen)}
-                className="border-input/70 bg-card text-foreground/90 hover:bg-muted inline-flex shrink-0 items-center gap-1 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm"
+                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-input/70 bg-card px-2.5 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted sm:text-sm"
               >
                 <span>{userName ?? displayRole}</span>
-                <ChevronDownIcon className="text-muted-foreground size-3.5" />
+                <ChevronDownIcon className="size-3.5 text-muted-foreground" />
               </button>
 
               {roleOpen && (
-                <div className="border-border bg-card absolute top-full right-0 z-50 mt-1.5 w-36 rounded-xl border p-1 shadow-lg">
+                <div className="absolute top-full right-0 z-50 mt-1.5 w-36 rounded-xl border border-border bg-card p-1 shadow-lg">
                   <button
                     type="button"
                     onClick={() => {
                       setRole("admin");
                       setRoleOpen(false);
                     }}
-                    className="hover:bg-muted w-full rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors"
+                    className="w-full rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors hover:bg-muted"
                   >
                     {t("dashboard.adminRole")}
                   </button>
@@ -112,7 +112,7 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
                       setRole("guest");
                       setRoleOpen(false);
                     }}
-                    className="hover:bg-muted w-full rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors"
+                    className="w-full rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors hover:bg-muted"
                   >
                     {t("dashboard.guestRole")}
                   </button>
@@ -136,7 +136,7 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
             <DialogTitle>{t("emergency.modalTitle")}</DialogTitle>
             <DialogDescription>{t("emergency.modalSubtitle")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">{t("emergency.modalDescription")}</p>
+          <p className="text-sm text-muted-foreground">{t("emergency.modalDescription")}</p>
         </DialogContent>
       </Dialog>
 
@@ -147,7 +147,7 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
             <DialogTitle>{activeNotice}</DialogTitle>
             <DialogDescription>{t("dashboard.demoNotice")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {activeNotice} module is part of the prototype workspace. Interactive features and
             real-time feeds will connect to this hub.
           </p>

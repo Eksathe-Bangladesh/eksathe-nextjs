@@ -53,30 +53,30 @@ export function SectorLanding({
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-9 px-4 py-8 sm:px-6">
       <Link
         href="/dashboard"
-        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
+        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("nav.browse")}
       </Link>
-      <section className="border-border/70 bg-card rounded-3xl border p-6 shadow-xs sm:p-9">
+      <section className="rounded-3xl border border-border/70 bg-card p-6 shadow-xs sm:p-9">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4">
             <span className="text-5xl" aria-hidden="true">
               {sector.icon}
             </span>
             <div>
-              <p className="text-primary text-xs font-semibold tracking-wide uppercase">{title}</p>
-              <h1 className="text-foreground mt-1 text-3xl font-bold tracking-tight">{title}</h1>
+              <p className="text-xs font-semibold tracking-wide text-primary uppercase">{title}</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-foreground">{title}</h1>
             </div>
           </div>
           {sector.status === "live" && (
-            <span className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs font-semibold">
+            <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
               {t("nav.live")}
             </span>
           )}
         </div>
         {sector.status !== "live" ? (
-          <p className="text-muted-foreground mt-6 max-w-xl text-sm leading-6">
+          <p className="mt-6 max-w-xl text-sm leading-6 text-muted-foreground">
             {t("nav.comingSoon")}
           </p>
         ) : (
@@ -103,7 +103,7 @@ export function SectorLanding({
 
       {sector.status === "live" && (
         <div className="flex flex-col gap-10">
-          <div className="border-border/70 bg-card grid gap-3 rounded-2xl border p-4 sm:grid-cols-[minmax(0,1fr)_220px]">
+          <div className="grid gap-3 rounded-2xl border border-border/70 bg-card p-4 sm:grid-cols-[minmax(0,1fr)_220px]">
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
@@ -114,7 +114,7 @@ export function SectorLanding({
               value={district}
               onChange={(event) => setDistrict(event.target.value)}
               aria-label={t("workflow.district")}
-              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
             >
               <option value="">{t("workflow.allDistricts")}</option>
               {districts.map((item) => (
@@ -127,7 +127,7 @@ export function SectorLanding({
           {unavailable && (
             <p
               role="alert"
-              className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
+              className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
             >
               {t("workflow.dataUnavailable")}
             </p>
@@ -144,17 +144,17 @@ export function SectorLanding({
               >
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
-                    <h2 className="text-foreground text-xl font-bold">
+                    <h2 className="text-xl font-bold text-foreground">
                       {t(`marketplaceServices.${service.slug}` as never)}
                     </h2>
-                    <p className="text-muted-foreground mt-1 text-sm">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       {serviceListings.length} {t("inline.available_listings_yzc9nu")}
                     </p>
                   </div>
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
-                  <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
-                    <p className="text-muted-foreground text-sm">
+                  <div className="rounded-2xl border border-dashed border-border bg-card/70 px-5 py-6">
+                    <p className="text-sm text-muted-foreground">
                       {t("inline.no_approved_listings_yet_apply_to_become_a_o0ezrc")}
                     </p>
                     <Link
@@ -171,9 +171,9 @@ export function SectorLanding({
                       <Link
                         key={listing.id}
                         href={`/dashboard/${sector.slug}/listings/${listing.id}`}
-                        className="focus-visible:outline-primary rounded-2xl outline-offset-4 focus-visible:outline-2"
+                        className="rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
                       >
-                        <Card className="hover:border-primary/40 h-full transition-colors">
+                        <Card className="h-full transition-colors hover:border-primary/40">
                           <ListingImage
                             listing={listing}
                             alt={locale === "bn" ? listing.titleBn : listing.titleEn}
@@ -189,11 +189,11 @@ export function SectorLanding({
                             </CardDescription>
                           </CardHeader>
                           <CardContent>
-                            <p className="text-muted-foreground line-clamp-2 text-sm">
+                            <p className="line-clamp-2 text-sm text-muted-foreground">
                               {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
                             </p>
                             <div className="mt-4 flex items-center justify-between gap-2">
-                              <span className="text-primary font-semibold">
+                              <span className="font-semibold text-primary">
                                 {price(listing.unitPrice)} / {listing.unit}
                               </span>
                               <Button tabIndex={-1} size="sm" variant="outline">

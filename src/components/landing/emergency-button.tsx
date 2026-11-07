@@ -30,7 +30,7 @@ export function EmergencyButton() {
             <DialogTitle>{t("emergency.modalTitle")}</DialogTitle>
             <DialogDescription>{t("emergency.modalSubtitle")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">{t("emergency.modalDescription")}</p>
+          <p className="text-sm text-muted-foreground">{t("emergency.modalDescription")}</p>
         </DialogContent>
       </Dialog>
     </>

@@ -12,8 +12,8 @@ export function ActionFeedback({ state }: { state: WorkflowState }) {
       role={state.status === "error" ? "alert" : "status"}
       className={
         state.status === "error"
-          ? "bg-destructive/10 text-destructive rounded-lg px-3 py-2 text-sm"
-          : "bg-secondary text-secondary-foreground rounded-lg px-3 py-2 text-sm"
+          ? "rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          : "rounded-lg bg-secondary px-3 py-2 text-sm text-secondary-foreground"
       }
     >
       {t(`workflow.${state.messageKey}` as never)}

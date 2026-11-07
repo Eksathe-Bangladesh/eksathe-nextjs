@@ -90,7 +90,7 @@ export function ProviderApplicationForm({
             defaultValue={initial?.bioBn}
             maxLength={1200}
             rows={3}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
           />
         </Field>
         <Field id="provider-bio-en" label={t("inline.introduction_english_1b79c5l")}>
@@ -100,7 +100,7 @@ export function ProviderApplicationForm({
             defaultValue={initial?.bioEn}
             maxLength={1200}
             rows={3}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
           />
         </Field>
       </div>
@@ -111,7 +111,7 @@ export function ProviderApplicationForm({
           .map((sector) => {
             const options = capabilityOptions.filter((option) => option.sectorSlug === sector.slug);
             return (
-              <div key={sector.slug} className="border-border/70 rounded-xl border p-4">
+              <div key={sector.slug} className="rounded-xl border border-border/70 p-4">
                 <h3 className="mb-3 text-sm font-semibold">
                   {t(`sectors.${sector.slug}` as never)}
                 </h3>
@@ -121,14 +121,14 @@ export function ProviderApplicationForm({
                     return (
                       <label
                         key={token}
-                        className="bg-muted/50 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                        className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2 text-sm"
                       >
                         <input
                           type="checkbox"
                           name="capabilities"
                           value={token}
                           defaultChecked={initial?.capabilities.includes(token)}
-                          className="accent-primary size-4"
+                          className="size-4 accent-primary"
                         />
                         <span aria-hidden="true">{option.icon}</span>
                         <span>{t(`marketplaceServices.${option.slug}` as never)}</span>

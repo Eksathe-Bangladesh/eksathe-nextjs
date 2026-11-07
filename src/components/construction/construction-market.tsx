@@ -50,19 +50,19 @@ export function ConstructionMarket({
       <div className="flex flex-col gap-3">
         <Link
           href={routeBase}
-          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
+          className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
           {t("inline.back_to_construction_services_12dfzks")}
         </Link>
         <div>
-          <p className="text-primary text-sm font-semibold">
+          <p className="text-sm font-semibold text-primary">
             {t("inline.approved_professionals_and_suppliers_ufbjni")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
             {t("inline.find_construction_services_and_materials_1xpkogy")}
           </h1>
-          <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {t("inline.browse_by_work_type_location_and_price_cre_1oeikx0")}
           </p>
         </div>
@@ -71,7 +71,7 @@ export function ConstructionMarket({
       <form
         method="get"
         action={formAction}
-        className="border-border/70 bg-card rounded-2xl border p-4 sm:p-5"
+        className="rounded-2xl border border-border/70 bg-card p-4 sm:p-5"
       >
         <FieldGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Field className="lg:col-span-2">
@@ -81,7 +81,7 @@ export function ConstructionMarket({
             <div className="relative">
               <SearchIcon
                 aria-hidden="true"
-                className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
               />
               <Input
                 id="construction-search"
@@ -98,7 +98,7 @@ export function ConstructionMarket({
               id="construction-type"
               name="type"
               defaultValue={filters.kind ?? ""}
-              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
             >
               <option value="">{t("inline.all_construction_listings_12pacdx")}</option>
               <option value="CONSTRUCTION_SERVICE">
@@ -113,7 +113,7 @@ export function ConstructionMarket({
               id="construction-category"
               name="category"
               defaultValue={filters.category ?? ""}
-              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
             >
               <option value="">{t("inline.all_categories_qpnbu")}</option>
               {result.categories.map((category) => (
@@ -129,7 +129,7 @@ export function ConstructionMarket({
               id="construction-district"
               name="district"
               defaultValue={filters.district ?? ""}
-              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
             >
               <option value="">{t("inline.all_districts_1tgqg9q")}</option>
               {result.districts.map((district) => (
@@ -173,7 +173,7 @@ export function ConstructionMarket({
               id="construction-sort"
               name="sort"
               defaultValue={filters.sort ?? "newest"}
-              className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
             >
               <option value="newest">{t("inline.newest_j0ladc")}</option>
               <option value="price-asc">{t("inline.price_low_to_high_katpc0")}</option>
@@ -193,7 +193,7 @@ export function ConstructionMarket({
       </form>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-muted-foreground text-sm" aria-live="polite">
+        <p className="text-sm text-muted-foreground" aria-live="polite">
           {result.unavailable
             ? t("inline.listings_are_temporarily_unavailable_m2brmt")
             : `${formatter.number(result.total)} ${t("inline.listings_17wuylw")}`}
@@ -210,12 +210,12 @@ export function ConstructionMarket({
       {result.unavailable ? (
         <p
           role="alert"
-          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-5 text-sm"
+          className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive"
         >
           {t("workflow.dataUnavailable")}
         </p>
       ) : result.items.length === 0 ? (
-        <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
+        <p className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
           {t("inline.no_approved_listings_match_these_filters_a_m7cahq")}
         </p>
       ) : (
@@ -235,11 +235,11 @@ export function ConstructionMarket({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground line-clamp-2 text-sm">
+                <p className="line-clamp-2 text-sm text-muted-foreground">
                   {bn ? listing.descriptionBn : listing.descriptionEn}
                 </p>
                 <div className="mt-4 flex items-center justify-between gap-3">
-                  <span className="text-primary font-semibold">
+                  <span className="font-semibold text-primary">
                     {formatMoney(listing.unitPrice)} / {listing.unit}
                   </span>
                   {listing.averageRating !== null && (
@@ -286,7 +286,7 @@ export function ConstructionMarket({
             <ArrowLeftIcon data-icon="inline-start" />
             {t("inline.previous_1rllagw")}
           </Link>
-          <span className="text-muted-foreground text-sm">
+          <span className="text-sm text-muted-foreground">
             {bn
               ? `পৃষ্ঠা ${result.page} / ${result.totalPages}`
               : `Page ${result.page} of ${result.totalPages}`}

@@ -27,7 +27,7 @@ export function AgricultureServiceDetail({
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
       <Link
         href={routeBase}
-        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
+        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("inline.all_agriculture_services_170e4nu")}
@@ -38,7 +38,7 @@ export function AgricultureServiceDetail({
             {service.icon}
           </span>
           <div>
-            <p className="text-primary text-sm font-semibold">
+            <p className="text-sm font-semibold text-primary">
               {locale === "bn" ? service.titleBn : service.titleEn}
             </p>
             <CardTitle className="mt-1 text-3xl">
@@ -50,7 +50,7 @@ export function AgricultureServiceDetail({
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <p className="text-muted-foreground text-sm leading-6">
+          <p className="text-sm leading-6 text-muted-foreground">
             {t("inline.service_requests_are_reviewed_and_coordina_cb1lo1")}
           </p>
           <ServiceRequestForm

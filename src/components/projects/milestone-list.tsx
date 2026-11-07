@@ -30,15 +30,15 @@ export function MilestoneList({
       {milestones.map((milestone) => (
         <div
           key={milestone.id}
-          className="border-border/70 flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-center sm:justify-between"
+          className="flex flex-col gap-3 rounded-lg border border-border/70 p-3 sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
             <p className="font-medium">{milestone.title}</p>
             {milestone.description && (
-              <p className="text-muted-foreground mt-1 text-sm">{milestone.description}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{milestone.description}</p>
             )}
             {milestone.assignedProvider && (
-              <p className="text-muted-foreground mt-1 text-xs">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {t("workflow.assignedProvider")}:{" "}
                 {locale === "bn"
                   ? milestone.assignedProvider.nameBn
@@ -46,7 +46,7 @@ export function MilestoneList({
               </p>
             )}
             {milestone.dueAt && (
-              <p className="text-muted-foreground mt-1 text-xs">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {t("inline.due_1yneuku")}:{" "}
                 {formatter.dateTime(new Date(milestone.dueAt), {
                   dateStyle: "medium",

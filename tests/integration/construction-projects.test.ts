@@ -8,7 +8,7 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
 
 const [{ prisma }, marketplace, projects, { getProjectWorkspace }] = await Promise.all([
   import("@/lib/prisma"),
@@ -232,7 +232,7 @@ describe("PostgreSQL construction project workflows", () => {
       invite(materialListing, materialPackage.id, materialUserId, false),
     ]);
 
-    await expect(
+    expect(
       marketplace.createMarketplaceRequest(ownerId, {
         listingId: materialListing,
         quantity: "1",
@@ -303,10 +303,10 @@ describe("PostgreSQL construction project workflows", () => {
     const unassignedProviderUserId =
       assignedProviderUserId === serviceOneUserId ? serviceTwoUserId : serviceOneUserId;
 
-    await expect(
+    expect(
       projects.updateProjectMilestone(unassignedProviderUserId, milestone.id, "submit"),
     ).rejects.toMatchObject({ code: "notAllowed" });
-    await expect(projects.confirmProjectHandover(ownerId, projectId)).rejects.toMatchObject({
+    expect(projects.confirmProjectHandover(ownerId, projectId)).rejects.toMatchObject({
       code: "invalidState",
     });
     await projects.updateProjectMilestone(assignedProviderUserId, milestone.id, "submit");

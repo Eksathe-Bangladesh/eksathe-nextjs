@@ -14,7 +14,7 @@ describe("authentication email delivery", () => {
     console.warn = (...values: unknown[]) => output.push(values.join(" "));
 
     try {
-      await expect(
+      expect(
         sendAuthEmail(
           "customer@example.com",
           "Verify your account",

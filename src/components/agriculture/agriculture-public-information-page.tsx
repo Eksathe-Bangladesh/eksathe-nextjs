@@ -1,10 +1,10 @@
 "use client";
 
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
 import { AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS } from "@/lib/agriculture/publishing-constants";
 
@@ -23,10 +23,7 @@ export function AgriculturePublicInformationPage({
   const english = locale === "en";
   const date = (value: string) =>
     formatter.dateTime(new Date(value), {
-      ...{
-        dateStyle: "medium",
-        timeZone: "Asia/Dhaka",
-      },
+      dateStyle: "medium",
       timeZone: "Asia/Dhaka",
     });
   const price = (value: string) =>
@@ -39,11 +36,11 @@ export function AgriculturePublicInformationPage({
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-8 sm:px-6 sm:py-12">
-      <Link href={routeBase} className="text-primary w-fit text-sm font-medium hover:underline">
+      <Link href={routeBase} className="w-fit text-sm font-medium text-primary hover:underline">
         {t("inline.all_agriculture_services_up64mi")}
       </Link>
       <header>
-        <p className="text-primary text-sm font-semibold">
+        <p className="text-sm font-semibold text-primary">
           {t("inline.verified_agriculture_information_5k421l")}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
@@ -51,7 +48,7 @@ export function AgriculturePublicInformationPage({
             ? t("inline.market_prices_1ahmufv")
             : t("inline.news_advice_and_alerts_1ideanw")}
         </h1>
-        <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
           {isPrices
             ? english
               ? `Prices include their market, district, unit, observation date, and source. Only prices observed within the last ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} days are shown.`
@@ -63,7 +60,7 @@ export function AgriculturePublicInformationPage({
       {info.unavailable ? (
         <p
           role="alert"
-          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
+          className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
         >
           {t("inline.this_information_is_temporarily_unavailabl_y1xjun")}
         </p>
@@ -81,13 +78,13 @@ export function AgriculturePublicInformationPage({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">
-                  <p className="text-primary text-xl font-bold">
+                  <p className="text-xl font-bold text-primary">
                     {price(item.price)} / {item.unit}
                   </p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t("inline.observed_zu104w")}: {date(item.observedAt)}
                   </p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t("inline.source_1d36x5a")}: {item.source}
                   </p>
                 </CardContent>
@@ -123,7 +120,7 @@ export function AgriculturePublicInformationPage({
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
                   <p className="text-sm leading-6 whitespace-pre-line">{body}</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t("inline.source_1d36x5a")}: {item.source}
                     {item.expiresAt
                       ? ` · ${t("inline.expires_3qln0j")}: ${date(item.expiresAt)}`
@@ -142,7 +139,7 @@ export function AgriculturePublicInformationPage({
 function Empty({ text }: { text: string }) {
   return (
     <Card>
-      <CardContent className="text-muted-foreground p-8 text-sm">{text}</CardContent>
+      <CardContent className="p-8 text-sm text-muted-foreground">{text}</CardContent>
     </Card>
   );
 }

@@ -6,7 +6,7 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
 
 const [{ prisma }, agriculture, publishing] = await Promise.all([
   import("@/lib/prisma"),
@@ -202,7 +202,7 @@ describe("PostgreSQL agriculture publishing", () => {
   });
 
   it("blocks unapproved staff from publishing and staff members from changing public support settings", async () => {
-    await expect(
+    expect(
       publishing.saveAgriculturePublication(currentUser(otherUserId), "price", {}),
     ).rejects.toThrow("Permission denied");
     await prisma.staffGrant.create({
@@ -213,7 +213,7 @@ describe("PostgreSQL agriculture publishing", () => {
         permission: "OPERATIONS",
       },
     });
-    await expect(
+    expect(
       publishing.saveAgriculturePublication(currentUser(otherUserId, "staff"), "support", {
         phone: "",
         email: "",

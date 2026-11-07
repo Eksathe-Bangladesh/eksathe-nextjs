@@ -3,7 +3,6 @@
 import { cn } from "cn";
 import { ArrowRightIcon, SearchIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
 
 import { AgricultureCommissionCalculator } from "@/components/agriculture/agriculture-commission-calculator";
@@ -13,8 +12,9 @@ import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
+import { Link } from "@/i18n/navigation";
 import type { AgriculturePublicService } from "@/lib/agriculture/admin";
+import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
 import {
   agricultureServiceCategories,
   agricultureServiceRegistry,
@@ -47,7 +47,8 @@ export function AgricultureHome({
     () =>
       agricultureServiceRegistry.filter((service) => {
         const override = serviceCatalog.find((item) => item.slug === service.slug);
-        const content = `${override?.titleEn ?? service.titleEn} ${override?.titleBn ?? service.titleBn} ${override?.descriptionEn ?? service.descriptionEn} ${override?.descriptionBn ?? service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
+        const content =
+          `${override?.titleEn ?? service.titleEn} ${override?.titleBn ?? service.titleBn} ${override?.descriptionEn ?? service.descriptionEn} ${override?.descriptionBn ?? service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
         return (
           serviceCatalog.some((item) => item.slug === service.slug) &&
           (!normalizedQuery || content.includes(normalizedQuery)) &&
@@ -68,24 +69,24 @@ export function AgricultureHome({
       {showDashboardBackLink && (
         <Link
           href="/dashboard"
-          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm font-medium"
+          className="inline-flex w-fit items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           ← {t("inline.back_to_dashboard_2v17ca")}
         </Link>
       )}
 
-      <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-8 overflow-hidden rounded-[2rem] border bg-gradient-to-br p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section className="grid gap-8 overflow-hidden rounded-[2rem] border border-primary/15 bg-linear-to-br from-secondary/80 via-card to-card p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <div className="mb-5">
             <BrandLogo />
           </div>
-          <p className="text-primary text-sm font-semibold tracking-wide uppercase">
+          <p className="text-sm font-semibold tracking-wide text-primary uppercase">
             {t("inline.agriculture_services_across_bangladesh_g8at01")}
           </p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
             {t("inline.grow_find_support_and_reach_markets_togeth_1er5pts")}
           </h1>
-          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             {t("inline.find_farm_products_workers_machinery_advic_uc8tlf")}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -117,7 +118,7 @@ export function AgricultureHome({
                     {formatter.number(item.count)}
                     {item.icon === "🌾" ? "+" : ""}
                   </p>
-                  <p className="text-muted-foreground text-sm">{item.title}</p>
+                  <p className="text-sm text-muted-foreground">{item.title}</p>
                 </div>
               </CardContent>
             </Card>
@@ -128,7 +129,7 @@ export function AgricultureHome({
       <section id="marketplace" className="flex scroll-mt-24 flex-col gap-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-primary text-sm font-semibold">
+            <p className="text-sm font-semibold text-primary">
               {t("inline.find_products_and_providers_1rc7kvb")}
             </p>
             <h2 className="mt-1 text-2xl font-bold">
@@ -146,13 +147,13 @@ export function AgricultureHome({
         {unavailable && (
           <p
             role="alert"
-            className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
+            className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
           >
             {t("inline.marketplace_listings_could_not_be_loaded_p_97902w")}
           </p>
         )}
         {!unavailable && listings.length === 0 ? (
-          <div className="text-muted-foreground rounded-2xl border border-dashed p-6 text-sm">
+          <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
             {t("inline.no_published_listings_yet_please_check_bac_11mj298")}
           </div>
         ) : (
@@ -161,9 +162,9 @@ export function AgricultureHome({
               <Link
                 key={listing.id}
                 href={`${routeBase}/listings/${listing.id}`}
-                className="focus-visible:outline-primary rounded-2xl outline-offset-4 focus-visible:outline-2"
+                className="rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
               >
-                <Card className="hover:border-primary/40 h-full transition-colors">
+                <Card className="h-full transition-colors hover:border-primary/40">
                   <ListingImage
                     listing={listing}
                     alt={english ? listing.titleEn : listing.titleBn}
@@ -177,10 +178,10 @@ export function AgricultureHome({
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground line-clamp-2 text-sm">
+                    <p className="line-clamp-2 text-sm text-muted-foreground">
                       {english ? listing.descriptionEn : listing.descriptionBn}
                     </p>
-                    <p className="text-primary mt-3 font-semibold">
+                    <p className="mt-3 font-semibold text-primary">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
                     </p>
                   </CardContent>
@@ -193,21 +194,21 @@ export function AgricultureHome({
 
       <section id="services" className="flex scroll-mt-24 flex-col gap-5">
         <div>
-          <p className="text-primary text-sm font-semibold">
+          <p className="text-sm font-semibold text-primary">
             {formatter.number(services.length)} {t("home.agricultureServicesCount")}
           </p>
           <h2 className="mt-1 text-2xl font-bold">
             {t("inline.what_do_you_need_help_with_1h91swe")}
           </h2>
-          <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {t("inline.choose_a_service_to_see_its_details_and_re_8bsvex")}
           </p>
         </div>
-        <div className="border-border/70 bg-card grid gap-3 rounded-2xl border p-4 sm:grid-cols-[minmax(0,1fr)_240px]">
+        <div className="grid gap-3 rounded-2xl border border-border/70 bg-card p-4 sm:grid-cols-[minmax(0,1fr)_240px]">
           <div className="relative">
             <SearchIcon
               aria-hidden="true"
-              className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
             />
             <Input
               value={query}
@@ -221,7 +222,7 @@ export function AgricultureHome({
             value={category}
             onChange={(event) => setCategory(event.target.value)}
             aria-label={t("inline.filter_by_category_r4wwg6")}
-            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
           >
             <option value="all">{t("inline.all_categories_qpnbu")}</option>
             {agricultureServiceCategories.map((item) => (
@@ -232,7 +233,7 @@ export function AgricultureHome({
           </select>
         </div>
         {services.length === 0 ? (
-          <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
+          <p className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
             {t("inline.no_services_match_your_search_gb0nca")}
           </p>
         ) : (
@@ -240,42 +241,42 @@ export function AgricultureHome({
             {services.map((service) => {
               const override = serviceCatalog.find((item) => item.slug === service.slug);
               return (
-              <Link
-                key={service.slug}
-                href={`${routeBase}/services/${service.slug}`}
-                className="focus-visible:outline-primary rounded-2xl outline-offset-4 focus-visible:outline-2"
-              >
-                <Card className="hover:border-primary/40 h-full transition-colors">
-                  <CardHeader className="flex-row items-start gap-3">
-                    <span aria-hidden="true" className="text-3xl">
-                      {override?.icon ?? service.icon}
-                    </span>
-                    <div>
-                      <CardTitle className="text-base">
-                        {english
-                          ? override?.titleEn ??
-                            t(`agricultureServices.${service.slug}.title` as never)
-                          : override?.titleBn ??
-                            t(`agricultureServices.${service.slug}.title` as never)}
-                      </CardTitle>
-                      <CardDescription className="mt-2 line-clamp-2">
-                        {english
-                          ? override?.descriptionEn ??
-                            t(`agricultureServices.${service.slug}.description` as never)
-                          : override?.descriptionBn ??
-                            t(`agricultureServices.${service.slug}.description` as never)}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="text-muted-foreground flex items-center justify-between text-xs">
-                    <span>
-                      {formatter.number(service.fields.length)}{" "}
-                      {t("inline.service_details_1a6x8nu")}
-                    </span>
-                    <ArrowRightIcon aria-hidden="true" className="size-4" />
-                  </CardContent>
-                </Card>
-              </Link>
+                <Link
+                  key={service.slug}
+                  href={`${routeBase}/services/${service.slug}`}
+                  className="rounded-2xl outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
+                >
+                  <Card className="h-full transition-colors hover:border-primary/40">
+                    <CardHeader className="flex-row items-start gap-3">
+                      <span aria-hidden="true" className="text-3xl">
+                        {override?.icon ?? service.icon}
+                      </span>
+                      <div>
+                        <CardTitle className="text-base">
+                          {english
+                            ? (override?.titleEn ??
+                              t(`agricultureServices.${service.slug}.title` as never))
+                            : (override?.titleBn ??
+                              t(`agricultureServices.${service.slug}.title` as never))}
+                        </CardTitle>
+                        <CardDescription className="mt-2 line-clamp-2">
+                          {english
+                            ? (override?.descriptionEn ??
+                              t(`agricultureServices.${service.slug}.description` as never))
+                            : (override?.descriptionBn ??
+                              t(`agricultureServices.${service.slug}.description` as never))}
+                        </CardDescription>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>
+                        {formatter.number(service.fields.length)}{" "}
+                        {t("inline.service_details_1a6x8nu")}
+                      </span>
+                      <ArrowRightIcon aria-hidden="true" className="size-4" />
+                    </CardContent>
+                  </Card>
+                </Link>
               );
             })}
           </div>
@@ -285,24 +286,24 @@ export function AgricultureHome({
       <HowItWorksSection />
       <section
         id="commission"
-        className="bg-secondary/40 grid items-center gap-6 rounded-3xl border p-5 sm:p-8 lg:grid-cols-2"
+        className="grid items-center gap-6 rounded-3xl border bg-secondary/40 p-5 sm:p-8 lg:grid-cols-2"
       >
         <div>
-          <p className="text-primary text-sm font-semibold">
+          <p className="text-sm font-semibold text-primary">
             {t("inline.commission_calculator_1rnx2pf")}
           </p>
           <h2 className="mt-1 text-2xl font-bold">
             {t("inline.estimate_the_platform_fee_uiwzmc")}
           </h2>
-          <p className="text-muted-foreground mt-2 text-sm leading-6">
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
             {t("inline.this_estimate_uses_the_current_agriculture_burysh")}
           </p>
         </div>
         <AgricultureCommissionCalculator ratePercent={publicInfo.commissionRate} />
       </section>
 
-      <section className="bg-secondary/50 rounded-3xl border p-6 sm:p-8">
-        <p className="text-primary text-sm font-semibold">
+      <section className="rounded-3xl border bg-secondary/50 p-6 sm:p-8">
+        <p className="text-sm font-semibold text-primary">
           {t("inline.reviewed_by_the_agriculture_team_6bga3j")}
         </p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
@@ -310,7 +311,7 @@ export function AgricultureHome({
             <h2 className="text-2xl font-bold">
               {t("inline.market_prices_and_agriculture_updates_ndthf")}
             </h2>
-            <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-6">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
               {t("inline.market_prices_news_advice_and_weather_aler_sgubuu")}
             </p>
           </div>
@@ -327,7 +328,7 @@ export function AgricultureHome({
           </div>
         </div>
         {publicInfo.unavailable ? (
-          <p role="alert" className="text-destructive mt-4 text-sm">
+          <p role="alert" className="mt-4 text-sm text-destructive">
             {t("inline.published_information_is_temporarily_unava_crkzxm")}
           </p>
         ) : (
@@ -347,7 +348,7 @@ export function AgricultureHome({
                     </p>
                   ))
                 ) : (
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t("inline.no_published_market_prices_yet_9l0zbp")}
                   </p>
                 )}
@@ -363,16 +364,13 @@ export function AgricultureHome({
                     <p key={update.id} className="text-sm">
                       <strong>{english ? update.titleEn : update.titleBn}</strong> ·{" "}
                       {formatter.dateTime(new Date(update.publishedAt), {
-                        ...{
-                          dateStyle: "medium",
-                          timeZone: "Asia/Dhaka",
-                        },
+                        dateStyle: "medium",
                         timeZone: "Asia/Dhaka",
                       })}
                     </p>
                   ))
                 ) : (
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t("inline.no_current_agriculture_updates_1q8ia7k")}
                   </p>
                 )}
@@ -390,7 +388,7 @@ export function AgricultureHome({
           {t("inline.agriculture_support_1yks74p")}
         </h2>
         {publicInfo.unavailable ? (
-          <p className="text-muted-foreground mt-2 text-sm">
+          <p className="mt-2 text-sm text-muted-foreground">
             {t("inline.support_information_could_not_be_loaded_17qaam5")}
           </p>
         ) : publicInfo.support &&
@@ -403,7 +401,7 @@ export function AgricultureHome({
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               {publicInfo.support.phone && (
                 <a
-                  className="text-primary font-medium hover:underline"
+                  className="font-medium text-primary hover:underline"
                   href={`tel:${publicInfo.support.phone.replace(/[^+\d]/g, "")}`}
                 >
                   {publicInfo.support.phone}
@@ -411,7 +409,7 @@ export function AgricultureHome({
               )}
               {publicInfo.support.email && (
                 <a
-                  className="text-primary font-medium hover:underline"
+                  className="font-medium text-primary hover:underline"
                   href={`mailto:${publicInfo.support.email}`}
                 >
                   {publicInfo.support.email}
@@ -420,7 +418,7 @@ export function AgricultureHome({
             </div>
           </div>
         ) : (
-          <p className="text-muted-foreground mt-2 text-sm">
+          <p className="mt-2 text-sm text-muted-foreground">
             {t("inline.support_contact_details_have_not_been_conf_1i3gxk5")}
           </p>
         )}

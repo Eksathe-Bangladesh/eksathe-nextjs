@@ -1,5 +1,5 @@
 import { describe, expect, test, mock } from "bun:test";
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
 
 const { priceSchema, supportSchema, updateSchema } = await import("@/lib/agriculture/publishing");
 

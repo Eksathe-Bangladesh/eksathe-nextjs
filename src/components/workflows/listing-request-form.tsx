@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useSyncExternalStore } from "react";
 
 import { createMarketplaceRequestAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,12 @@ import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import type { PublicListing } from "@/lib/listings";
 import { initialWorkflowState } from "@/lib/workflow-state";
+
+// The min booking date depends on the current date, which only exists on the client.
+// Reading it through an external store keeps render pure and avoids hydration mismatches.
+const subscribeToDayChange = () => () => {};
+const getClientToday = () => new Date().toISOString().slice(0, 10);
+const getServerToday = () => "";
 
 export function ListingRequestForm({
   listing,
@@ -30,6 +36,7 @@ export function ListingRequestForm({
     initialWorkflowState,
   );
   const locale = useLocale();
+  const today = useSyncExternalStore(subscribeToDayChange, getClientToday, getServerToday);
   const isScheduled =
     listing.kind === "WORKER" ||
     listing.kind === "MACHINERY" ||
@@ -45,7 +52,7 @@ export function ListingRequestForm({
       {projectRequest && <input type="hidden" name="projectId" value={projectId} />}
       {projectRequest && <input type="hidden" name="packageId" value={packageId} />}
       {projectRequest && (
-        <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm">
+        <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm">
           <span className="text-muted-foreground">{t("workflow.workPackage")}: </span>
           <strong>{packageLabel}</strong>
         </p>
@@ -67,7 +74,7 @@ export function ListingRequestForm({
             defaultValue="1"
             required
           />
-          <p className="text-muted-foreground text-xs">
+          <p className="text-xs text-muted-foreground">
             {locale === "bn"
               ? `উপলভ্য: ${listing.stock} ${listing.unit}`
               : `Available: ${listing.stock} ${listing.unit}`}
@@ -93,7 +100,7 @@ export function ListingRequestForm({
                 id="request-start"
                 name="requestedStart"
                 type="date"
-                min={new Date().toISOString().slice(0, 10)}
+                min={today || undefined}
                 required
               />
             </div>
@@ -103,7 +110,7 @@ export function ListingRequestForm({
                 id="request-end"
                 name="requestedEnd"
                 type="date"
-                min={new Date().toISOString().slice(0, 10)}
+                min={today || undefined}
                 required
               />
             </div>
@@ -111,7 +118,7 @@ export function ListingRequestForm({
         )}
       </div>
       {isScheduled && (
-        <p className="text-muted-foreground -mt-2 text-xs">
+        <p className="-mt-2 text-xs text-muted-foreground">
           {t("inline.daily_rates_are_calculated_for_the_selecte_1ulrn0s")}
         </p>
       )}
@@ -122,7 +129,7 @@ export function ListingRequestForm({
           name="details"
           maxLength={2000}
           rows={4}
-          className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 resize-y rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
+          className="min-h-24 resize-y rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
           placeholder={t("inline.add_requirements_collection_or_transport_d_1cb1842")}
         />
       </div>

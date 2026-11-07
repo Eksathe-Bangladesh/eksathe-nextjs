@@ -55,31 +55,31 @@ export function AgricultureMarket({
     <main className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-4 py-8 sm:px-6">
       <Link
         href={routeBase}
-        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
+        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("inline.back_to_agriculture_qogfrr")}
       </Link>
       <header>
-        <p className="text-primary text-sm font-semibold">
+        <p className="text-sm font-semibold text-primary">
           {t("inline.agriculture_marketplace_1ufcijx")}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {t("inline.find_farm_products_1659zjw")}
         </h1>
-        <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
           {t("inline.search_listings_by_seller_category_distric_tle0d8")}
         </p>
       </header>
       <form
         action={`${routeBase}/market`}
         method="get"
-        className="border-border/70 bg-card grid gap-3 rounded-2xl border p-4 sm:grid-cols-2 lg:grid-cols-7"
+        className="grid gap-3 rounded-2xl border border-border/70 bg-card p-4 sm:grid-cols-2 lg:grid-cols-7"
       >
         <div className="relative lg:col-span-2">
           <SearchIcon
             aria-hidden="true"
-            className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
           />
           <Input
             className="pl-9"
@@ -92,7 +92,7 @@ export function AgricultureMarket({
           name="category"
           defaultValue={filters.category ?? ""}
           aria-label={t("inline.category_s1i10e")}
-          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
         >
           <option value="">{t("inline.all_categories_1fiilwv")}</option>
           {categoryOptions.map((item) => (
@@ -105,7 +105,7 @@ export function AgricultureMarket({
           name="district"
           defaultValue={filters.district ?? ""}
           aria-label={t("inline.district_135um58")}
-          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
         >
           <option value="">{t("workflow.allDistricts")}</option>
           {result.districts.map((district) => (
@@ -136,7 +136,7 @@ export function AgricultureMarket({
           name="sort"
           defaultValue={filters.sort ?? "newest"}
           aria-label={t("inline.sort_dj8kwt")}
-          className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+          className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
         >
           <option value="newest">{t("inline.newest_1g4bhr8")}</option>
           <option value="price-asc">{t("inline.price_low_to_high_186nc0k")}</option>
@@ -151,17 +151,17 @@ export function AgricultureMarket({
       {result.unavailable ? (
         <p
           role="alert"
-          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
+          className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
         >
           {t("workflow.dataUnavailable")}
         </p>
       ) : (
         <>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {formatter.number(result.total)} {t("inline.listings_17wuylw")}
           </p>
           {result.items.length === 0 ? (
-            <p className="border-border text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
+            <p className="rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               {t("inline.no_published_products_match_these_filters__12lylnw")}
             </p>
           ) : (
@@ -181,11 +181,11 @@ export function AgricultureMarket({
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground line-clamp-2 text-sm">
+                    <p className="line-clamp-2 text-sm text-muted-foreground">
                       {bn ? listing.descriptionBn : listing.descriptionEn}
                     </p>
                     <div className="mt-4 flex items-center justify-between gap-3">
-                      <span className="text-primary font-semibold">
+                      <span className="font-semibold text-primary">
                         {formatMoney(listing.unitPrice)} / {listing.unit}
                       </span>
                       {listing.averageRating !== null && (
@@ -233,7 +233,7 @@ export function AgricultureMarket({
                 <ArrowLeftIcon data-icon="inline-start" />
                 {t("inline.previous_1rllagw")}
               </Link>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-sm text-muted-foreground">
                 {t("inline.page_17ze4or")} {formatter.number(result.page)} /{" "}
                 {formatter.number(result.totalPages)}
               </span>

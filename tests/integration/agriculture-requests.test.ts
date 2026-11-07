@@ -6,7 +6,7 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
 
 const [{ prisma }, agriculture, workspaces] = await Promise.all([
   import("@/lib/prisma"),
@@ -152,7 +152,7 @@ describe("PostgreSQL agriculture service requests", () => {
       select: { status: true },
     });
     expect(request?.status).toBe("CANCELLED");
-    await expect(
+    expect(
       agriculture.withdrawAgricultureServiceRequest(otherCustomerId, result.id),
     ).rejects.toMatchObject({ code: "notFound" });
   });

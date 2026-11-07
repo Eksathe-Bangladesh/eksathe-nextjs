@@ -50,11 +50,11 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-4 py-8 sm:px-6">
       <header>
-        <p className="text-primary text-sm font-semibold">{t("workflow.agroAdmin")}</p>
+        <p className="text-sm font-semibold text-primary">{t("workflow.agroAdmin")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {t("workflow.agricultureManagement")}
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="mt-2 text-sm text-muted-foreground">
           {locale === "bn"
             ? "কৃষি বিভাগের অ্যাক্সেস সুপার অ্যাডমিন নির্ধারণ করেন। এই প্যানেলে অ্যাডমিন অ্যাকাউন্ট বা অন্য বিভাগের অনুমতি পরিবর্তন করা যায় না।"
             : "Agriculture access is granted by a Super Admin. This workspace cannot change admin accounts or permissions for other sectors."}
@@ -66,7 +66,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
           <h2 className="text-xl font-bold">{t("workflow.agricultureUserManagement")}</h2>
           <CreateUserForm accountTypeOptions={accountTypeOptions} />
           {data.users.length === 0 ? (
-            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
+            <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
               {t("workflow.noManagedAccounts")}
             </p>
           ) : (
@@ -93,7 +93,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                       statusOptions={statusOptions}
                     />
                     {user.hasBusinessData ? (
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-sm text-muted-foreground">
                         {t("workflow.agricultureAccountHasData")}
                       </p>
                     ) : (
@@ -111,7 +111,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
         <section id="panels" className="flex flex-col gap-4">
           <h2 className="text-xl font-bold">{t("workflow.agriculturePanelManagement")}</h2>
           {data.panels.length === 0 ? (
-            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
+            <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
               {t("workflow.noServicePanels")}
             </p>
           ) : (
@@ -139,7 +139,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                   )}
                 </p>
                 {data.report.requestGroups.map((group) => (
-                  <p key={group.status} className="text-muted-foreground text-sm">
+                  <p key={group.status} className="text-sm text-muted-foreground">
                     {group.status}: {formatter.number(group.count)}
                   </p>
                 ))}
@@ -157,7 +157,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
                     maximumFractionDigits: 2,
                   })}
                 </p>
-                <p className="text-muted-foreground mt-2 text-sm">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {formatter.number(data.report.commissionCount)} {t("workflow.commissionsDue")}
                 </p>
               </CardContent>
@@ -235,7 +235,7 @@ function CreateUserForm({
                 id="agro-user-account-type"
                 name="accountType"
                 defaultValue="customer"
-                className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+                className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
               >
                 {accountTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -285,7 +285,7 @@ function UserUpdateForm({
             id={`account-type-${userId}`}
             name="accountType"
             defaultValue={accountType}
-            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
           >
             {accountTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -300,7 +300,7 @@ function UserUpdateForm({
             id={`account-status-${userId}`}
             name="status"
             defaultValue={status}
-            className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+            className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
           >
             {statusOptions.map((option) => (
               <option key={option.value} value={option.value}>

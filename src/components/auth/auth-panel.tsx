@@ -173,7 +173,7 @@ export function AuthPanel({
                       "customer",
                   )
                 }
-                className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+                className="h-9 rounded-lg border border-input bg-background px-3 text-sm"
               >
                 <option value="customer">{t("workflow.customerAccount")}</option>
                 <option value="farmer">{t("workflow.farmerAccount")}</option>
@@ -202,7 +202,7 @@ export function AuthPanel({
           {error && (
             <p
               role="alert"
-              className="bg-destructive/10 text-destructive rounded-lg px-3 py-2 text-sm"
+              className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
             >
               {error}
             </p>
@@ -210,7 +210,7 @@ export function AuthPanel({
           {notice && (
             <p
               role="status"
-              className="bg-secondary text-secondary-foreground rounded-lg px-3 py-2 text-sm"
+              className="rounded-lg bg-secondary px-3 py-2 text-sm text-secondary-foreground"
             >
               {notice}
             </p>
@@ -258,7 +258,7 @@ export function AuthPanel({
       <div className="px-6 pb-5">
         <Link
           href="/"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
           {t("nav.returnHome")}
