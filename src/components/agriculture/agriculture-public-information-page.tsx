@@ -20,7 +20,6 @@ export function AgriculturePublicInformationPage({
   const formatter = useFormatter();
   const t = useTranslations();
   const locale = useLocale();
-  const english = locale === "en";
   const date = (value: string) =>
     formatter.dateTime(new Date(value), {
       dateStyle: "medium",
@@ -50,9 +49,10 @@ export function AgriculturePublicInformationPage({
         </h1>
         <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
           {isPrices
-            ? english
-              ? `Prices include their market, district, unit, observation date, and source. Only prices observed within the last ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} days are shown.`
-              : `প্রতিটি দামে বাজার, জেলা, একক, পর্যবেক্ষণের তারিখ ও তথ্যসূত্র রয়েছে। গত ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} দিনের মধ্যে পর্যবেক্ষিত দামই দেখানো হয়।`
+            ? {
+                en: `Prices include their market, district, unit, observation date, and source. Only prices observed within the last ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} days are shown.`,
+                bn: `প্রতিটি দামে বাজার, জেলা, একক, পর্যবেক্ষণের তারিখ ও তথ্যসূত্র রয়েছে। গত ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} দিনের মধ্যে পর্যবেক্ষিত দামই দেখানো হয়।`,
+              }[locale]
             : t("inline.agriculture_news_practical_advice_and_curr_1dsf3hb")}
         </p>
       </header>
@@ -72,7 +72,7 @@ export function AgriculturePublicInformationPage({
             {info.prices.map((item) => (
               <Card key={item.id}>
                 <CardHeader>
-                  <CardTitle>{english ? item.productEn : item.productBn}</CardTitle>
+                  <CardTitle>{item.product}</CardTitle>
                   <CardDescription>
                     {item.market} · {item.district}
                   </CardDescription>
@@ -97,8 +97,8 @@ export function AgriculturePublicInformationPage({
       ) : (
         <div className="flex flex-col gap-4">
           {info.updates.map((item) => {
-            const title = english ? item.titleEn : item.titleBn;
-            const body = english ? item.bodyEn : item.bodyBn;
+            const title = item.title;
+            const body = item.body;
             const kind =
               item.kind === "NEWS"
                 ? t("inline.news_330zsg")

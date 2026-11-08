@@ -42,14 +42,13 @@ export function AgricultureHome({
   const locale = useLocale();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const english = locale === "en";
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const services = useMemo(
     () =>
       agricultureServiceRegistry.filter((service) => {
         const override = serviceCatalog.find((item) => item.slug === service.slug);
         const content =
-          `${override?.titleEn ?? service.titleEn} ${override?.titleBn ?? service.titleBn} ${override?.descriptionEn ?? service.descriptionEn} ${override?.descriptionBn ?? service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
+          `${override?.title ?? service.titleEn} ${override?.title ?? service.titleBn} ${override?.description ?? service.descriptionEn} ${override?.description ?? service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
         return (
           serviceCatalog.some((item) => item.slug === service.slug) &&
           (!normalizedQuery || content.includes(normalizedQuery)) &&
@@ -168,19 +167,19 @@ export function AgricultureHome({
                 <Card className="hover:border-primary/40 h-full transition-colors">
                   <ListingImage
                     listing={listing}
-                    alt={english ? listing.titleEn : listing.titleBn}
+                    alt={listing.title}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <CardHeader>
-                    <CardTitle>{english ? listing.titleEn : listing.titleBn}</CardTitle>
+                    <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {english ? listing.providerNameEn : listing.providerNameBn} ·{" "}
+                      {listing.providerName} ·{" "}
                       {listing.district}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground line-clamp-2 text-sm">
-                      {english ? listing.descriptionEn : listing.descriptionBn}
+                      {listing.description}
                     </p>
                     <p className="text-primary mt-3 font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
@@ -254,18 +253,20 @@ export function AgricultureHome({
                       </span>
                       <div>
                         <CardTitle className="text-base">
-                          {english
-                            ? (override?.titleEn ??
-                              t(`agricultureServices.${service.slug}.title` as never))
-                            : (override?.titleBn ??
-                              t(`agricultureServices.${service.slug}.title` as never))}
+                          {{
+                            en: override?.title ?? service.titleEn,
+                            bn: override?.title ?? service.titleBn,
+                          }[locale]}
                         </CardTitle>
                         <CardDescription className="mt-2 line-clamp-2">
-                          {english
-                            ? (override?.descriptionEn ??
-                              t(`agricultureServices.${service.slug}.description` as never))
-                            : (override?.descriptionBn ??
-                              t(`agricultureServices.${service.slug}.description` as never))}
+                          {{
+                            en:
+                              override?.description ??
+                              t(`agricultureServices.${service.slug}.description` as never),
+                            bn:
+                              override?.description ??
+                              t(`agricultureServices.${service.slug}.description` as never),
+                          }[locale]}
                         </CardDescription>
                       </div>
                     </CardHeader>
@@ -344,7 +345,7 @@ export function AgricultureHome({
                 {publicInfo.prices.length ? (
                   publicInfo.prices.slice(0, 3).map((price) => (
                     <p key={price.id} className="text-sm">
-                      <strong>{english ? price.productEn : price.productBn}</strong> ·{" "}
+                      <strong>{price.product}</strong> ·{" "}
                       {price.market}, {price.district} · {formatMoney(price.price)} / {price.unit}
                     </p>
                   ))
@@ -363,7 +364,7 @@ export function AgricultureHome({
                 {publicInfo.updates.length ? (
                   publicInfo.updates.slice(0, 3).map((update) => (
                     <p key={update.id} className="text-sm">
-                      <strong>{english ? update.titleEn : update.titleBn}</strong> ·{" "}
+                      <strong>{update.title}</strong> ·{" "}
                       {formatter.dateTime(new Date(update.publishedAt), {
                         dateStyle: "medium",
                         timeZone: "Asia/Dhaka",
@@ -395,10 +396,10 @@ export function AgricultureHome({
         ) : publicInfo.support &&
           (publicInfo.support.phone ||
             publicInfo.support.email ||
-            publicInfo.support.messageBn ||
-            publicInfo.support.messageEn) ? (
+            publicInfo.support.messageEn ||
+            publicInfo.support.messageBn) ? (
           <div className="mt-2 flex flex-col gap-2 text-sm">
-            <p>{english ? publicInfo.support.messageEn : publicInfo.support.messageBn}</p>
+            <p>{locale === "bn" ? publicInfo.support.messageBn : publicInfo.support.messageEn}</p>
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               {publicInfo.support.phone && (
                 <a

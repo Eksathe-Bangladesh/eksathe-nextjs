@@ -18,7 +18,6 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
   const formatter = useFormatter();
   const t = useTranslations();
   const locale = useLocale();
-  const english = locale === "en";
   const [state, action, pending] = useActionState(
     withdrawAgricultureServiceRequestAction,
     initialWorkflowState,
@@ -49,7 +48,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
             </span>
             <div>
               <CardTitle className="text-2xl">
-                {english ? request.service.titleEn : request.service.titleBn}
+                {{ en: request.service.title, bn: request.service.title }[locale]}
               </CardTitle>
               <CardDescription className="mt-2">
                 {request.referenceCode ?? `AG-${request.id}`} · {request.district} ·{" "}
@@ -93,10 +92,10 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                     return (
                       <div key={field.name} className="rounded-lg border p-3">
                         <dt className="text-muted-foreground text-xs">
-                          {english ? field.labelEn : field.labelBn}
+                          {{ en: field.labelEn, bn: field.labelBn }[locale]}
                         </dt>
                         <dd className="mt-1 text-sm">
-                          {option ? (english ? option.labelEn : option.labelBn) : answer}
+                          {option ? { en: option.labelEn, bn: option.labelBn }[locale] : answer}
                         </dd>
                       </div>
                     );
@@ -136,9 +135,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                   <li key={update.id} className="relative">
                     <span className="bg-primary absolute top-1 left-[-21px] size-2 rounded-full" />
                     <p className="text-sm">
-                      {english
-                        ? (update.messageEn ?? update.messageBn)
-                        : (update.messageBn ?? update.messageEn)}
+                      {({ en: update.message ?? update.message, bn: update.message ?? update.message }[locale])}
                     </p>
                     <p className="text-muted-foreground mt-1 text-xs">
                       {update.createdAt

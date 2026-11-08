@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon, MapPinIcon, StarIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
@@ -22,8 +22,6 @@ export function ConstructionServiceDetail({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
-  const bn = locale === "bn";
   const projectHref = `/account/projects/new?service=${encodeURIComponent(service.slug)}`;
   const marketParams = new URLSearchParams({
     type: service.kind,
@@ -118,11 +116,11 @@ export function ConstructionServiceDetail({
               <Card key={listing.id} className="h-full overflow-hidden">
                 <ListingImage
                   listing={listing}
-                  alt={bn ? listing.titleBn : listing.titleEn}
+                  alt={listing.title}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <CardHeader>
-                  <CardTitle>{bn ? listing.titleBn : listing.titleEn}</CardTitle>
+                  <CardTitle>{listing.title}</CardTitle>
                   <CardDescription className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1">
                       <MapPinIcon aria-hidden="true" className="size-4" />
@@ -134,7 +132,7 @@ export function ConstructionServiceDetail({
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground line-clamp-2 text-sm">
-                    {bn ? listing.descriptionBn : listing.descriptionEn}
+                    {listing.description}
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-3">
                     <span className="text-primary font-semibold">

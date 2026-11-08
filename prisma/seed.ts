@@ -16,16 +16,12 @@ async function main() {
       where: { slug: sector.slug },
       update: {
         position: sector.id,
-        titleBn: bnMessages.sectors[sector.slug],
-        titleEn: enMessages.sectors[sector.slug],
         icon: sector.icon,
         status: sector.status === "live" ? "LIVE" : "COMING_SOON",
       },
       create: {
         slug: sector.slug,
         position: sector.id,
-        titleBn: bnMessages.sectors[sector.slug],
-        titleEn: enMessages.sectors[sector.slug],
         icon: sector.icon,
         status: sector.status === "live" ? "LIVE" : "COMING_SOON",
       },
@@ -45,11 +41,7 @@ async function main() {
   for (const service of agricultureServiceRegistry) {
     const serviceData = {
       slug: service.slug,
-      titleBn: service.titleBn,
-      titleEn: service.titleEn,
       category: service.category,
-      descriptionBn: service.descriptionBn,
-      descriptionEn: service.descriptionEn,
       icon: service.icon,
       formVersion: service.formVersion,
     };

@@ -95,11 +95,11 @@ describe("PostgreSQL agriculture service requests", () => {
     });
     const afterReview = await workspaces.getCustomerAgricultureRequest(customerId, result.id);
     expect(
-      afterReview?.updates.some((update) => update.messageEn?.includes("Verify district")),
+      afterReview?.updates.some((update) => update.message?.includes("Verify district")),
     ).toBe(false);
     expect(
       afterReview?.updates.some((update) =>
-        update.messageEn?.includes("checking local availability"),
+        update.message?.includes("checking local availability"),
       ),
     ).toBe(true);
 

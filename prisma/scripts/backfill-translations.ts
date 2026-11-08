@@ -2,173 +2,77 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import { PrismaClient } from "../../src/generated/prisma/client";
-import { locales } from "../../src/i18n/locales";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required.");
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: databaseUrl }) });
-const supportedLocales = new Set<string>(locales);
 
-function assertLocale(locale: string): asserts locale is (typeof locales)[number] {
-  if (!supportedLocales.has(locale)) throw new Error(`Unsupported locale: ${locale}`);
-}
+const statements = [
+  `INSERT INTO service_definition_translations ("service_definition_id", locale, title, description)
+   SELECT id, 'en', "title_en", "description_en" FROM service_definitions
+   WHERE trim("title_en") <> '' OR trim("description_en") <> ''
+   ON CONFLICT ("service_definition_id", locale) DO UPDATE SET title = EXCLUDED.title, description = EXCLUDED.description`,
+  `INSERT INTO service_definition_translations ("service_definition_id", locale, title, description)
+   SELECT id, 'bn', "title_bn", "description_bn" FROM service_definitions
+   WHERE trim("title_bn") <> '' OR trim("description_bn") <> ''
+   ON CONFLICT ("service_definition_id", locale) DO UPDATE SET title = EXCLUDED.title, description = EXCLUDED.description`,
+  `INSERT INTO service_request_update_translations ("request_update_id", locale, message)
+   SELECT id, 'en', "message_en" FROM service_request_updates WHERE trim("message_en") <> ''
+   ON CONFLICT ("request_update_id", locale) DO UPDATE SET message = EXCLUDED.message`,
+  `INSERT INTO service_request_update_translations ("request_update_id", locale, message)
+   SELECT id, 'bn', "message_bn" FROM service_request_updates WHERE trim("message_bn") <> ''
+   ON CONFLICT ("request_update_id", locale) DO UPDATE SET message = EXCLUDED.message`,
+  `INSERT INTO sector_translations ("sector_slug", locale, title)
+   SELECT slug, 'en', "title_en" FROM sectors WHERE trim("title_en") <> ''
+   ON CONFLICT ("sector_slug", locale) DO UPDATE SET title = EXCLUDED.title`,
+  `INSERT INTO sector_translations ("sector_slug", locale, title)
+   SELECT slug, 'bn', "title_bn" FROM sectors WHERE trim("title_bn") <> ''
+   ON CONFLICT ("sector_slug", locale) DO UPDATE SET title = EXCLUDED.title`,
+  `INSERT INTO provider_profile_translations ("provider_id", locale, name, bio)
+   SELECT id, 'en', "name_en", "bio_en" FROM provider_profiles
+   WHERE trim("name_en") <> '' OR trim("bio_en") <> ''
+   ON CONFLICT ("provider_id", locale) DO UPDATE SET name = EXCLUDED.name, bio = EXCLUDED.bio`,
+  `INSERT INTO provider_profile_translations ("provider_id", locale, name, bio)
+   SELECT id, 'bn', "name_bn", "bio_bn" FROM provider_profiles
+   WHERE trim("name_bn") <> '' OR trim("bio_bn") <> ''
+   ON CONFLICT ("provider_id", locale) DO UPDATE SET name = EXCLUDED.name, bio = EXCLUDED.bio`,
+  `INSERT INTO marketplace_listing_translations ("listing_id", locale, title, description)
+   SELECT id, 'en', "title_en", "description_en" FROM marketplace_listings
+   WHERE trim("title_en") <> '' OR trim("description_en") <> ''
+   ON CONFLICT ("listing_id", locale) DO UPDATE SET title = EXCLUDED.title, description = EXCLUDED.description`,
+  `INSERT INTO marketplace_listing_translations ("listing_id", locale, title, description)
+   SELECT id, 'bn', "title_bn", "description_bn" FROM marketplace_listings
+   WHERE trim("title_bn") <> '' OR trim("description_bn") <> ''
+   ON CONFLICT ("listing_id", locale) DO UPDATE SET title = EXCLUDED.title, description = EXCLUDED.description`,
+  `INSERT INTO notification_translations ("notification_id", locale, title, message)
+   SELECT id, 'en', "title_en", "message_en" FROM notifications
+   WHERE trim("title_en") <> '' OR trim("message_en") <> ''
+   ON CONFLICT ("notification_id", locale) DO UPDATE SET title = EXCLUDED.title, message = EXCLUDED.message`,
+  `INSERT INTO notification_translations ("notification_id", locale, title, message)
+   SELECT id, 'bn', "title_bn", "message_bn" FROM notifications
+   WHERE trim("title_bn") <> '' OR trim("message_bn") <> ''
+   ON CONFLICT ("notification_id", locale) DO UPDATE SET title = EXCLUDED.title, message = EXCLUDED.message`,
+  `INSERT INTO agriculture_market_price_translations ("market_price_id", locale, product)
+   SELECT id, 'en', "product_en" FROM agriculture_market_prices WHERE trim("product_en") <> ''
+   ON CONFLICT ("market_price_id", locale) DO UPDATE SET product = EXCLUDED.product`,
+  `INSERT INTO agriculture_market_price_translations ("market_price_id", locale, product)
+   SELECT id, 'bn', "product_bn" FROM agriculture_market_prices WHERE trim("product_bn") <> ''
+   ON CONFLICT ("market_price_id", locale) DO UPDATE SET product = EXCLUDED.product`,
+  `INSERT INTO agriculture_update_translations ("update_id", locale, title, body)
+   SELECT id, 'en', "title_en", "body_en" FROM agriculture_updates
+   WHERE trim("title_en") <> '' OR trim("body_en") <> ''
+   ON CONFLICT ("update_id", locale) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body`,
+  `INSERT INTO agriculture_update_translations ("update_id", locale, title, body)
+   SELECT id, 'bn', "title_bn", "body_bn" FROM agriculture_updates
+   WHERE trim("title_bn") <> '' OR trim("body_bn") <> ''
+   ON CONFLICT ("update_id", locale) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body`,
+] as const;
 
 async function main() {
-  for (const locale of locales) assertLocale(locale);
-
-  const [services, updates, sectors, providers, listings, notifications, prices, agricultureUpdates] =
-    await Promise.all([
-      prisma.serviceDefinition.findMany({
-        select: { id: true, titleEn: true, titleBn: true, descriptionEn: true, descriptionBn: true },
-      }),
-      prisma.serviceRequestUpdate.findMany({
-        select: { id: true, messageEn: true, messageBn: true },
-      }),
-      prisma.sector.findMany({ select: { slug: true, titleEn: true, titleBn: true } }),
-      prisma.providerProfile.findMany({
-        select: { id: true, nameEn: true, nameBn: true, bioEn: true, bioBn: true },
-      }),
-      prisma.marketplaceListing.findMany({
-        select: {
-          id: true,
-          titleEn: true,
-          titleBn: true,
-          descriptionEn: true,
-          descriptionBn: true,
-        },
-      }),
-      prisma.notification.findMany({
-        select: { id: true, titleEn: true, titleBn: true, messageEn: true, messageBn: true },
-      }),
-      prisma.agricultureMarketPrice.findMany({
-        select: { id: true, productEn: true, productBn: true },
-      }),
-      prisma.agricultureUpdate.findMany({
-        select: { id: true, titleEn: true, titleBn: true, bodyEn: true, bodyBn: true },
-      }),
-    ]);
-
-  for (const row of services) {
-    for (const [locale, title, description] of [
-      ["en", row.titleEn, row.descriptionEn],
-      ["bn", row.titleBn, row.descriptionBn],
-    ] as const) {
-      if (title.trim() || description.trim()) {
-        await prisma.serviceDefinitionTranslation.upsert({
-          where: { serviceDefinitionId_locale: { serviceDefinitionId: row.id, locale } },
-          update: { title, description },
-          create: { serviceDefinitionId: row.id, locale, title, description },
-        });
-      }
-    }
-  }
-
-  for (const row of updates) {
-    for (const [locale, message] of [
-      ["en", row.messageEn],
-      ["bn", row.messageBn],
-    ] as const) {
-      if (message?.trim()) {
-        await prisma.serviceRequestUpdateTranslation.upsert({
-          where: { requestUpdateId_locale: { requestUpdateId: row.id, locale } },
-          update: { message },
-          create: { requestUpdateId: row.id, locale, message },
-        });
-      }
-    }
-  }
-
-  for (const row of sectors) {
-    for (const [locale, title] of [
-      ["en", row.titleEn],
-      ["bn", row.titleBn],
-    ] as const) {
-      if (title.trim()) {
-        await prisma.sectorTranslation.upsert({
-          where: { sectorSlug_locale: { sectorSlug: row.slug, locale } },
-          update: { title },
-          create: { sectorSlug: row.slug, locale, title },
-        });
-      }
-    }
-  }
-
-  for (const row of providers) {
-    for (const [locale, name, bio] of [
-      ["en", row.nameEn, row.bioEn],
-      ["bn", row.nameBn, row.bioBn],
-    ] as const) {
-      if (name.trim() || bio.trim()) {
-        await prisma.providerProfileTranslation.upsert({
-          where: { providerId_locale: { providerId: row.id, locale } },
-          update: { name, bio },
-          create: { providerId: row.id, locale, name, bio },
-        });
-      }
-    }
-  }
-
-  for (const row of listings) {
-    for (const [locale, title, description] of [
-      ["en", row.titleEn, row.descriptionEn],
-      ["bn", row.titleBn, row.descriptionBn],
-    ] as const) {
-      if (title.trim() || description.trim()) {
-        await prisma.marketplaceListingTranslation.upsert({
-          where: { listingId_locale: { listingId: row.id, locale } },
-          update: { title, description },
-          create: { listingId: row.id, locale, title, description },
-        });
-      }
-    }
-  }
-
-  for (const row of notifications) {
-    for (const [locale, title, message] of [
-      ["en", row.titleEn, row.messageEn],
-      ["bn", row.titleBn, row.messageBn],
-    ] as const) {
-      if (title?.trim() || message?.trim()) {
-        await prisma.notificationTranslation.upsert({
-          where: { notificationId_locale: { notificationId: row.id, locale } },
-          update: { title, message },
-          create: { notificationId: row.id, locale, title, message },
-        });
-      }
-    }
-  }
-
-  for (const row of prices) {
-    for (const [locale, product] of [
-      ["en", row.productEn],
-      ["bn", row.productBn],
-    ] as const) {
-      if (product.trim()) {
-        await prisma.agricultureMarketPriceTranslation.upsert({
-          where: { marketPriceId_locale: { marketPriceId: row.id, locale } },
-          update: { product },
-          create: { marketPriceId: row.id, locale, product },
-        });
-      }
-    }
-  }
-
-  for (const row of agricultureUpdates) {
-    for (const [locale, title, body] of [
-      ["en", row.titleEn, row.bodyEn],
-      ["bn", row.titleBn, row.bodyBn],
-    ] as const) {
-      if (title.trim() || body.trim()) {
-        await prisma.agricultureUpdateTranslation.upsert({
-          where: { updateId_locale: { updateId: row.id, locale } },
-          update: { title, body },
-          create: { updateId: row.id, locale, title, body },
-        });
-      }
-    }
-  }
-
+  await prisma.$transaction(async (tx) => {
+    for (const statement of statements) await tx.$executeRawUnsafe(statement);
+  });
   console.log("Translation backfill completed.");
 }
 

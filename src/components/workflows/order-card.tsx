@@ -43,8 +43,8 @@ export type WorkspaceOrder = {
   subtotal: string;
   transportFee: string;
   commissionAmount: string;
-  listing: { titleBn: string; titleEn: string; kind: string; unit: string };
-  provider?: { nameBn: string; nameEn: string; userId: string };
+  listing: { title: string; kind: string; unit: string };
+  provider?: { name: string; userId: string };
   buyerName?: string;
   booking: { startsAt: string | null; endsAt: string | null } | null;
   cancellationReason: string | null;
@@ -97,7 +97,7 @@ export function OrderCard({
         timeZone: "Asia/Dhaka",
       })
     : null;
-  const title = locale === "bn" ? order.listing.titleBn : order.listing.titleEn;
+  const title = order.listing.title;
 
   return (
     <Card>
@@ -132,7 +132,7 @@ export function OrderCard({
           {order.provider && (
             <p>
               {t("inline.provider_1jmkj9t")}:{" "}
-              <strong>{locale === "bn" ? order.provider.nameBn : order.provider.nameEn}</strong>
+              <strong>{order.provider.name}</strong>
             </p>
           )}
           {startsAt && (

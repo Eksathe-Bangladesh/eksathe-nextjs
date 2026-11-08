@@ -162,11 +162,12 @@ describe("PostgreSQL marketplace transactions", () => {
     const listingId = await createListing("5");
     const requestId = await createRequestAndQuote(listingId, buyerId);
     const requestNotification = await prisma.notification.findFirstOrThrow({
-      where: { userId: buyerId, titleEn: "New quote received" },
-      select: { titleBn: true, messageBn: true },
+      where: { userId: buyerId, translations: { some: { locale: "en", title: "New quote received" } } },
+      include: { translations: true },
     });
-    expect(requestNotification.titleBn).toBe("নতুন দরপ্রস্তাব এসেছে");
-    expect(requestNotification.messageBn).toContain("নতুন মূল্য");
+    const bengaliNotification = requestNotification.translations.find((translation) => translation.locale === "bn");
+    expect(bengaliNotification?.title).toBe("নতুন দরপ্রস্তাব এসেছে");
+    expect(bengaliNotification?.message).toContain("নতুন মূল্য");
     const order = await marketplace.acceptQuote(buyerId, requestId);
     orderIds.push(order.id);
     expect(

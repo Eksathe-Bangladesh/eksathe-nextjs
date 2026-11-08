@@ -118,10 +118,10 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             ))}
           </NativeSelect>
         </Field>
-        <Field id="listing-title-bn" label={t("workflow.titleBn")}>
+        <Field id="listing-title-bn" label={t("inline.name_bangla_1lm9czd")}>
           <Input id="listing-title-bn" name="titleBn" required maxLength={120} />
         </Field>
-        <Field id="listing-title-en" label={t("workflow.titleEn")}>
+        <Field id="listing-title-en" label={t("inline.name_english_1odtjyj")}>
           <Input id="listing-title-en" name="titleEn" required maxLength={120} />
         </Field>
         <Field id="listing-category" label={t("workflow.category")}>

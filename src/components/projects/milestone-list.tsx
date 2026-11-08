@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 
 import { MilestoneStatusForm } from "@/components/projects/project-forms";
 import { StatusBadge } from "@/components/workflows/status-badge";
@@ -17,14 +17,13 @@ export function MilestoneList({
     amount: string | null;
     dueAt: string | null;
     status: string;
-    assignedProvider?: { nameBn: string; nameEn: string } | null;
+    assignedProvider?: { name: string } | null;
   }>;
   owner?: boolean;
   provider?: boolean;
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   return (
     <div className="flex flex-col gap-2">
       {milestones.map((milestone) => (
@@ -40,9 +39,7 @@ export function MilestoneList({
             {milestone.assignedProvider && (
               <p className="text-muted-foreground mt-1 text-xs">
                 {t("workflow.assignedProvider")}:{" "}
-                {locale === "bn"
-                  ? milestone.assignedProvider.nameBn
-                  : milestone.assignedProvider.nameEn}
+                {milestone.assignedProvider.name}
               </p>
             )}
             {milestone.dueAt && (

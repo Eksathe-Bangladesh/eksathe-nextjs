@@ -60,9 +60,7 @@ export async function ConstructionListingPage({
       packageId={compatiblePackage?.id}
       packageLabel={
         contextService
-          ? locale === "bn"
-            ? contextService.titleBn
-            : contextService.titleEn
+          ? locale === "bn" ? contextService.titleBn : contextService.titleEn
           : compatiblePackage?.label
       }
     />

@@ -209,11 +209,7 @@ enum StaffPermission {
 model ServiceDefinition {
   id            Int                            @id @default(autoincrement())
   slug          String                         @unique
-  titleBn       String                         @map("title_bn")
-  titleEn       String                         @map("title_en")
   category      String
-  descriptionBn String                         @map("description_bn")
-  descriptionEn String                         @map("description_en")
   icon          String                         @default("🌱")
   isActive      Boolean                        @default(true) @map("is_active")
   formVersion   Int                            @default(1) @map("form_version")
@@ -279,8 +275,6 @@ model ServiceRequestUpdate {
   requestId    Int                               @map("request_id")
   authorId     String?                           @map("author_id")
   visibility   ServiceRequestUpdateVisibility    @default(CUSTOMER)
-  messageBn    String?                           @map("message_bn")
-  messageEn    String?                           @map("message_en")
   createdAt    DateTime                          @default(now()) @map("created_at")
   request      ServiceRequest                    @relation(fields: [requestId], references: [id], onDelete: Cascade)
   author       User?                             @relation(fields: [authorId], references: [id], onDelete: SetNull)
@@ -367,8 +361,6 @@ model ActivityLog {
 model Sector {
   slug                 String                @id
   position             Int                   @unique
-  titleBn              String                @map("title_bn")
-  titleEn              String                @map("title_en")
   icon                 String
   status               SectorStatus          @default(COMING_SOON)
   commissionRate       Decimal               @default(10.00) @map("commission_rate") @db.Decimal(5, 2)
@@ -397,10 +389,6 @@ model SectorTranslation {
 model ProviderProfile {
   id              String                       @id @default(cuid())
   userId          String                       @unique @map("user_id")
-  nameBn          String                       @map("name_bn")
-  nameEn          String                       @map("name_en")
-  bioBn           String                       @default("") @map("bio_bn")
-  bioEn           String                       @default("") @map("bio_en")
   district        String
   upazila         String?
   profileImageKey String?                      @map("profile_image_key")
@@ -473,10 +461,6 @@ model MarketplaceListing {
   providerId               String                          @map("provider_id")
   sectorSlug               String                          @map("sector_slug")
   kind                     ListingKind
-  titleBn                  String                          @map("title_bn")
-  titleEn                  String                          @map("title_en")
-  descriptionBn            String                          @default("") @map("description_bn")
-  descriptionEn            String                          @default("") @map("description_en")
   category                 String
   district                 String
   unit                     String
@@ -792,10 +776,6 @@ model Notification {
   userId       String                    @map("user_id")
   title        String
   message      String
-  titleBn      String?                   @map("title_bn")
-  titleEn      String?                   @map("title_en")
-  messageBn    String?                   @map("message_bn")
-  messageEn    String?                   @map("message_en")
   href         String?
   readAt       DateTime?                 @map("read_at")
   createdAt    DateTime                  @default(now()) @map("created_at")
@@ -831,8 +811,6 @@ enum AgricultureUpdateKind {
 
 model AgricultureMarketPrice {
   id              String                              @id @default(cuid())
-  productBn       String                              @map("product_bn")
-  productEn       String                              @map("product_en")
   market          String
   district        String
   unit            String
@@ -864,10 +842,6 @@ model AgricultureMarketPriceTranslation {
 model AgricultureUpdate {
   id           String                         @id @default(cuid())
   kind         AgricultureUpdateKind
-  titleBn      String                         @map("title_bn")
-  titleEn      String                         @map("title_en")
-  bodyBn       String                         @map("body_bn")
-  bodyEn       String                         @map("body_en")
   source       String
   status       AgriculturePublicationStatus   @default(DRAFT)
   publishedAt  DateTime                       @map("published_at")

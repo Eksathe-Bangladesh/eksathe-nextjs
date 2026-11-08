@@ -9,6 +9,7 @@ import { cacheTags } from "@/lib/cache-tags";
 import { hasStaffPermission, type CurrentUser } from "@/lib/dal";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
+import { resolveTranslation } from "@/i18n/content";
 
 const required = (max: number) => z.string().trim().min(1).max(max);
 const status = z.enum(["DRAFT", "PUBLISHED"]);
@@ -107,7 +108,7 @@ export async function saveAgriculturePublication(
   }
   if (type === "price") {
     const parsed = priceSchema.parse(optionalValues);
-    const { id, sourceRequestId, observedAt, price, ...rest } = parsed;
+    const { id, sourceRequestId, observedAt, price, productBn, productEn, ...rest } = parsed;
     if (sourceRequestId) {
       const request = await prisma.serviceRequest.findFirst({
         where: {
@@ -128,6 +129,18 @@ export async function saveAgriculturePublication(
       const record = id
         ? await tx.agricultureMarketPrice.update({ where: { id }, data })
         : await tx.agricultureMarketPrice.create({ data });
+      await Promise.all([
+        tx.agricultureMarketPriceTranslation.upsert({
+          where: { marketPriceId_locale: { marketPriceId: record.id, locale: "en" } },
+          update: { product: productEn },
+          create: { marketPriceId: record.id, locale: "en", product: productEn },
+        }),
+        tx.agricultureMarketPriceTranslation.upsert({
+          where: { marketPriceId_locale: { marketPriceId: record.id, locale: "bn" } },
+          update: { product: productBn },
+          create: { marketPriceId: record.id, locale: "bn", product: productBn },
+        }),
+      ]);
       await tx.activityLog.create({
         data: {
           userId: actor.id,
@@ -140,7 +153,7 @@ export async function saveAgriculturePublication(
   }
   if (type !== "update") throw new Error("Unknown publication type");
   const parsed = updateSchema.parse(optionalValues);
-  const { id, publishedAt, expiresAt, ...rest } = parsed;
+  const { id, publishedAt, expiresAt, titleBn, titleEn, bodyBn, bodyEn, ...rest } = parsed;
   const data = {
     ...rest,
     publishedAt: new Date(`${publishedAt}T00:00:00Z`),
@@ -150,6 +163,18 @@ export async function saveAgriculturePublication(
     const record = id
       ? await tx.agricultureUpdate.update({ where: { id }, data })
       : await tx.agricultureUpdate.create({ data });
+    await Promise.all([
+    tx.agricultureUpdateTranslation.upsert({
+      where: { updateId_locale: { updateId: record.id, locale: "en" } },
+      update: { title: titleEn, body: bodyEn },
+      create: { updateId: record.id, locale: "en", title: titleEn, body: bodyEn },
+    }),
+    tx.agricultureUpdateTranslation.upsert({
+      where: { updateId_locale: { updateId: record.id, locale: "bn" } },
+      update: { title: titleBn, body: bodyBn },
+      create: { updateId: record.id, locale: "bn", title: titleBn, body: bodyBn },
+    }),
+    ]);
     await tx.activityLog.create({
       data: {
         userId: actor.id,
@@ -173,6 +198,7 @@ async function queryAgriculturePublicInfo() {
     prisma.agricultureMarketPrice.findMany({
       where: { status: "PUBLISHED", observedAt: { gte: freshSince, lte: now } },
       orderBy: { observedAt: "desc" },
+      include: { translations: true },
     }),
     prisma.agricultureUpdate.findMany({
       where: {
@@ -182,6 +208,7 @@ async function queryAgriculturePublicInfo() {
         NOT: { kind: "WEATHER_ALERT", expiresAt: null },
       },
       orderBy: { publishedAt: "desc" },
+      include: { translations: true },
     }),
     prisma.sector.findUnique({
       where: { slug: "agriculture-labor" },
@@ -197,8 +224,7 @@ async function queryAgriculturePublicInfo() {
     unavailable: false,
     prices: prices.map((p) => ({
       id: p.id,
-      productBn: p.productBn,
-      productEn: p.productEn,
+      product: resolveTranslation(p.translations, "en", "en")?.product ?? "",
       market: p.market,
       district: p.district,
       unit: p.unit,
@@ -209,10 +235,8 @@ async function queryAgriculturePublicInfo() {
     updates: updates.map((u) => ({
       id: u.id,
       kind: u.kind,
-      titleBn: u.titleBn,
-      titleEn: u.titleEn,
-      bodyBn: u.bodyBn,
-      bodyEn: u.bodyEn,
+      title: resolveTranslation(u.translations, "en", "en")?.title ?? "",
+      body: resolveTranslation(u.translations, "en", "en")?.body ?? "",
       source: u.source,
       publishedAt: u.publishedAt.toISOString(),
       expiresAt: u.expiresAt?.toISOString() ?? null,
@@ -239,8 +263,14 @@ export async function getAgriculturePublishingWorkspace(
   if (!(await hasStaffPermission(actor, "OPERATIONS", "agriculture-labor")))
     throw new Error("Permission denied");
   const [prices, updates, requests, support] = await Promise.all([
-    prisma.agricultureMarketPrice.findMany({ orderBy: { observedAt: "desc" } }),
-    prisma.agricultureUpdate.findMany({ orderBy: { publishedAt: "desc" } }),
+    prisma.agricultureMarketPrice.findMany({
+      orderBy: { observedAt: "desc" },
+      include: { translations: true },
+    }),
+    prisma.agricultureUpdate.findMany({
+      orderBy: { publishedAt: "desc" },
+      include: { translations: true },
+    }),
     prisma.serviceRequest.findMany({
       where: {
         serviceDefinition: { sectorSlug: "agriculture-labor", slug: "daily-market-price" },
@@ -255,8 +285,7 @@ export async function getAgriculturePublishingWorkspace(
   return {
     prices: prices.map((p) => ({
       id: p.id,
-      productBn: p.productBn,
-      productEn: p.productEn,
+      product: resolveTranslation(p.translations, "en", "en")?.product ?? "",
       market: p.market,
       district: p.district,
       unit: p.unit,
@@ -269,10 +298,8 @@ export async function getAgriculturePublishingWorkspace(
     updates: updates.map((u) => ({
       id: u.id,
       kind: u.kind,
-      titleBn: u.titleBn,
-      titleEn: u.titleEn,
-      bodyBn: u.bodyBn,
-      bodyEn: u.bodyEn,
+      title: resolveTranslation(u.translations, "en", "en")?.title ?? "",
+      body: resolveTranslation(u.translations, "en", "en")?.body ?? "",
       source: u.source,
       status: u.status,
       publishedAt: u.publishedAt.toISOString().slice(0, 10),

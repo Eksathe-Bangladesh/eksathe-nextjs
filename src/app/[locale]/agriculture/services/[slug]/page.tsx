@@ -21,20 +21,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const registryService = agricultureServiceRegistry.find((item) => item.slug === slug);
-  const serviceDefinition = await getActiveAgricultureService(slug);
+  const locale = await getLocale();
+  const serviceDefinition = await getActiveAgricultureService(slug, locale);
   if (!registryService || !serviceDefinition) notFound();
   const service = {
     ...registryService,
-    titleBn: serviceDefinition.titleBn,
-    titleEn: serviceDefinition.titleEn,
-    descriptionBn: serviceDefinition.descriptionBn,
-    descriptionEn: serviceDefinition.descriptionEn,
+    titleBn: serviceDefinition.title,
+    titleEn: serviceDefinition.title,
+    descriptionBn: serviceDefinition.description,
+    descriptionEn: serviceDefinition.description,
     icon: serviceDefinition.icon,
   };
-  const locale = await getLocale();
   const t = await getTranslations();
   return {
-    title: `${locale === "bn" ? service.titleBn : service.titleEn} | ${t("common.brandName")}`,
+    title: `${serviceDefinition.title} | ${t("common.brandName")}`,
     alternates: { canonical: await localizedCanonical(`/agriculture/services/${service.slug}`) },
   };
 }
@@ -42,14 +42,15 @@ export async function generateMetadata({
 async function AgricultureServiceContent({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const registryService = agricultureServiceRegistry.find((item) => item.slug === slug);
-  const serviceDefinition = await getActiveAgricultureService(slug);
+  const locale = await getLocale();
+  const serviceDefinition = await getActiveAgricultureService(slug, locale);
   if (!registryService || !serviceDefinition) notFound();
   const service = {
     ...registryService,
-    titleBn: serviceDefinition.titleBn,
-    titleEn: serviceDefinition.titleEn,
-    descriptionBn: serviceDefinition.descriptionBn,
-    descriptionEn: serviceDefinition.descriptionEn,
+    titleBn: serviceDefinition.title,
+    titleEn: serviceDefinition.title,
+    descriptionBn: serviceDefinition.description,
+    descriptionEn: serviceDefinition.description,
     icon: serviceDefinition.icon,
   };
   const user = await getCurrentUser();
@@ -57,6 +58,8 @@ async function AgricultureServiceContent({ params }: { params: Promise<{ slug: s
   return (
     <AgricultureServiceDetail
       service={service}
+      localizedTitle={serviceDefinition.title}
+      localizedDescription={serviceDefinition.description}
       routeBase="/agriculture"
       customer={customer}
       emailVerified={Boolean(user?.emailVerified)}

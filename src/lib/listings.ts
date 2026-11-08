@@ -15,10 +15,6 @@ export type PublicListing = {
   kind: "PRODUCE" | "WORKER" | "MACHINERY" | "CONSTRUCTION_MATERIAL" | "CONSTRUCTION_SERVICE";
   title: string;
   description: string;
-  titleBn: string;
-  titleEn: string;
-  descriptionBn: string;
-  descriptionEn: string;
   category: string;
   district: string;
   unit: string;
@@ -28,8 +24,6 @@ export type PublicListing = {
   hasImage: boolean;
   providerId: string;
   providerName: string;
-  providerNameBn: string;
-  providerNameEn: string;
   averageRating: number | null;
   reviewCount: number;
   reviews?: Array<{ rating: number; comment: string; createdAt: string }>;
@@ -41,10 +35,6 @@ export type PublicProvider = {
   sectorSlug: string;
   name: string;
   bio: string;
-  nameBn: string;
-  nameEn: string;
-  bioBn: string;
-  bioEn: string;
   district: string;
   upazila: string | null;
   hasProfileImage: boolean;
@@ -117,10 +107,6 @@ function toPublicListing(row: PublicListingRow, locale: Locale): PublicListing {
     kind: row.kind,
     title,
     description,
-    titleBn: title,
-    titleEn: title,
-    descriptionBn: description,
-    descriptionEn: description,
     category: row.category,
     district: row.district,
     unit: row.unit,
@@ -130,8 +116,6 @@ function toPublicListing(row: PublicListingRow, locale: Locale): PublicListing {
     hasImage: Boolean(row.imageKey),
     providerId: row.provider.id,
     providerName,
-    providerNameBn: providerName,
-    providerNameEn: providerName,
     averageRating: null,
     reviewCount: 0,
   };
@@ -256,8 +240,7 @@ function categoryConditions(
   const words = categoryWords[category as keyof typeof categoryWords];
   return words.flatMap((word) => [
     { category: { contains: word, mode: "insensitive" as const } },
-    { titleBn: { contains: word, mode: "insensitive" as const } },
-    { titleEn: { contains: word, mode: "insensitive" as const } },
+    { translations: { some: { title: { contains: word, mode: "insensitive" as const } } } },
   ]);
 }
 
@@ -292,14 +275,11 @@ async function queryAgricultureMarketListings(
   if (q)
     and.push({
       OR: [
-        { titleBn: { contains: q, mode: "insensitive" } },
-        { titleEn: { contains: q, mode: "insensitive" } },
-        { descriptionBn: { contains: q, mode: "insensitive" } },
-        { descriptionEn: { contains: q, mode: "insensitive" } },
+        { translations: { some: { title: { contains: q, mode: "insensitive" } } } },
+        { translations: { some: { description: { contains: q, mode: "insensitive" } } } },
         { category: { contains: q, mode: "insensitive" } },
         { district: { contains: q, mode: "insensitive" } },
-        { provider: { nameBn: { contains: q, mode: "insensitive" } } },
-        { provider: { nameEn: { contains: q, mode: "insensitive" } } },
+        { provider: { translations: { some: { name: { contains: q, mode: "insensitive" } } } } },
       ],
     });
   if (filters.district) and.push({ district: filters.district.slice(0, 80) });
@@ -473,13 +453,10 @@ async function queryConstructionMarketListings(
   const and: Prisma.MarketplaceListingWhereInput[] = [];
   const makeSearch = (term: string): Prisma.MarketplaceListingWhereInput => ({
     OR: [
-      { titleBn: { contains: term, mode: "insensitive" } },
-      { titleEn: { contains: term, mode: "insensitive" } },
-      { descriptionBn: { contains: term, mode: "insensitive" } },
-      { descriptionEn: { contains: term, mode: "insensitive" } },
+      { translations: { some: { title: { contains: term, mode: "insensitive" } } } },
+      { translations: { some: { description: { contains: term, mode: "insensitive" } } } },
       { category: { contains: term, mode: "insensitive" } },
-      { provider: { nameBn: { contains: term, mode: "insensitive" } } },
-      { provider: { nameEn: { contains: term, mode: "insensitive" } } },
+      { provider: { translations: { some: { name: { contains: term, mode: "insensitive" } } } } },
     ],
   });
   const terms = (filters.searchTerms ?? []).map((term) => term.trim().slice(0, 80)).filter(Boolean);
@@ -724,18 +701,12 @@ async function queryPublicProviderProfile(
       ...listing,
       title,
       description,
-      titleBn: title,
-      titleEn: title,
-      descriptionBn: description,
-      descriptionEn: description,
       unitPrice: listing.unitPrice.toString(),
       stock: listing.stock.toString(),
       availableFrom: listing.availableFrom?.toISOString() ?? null,
       hasImage: Boolean(listing.imageKey),
       providerId: profile.id,
       providerName,
-      providerNameBn: providerName,
-      providerNameEn: providerName,
       averageRating: null,
       reviewCount: 0,
       };
@@ -754,10 +725,6 @@ async function queryPublicProviderProfile(
       sectorSlug,
       name: providerName,
       bio: providerBio,
-      nameBn: providerName,
-      nameEn: providerName,
-      bioBn: providerBio,
-      bioEn: providerBio,
       district: profile.district,
       upazila: profile.upazila,
       hasProfileImage: Boolean(profile.profileImageKey),

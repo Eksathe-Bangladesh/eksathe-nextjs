@@ -9,7 +9,7 @@ import {
   ShoppingBagIcon,
   UserRoundIcon,
 } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 import { useActionState } from "react";
 
 import { markNotificationReadAction, updateProfileAction } from "@/app/actions/account";
@@ -36,7 +36,6 @@ export function AccountWorkspace({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   const formatMoney = (value: string | number) =>
     formatter.number(Number(value), {
       style: "currency",
@@ -106,7 +105,7 @@ export function AccountWorkspace({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? request.service.titleBn : request.service.titleEn}
+                    {request.service.title}
                   </CardTitle>
                   <CardDescription>
                     {request.referenceCode ?? `AG-${request.id}`} · {request.district} ·{" "}
@@ -131,9 +130,7 @@ export function AccountWorkspace({
                   </Link>
                   {request.updates[0] && (
                     <span className="text-muted-foreground self-center text-xs">
-                      {locale === "bn"
-                        ? (request.updates[0].messageBn ?? request.updates[0].messageEn)
-                        : (request.updates[0].messageEn ?? request.updates[0].messageBn)}
+                      {request.updates[0].message}
                     </span>
                   )}
                 </div>
@@ -158,10 +155,10 @@ export function AccountWorkspace({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
+                    {request.listing.title}
                   </CardTitle>
                   <CardDescription>
-                    {locale === "bn" ? request.provider.nameBn : request.provider.nameEn} ·{" "}
+                    {request.provider.name} ·{" "}
                     {request.district} · {request.quantity} {request.listing.unit}
                   </CardDescription>
                 </div>
@@ -317,10 +314,10 @@ export function AccountWorkspace({
             >
               <div>
                 <p className="font-medium">
-                  {locale === "bn" ? notification.titleBn : notification.titleEn}
+                  {notification.title}
                 </p>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  {locale === "bn" ? notification.messageBn : notification.messageEn}
+                  {notification.message}
                 </p>
               </div>
               {notification.href && (

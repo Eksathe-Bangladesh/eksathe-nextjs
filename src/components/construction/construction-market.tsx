@@ -233,19 +233,19 @@ export function ConstructionMarket({
             <Card key={listing.id} className="h-full overflow-hidden">
               <ListingImage
                 listing={listing}
-                alt={bn ? listing.titleBn : listing.titleEn}
+                alt={listing.title}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
               <CardHeader>
-                <CardTitle>{bn ? listing.titleBn : listing.titleEn}</CardTitle>
+                <CardTitle>{listing.title}</CardTitle>
                 <CardDescription>
-                  {bn ? listing.providerNameBn : listing.providerNameEn} · {listing.district} ·{" "}
+                  {listing.providerName} · {listing.district} ·{" "}
                   {listing.category}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground line-clamp-2 text-sm">
-                  {bn ? listing.descriptionBn : listing.descriptionEn}
+                  {listing.description}
                 </p>
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <span className="text-primary font-semibold">

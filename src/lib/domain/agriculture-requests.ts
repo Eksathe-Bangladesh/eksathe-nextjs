@@ -104,8 +104,18 @@ export async function createAgricultureServiceRequest(input: {
         requestId: request.id,
         authorId: input.user.id,
         visibility: "CUSTOMER",
-        messageBn: "আপনার অনুরোধ গ্রহণ করা হয়েছে। কৃষি পরিচালনা দল এটি পর্যালোচনা করবে।",
-        messageEn: "Your request has been received. Agriculture operations staff will review it.",
+        translations: {
+          create: [
+            {
+              locale: "bn",
+              message: "আপনার অনুরোধ গ্রহণ করা হয়েছে। কৃষি পরিচালনা দল এটি পর্যালোচনা করবে।",
+            },
+            {
+              locale: "en",
+              message: "Your request has been received. Agriculture operations staff will review it.",
+            },
+          ],
+        },
       },
     });
     await tx.auditLog.create({
@@ -245,8 +255,12 @@ export async function updateAgricultureServiceRequest(input: {
           requestId: current.id,
           authorId: input.actor.id,
           visibility: "CUSTOMER",
-          messageBn: copy.messageBn,
-          messageEn: copy.messageEn,
+          translations: {
+            create: [
+              { locale: "bn", message: copy.messageBn },
+              { locale: "en", message: copy.messageEn },
+            ],
+          },
         },
       });
     }
@@ -256,9 +270,7 @@ export async function updateAgricultureServiceRequest(input: {
           requestId: current.id,
           authorId: input.actor.id,
           visibility: "CUSTOMER",
-          ...(input.publicLocale === "bn"
-            ? { messageBn: publicMessage }
-            : { messageEn: publicMessage }),
+          translations: { create: [{ locale: input.publicLocale ?? "en", message: publicMessage }] },
         },
       });
     }
@@ -268,9 +280,7 @@ export async function updateAgricultureServiceRequest(input: {
           requestId: current.id,
           authorId: input.actor.id,
           visibility: "INTERNAL",
-          ...(input.privateLocale === "bn"
-            ? { messageBn: privateNote }
-            : { messageEn: privateNote }),
+          translations: { create: [{ locale: input.privateLocale ?? "en", message: privateNote }] },
         },
       });
     }
@@ -291,8 +301,6 @@ export async function updateAgricultureServiceRequest(input: {
         data: {
           userId: current.userId,
           title: "Agriculture request updated",
-          titleBn: "কৃষি অনুরোধ হালনাগাদ হয়েছে",
-          titleEn: "Agriculture request updated",
           message: copy.messageEn,
           href: `/account/agriculture-requests/${current.id}`,
           translations: {
@@ -335,8 +343,12 @@ export async function withdrawAgricultureServiceRequest(userId: string, requestI
         requestId: current.id,
         authorId: userId,
         visibility: "CUSTOMER",
-        messageBn: "আপনি অনুরোধটি প্রত্যাহার করেছেন।",
-        messageEn: "You withdrew this request.",
+        translations: {
+          create: [
+            { locale: "bn", message: "আপনি অনুরোধটি প্রত্যাহার করেছেন।" },
+            { locale: "en", message: "You withdrew this request." },
+          ],
+        },
       },
     });
     await tx.auditLog.create({

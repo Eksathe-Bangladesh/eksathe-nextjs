@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeftIcon } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { ServiceRequestForm } from "@/components/agriculture/service-request-form";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,14 +14,17 @@ export function AgricultureServiceDetail({
   routeBase,
   customer,
   emailVerified,
+  localizedTitle,
+  localizedDescription,
 }: {
   service: AgricultureServiceWithContent;
   routeBase: string;
   customer: { name: string; phone: string } | null;
   emailVerified: boolean;
+  localizedTitle: string;
+  localizedDescription: string;
 }) {
   const t = useTranslations();
-  const locale = useLocale();
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
@@ -39,13 +42,13 @@ export function AgricultureServiceDetail({
           </span>
           <div>
             <p className="text-primary text-sm font-semibold">
-              {locale === "bn" ? service.titleBn : service.titleEn}
+              {localizedTitle}
             </p>
             <CardTitle className="mt-1 text-3xl">
-              {locale === "bn" ? service.titleBn : service.titleEn}
+              {localizedTitle}
             </CardTitle>
             <CardDescription className="mt-3 max-w-3xl text-base leading-7">
-              {locale === "bn" ? service.descriptionBn : service.descriptionEn}
+              {localizedDescription}
             </CardDescription>
           </div>
         </CardHeader>

@@ -240,19 +240,11 @@ export async function applyForProvider(actorId: string, input: ProviderApplicati
     const profile = await tx.providerProfile.upsert({
       where: { userId: actorId },
       update: {
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
       },
       create: {
         userId: actorId,
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
       },
@@ -311,10 +303,6 @@ export async function updateProviderStorefront(actorId: string, input: Storefron
     await tx.providerProfile.update({
       where: { id: profile.id },
       data: {
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
         ...(input.profileImageKey ? { profileImageKey: input.profileImageKey } : {}),
@@ -374,10 +362,6 @@ export async function createProviderListing(actorId: string, input: CreateListin
         providerId: profile.id,
         sectorSlug: input.sectorSlug,
         kind: input.kind,
-        titleBn: input.titleBn,
-        titleEn: input.titleEn,
-        descriptionBn: input.descriptionBn,
-        descriptionEn: input.descriptionEn,
         category: input.category,
         district: input.district,
         unit: input.unit,
@@ -440,10 +424,6 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
     const updated = await tx.marketplaceListing.update({
       where: { id: listing.id },
       data: {
-        titleBn: input.titleBn,
-        titleEn: input.titleEn,
-        descriptionBn: input.descriptionBn,
-        descriptionEn: input.descriptionEn,
         category: input.category,
         district: input.district,
         unit: input.unit,

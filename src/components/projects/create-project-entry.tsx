@@ -32,7 +32,7 @@ export function CreateProjectEntry({
       {context?.labelBn && context.labelEn && (
         <p className="border-border/70 bg-muted/40 rounded-xl border p-4 text-sm">
           {t("inline.selected_service_sg3nvd")}:{" "}
-          <strong>{locale === "bn" ? context.labelBn : context.labelEn}</strong>
+          <strong>{({ en: context.labelEn, bn: context.labelBn }[locale])}</strong>
         </p>
       )}
       <CreateProjectForm context={context} />

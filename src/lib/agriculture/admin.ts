@@ -3,6 +3,8 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/lib/cache-tags";
 import type { StaffAccess } from "@/lib/dal";
+import { defaultLocale, type Locale } from "@/i18n/locales";
+import { resolveTranslation } from "@/i18n/content";
 import { prisma } from "@/lib/prisma";
 
 const sectorSlug = "agriculture-labor";
@@ -16,22 +18,22 @@ export async function getActiveAgricultureServiceCatalog() {
     where: { sectorSlug, isActive: true },
     select: {
       slug: true,
-      titleBn: true,
-      titleEn: true,
-      descriptionBn: true,
-      descriptionEn: true,
       icon: true,
+      translations: { where: { locale: defaultLocale }, select: { locale: true, title: true, description: true } },
     },
-    orderBy: [{ category: "asc" }, { titleEn: "asc" }],
+    orderBy: [{ category: "asc" }, { slug: "asc" }],
   });
-  return services;
+  return services.map((service) => ({
+    ...service,
+    ...resolveTranslation(service.translations, defaultLocale, defaultLocale),
+  }));
 }
 
 export type AgriculturePublicService = Awaited<
   ReturnType<typeof getActiveAgricultureServiceCatalog>
 >[number];
 
-export async function getActiveAgricultureService(slug: string) {
+export async function getActiveAgricultureService(slug: string, locale: Locale) {
   "use cache";
   cacheLife("hours");
   cacheTag(cacheTags.agriculturePublic);
@@ -40,13 +42,21 @@ export async function getActiveAgricultureService(slug: string) {
     where: { slug, sectorSlug, isActive: true },
     select: {
       slug: true,
-      titleBn: true,
-      titleEn: true,
-      descriptionBn: true,
-      descriptionEn: true,
       icon: true,
       formVersion: true,
+      translations: {
+        where: { locale: { in: [locale, defaultLocale] } },
+        select: { locale: true, title: true, description: true },
+      },
     },
+  }).then((service) => {
+    if (!service) return null;
+    const translation = resolveTranslation(service.translations, locale, defaultLocale);
+    return {
+      ...service,
+      title: translation?.title ?? "",
+      description: translation?.description ?? "",
+    };
   });
 }
 
@@ -87,13 +97,10 @@ export async function getAgricultureAdminWorkspace(access: StaffAccess) {
           select: {
             id: true,
             slug: true,
-            titleBn: true,
-            titleEn: true,
-            descriptionBn: true,
-            descriptionEn: true,
             isActive: true,
+            translations: { where: { locale: defaultLocale }, select: { locale: true, title: true, description: true } },
           },
-          orderBy: [{ category: "asc" }, { titleEn: "asc" }],
+          orderBy: [{ category: "asc" }, { slug: "asc" }],
         })
       : Promise.resolve([]),
     canViewReports
@@ -131,7 +138,10 @@ export async function getAgricultureAdminWorkspace(access: StaffAccess) {
         user._count.constructionProjects > 0 ||
         user._count.requests > 0,
     })),
-    panels,
+    panels: panels.map((panel) => ({
+      ...panel,
+      ...resolveTranslation(panel.translations, defaultLocale, defaultLocale),
+    })),
     report: canViewReports
       ? {
           requestGroups: requestGroups.map((group) => ({

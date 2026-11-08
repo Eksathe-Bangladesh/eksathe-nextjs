@@ -122,7 +122,7 @@ describe("PostgreSQL agriculture publishing", () => {
       status: "DRAFT",
     });
     const draftPrice = await prisma.agricultureMarketPrice.findFirstOrThrow({
-      where: { productEn: "Draft example" },
+      where: { translations: { some: { locale: "en", product: "Draft example" } } },
       select: { id: true },
     });
     priceIds.push(draftPrice.id);
@@ -138,7 +138,7 @@ describe("PostgreSQL agriculture publishing", () => {
       status: "PUBLISHED",
     });
     const stalePrice = await prisma.agricultureMarketPrice.findFirstOrThrow({
-      where: { productEn: "Stale rice" },
+      where: { translations: { some: { locale: "en", product: "Stale rice" } } },
       select: { id: true },
     });
     priceIds.push(stalePrice.id);
@@ -187,13 +187,13 @@ describe("PostgreSQL agriculture publishing", () => {
     expect(publicInfo.unavailable).toBe(false);
     expect(publicInfo.prices).toHaveLength(1);
     expect(publicInfo.prices[0]).toMatchObject({
-      productEn: "Rice",
+      product: "Rice",
       source: "Reviewed district market submission",
     });
     expect("sourceRequestId" in publicInfo.prices[0]!).toBe(false);
     expect(JSON.stringify(publicInfo.prices)).not.toContain("Private test farmer");
     expect(JSON.stringify(publicInfo.prices)).not.toContain("+8801888888888");
-    expect(publicInfo.updates.map((item) => item.titleEn)).toEqual(["Irrigation advice"]);
+    expect(publicInfo.updates.map((item) => item.title)).toEqual(["Irrigation advice"]);
     expect(publicInfo.support?.email).toBe("support@example.org");
     const afterPublish = await publishing.getAgriculturePublishingWorkspace(
       currentUser(staffId, "super_admin"),

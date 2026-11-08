@@ -6,10 +6,12 @@ import { WorkspaceError } from "@/components/workflows/workspace-error";
 import { requireUser } from "@/lib/dal";
 import { logError } from "@/lib/logging";
 import { getCustomerWorkspace } from "@/lib/workspaces";
+import { getLocale } from "next-intl/server";
 
 async function AccountPageContent() {
   const user = await requireUser("/account");
-  const workspace = await getCustomerWorkspace(user.id).catch((error) => {
+  const locale = await getLocale();
+  const workspace = await getCustomerWorkspace(user.id, locale).catch((error) => {
     logError("workspace.customer_query_failed", error);
     return null;
   });

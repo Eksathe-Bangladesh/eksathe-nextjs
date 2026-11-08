@@ -61,7 +61,7 @@ export function ProjectDetail({
         .filter((order) => order.kind === "CONSTRUCTION_SERVICE" && order.status !== "CANCELLED")
         .map((order) => [
           order.providerId,
-          { id: order.providerId, nameBn: order.providerNameBn, nameEn: order.providerNameEn },
+          { id: order.providerId, name: order.providerName },
         ]),
     ).values(),
   ];
@@ -157,7 +157,7 @@ export function ProjectDetail({
             const serviceMatches = service
               ? sameKindListings.filter((listing) => {
                   const text =
-                    `${listing.category} ${listing.titleBn} ${listing.titleEn} ${listing.descriptionBn} ${listing.descriptionEn}`.toLocaleLowerCase();
+                    `${listing.category} ${listing.title} ${listing.description}`.toLocaleLowerCase();
                   return service.searchTerms.some((term) =>
                     text.includes(term.toLocaleLowerCase()),
                   );
@@ -205,14 +205,14 @@ export function ProjectDetail({
                         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                           <div>
                             <CardTitle className="text-lg">
-                              {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
+                              {request.listing.title}
                             </CardTitle>
                             <CardDescription>
                               <Link
                                 href={`/construction/providers/${request.providerId}`}
                                 className="hover:underline"
                               >
-                                {locale === "bn" ? request.providerNameBn : request.providerNameEn}
+                                {request.providerName}
                               </Link>{" "}
                               · {request.listing.kind}
                             </CardDescription>
@@ -315,10 +315,10 @@ export function ProjectDetail({
                           >
                             <div>
                               <p className="font-semibold">
-                                {locale === "bn" ? listing.titleBn : listing.titleEn}
+                                {listing.title}
                               </p>
                               <p className="text-muted-foreground mt-1 text-xs">
-                                {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}{" "}
+                                {listing.providerName}{" "}
                                 · {listing.district}
                               </p>
                               <p className="text-primary mt-1 text-sm">
@@ -383,10 +383,10 @@ export function ProjectDetail({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? order.titleBn : order.titleEn}
+                    {{ en: order.title, bn: order.title }[locale]}
                   </CardTitle>
                   <CardDescription>
-                    {locale === "bn" ? order.providerNameBn : order.providerNameEn} ·{" "}
+                    {{ en: order.providerName, bn: order.providerName }[locale]} ·{" "}
                     {formatMoney(order.subtotal)}
                     {Number(order.transportFee) > 0
                       ? ` + ${formatMoney(order.transportFee)} ${t("workflow.transportFee")}`

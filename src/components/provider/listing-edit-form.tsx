@@ -16,10 +16,8 @@ export type EditableListing = {
   id: string;
   sectorSlug: string;
   kind: string;
-  titleBn: string;
-  titleEn: string;
-  descriptionBn: string;
-  descriptionEn: string;
+  title: string;
+  description: string;
   category: string;
   district: string;
   unit: string;
@@ -92,7 +90,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             name="titleBn"
             required
             maxLength={120}
-            defaultValue={listing.titleBn}
+            defaultValue={listing.title}
           />
         </Field>
         <Field id={`edit-title-en-${listing.id}`} label={t("inline.name_english_1odtjyj")}>
@@ -101,7 +99,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             name="titleEn"
             required
             maxLength={120}
-            defaultValue={listing.titleEn}
+            defaultValue={listing.title}
           />
         </Field>
         <Field id={`edit-category-${listing.id}`} label={t("inline.category_s1i10e")}>
@@ -184,7 +182,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           name="descriptionBn"
           rows={3}
           maxLength={2000}
-          defaultValue={listing.descriptionBn}
+          defaultValue={listing.description}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
@@ -197,7 +195,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           name="descriptionEn"
           rows={3}
           maxLength={2000}
-          defaultValue={listing.descriptionEn}
+          defaultValue={listing.description}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>

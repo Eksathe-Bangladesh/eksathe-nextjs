@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
@@ -29,7 +29,6 @@ export function SectorLanding({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   const [query, setQuery] = useState("");
   const [district, setDistrict] = useState("");
   const title = t(`sectors.${sector.slug}` as never);
@@ -46,7 +45,7 @@ export function SectorLanding({
   const term = query.trim().toLowerCase();
   const matches = (listing: PublicListing) => {
     const searchable =
-      `${listing.titleBn} ${listing.titleEn} ${listing.descriptionBn} ${listing.descriptionEn} ${listing.category} ${listing.district}`.toLowerCase();
+      `${listing.title} ${listing.description} ${listing.category} ${listing.district}`.toLowerCase();
     return (!term || searchable.includes(term)) && (!district || listing.district === district);
   };
 
@@ -177,21 +176,21 @@ export function SectorLanding({
                         <Card className="hover:border-primary/40 h-full transition-colors">
                           <ListingImage
                             listing={listing}
-                            alt={locale === "bn" ? listing.titleBn : listing.titleEn}
+                            alt={listing.title}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <CardHeader>
                             <CardTitle>
-                              {locale === "bn" ? listing.titleBn : listing.titleEn}
+                              {listing.title}
                             </CardTitle>
                             <CardDescription>
-                              {locale === "bn" ? listing.providerNameBn : listing.providerNameEn} ·{" "}
+                              {listing.providerName} ·{" "}
                               {listing.district}
                             </CardDescription>
                           </CardHeader>
                           <CardContent>
                             <p className="text-muted-foreground line-clamp-2 text-sm">
-                              {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
+                              {listing.description}
                             </p>
                             <div className="mt-4 flex items-center justify-between gap-2">
                               <span className="text-primary font-semibold">

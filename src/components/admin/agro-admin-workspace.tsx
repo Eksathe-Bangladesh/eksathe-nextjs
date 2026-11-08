@@ -344,7 +344,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
     <Card>
       <CardHeader>
         <CardTitle className="text-base">
-          {locale === "bn" ? panel.titleBn : panel.titleEn}
+          {{ en: panel.title, bn: panel.title }[locale]}
         </CardTitle>
         <CardDescription>{panel.slug}</CardDescription>
       </CardHeader>
@@ -354,24 +354,24 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
           <FieldGroup className="grid gap-3 sm:grid-cols-2">
             <Field>
               <FieldLabel htmlFor={`panel-title-bn-${panel.id}`}>
-                {t("workflow.titleBn")}
+                {t("inline.name_bangla_1lm9czd")}
               </FieldLabel>
               <Input
                 id={`panel-title-bn-${panel.id}`}
                 name="titleBn"
-                defaultValue={panel.titleBn}
+                defaultValue={panel.title}
                 maxLength={120}
                 required
               />
             </Field>
             <Field>
               <FieldLabel htmlFor={`panel-title-en-${panel.id}`}>
-                {t("workflow.titleEn")}
+                {t("inline.name_english_1odtjyj")}
               </FieldLabel>
               <Input
                 id={`panel-title-en-${panel.id}`}
                 name="titleEn"
-                defaultValue={panel.titleEn}
+                defaultValue={panel.title}
                 maxLength={120}
                 required
               />
@@ -383,7 +383,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
               <Textarea
                 id={`panel-description-bn-${panel.id}`}
                 name="descriptionBn"
-                defaultValue={panel.descriptionBn}
+                defaultValue={panel.description}
                 maxLength={1200}
                 required
               />
@@ -395,7 +395,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
               <Textarea
                 id={`panel-description-en-${panel.id}`}
                 name="descriptionEn"
-                defaultValue={panel.descriptionEn}
+                defaultValue={panel.description}
                 maxLength={1200}
                 required
               />

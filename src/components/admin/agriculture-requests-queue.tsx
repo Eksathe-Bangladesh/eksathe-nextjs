@@ -131,7 +131,6 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
     initialWorkflowState,
   );
   const locale = useLocale();
-  const english = locale === "en";
   const snapshot = request.fieldSnapshot as {
     fields?: Array<{
       name: string;
@@ -147,7 +146,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
       <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
         <div>
           <CardTitle className="text-lg">
-            {request.service.icon} {english ? request.service.titleEn : request.service.titleBn}
+            {request.service.icon} {{ en: request.service.title, bn: request.service.title }[locale]}
           </CardTitle>
           <CardDescription>
             {request.referenceCode ?? `AG-${request.id}`} · {request.customerName} ·{" "}
@@ -186,10 +185,10 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
                 return (
                   <div key={field.name} className="rounded-lg border p-3">
                     <dt className="text-muted-foreground text-xs">
-                      {english ? field.labelEn : field.labelBn}
+                      {{ en: field.labelEn, bn: field.labelBn }[locale]}
                     </dt>
                     <dd className="mt-1 text-sm">
-                      {option ? (english ? option.labelEn : option.labelBn) : answer}
+                      {option ? { en: option.labelEn, bn: option.labelBn }[locale] : answer}
                     </dd>
                   </div>
                 );
@@ -213,9 +212,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         {request.marketplaceRequest && (
           <p className="text-sm">
             {t("inline.marketplace_match_mo0a3k")}:{" "}
-            {english
-              ? request.marketplaceRequest.listing.titleEn
-              : request.marketplaceRequest.listing.titleBn}
+            {{ en: request.marketplaceRequest.listing.title, bn: request.marketplaceRequest.listing.title }[locale]}
           </p>
         )}
         {request.updates.map((update) => (
@@ -229,9 +226,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
                 : t("inline.customer_update_1i5e277")}
             </p>
             <p>
-              {english
-                ? (update.messageEn ?? update.messageBn)
-                : (update.messageBn ?? update.messageEn)}
+              {{ en: update.message ?? update.message, bn: update.message ?? update.message }[locale]}
             </p>
           </div>
         ))}

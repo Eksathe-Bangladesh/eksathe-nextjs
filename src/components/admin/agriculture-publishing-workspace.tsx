@@ -145,8 +145,8 @@ function PriceForm({
         <CardTitle className="text-base">
           {initial
             ? english
-              ? `Edit ${initial.productEn}`
-              : `${initial.productBn} সম্পাদনা`
+              ? `Edit ${initial.product}`
+              : `${initial.product} সম্পাদনা`
             : t("inline.add_market_price_aj2t35")}
         </CardTitle>
         <CardDescription>
@@ -164,14 +164,14 @@ function PriceForm({
               id={`${prefix}-product-bn`}
               name="productBn"
               label={t("inline.product_name_bangla_1ldtlug")}
-              defaultValue={initial?.productBn}
+              defaultValue={initial?.product}
               required
             />
             <TextField
               id={`${prefix}-product-en`}
               name="productEn"
               label={t("inline.product_name_english_upxxr0")}
-              defaultValue={initial?.productEn}
+              defaultValue={initial?.product}
               required
             />
             <TextField
@@ -262,8 +262,8 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
         <CardTitle className="text-base">
           {initial
             ? english
-              ? `Edit ${initial.titleEn}`
-              : `${initial.titleBn} সম্পাদনা`
+              ? `Edit ${initial.title}`
+              : `${initial.title} সম্পাদনা`
             : t("inline.add_an_update_1b5oi8t")}
         </CardTitle>
         <CardDescription>
@@ -302,14 +302,14 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               id={`${prefix}-title-bn`}
               name="titleBn"
               label={t("inline.title_bangla_iq0ud6")}
-              defaultValue={initial?.titleBn}
+              defaultValue={initial?.title}
               required
             />
             <TextField
               id={`${prefix}-title-en`}
               name="titleEn"
               label={t("inline.title_english_o28u0g")}
-              defaultValue={initial?.titleEn}
+              defaultValue={initial?.title}
               required
             />
             <DateField
@@ -337,7 +337,7 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               id={`${prefix}-body-bn`}
               name="bodyBn"
               label={t("inline.content_bangla_12pipiu")}
-              defaultValue={initial?.bodyBn}
+              defaultValue={initial?.body}
               required
             />
             <TextAreaField
@@ -345,7 +345,7 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               id={`${prefix}-body-en`}
               name="bodyEn"
               label={t("inline.content_english_1hmolki")}
-              defaultValue={initial?.bodyEn}
+              defaultValue={initial?.body}
               required
             />
           </FieldGroup>

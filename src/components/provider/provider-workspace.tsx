@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
 import { archiveListingAction, updateListingStockAction } from "@/app/actions/marketplace";
@@ -30,7 +30,6 @@ export function ProviderWorkspace({
   actorId: string;
 }) {
   const t = useTranslations();
-  const locale = useLocale();
   const capabilities = workspace.capabilities.filter(
     (capability) => capability.status === "APPROVED",
   );
@@ -63,7 +62,7 @@ export function ProviderWorkspace({
           <p className="text-primary text-sm">{t("inline.business_operations_m1nxyg")}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{t("nav.provider")}</h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            {locale === "bn" ? workspace.profile.nameBn : workspace.profile.nameEn} ·{" "}
+            {workspace.profile.name} ·{" "}
             {workspace.profile.district}
           </p>
         </div>
@@ -102,7 +101,7 @@ export function ProviderWorkspace({
                   <p className="text-muted-foreground text-sm">{t("workflow.noRecords")}</p>
                 ) : (
                   workspace.listings.map((listing) => (
-                    <ListingStockCard key={listing.id} listing={listing} locale={locale} />
+                    <ListingStockCard key={listing.id} listing={listing} />
                   ))
                 )}
               </div>
@@ -121,7 +120,7 @@ export function ProviderWorkspace({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
+                    {request.listing.title}
                   </CardTitle>
                   <CardDescription>
                     {request.buyerName} · {request.district} · {request.quantity}{" "}
@@ -201,7 +200,7 @@ export function ProviderWorkspace({
                 className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 text-sm"
               >
                 <span>
-                  {locale === "bn" ? order.listing.titleBn : order.listing.titleEn} ·{" "}
+                  {order.listing.title} ·{" "}
                   {order.commission?.amount} BDT
                 </span>
                 <StatusBadge status={order.commission?.status ?? "DUE"} />
@@ -260,7 +259,11 @@ export function ProviderWorkspace({
             </summary>
             <ProviderApplicationForm
               initial={{
-                ...workspace.profile,
+                nameBn: workspace.profile.name ?? "",
+                nameEn: workspace.profile.name ?? "",
+                bioBn: workspace.profile.bio ?? "",
+                bioEn: workspace.profile.bio ?? "",
+                district: workspace.profile.district,
                 upazila: workspace.profile.upazila ?? "",
                 capabilities: workspace.capabilities.map(
                   (capability) => `${capability.sectorSlug}:${capability.kind}`,
@@ -280,10 +283,10 @@ export function ProviderWorkspace({
               className="border-border/70 bg-card rounded-lg border px-4 py-3 text-sm"
             >
               <p className="font-medium">
-                {locale === "bn" ? notification.titleBn : notification.titleEn}
+                {notification.title}
               </p>
               <p className="text-muted-foreground mt-1">
-                {locale === "bn" ? notification.messageBn : notification.messageEn}
+                {notification.message}
               </p>
             </div>
           ))}
@@ -295,10 +298,8 @@ export function ProviderWorkspace({
 
 function ListingStockCard({
   listing,
-  locale,
 }: {
   listing: ProviderWorkspaceData["listings"][number];
-  locale: "bn" | "en";
 }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(updateListingStockAction, initialWorkflowState);
@@ -307,7 +308,7 @@ function ListingStockCard({
     <div className="border-border/70 rounded-xl border p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-semibold">{locale === "bn" ? listing.titleBn : listing.titleEn}</p>
+          <p className="font-semibold">{listing.title}</p>
           <p className="text-muted-foreground mt-1 text-xs">
             {tracksStock
               ? `${listing.stock} ${listing.unit}`

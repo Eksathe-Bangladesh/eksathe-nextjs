@@ -141,11 +141,11 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? capability.nameBn : capability.nameEn}
+                        {{ en: capability.name, bn: capability.name }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {capability.email} · {capability.phone} ·{" "}
-                        {locale === "bn" ? capability.sectorTitleBn : capability.sectorTitleEn} ·{" "}
+                        {{ en: capability.sectorTitle, bn: capability.sectorTitle }[locale]} ·{" "}
                         {capability.kind}
                       </CardDescription>
                     </div>
@@ -153,7 +153,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
                     <p className="text-muted-foreground text-sm">
-                      {locale === "bn" ? capability.bioBn : capability.bioEn}
+                      {capability.bio}
                     </p>
                     <p className="text-sm">
                       {t("workflow.district")}: {capability.district}
@@ -178,7 +178,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? listing.titleBn : listing.titleEn}
+                        {{ en: listing.title, bn: listing.title }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {listing.kind} · {listing.category} · {listing.district}
@@ -188,7 +188,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
                     <p className="text-muted-foreground text-sm">
-                      {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}
+                      {{ en: listing.providerName, bn: listing.providerName }[locale]}
                     </p>
                     <p className="text-sm">
                       {formatMoney(listing.unitPrice)} / {listing.unit} · {listing.stock}{" "}
@@ -214,11 +214,11 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? request.titleBn : request.titleEn}
+                        {{ en: request.title, bn: request.title }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {request.buyerName} ·{" "}
-                        {locale === "bn" ? request.providerNameBn : request.providerNameEn} ·{" "}
+                        {{ en: request.providerName, bn: request.providerName }[locale]} ·{" "}
                         {request.sectorSlug}
                       </CardDescription>
                     </div>
@@ -274,11 +274,11 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? dispute.titleBn : dispute.titleEn}
+                        {{ en: dispute.title, bn: dispute.title }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {dispute.buyerName} ·{" "}
-                        {locale === "bn" ? dispute.providerNameBn : dispute.providerNameEn} ·{" "}
+                        {{ en: dispute.providerName, bn: dispute.providerName }[locale]} ·{" "}
                         {dispute.sectorSlug}
                       </CardDescription>
                     </div>
@@ -315,11 +315,11 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? payment.titleBn : payment.titleEn}
+                        {{ en: payment.title, bn: payment.title }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {payment.buyerName} ·{" "}
-                        {locale === "bn" ? payment.providerNameBn : payment.providerNameEn} ·{" "}
+                        {{ en: payment.providerName, bn: payment.providerName }[locale]} ·{" "}
                         {payment.sectorSlug}
                       </CardDescription>
                     </div>
@@ -363,11 +363,11 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                   <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-lg">
-                        {locale === "bn" ? commission.titleBn : commission.titleEn}
+                        {{ en: commission.title, bn: commission.title }[locale]}
                       </CardTitle>
                       <CardDescription>
                         {commission.buyerName} ·{" "}
-                        {locale === "bn" ? commission.providerNameBn : commission.providerNameEn} ·{" "}
+                        {{ en: commission.providerName, bn: commission.providerName }[locale]} ·{" "}
                         {commission.sectorSlug}
                       </CardDescription>
                     </div>
@@ -565,7 +565,7 @@ function CommissionRateForm({ sector }: { sector: AdminWorkspaceData["sectors"][
     >
       <input type="hidden" name="sectorSlug" value={sector.slug} />
       <div>
-        <p className="font-semibold">{locale === "bn" ? sector.titleBn : sector.titleEn}</p>
+        <p className="font-semibold">{{ en: sector.title, bn: sector.title }[locale]}</p>
         <p className="text-muted-foreground text-xs">{sector.slug}</p>
       </div>
       <Field id={`commission-rate-${sector.slug}`} label={t("inline.commission_rate_12xdjj1")}>

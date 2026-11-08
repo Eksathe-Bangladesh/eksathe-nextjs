@@ -1,21 +1,39 @@
 import "server-only";
 import type { RequestStatus } from "@/generated/prisma/client";
+import { defaultLocale, type Locale } from "@/i18n/locales";
+import { resolveTranslation } from "@/i18n/content";
 import type { StaffAccess } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
 const decimal = (value: { toString(): string } | null | undefined) => value?.toString() ?? null;
 const iso = (value: Date | null | undefined) => value?.toISOString() ?? null;
 
-export async function getCustomerWorkspace(userId: string) {
+export async function getCustomerWorkspace(userId: string, locale: Locale) {
+  const translationLocales = { in: [locale, defaultLocale] };
   const [requests, orders, projects, notifications, agricultureRequests] = await Promise.all([
     prisma.marketplaceRequest.findMany({
       where: { buyerId: userId },
       orderBy: { createdAt: "desc" },
       include: {
         listing: {
-          select: { titleBn: true, titleEn: true, kind: true, unit: true, district: true },
+          select: {
+            kind: true,
+            unit: true,
+            district: true,
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, title: true, description: true },
+            },
+          },
         },
-        provider: { select: { nameBn: true, nameEn: true } },
+        provider: {
+          select: {
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, name: true, bio: true },
+            },
+          },
+        },
         quote: true,
         order: { select: { id: true, status: true } },
       },
@@ -24,8 +42,19 @@ export async function getCustomerWorkspace(userId: string) {
       where: { buyerId: userId },
       orderBy: { createdAt: "desc" },
       include: {
-        listing: { select: { titleBn: true, titleEn: true, kind: true, unit: true } },
-        provider: { select: { nameBn: true, nameEn: true, userId: true } },
+        listing: {
+          select: {
+            kind: true,
+            unit: true,
+            translations: { where: { locale: translationLocales }, select: { locale: true, title: true } },
+          },
+        },
+        provider: {
+          select: {
+            userId: true,
+            translations: { where: { locale: translationLocales }, select: { locale: true, name: true } },
+          },
+        },
         booking: true,
         payments: { orderBy: { createdAt: "desc" } },
         commission: true,
@@ -39,15 +68,34 @@ export async function getCustomerWorkspace(userId: string) {
         milestones: { orderBy: { createdAt: "asc" } },
         orders: {
           include: {
-            listing: { select: { titleBn: true, titleEn: true, kind: true } },
-            provider: { select: { nameBn: true, nameEn: true } },
+            listing: {
+              select: {
+                kind: true,
+                translations: { where: { locale: translationLocales }, select: { locale: true, title: true } },
+              },
+            },
+            provider: {
+              select: {
+                translations: { where: { locale: translationLocales }, select: { locale: true, name: true } },
+              },
+            },
             payments: { orderBy: { createdAt: "desc" } },
           },
         },
         requests: {
           include: {
-            listing: { select: { titleBn: true, titleEn: true, kind: true } },
-            provider: { select: { id: true, nameBn: true, nameEn: true } },
+            listing: {
+              select: {
+                kind: true,
+                translations: { where: { locale: translationLocales }, select: { locale: true, title: true } },
+              },
+            },
+            provider: {
+              select: {
+                id: true,
+                translations: { where: { locale: translationLocales }, select: { locale: true, name: true } },
+              },
+            },
             quote: true,
             order: { select: { id: true, status: true } },
           },
@@ -58,14 +106,43 @@ export async function getCustomerWorkspace(userId: string) {
         expenses: { orderBy: { occurredAt: "desc" } },
       },
     }),
-    prisma.notification.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 30 }),
+    prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: 30,
+      include: {
+        translations: {
+          where: { locale: translationLocales },
+          select: { locale: true, title: true, message: true },
+        },
+      },
+    }),
     prisma.serviceRequest.findMany({
       where: { userId, serviceDefinition: { sectorSlug: "agriculture-labor" } },
       orderBy: { createdAt: "desc" },
       take: 50,
       include: {
-        serviceDefinition: { select: { slug: true, titleBn: true, titleEn: true, icon: true } },
-        updates: { where: { visibility: "CUSTOMER" }, orderBy: { createdAt: "desc" }, take: 5 },
+        serviceDefinition: {
+          select: {
+            slug: true,
+            icon: true,
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, title: true, description: true },
+            },
+          },
+        },
+        updates: {
+          where: { visibility: "CUSTOMER" },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+          include: {
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, message: true },
+            },
+          },
+        },
         attachments: { select: { id: true, filename: true, contentType: true, sizeBytes: true } },
       },
     }),
@@ -82,8 +159,14 @@ export async function getCustomerWorkspace(userId: string) {
       requestedStart: iso(request.requestedStart),
       requestedEnd: iso(request.requestedEnd),
       createdAt: iso(request.createdAt),
-      listing: request.listing,
-      provider: request.provider,
+      listing: {
+        ...request.listing,
+        ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+      },
+      provider: {
+        ...request.provider,
+        ...resolveTranslation(request.provider.translations, defaultLocale, defaultLocale),
+      },
       quote: request.quote
         ? {
             id: request.quote.id,
@@ -109,8 +192,14 @@ export async function getCustomerWorkspace(userId: string) {
       commissionRate: order.commissionRate.toString(),
       cancellationReason: order.cancellationReason,
       cancelRequestedById: order.cancelRequestedById,
-      listing: order.listing,
-      provider: order.provider,
+      listing: {
+        ...order.listing,
+        title: resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+      },
+      provider: {
+        ...order.provider,
+        name: resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+      },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
         : null,
@@ -147,11 +236,9 @@ export async function getCustomerWorkspace(userId: string) {
         status: order.status,
         subtotal: order.subtotal.toString(),
         transportFee: order.transportFee.toString(),
-        titleBn: order.listing.titleBn,
-        titleEn: order.listing.titleEn,
+        title: resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
         kind: order.listing.kind,
-        providerNameBn: order.provider.nameBn,
-        providerNameEn: order.provider.nameEn,
+        providerName: resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
         payments: order.payments.map((payment) => ({
           id: payment.id,
           amount: payment.amount.toString(),
@@ -171,10 +258,12 @@ export async function getCustomerWorkspace(userId: string) {
         packageLabel: request.packageLabel,
         requestedStart: iso(request.requestedStart),
         requestedEnd: iso(request.requestedEnd),
-        listing: request.listing,
+        listing: {
+          ...request.listing,
+          ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+        },
         providerId: request.provider.id,
-        providerNameBn: request.provider.nameBn,
-        providerNameEn: request.provider.nameEn,
+        providerName: resolveTranslation(request.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
         quote: request.quote
           ? {
               id: request.quote.id,
@@ -209,10 +298,8 @@ export async function getCustomerWorkspace(userId: string) {
     })),
     notifications: notifications.map((notification) => ({
       id: notification.id,
-      titleBn: notification.titleBn ?? notification.title,
-      titleEn: notification.titleEn ?? notification.title,
-      messageBn: notification.messageBn ?? notification.message,
-      messageEn: notification.messageEn ?? notification.message,
+      title: resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.title ?? notification.title,
+      message: resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.message ?? notification.message,
       href: notification.href,
       readAt: iso(notification.readAt),
       createdAt: iso(notification.createdAt),
@@ -225,11 +312,13 @@ export async function getCustomerWorkspace(userId: string) {
       details: request.details,
       budget: decimal(request.budget),
       createdAt: iso(request.createdAt),
-      service: request.serviceDefinition,
+      service: {
+        ...request.serviceDefinition,
+        ...resolveTranslation(request.serviceDefinition.translations, defaultLocale, defaultLocale),
+      },
       updates: request.updates.map((update) => ({
         id: update.id,
-        messageBn: update.messageBn,
-        messageEn: update.messageEn,
+        message: resolveTranslation(update.translations, defaultLocale, defaultLocale)?.message ?? "",
         createdAt: iso(update.createdAt),
       })),
       attachments: request.attachments,
@@ -237,12 +326,25 @@ export async function getCustomerWorkspace(userId: string) {
   };
 }
 
-export async function getProviderWorkspace(userId: string) {
+export async function getProviderWorkspace(userId: string, locale: Locale) {
+  const translationLocales = { in: [locale, defaultLocale] };
   const profile = await prisma.providerProfile.findUnique({
     where: { userId },
     include: {
       capabilities: { orderBy: [{ sectorSlug: "asc" }, { kind: "asc" }] },
-      listings: { orderBy: { createdAt: "desc" } },
+      listings: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          translations: {
+            where: { locale: translationLocales },
+            select: { locale: true, title: true, description: true },
+          },
+        },
+      },
+      translations: {
+        where: { locale: translationLocales },
+        select: { locale: true, name: true, bio: true },
+      },
     },
   });
   if (!profile) return null;
@@ -253,7 +355,16 @@ export async function getProviderWorkspace(userId: string) {
       orderBy: { createdAt: "desc" },
       include: {
         buyer: { select: { name: true } },
-        listing: { select: { titleBn: true, titleEn: true, kind: true, unit: true } },
+        listing: {
+          select: {
+            kind: true,
+            unit: true,
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, title: true, description: true },
+            },
+          },
+        },
         quote: true,
       },
     }),
@@ -262,13 +373,32 @@ export async function getProviderWorkspace(userId: string) {
       orderBy: { createdAt: "desc" },
       include: {
         buyer: { select: { name: true, id: true } },
-        listing: { select: { titleBn: true, titleEn: true, kind: true, unit: true } },
+        listing: {
+          select: {
+            kind: true,
+            unit: true,
+            translations: {
+              where: { locale: translationLocales },
+              select: { locale: true, title: true, description: true },
+            },
+          },
+        },
         booking: true,
         payments: { orderBy: { createdAt: "desc" } },
         commission: true,
       },
     }),
-    prisma.notification.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 30 }),
+    prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: 30,
+      include: {
+        translations: {
+          where: { locale: translationLocales },
+          select: { locale: true, title: true, message: true },
+        },
+      },
+    }),
     prisma.projectMilestone.findMany({
       where: { project: { orders: { some: { providerId: profile.id } } } },
       orderBy: [{ dueAt: "asc" }, { createdAt: "asc" }],
@@ -279,10 +409,8 @@ export async function getProviderWorkspace(userId: string) {
   return {
     profile: {
       id: profile.id,
-      nameBn: profile.nameBn,
-      nameEn: profile.nameEn,
-      bioBn: profile.bioBn,
-      bioEn: profile.bioEn,
+      name: resolveTranslation(profile.translations, defaultLocale, defaultLocale)?.name ?? "",
+      bio: resolveTranslation(profile.translations, defaultLocale, defaultLocale)?.bio ?? "",
       district: profile.district,
       upazila: profile.upazila,
       status: profile.status,
@@ -299,10 +427,8 @@ export async function getProviderWorkspace(userId: string) {
       id: listing.id,
       sectorSlug: listing.sectorSlug,
       kind: listing.kind,
-      titleBn: listing.titleBn,
-      titleEn: listing.titleEn,
-      descriptionBn: listing.descriptionBn,
-      descriptionEn: listing.descriptionEn,
+      title: resolveTranslation(listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+      description: resolveTranslation(listing.translations, defaultLocale, defaultLocale)?.description ?? "",
       category: listing.category,
       district: listing.district,
       unit: listing.unit,
@@ -323,7 +449,10 @@ export async function getProviderWorkspace(userId: string) {
       requestedStart: iso(request.requestedStart),
       requestedEnd: iso(request.requestedEnd),
       buyerName: request.buyer.name,
-      listing: request.listing,
+      listing: {
+        ...request.listing,
+        ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+      },
       quote: request.quote
         ? {
             id: request.quote.id,
@@ -346,7 +475,11 @@ export async function getProviderWorkspace(userId: string) {
       subtotal: order.subtotal.toString(),
       transportFee: order.transportFee.toString(),
       commissionAmount: order.commissionAmount.toString(),
-      listing: order.listing,
+      listing: {
+        ...order.listing,
+        ...resolveTranslation(order.listing.translations, defaultLocale, defaultLocale),
+        title: resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+      },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
         : null,
@@ -369,10 +502,8 @@ export async function getProviderWorkspace(userId: string) {
     })),
     notifications: notifications.map((notification) => ({
       id: notification.id,
-      titleBn: notification.titleBn ?? notification.title,
-      titleEn: notification.titleEn ?? notification.title,
-      messageBn: notification.messageBn ?? notification.message,
-      messageEn: notification.messageEn ?? notification.message,
+      title: resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.title ?? notification.title,
+      message: resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.message ?? notification.message,
       href: notification.href,
       createdAt: iso(notification.createdAt),
     })),
@@ -455,8 +586,8 @@ export async function getAdminWorkspace(
           where: { status: "PENDING", sectorSlug: { in: access.operationSectors } },
           orderBy: { createdAt: "asc" },
           include: {
-            sector: { select: { titleBn: true, titleEn: true } },
-            provider: { include: { user: { select: { name: true, email: true, phone: true } } } },
+            sector: { include: { translations: true } },
+            provider: { include: { user: { select: { name: true, email: true, phone: true } }, translations: true } },
           },
         })
       : Promise.resolve([]),
@@ -468,7 +599,7 @@ export async function getAdminWorkspace(
             sectorSlug: { in: access.operationSectors },
           },
           orderBy: { createdAt: "asc" },
-          include: { provider: { select: { nameBn: true, nameEn: true } } },
+          include: { provider: { include: { translations: true } }, translations: true },
         })
       : Promise.resolve([]),
     access.operationSectors.length
@@ -480,8 +611,8 @@ export async function getAdminWorkspace(
           orderBy: { createdAt: "asc" },
           include: {
             buyer: { select: { name: true } },
-            listing: { select: { titleBn: true, titleEn: true, kind: true, unit: true } },
-            provider: { select: { id: true, nameBn: true, nameEn: true } },
+            listing: { include: { translations: true } },
+            provider: { include: { translations: true } },
             project: { select: { title: true } },
             quote: { select: { quantity: true, unitPrice: true, transportFee: true } },
           },
@@ -493,8 +624,8 @@ export async function getAdminWorkspace(
           orderBy: { updatedAt: "asc" },
           include: {
             buyer: { select: { name: true } },
-            provider: { select: { nameBn: true, nameEn: true } },
-            listing: { select: { titleBn: true, titleEn: true } },
+            provider: { include: { translations: true } },
+            listing: { include: { translations: true } },
             request: { select: { sectorSlug: true } },
           },
         })
@@ -510,8 +641,8 @@ export async function getAdminWorkspace(
             order: {
               include: {
                 buyer: { select: { name: true } },
-                provider: { select: { nameBn: true, nameEn: true } },
-                listing: { select: { titleBn: true, titleEn: true } },
+                provider: { include: { translations: true } },
+                listing: { include: { translations: true } },
                 request: { select: { sectorSlug: true } },
               },
             },
@@ -529,8 +660,8 @@ export async function getAdminWorkspace(
             order: {
               include: {
                 buyer: { select: { name: true } },
-                provider: { select: { nameBn: true, nameEn: true } },
-                listing: { select: { titleBn: true, titleEn: true } },
+                provider: { include: { translations: true } },
+                listing: { include: { translations: true } },
                 request: { select: { sectorSlug: true } },
               },
             },
@@ -541,6 +672,7 @@ export async function getAdminWorkspace(
       ? prisma.sector.findMany({
           where: { slug: { in: sectorSlugs } },
           orderBy: { position: "asc" },
+          include: { translations: true },
         })
       : Promise.resolve([]),
     access.isSuperAdmin
@@ -555,13 +687,17 @@ export async function getAdminWorkspace(
           orderBy: { createdAt: "desc" },
           take: 100,
           include: {
-            serviceDefinition: { select: { slug: true, titleBn: true, titleEn: true, icon: true } },
+            serviceDefinition: { include: { translations: true } },
             user: { select: { id: true, name: true, email: true } },
             assignedTo: { select: { id: true, name: true, email: true } },
-            updates: { orderBy: { createdAt: "desc" }, take: 10 },
+            updates: {
+              orderBy: { createdAt: "desc" },
+              take: 10,
+              include: { translations: true },
+            },
             attachments: { select: { id: true, filename: true, sizeBytes: true } },
             marketplaceRequest: {
-              select: { id: true, listing: { select: { titleBn: true, titleEn: true } } },
+              select: { id: true, listing: { include: { translations: true } } },
             },
           },
         })
@@ -592,15 +728,12 @@ export async function getAdminWorkspace(
     capabilities: capabilities.map((capability) => ({
       id: capability.id,
       sectorSlug: capability.sectorSlug,
-      sectorTitleBn: capability.sector.titleBn,
-      sectorTitleEn: capability.sector.titleEn,
+      sectorTitle: resolveTranslation(capability.sector.translations, defaultLocale, defaultLocale)?.title ?? "",
       kind: capability.kind,
       providerId: capability.provider.id,
-      nameBn: capability.provider.nameBn,
-      nameEn: capability.provider.nameEn,
+      name: resolveTranslation(capability.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
       district: capability.provider.district,
-      bioBn: capability.provider.bioBn,
-      bioEn: capability.provider.bioEn,
+      bio: resolveTranslation(capability.provider.translations, defaultLocale, defaultLocale)?.bio ?? "",
       userName: capability.provider.user.name,
       email: capability.provider.user.email,
       phone: capability.provider.user.phone,
@@ -610,15 +743,13 @@ export async function getAdminWorkspace(
       id: listing.id,
       sectorSlug: listing.sectorSlug,
       kind: listing.kind,
-      titleBn: listing.titleBn,
-      titleEn: listing.titleEn,
+      title: resolveTranslation(listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       category: listing.category,
       district: listing.district,
       unit: listing.unit,
       unitPrice: listing.unitPrice.toString(),
       stock: listing.stock.toString(),
-      providerNameBn: listing.provider.nameBn,
-      providerNameEn: listing.provider.nameEn,
+      providerName: resolveTranslation(listing.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
     })),
     requests: requests.map((request) => ({
       id: request.id,
@@ -626,10 +757,8 @@ export async function getAdminWorkspace(
       status: request.status,
       buyerName: request.buyer.name,
       providerId: request.provider.id,
-      providerNameBn: request.provider.nameBn,
-      providerNameEn: request.provider.nameEn,
-      titleBn: request.listing.titleBn,
-      titleEn: request.listing.titleEn,
+      providerName: resolveTranslation(request.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+      title: resolveTranslation(request.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       kind: request.listing.kind,
       unit: request.listing.unit,
       quantity: request.quantity.toString(),
@@ -651,11 +780,9 @@ export async function getAdminWorkspace(
     disputes: disputes.map((order) => ({
       id: order.id,
       sectorSlug: order.request.sectorSlug,
-      titleBn: order.listing.titleBn,
-      titleEn: order.listing.titleEn,
+      title: resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       buyerName: order.buyer.name,
-      providerNameBn: order.provider.nameBn,
-      providerNameEn: order.provider.nameEn,
+      providerName: resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
       subtotal: order.subtotal.toString(),
       cancellationReason: order.cancellationReason,
     })),
@@ -663,11 +790,9 @@ export async function getAdminWorkspace(
       id: commission.id,
       amount: commission.amount.toString(),
       sectorSlug: commission.order.request.sectorSlug,
-      titleBn: commission.order.listing.titleBn,
-      titleEn: commission.order.listing.titleEn,
+      title: resolveTranslation(commission.order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       buyerName: commission.order.buyer.name,
-      providerNameBn: commission.order.provider.nameBn,
-      providerNameEn: commission.order.provider.nameEn,
+      providerName: resolveTranslation(commission.order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
     })),
     paymentMismatches: paymentMismatches.map((payment) => ({
       id: payment.id,
@@ -678,16 +803,13 @@ export async function getAdminWorkspace(
       providerConfirmed: Boolean(payment.providerConfirmedAt),
       hasReceipt: Boolean(payment.receiptKey),
       sectorSlug: payment.order.request.sectorSlug,
-      titleBn: payment.order.listing.titleBn,
-      titleEn: payment.order.listing.titleEn,
+      title: resolveTranslation(payment.order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       buyerName: payment.order.buyer.name,
-      providerNameBn: payment.order.provider.nameBn,
-      providerNameEn: payment.order.provider.nameEn,
+      providerName: resolveTranslation(payment.order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
     })),
     sectors: sectors.map((sector) => ({
       slug: sector.slug,
-      titleBn: sector.titleBn,
-      titleEn: sector.titleEn,
+      title: resolveTranslation(sector.translations, defaultLocale, defaultLocale)?.title ?? "",
       commissionRate: sector.commissionRate.toString(),
     })),
     staffGrants: staffGrants.map((grant) => ({
@@ -708,7 +830,10 @@ export async function getAdminWorkspace(
       budget: decimal(request.budget),
       status: request.status,
       createdAt: iso(request.createdAt),
-      service: request.serviceDefinition,
+      service: {
+        ...request.serviceDefinition,
+        ...resolveTranslation(request.serviceDefinition.translations, defaultLocale, defaultLocale),
+      },
       answers: request.answers,
       fieldSnapshot: request.fieldSnapshot,
       assignedTo: request.assignedTo,
@@ -716,12 +841,23 @@ export async function getAdminWorkspace(
       updates: request.updates.map((update) => ({
         id: update.id,
         visibility: update.visibility,
-        messageBn: update.messageBn,
-        messageEn: update.messageEn,
+        message: resolveTranslation(update.translations, defaultLocale, defaultLocale)?.message ?? "",
         createdAt: iso(update.createdAt),
       })),
       attachments: request.attachments,
-      marketplaceRequest: request.marketplaceRequest,
+      marketplaceRequest: request.marketplaceRequest
+        ? {
+            ...request.marketplaceRequest,
+            listing: {
+              ...request.marketplaceRequest.listing,
+              ...resolveTranslation(
+                request.marketplaceRequest.listing.translations,
+                defaultLocale,
+                defaultLocale,
+              ),
+            },
+          }
+        : null,
     })),
     agricultureStaff,
     agricultureFilters,
@@ -733,8 +869,12 @@ export async function getCustomerAgricultureRequest(userId: string, requestId: n
   const request = await prisma.serviceRequest.findFirst({
     where: { id: requestId, userId, serviceDefinition: { sectorSlug: "agriculture-labor" } },
     include: {
-      serviceDefinition: { select: { slug: true, titleBn: true, titleEn: true, icon: true } },
-      updates: { where: { visibility: "CUSTOMER" }, orderBy: { createdAt: "asc" } },
+      serviceDefinition: { include: { translations: true } },
+      updates: {
+        where: { visibility: "CUSTOMER" },
+        orderBy: { createdAt: "asc" },
+        include: { translations: true },
+      },
       attachments: {
         select: { id: true, filename: true, contentType: true, sizeBytes: true, createdAt: true },
       },
@@ -753,11 +893,13 @@ export async function getCustomerAgricultureRequest(userId: string, requestId: n
     answers: request.answers,
     fieldSnapshot: request.fieldSnapshot,
     createdAt: iso(request.createdAt),
-    service: request.serviceDefinition,
+    service: {
+      ...request.serviceDefinition,
+      ...resolveTranslation(request.serviceDefinition.translations, defaultLocale, defaultLocale),
+    },
     updates: request.updates.map((update) => ({
       id: update.id,
-      messageBn: update.messageBn,
-      messageEn: update.messageEn,
+      message: resolveTranslation(update.translations, defaultLocale, defaultLocale)?.message ?? "",
       createdAt: iso(update.createdAt),
     })),
     attachments: request.attachments.map((attachment) => ({
@@ -801,8 +943,8 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
         ...(isOwner ? {} : { where: { providerId: providerId ?? undefined } }),
         orderBy: { createdAt: "desc" },
         include: {
-          listing: { select: { id: true, titleBn: true, titleEn: true, kind: true, unit: true } },
-          provider: { select: { id: true, nameBn: true, nameEn: true } },
+          listing: { include: { translations: true } },
+          provider: { include: { translations: true } },
           projectPackage: { select: { id: true, label: true, kind: true } },
           quote: true,
           order: { select: { id: true, status: true } },
@@ -812,8 +954,8 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
         ...(isOwner ? {} : { where: { providerId: providerId ?? undefined } }),
         orderBy: { createdAt: "desc" },
         include: {
-          listing: { select: { titleBn: true, titleEn: true, kind: true } },
-          provider: { select: { id: true, nameBn: true, nameEn: true } },
+          listing: { include: { translations: true } },
+          provider: { include: { translations: true } },
           projectPackage: { select: { id: true, label: true } },
           payments: { orderBy: { createdAt: "desc" } },
         },
@@ -836,7 +978,7 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       milestones: {
         ...(isOwner ? {} : { where: { assignedProviderId: providerId ?? undefined } }),
         orderBy: { createdAt: "asc" },
-        include: { assignedProvider: { select: { id: true, nameBn: true, nameEn: true } } },
+        include: { assignedProvider: { include: { translations: true } } },
       },
       documents: {
         select: { id: true, filename: true, contentType: true, sizeBytes: true, createdAt: true },
@@ -883,10 +1025,14 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       packageKind: request.projectPackage?.kind ?? null,
       requestedStart: iso(request.requestedStart),
       requestedEnd: iso(request.requestedEnd),
-      listing: request.listing,
+      listing: {
+        ...request.listing,
+        title: resolveTranslation(request.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+        description:
+          resolveTranslation(request.listing.translations, defaultLocale, defaultLocale)?.description ?? "",
+      },
       providerId: request.provider.id,
-      providerNameBn: request.provider.nameBn,
-      providerNameEn: request.provider.nameEn,
+      providerName: resolveTranslation(request.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
       quote: request.quote
         ? {
             id: request.quote.id,
@@ -905,14 +1051,12 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       status: order.status,
       subtotal: order.subtotal.toString(),
       transportFee: order.transportFee.toString(),
-      titleBn: order.listing.titleBn,
-      titleEn: order.listing.titleEn,
+      title: resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
       kind: order.listing.kind,
       providerId: order.provider.id,
       packageId: order.projectPackage?.id ?? null,
       packageLabel: order.projectPackage?.label ?? null,
-      providerNameBn: order.provider.nameBn,
-      providerNameEn: order.provider.nameEn,
+      providerName: resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
       payments: order.payments.map((payment) => ({
         id: payment.id,
         amount: payment.amount.toString(),
@@ -934,8 +1078,11 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       assignedProvider: milestone.assignedProvider
         ? {
             id: milestone.assignedProvider.id,
-            nameBn: milestone.assignedProvider.nameBn,
-            nameEn: milestone.assignedProvider.nameEn,
+            name: resolveTranslation(
+              milestone.assignedProvider.translations,
+              defaultLocale,
+              defaultLocale,
+            )?.name ?? "",
           }
         : null,
     })),

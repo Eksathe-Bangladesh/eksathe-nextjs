@@ -37,7 +37,6 @@ export function ConstructionHome({
   const locale = useLocale();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const english = locale === "en";
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const services = useMemo(
     () =>
@@ -172,19 +171,19 @@ export function ConstructionHome({
                 <Card className="hover:border-primary/40 h-full transition-colors">
                   <ListingImage
                     listing={listing}
-                    alt={english ? listing.titleEn : listing.titleBn}
+                    alt={listing.title}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <CardHeader>
-                    <CardTitle>{english ? listing.titleEn : listing.titleBn}</CardTitle>
+                    <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {english ? listing.providerNameEn : listing.providerNameBn} ·{" "}
+                      {listing.providerName} ·{" "}
                       {listing.district}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground line-clamp-2 text-sm">
-                      {english ? listing.descriptionEn : listing.descriptionBn}
+                      {listing.description}
                     </p>
                     <p className="text-primary mt-3 font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
@@ -329,9 +328,9 @@ export function ConstructionHome({
                   {step.icon}
                 </span>
                 <p className="text-primary text-xs font-semibold">{formatter.number(index + 1)}</p>
-                <h3 className="font-semibold">{english ? step.titleEn : step.titleBn}</h3>
+                <h3 className="font-semibold">{locale === "bn" ? step.titleBn : step.titleEn}</h3>
                 <p className="text-muted-foreground text-sm leading-6">
-                  {english ? step.bodyEn : step.bodyBn}
+                  {{ en: step.bodyEn, bn: step.bodyBn }[locale]}
                 </p>
               </CardContent>
             </Card>

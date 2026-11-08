@@ -34,7 +34,7 @@ async function CreateProjectContent({
           ? { serviceSlug: service.slug, labelBn: service.titleBn, labelEn: service.titleEn }
           : {}),
         ...(listing
-          ? { listingId: listing.id, labelBn: listing.titleBn, labelEn: listing.titleEn }
+          ? { listingId: listing.id, labelBn: listing.title, labelEn: listing.title }
           : {}),
       }}
     />

@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { ArrowRightIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 
 import { EmergencyButton } from "@/components/landing/emergency-button";
 import { Badge } from "@/components/ui/badge";
@@ -11,10 +11,9 @@ import { Link } from "@/i18n/navigation";
 
 export function HeroSection({ totalPanels }: { totalPanels: number }) {
   const formatter = useFormatter();
-  const locale = useLocale();
   const t = useTranslations();
 
-  const formattedCount = locale === "bn" ? formatter.number(totalPanels) : totalPanels.toString();
+  const formattedCount = formatter.number(totalPanels);
 
   return (
     <section className="hero-surface">

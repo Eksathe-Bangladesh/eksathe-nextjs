@@ -9,7 +9,7 @@ import {
   StarIcon,
   UserRoundIcon,
 } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -42,7 +42,6 @@ export function ListingDetail({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   const price = (value: string) =>
     formatter.number(Number(value), {
       style: "currency",
@@ -77,20 +76,20 @@ export function ListingDetail({
           <Card>
             <ListingImage
               listing={listing}
-              alt={locale === "bn" ? listing.titleBn : listing.titleEn}
+              alt={listing.title}
               sizes="(max-width: 1024px) 100vw, 60vw"
             />
             <CardHeader>
               <p className="text-primary text-sm font-medium">
-                {locale === "bn" ? listing.category : listing.category}
+                {listing.category}
               </p>
               <CardTitle className="text-3xl">
-                {locale === "bn" ? listing.titleBn : listing.titleEn}
+                {listing.title}
               </CardTitle>
               <CardDescription className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1">
                   <UserRoundIcon className="size-4" aria-hidden="true" />
-                  {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}
+                  {listing.providerName}
                 </span>
                 <span aria-hidden="true">·</span>
                 <span className="inline-flex items-center gap-1">
@@ -108,7 +107,7 @@ export function ListingDetail({
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
               <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
-                {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
+                {listing.description}
               </p>
               <div className="bg-muted/60 grid gap-3 rounded-xl p-4 sm:grid-cols-3">
                 <div>
@@ -160,7 +159,7 @@ export function ListingDetail({
               <CardHeader>
                 <CardTitle className="text-xl">{t("inline.seller_qlcxju")}</CardTitle>
                 <CardDescription className="flex flex-wrap items-center gap-2">
-                  {locale === "bn" ? provider.nameBn : provider.nameEn} · {provider.district}
+                  {provider.name} · {provider.district}
                   {provider.averageRating !== null && (
                     <span className="inline-flex items-center gap-1">
                       <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
@@ -171,7 +170,7 @@ export function ListingDetail({
               </CardHeader>
               <CardContent className="flex flex-wrap items-center gap-3">
                 <p className="text-muted-foreground max-w-2xl text-sm">
-                  {locale === "bn" ? provider.bioBn : provider.bioEn}
+                  {provider.bio}
                 </p>
                 <Link
                   href={`${base}/providers/${provider.id}`}
@@ -196,7 +195,7 @@ export function ListingDetail({
                         className="border-border/70 hover:border-primary/40 rounded-xl border p-4"
                       >
                         <p className="font-semibold">
-                          {locale === "bn" ? item.titleBn : item.titleEn}
+                          {item.title}
                         </p>
                         <p className="text-muted-foreground mt-1 text-sm">
                           {item.category} · {item.unitPrice} BDT / {item.unit}

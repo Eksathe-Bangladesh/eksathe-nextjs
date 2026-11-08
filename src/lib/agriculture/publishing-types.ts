@@ -7,8 +7,7 @@ export type AgricultureSupportContact = {
 
 export type AgricultureMarketPriceRecord = {
   id: string;
-  productBn: string;
-  productEn: string;
+  product: string;
   market: string;
   district: string;
   unit: string;
@@ -22,10 +21,8 @@ export type AgricultureMarketPriceRecord = {
 export type AgricultureUpdateRecord = {
   id: string;
   kind: "NEWS" | "ADVICE" | "WEATHER_ALERT";
-  titleBn: string;
-  titleEn: string;
-  bodyBn: string;
-  bodyEn: string;
+  title: string;
+  body: string;
   source: string;
   status: "DRAFT" | "PUBLISHED";
   publishedAt: string;

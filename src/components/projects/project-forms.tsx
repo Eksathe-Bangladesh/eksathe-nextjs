@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import {
@@ -136,11 +136,10 @@ export function AddMilestoneForm({
   providers,
 }: {
   projectId: string;
-  providers: Array<{ id: string; nameBn: string; nameEn: string }>;
+  providers: Array<{ id: string; name: string }>;
 }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(addMilestoneAction, initialWorkflowState);
-  const locale = useLocale();
   return (
     <form
       action={action}
@@ -157,7 +156,7 @@ export function AddMilestoneForm({
           <NativeSelectOption value="">{t("inline.choose_a_provider_1my4w7f")}</NativeSelectOption>
           {providers.map((provider) => (
             <NativeSelectOption key={provider.id} value={provider.id}>
-              {locale === "bn" ? provider.nameBn : provider.nameEn}
+              {provider.name}
             </NativeSelectOption>
           ))}
         </NativeSelect>

@@ -48,7 +48,7 @@ export function ProviderApplicationForm({
   return (
     <form action={action} className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="provider-name-bn" label={t("workflow.providerNameBn")}>
+        <Field id="provider-name-bn" label={t("inline.name_bangla_1lm9czd")}>
           <Input
             id="provider-name-bn"
             name="nameBn"
@@ -57,7 +57,7 @@ export function ProviderApplicationForm({
             maxLength={100}
           />
         </Field>
-        <Field id="provider-name-en" label={t("workflow.providerNameEn")}>
+        <Field id="provider-name-en" label={t("inline.name_english_1odtjyj")}>
           <Input
             id="provider-name-en"
             name="nameEn"

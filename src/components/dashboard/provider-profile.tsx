@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { ArrowLeftIcon, MapPinIcon, StarIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -27,7 +27,6 @@ export function ProviderProfile({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   if (unavailable)
     return (
       <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
@@ -86,7 +85,7 @@ export function ProviderProfile({
               )}
             </div>
             <CardTitle className="text-3xl">
-              {locale === "bn" ? provider.nameBn : provider.nameEn}
+              {provider.name}
             </CardTitle>
           </div>
           <CardDescription className="flex flex-wrap items-center gap-3">
@@ -106,7 +105,7 @@ export function ProviderProfile({
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
-            {locale === "bn" ? provider.bioBn : provider.bioEn}
+            {provider.bio}
           </p>
         </CardContent>
       </Card>
@@ -123,11 +122,11 @@ export function ProviderProfile({
               <Card key={listing.id}>
                 <ListingImage
                   listing={listing}
-                  alt={locale === "bn" ? listing.titleBn : listing.titleEn}
+                  alt={listing.title}
                   sizes="(max-width: 1024px) 100vw, 33vw"
                 />
                 <CardHeader>
-                  <CardTitle>{locale === "bn" ? listing.titleBn : listing.titleEn}</CardTitle>
+                  <CardTitle>{listing.title}</CardTitle>
                   <CardDescription className="flex items-center gap-2">
                     {listing.district} · {listing.category}
                     {listing.averageRating !== null && (
@@ -140,7 +139,7 @@ export function ProviderProfile({
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground line-clamp-3 text-sm">
-                    {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
+                    {listing.description}
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-primary text-sm font-semibold">

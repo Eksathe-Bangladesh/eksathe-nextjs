@@ -13,10 +13,8 @@ import { initialWorkflowState } from "@/lib/workflow-state";
 
 export type StorefrontValues = {
   id: string;
-  nameBn: string;
-  nameEn: string;
-  bioBn: string;
-  bioEn: string;
+  name: string;
+  bio: string;
   district: string;
   upazila: string | null;
   hasProfileImage: boolean;
@@ -109,7 +107,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           <Input
             id="storefront-name-bn"
             name="nameBn"
-            defaultValue={profile.nameBn}
+            defaultValue={profile.name}
             required
             maxLength={100}
           />
@@ -118,7 +116,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           <Input
             id="storefront-name-en"
             name="nameEn"
-            defaultValue={profile.nameEn}
+            defaultValue={profile.name}
             required
             maxLength={100}
           />
@@ -147,7 +145,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           name="bioBn"
           rows={3}
           maxLength={1200}
-          defaultValue={profile.bioBn}
+          defaultValue={profile.bio}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
@@ -157,7 +155,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           name="bioEn"
           rows={3}
           maxLength={1200}
-          defaultValue={profile.bioEn}
+          defaultValue={profile.bio}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>

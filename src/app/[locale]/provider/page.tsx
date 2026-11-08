@@ -7,10 +7,12 @@ import { WorkspaceError } from "@/components/workflows/workspace-error";
 import { requireUser } from "@/lib/dal";
 import { logError } from "@/lib/logging";
 import { getProviderWorkspace } from "@/lib/workspaces";
+import { getLocale } from "next-intl/server";
 
 async function ProviderPageContent() {
   const user = await requireUser("/provider");
-  const workspace = await getProviderWorkspace(user.id).catch((error) => {
+  const locale = await getLocale();
+  const workspace = await getProviderWorkspace(user.id, locale).catch((error) => {
     logError("workspace.provider_query_failed", error);
     return undefined;
   });
