@@ -10,7 +10,7 @@ import {
   UserRoundPlusIcon,
   XIcon,
 } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { signOutAction } from "@/app/actions/session";
@@ -154,7 +154,6 @@ export function SiteHeader({
   canAdmin = false,
   isAgroAdmin = false,
 }: SiteHeaderProps) {
-  const locale = useLocale();
   const t = useTranslations();
   const [navigationOpen, setNavigationOpen] = useState(false);
 
@@ -248,13 +247,7 @@ export function SiteHeader({
             aria-controls="site-navigation"
             aria-expanded={navigationOpen}
             aria-label={
-              locale === "bn"
-                ? navigationOpen
-                  ? "মেনু বন্ধ করুন"
-                  : "মেনু খুলুন"
-                : navigationOpen
-                  ? "Close menu"
-                  : "Open menu"
+              navigationOpen ? t("nav.closeMenu") : t("nav.openMenu")
             }
             onClick={() => {
               setNavigationOpen((open) => !open);

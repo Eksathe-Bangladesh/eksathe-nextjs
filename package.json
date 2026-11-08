@@ -24,6 +24,8 @@
     "db:deploy": "bun prisma/deploy.ts",
     "db:seed": "prisma db seed",
     "db:seed:demo": "bun prisma/seed-demo.ts",
+    "db:backfill-translations": "bun prisma/scripts/backfill-translations.ts",
+    "db:verify-translations": "bun prisma/scripts/verify-translations.ts",
     "db:studio": "prisma studio",
     "db:status": "prisma migrate status",
     "admin:bootstrap": "bun prisma/bootstrap-admin.ts",

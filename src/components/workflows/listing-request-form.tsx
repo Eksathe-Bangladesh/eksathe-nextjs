@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useActionState, useSyncExternalStore } from "react";
 
 import { createMarketplaceRequestAction } from "@/app/actions/marketplace";
@@ -36,7 +36,6 @@ export function ListingRequestForm({
     createMarketplaceRequestAction,
     initialWorkflowState,
   );
-  const locale = useLocale();
   const today = useSyncExternalStore(subscribeToDayChange, getClientToday, getServerToday);
   const isScheduled =
     listing.kind === "WORKER" ||
@@ -76,9 +75,7 @@ export function ListingRequestForm({
             required
           />
           <p className="text-muted-foreground text-xs">
-            {locale === "bn"
-              ? `উপলভ্য: ${listing.stock} ${listing.unit}`
-              : `Available: ${listing.stock} ${listing.unit}`}
+            {t("workflow.availableQuantity", { quantity: listing.stock, unit: listing.unit })}
           </p>
         </div>
       )}

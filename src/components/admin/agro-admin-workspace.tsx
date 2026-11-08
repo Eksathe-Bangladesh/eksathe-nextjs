@@ -28,7 +28,6 @@ import { initialWorkflowState } from "@/lib/workflow-state";
 
 export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }) {
   const t = useTranslations();
-  const locale = useLocale();
   const formatter = useFormatter();
   const accountTypeOptions = [
     { value: "customer", label: t("workflow.customerAccount") },
@@ -56,9 +55,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
           {t("workflow.agricultureManagement")}
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
-          {locale === "bn"
-            ? "কৃষি বিভাগের অ্যাক্সেস সুপার অ্যাডমিন নির্ধারণ করেন। এই প্যানেলে অ্যাডমিন অ্যাকাউন্ট বা অন্য বিভাগের অনুমতি পরিবর্তন করা যায় না।"
-            : "Agriculture access is granted by a Super Admin. This workspace cannot change admin accounts or permissions for other sectors."}
+          {t("workflow.agricultureAccessDescription")}
         </p>
       </header>
 

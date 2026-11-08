@@ -54,7 +54,7 @@ export function ProviderWorkspace({
         {
           id: "application",
           label: t("workflow.providerApplication"),
-          navLabel: locale === "bn" ? "আবেদন" : "Application",
+          navLabel: t("workflow.providerApplication"),
         },
       ]}
     >

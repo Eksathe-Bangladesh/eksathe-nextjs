@@ -62,7 +62,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               {
                 id: "agriculture-requests",
                 label: t("inline.agriculture_intake_11g2kyy"),
-                navLabel: locale === "bn" ? "কৃষি অনুরোধ" : "Agriculture requests",
+                navLabel: t("inline.agriculture_intake_11g2kyy"),
               },
             ]
           : []),
@@ -71,7 +71,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               {
                 id: "payment-mismatches",
                 label: t("inline.payments_10ntxis"),
-                navLabel: locale === "bn" ? "পেমেন্ট" : "Payments",
+                navLabel: t("inline.payments_10ntxis"),
               },
               { id: "commission", label: t("inline.commissions_82zxsv") },
             ]
@@ -81,12 +81,12 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               {
                 id: "commission-settings",
                 label: t("inline.rates_1hw0rt3"),
-                navLabel: locale === "bn" ? "হার" : "Rates",
+                navLabel: t("inline.rates_1hw0rt3"),
               },
               {
                 id: "staff-access",
                 label: t("workflow.manageStaff"),
-                navLabel: locale === "bn" ? "স্টাফ" : "Staff",
+                navLabel: t("workflow.manageStaff"),
               },
             ]
           : []),
@@ -100,9 +100,16 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
             : t("nav.admin")}
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
-          {locale === "bn"
-            ? `আপনার বিভাগ: ${[...new Set([...data.access.operationSectors, ...data.access.financeSectors, ...data.access.userManagementSectors, ...data.access.panelManagementSectors, ...data.access.reportSectors])].join(", ") || "সমগ্র প্ল্যাটফর্ম"}`
-            : `Your sectors: ${[...new Set([...data.access.operationSectors, ...data.access.financeSectors, ...data.access.userManagementSectors, ...data.access.panelManagementSectors, ...data.access.reportSectors])].join(", ") || "platform-wide"}`}
+          {t("workflow.sectorsSummary", {
+            sectors:
+              [...new Set([
+                ...data.access.operationSectors,
+                ...data.access.financeSectors,
+                ...data.access.userManagementSectors,
+                ...data.access.panelManagementSectors,
+                ...data.access.reportSectors,
+              ])].join(", ") || t("workflow.platformWide"),
+          })}
         </p>
         {agricultureManagementEnabled && (
           <Link
@@ -332,9 +339,12 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                       </a>
                     )}
                     <p className="text-muted-foreground text-xs">
-                      {locale === "bn"
-                        ? `ক্রেতা নিশ্চিত: ${payment.buyerConfirmed ? "হ্যাঁ" : "না"} · সেবাদাতা নিশ্চিত: ${payment.providerConfirmed ? "হ্যাঁ" : "না"}`
-                        : `Customer confirmed: ${payment.buyerConfirmed ? "yes" : "no"} · Provider confirmed: ${payment.providerConfirmed ? "yes" : "no"}`}
+                      {t("workflow.confirmationSummary", {
+                        buyer: payment.buyerConfirmed ? t("workflow.yes") : t("workflow.no"),
+                        provider: payment.providerConfirmed
+                          ? t("workflow.yes")
+                          : t("workflow.no"),
+                      })}
                     </p>
                     <RefundForm paymentId={payment.id} />
                   </CardContent>

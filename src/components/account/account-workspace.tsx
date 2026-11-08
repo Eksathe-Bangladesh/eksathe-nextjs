@@ -52,7 +52,7 @@ export function AccountWorkspace({
         {
           id: "agriculture-requests",
           label: t("inline.agriculture_service_requests_zyhcii"),
-          navLabel: locale === "bn" ? "কৃষি অনুরোধ" : "Agriculture requests",
+          navLabel: t("inline.agriculture_service_requests_zyhcii"),
           icon: ClipboardListIcon,
         },
         { id: "requests", label: t("inline.requests_1muw0v3"), icon: ClipboardListIcon },
@@ -60,7 +60,7 @@ export function AccountWorkspace({
         {
           id: "projects",
           label: t("workflow.projectTitle"),
-          navLabel: locale === "bn" ? "প্রকল্প" : "Projects",
+          navLabel: t("workflow.projectTitle"),
           icon: HardHatIcon,
         },
         { id: "notifications", label: t("dashboard.notifications"), icon: BellIcon },
@@ -69,7 +69,7 @@ export function AccountWorkspace({
       <div>
         <p className="text-primary text-sm">{t("inline.your_account_1fpb5vs")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
-          {locale === "bn" ? `স্বাগতম, ${user.name}` : `Welcome, ${user.name}`}
+          {t("inline.welcome", { name: user.name })}
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">{user.email}</p>
       </div>

@@ -12,7 +12,7 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   for (const sector of sectors) {
-    await prisma.sector.upsert({
+    const savedSector = await prisma.sector.upsert({
       where: { slug: sector.slug },
       update: {
         position: sector.id,
@@ -29,6 +29,16 @@ async function main() {
         icon: sector.icon,
         status: sector.status === "live" ? "LIVE" : "COMING_SOON",
       },
+    });
+    await prisma.sectorTranslation.upsert({
+      where: { sectorSlug_locale: { sectorSlug: savedSector.slug, locale: "en" } },
+      update: { title: enMessages.sectors[sector.slug] },
+      create: { sectorSlug: savedSector.slug, locale: "en", title: enMessages.sectors[sector.slug] },
+    });
+    await prisma.sectorTranslation.upsert({
+      where: { sectorSlug_locale: { sectorSlug: savedSector.slug, locale: "bn" } },
+      update: { title: bnMessages.sectors[sector.slug] },
+      create: { sectorSlug: savedSector.slug, locale: "bn", title: bnMessages.sectors[sector.slug] },
     });
   }
 
@@ -47,6 +57,30 @@ async function main() {
       where: { slug: service.slug },
       update: serviceData,
       create: serviceData,
+    });
+    const savedService = await prisma.serviceDefinition.findUniqueOrThrow({
+      where: { slug: service.slug },
+      select: { id: true },
+    });
+    await prisma.serviceDefinitionTranslation.upsert({
+      where: { serviceDefinitionId_locale: { serviceDefinitionId: savedService.id, locale: "en" } },
+      update: { title: service.titleEn, description: service.descriptionEn },
+      create: {
+        serviceDefinitionId: savedService.id,
+        locale: "en",
+        title: service.titleEn,
+        description: service.descriptionEn,
+      },
+    });
+    await prisma.serviceDefinitionTranslation.upsert({
+      where: { serviceDefinitionId_locale: { serviceDefinitionId: savedService.id, locale: "bn" } },
+      update: { title: service.titleBn, description: service.descriptionBn },
+      create: {
+        serviceDefinitionId: savedService.id,
+        locale: "bn",
+        title: service.titleBn,
+        description: service.descriptionBn,
+      },
     });
   }
 
