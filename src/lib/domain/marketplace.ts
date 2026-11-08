@@ -191,11 +191,13 @@ async function notify(tx: Tx, userId: string, type: NotificationType, href: stri
       userId,
       title: copy.titleEn,
       message: copy.messageEn,
-      titleBn: copy.titleBn,
-      titleEn: copy.titleEn,
-      messageBn: copy.messageBn,
-      messageEn: copy.messageEn,
       href,
+      translations: {
+        create: [
+          { locale: "en", title: copy.titleEn, message: copy.messageEn },
+          { locale: "bn", title: copy.titleBn, message: copy.messageBn },
+        ],
+      },
     },
   });
 }

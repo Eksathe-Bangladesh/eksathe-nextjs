@@ -294,9 +294,21 @@ export async function updateAgricultureServiceRequest(input: {
           titleBn: "কৃষি অনুরোধ হালনাগাদ হয়েছে",
           titleEn: "Agriculture request updated",
           message: copy.messageEn,
-          messageBn: copy.messageBn,
-          messageEn: copy.messageEn,
           href: `/account/agriculture-requests/${current.id}`,
+          translations: {
+            create: [
+              {
+                locale: "en",
+                title: "Agriculture request updated",
+                message: copy.messageEn,
+              },
+              {
+                locale: "bn",
+                title: "কৃষি অনুরোধ হালনাগাদ হয়েছে",
+                message: copy.messageBn,
+              },
+            ],
+          },
         },
       });
     }
