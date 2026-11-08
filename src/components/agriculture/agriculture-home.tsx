@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "cn";
-import { ArrowRightIcon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, SearchIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
 import { useMemo, useState } from "react";
 
@@ -65,13 +65,14 @@ export function AgricultureHome({
     });
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
       {showDashboardBackLink && (
         <Link
           href="/dashboard"
-          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm font-medium"
+          className="text-muted-foreground hover:text-foreground -mb-3 inline-flex w-fit items-center gap-2 px-2 text-sm font-medium"
         >
-          ← {t("inline.back_to_dashboard_2v17ca")}
+          <ArrowLeftIcon aria-hidden="true" className="size-4" />
+          {t("inline.back_to_dashboard_2v17ca")}
         </Link>
       )}
 
@@ -173,8 +174,7 @@ export function AgricultureHome({
                   <CardHeader>
                     <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {listing.providerName} ·{" "}
-                      {listing.district}
+                      {listing.providerName} · {listing.district}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -253,20 +253,24 @@ export function AgricultureHome({
                       </span>
                       <div>
                         <CardTitle className="text-base">
-                          {{
-                            en: override?.title ?? service.titleEn,
-                            bn: override?.title ?? service.titleBn,
-                          }[locale]}
+                          {
+                            {
+                              en: override?.title ?? service.titleEn,
+                              bn: override?.title ?? service.titleBn,
+                            }[locale]
+                          }
                         </CardTitle>
                         <CardDescription className="mt-2 line-clamp-2">
-                          {{
-                            en:
-                              override?.description ??
-                              t(`agricultureServices.${service.slug}.description` as never),
-                            bn:
-                              override?.description ??
-                              t(`agricultureServices.${service.slug}.description` as never),
-                          }[locale]}
+                          {
+                            {
+                              en:
+                                override?.description ??
+                                t(`agricultureServices.${service.slug}.description` as never),
+                              bn:
+                                override?.description ??
+                                t(`agricultureServices.${service.slug}.description` as never),
+                            }[locale]
+                          }
                         </CardDescription>
                       </div>
                     </CardHeader>
@@ -345,8 +349,8 @@ export function AgricultureHome({
                 {publicInfo.prices.length ? (
                   publicInfo.prices.slice(0, 3).map((price) => (
                     <p key={price.id} className="text-sm">
-                      <strong>{price.product}</strong> ·{" "}
-                      {price.market}, {price.district} · {formatMoney(price.price)} / {price.unit}
+                      <strong>{price.product}</strong> · {price.market}, {price.district} ·{" "}
+                      {formatMoney(price.price)} / {price.unit}
                     </p>
                   ))
                 ) : (

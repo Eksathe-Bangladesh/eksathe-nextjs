@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "cn";
-import { ArrowRightIcon, Building2Icon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, Building2Icon, SearchIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
 import { useMemo, useState } from "react";
 
@@ -62,9 +62,10 @@ export function ConstructionHome({
       {showDashboardBackLink && (
         <Link
           href="/dashboard"
-          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm font-medium"
+          className="text-muted-foreground hover:text-foreground -mb-3 inline-flex w-fit items-center gap-2 px-2 text-sm font-medium"
         >
-          ← {t("inline.back_to_dashboard_2v17ca")}
+          <ArrowLeftIcon aria-hidden="true" className="size-4" />
+          {t("inline.back_to_dashboard_2v17ca")}
         </Link>
       )}
 
