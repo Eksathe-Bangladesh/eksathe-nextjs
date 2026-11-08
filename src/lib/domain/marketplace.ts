@@ -256,6 +256,16 @@ export async function applyForProvider(actorId: string, input: ProviderApplicati
       },
       select: { id: true },
     });
+    for (const translation of [
+      { locale: "en", name: input.nameEn, bio: input.bioEn },
+      { locale: "bn", name: input.nameBn, bio: input.bioBn },
+    ]) {
+      await tx.providerProfileTranslation.upsert({
+        where: { providerId_locale: { providerId: profile.id, locale: translation.locale } },
+        update: translation,
+        create: { providerId: profile.id, ...translation },
+      });
+    }
 
     for (const capabilityValue of new Set(input.capabilities)) {
       const [sectorSlug, kind] = capabilityValue.split(":") as [string, ListingKind];
@@ -309,6 +319,16 @@ export async function updateProviderStorefront(actorId: string, input: Storefron
         ...(input.coverImageKey ? { coverImageKey: input.coverImageKey } : {}),
       },
     });
+    for (const translation of [
+      { locale: "en", name: input.nameEn, bio: input.bioEn },
+      { locale: "bn", name: input.nameBn, bio: input.bioBn },
+    ]) {
+      await tx.providerProfileTranslation.upsert({
+        where: { providerId_locale: { providerId: profile.id, locale: translation.locale } },
+        update: translation,
+        create: { providerId: profile.id, ...translation },
+      });
+    }
     await logActivity(tx, actorId, "provider.storefront_updated", "provider", profile.id);
   });
 }
@@ -366,6 +386,22 @@ export async function createProviderListing(actorId: string, input: CreateListin
       },
       select: { id: true, sectorSlug: true },
     });
+    await tx.marketplaceListingTranslation.createMany({
+      data: [
+        {
+          listingId: listing.id,
+          locale: "en",
+          title: input.titleEn,
+          description: input.descriptionEn,
+        },
+        {
+          listingId: listing.id,
+          locale: "bn",
+          title: input.titleBn,
+          description: input.descriptionBn,
+        },
+      ],
+    });
     await logActivity(tx, actorId, "listing.submitted", "listing", listing.id);
     return listing;
   });
@@ -418,6 +454,16 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
       },
       select: { id: true, sectorSlug: true },
     });
+    for (const translation of [
+      { locale: "en", title: input.titleEn, description: input.descriptionEn },
+      { locale: "bn", title: input.titleBn, description: input.descriptionBn },
+    ]) {
+      await tx.marketplaceListingTranslation.upsert({
+        where: { listingId_locale: { listingId: updated.id, locale: translation.locale } },
+        update: translation,
+        create: { listingId: updated.id, ...translation },
+      });
+    }
     await logActivity(tx, actorId, "listing.edited_for_review", "listing", updated.id);
     return updated;
   });

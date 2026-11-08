@@ -5,11 +5,16 @@ import { Prisma } from "@/generated/prisma/client";
 import { cacheTags } from "@/lib/cache-tags";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
+import { defaultLocale, type Locale } from "@/i18n/locales";
+import { resolveTranslation } from "@/i18n/content";
+import { getLocale } from "next-intl/server";
 
 export type PublicListing = {
   id: string;
   sectorSlug: string;
   kind: "PRODUCE" | "WORKER" | "MACHINERY" | "CONSTRUCTION_MATERIAL" | "CONSTRUCTION_SERVICE";
+  title: string;
+  description: string;
   titleBn: string;
   titleEn: string;
   descriptionBn: string;
@@ -22,6 +27,7 @@ export type PublicListing = {
   availableFrom: string | null;
   hasImage: boolean;
   providerId: string;
+  providerName: string;
   providerNameBn: string;
   providerNameEn: string;
   averageRating: number | null;
@@ -33,6 +39,8 @@ export type PublicListingResult = { listing: PublicListing | null; unavailable: 
 export type PublicProvider = {
   id: string;
   sectorSlug: string;
+  name: string;
+  bio: string;
   nameBn: string;
   nameEn: string;
   bioBn: string;
@@ -48,14 +56,16 @@ export type PublicProvider = {
 };
 export type PublicProviderResult = { provider: PublicProvider | null; unavailable: boolean };
 
-const publicSelect = {
+function publicSelect(locale: Locale) {
+  const translationLocales = { in: [locale, defaultLocale] };
+  return {
   id: true,
   sectorSlug: true,
   kind: true,
-  titleBn: true,
-  titleEn: true,
-  descriptionBn: true,
-  descriptionEn: true,
+  translations: {
+    where: { locale: translationLocales },
+    select: { locale: true, title: true, description: true },
+  },
   category: true,
   district: true,
   unit: true,
@@ -63,10 +73,21 @@ const publicSelect = {
   stock: true,
   availableFrom: true,
   imageKey: true,
-  provider: { select: { id: true, nameBn: true, nameEn: true } },
+  provider: {
+    select: {
+      id: true,
+      translations: {
+        where: { locale: translationLocales },
+        select: { locale: true, name: true, bio: true },
+      },
+    },
+  },
 } as const;
+}
 
-type PublicListingRow = Prisma.MarketplaceListingGetPayload<{ select: typeof publicSelect }>;
+type PublicListingRow = Prisma.MarketplaceListingGetPayload<{
+  select: ReturnType<typeof publicSelect>;
+}>;
 
 const productKinds = ["PRODUCE", "CONSTRUCTION_MATERIAL"] as const;
 const scheduledKinds = ["WORKER", "MACHINERY", "CONSTRUCTION_SERVICE"] as const;
@@ -84,15 +105,22 @@ const publicAvailabilityWhere = (
         ],
       };
 
-function toPublicListing(row: PublicListingRow): PublicListing {
+function toPublicListing(row: PublicListingRow, locale: Locale): PublicListing {
+  const translation = resolveTranslation(row.translations, locale, defaultLocale);
+  const providerTranslation = resolveTranslation(row.provider.translations, locale, defaultLocale);
+  const title = translation?.title ?? "";
+  const description = translation?.description ?? "";
+  const providerName = providerTranslation?.name ?? "";
   return {
     id: row.id,
     sectorSlug: row.sectorSlug,
     kind: row.kind,
-    titleBn: row.titleBn,
-    titleEn: row.titleEn,
-    descriptionBn: row.descriptionBn,
-    descriptionEn: row.descriptionEn,
+    title,
+    description,
+    titleBn: title,
+    titleEn: title,
+    descriptionBn: description,
+    descriptionEn: description,
     category: row.category,
     district: row.district,
     unit: row.unit,
@@ -101,8 +129,9 @@ function toPublicListing(row: PublicListingRow): PublicListing {
     availableFrom: row.availableFrom?.toISOString() ?? null,
     hasImage: Boolean(row.imageKey),
     providerId: row.provider.id,
-    providerNameBn: row.provider.nameBn,
-    providerNameEn: row.provider.nameEn,
+    providerName,
+    providerNameBn: providerName,
+    providerNameEn: providerName,
     averageRating: null,
     reviewCount: 0,
   };
@@ -132,10 +161,11 @@ async function listingRatings(listingIds: string[]) {
 
 function withListingRatings(
   rows: PublicListingRow[],
+  locale: Locale,
   ratings: Map<string, { averageRating: number | null; reviewCount: number }>,
 ) {
   return rows.map((row) => ({
-    ...toPublicListing(row),
+    ...toPublicListing(row, locale),
     ...(ratings.get(row.id) ?? { averageRating: null, reviewCount: 0 }),
   }));
 }
@@ -148,6 +178,8 @@ async function queryPublicListings(
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
 
+  const locale = await getLocale();
+  const select = publicSelect(locale);
   const rows = await prisma.marketplaceListing.findMany({
     where: {
       sectorSlug,
@@ -163,10 +195,10 @@ async function queryPublicListings(
       },
     },
     select: {
-      ...publicSelect,
+      ...select,
       provider: {
         select: {
-          ...publicSelect.provider.select,
+          ...select.provider.select,
           capabilities: { where: { sectorSlug, status: "APPROVED" }, select: { kind: true } },
         },
       },
@@ -178,7 +210,7 @@ async function queryPublicListings(
     row.provider.capabilities.some((capability) => capability.kind === row.kind),
   );
   const ratings = await listingRatings(validRows.map((row) => row.id));
-  return { items: withListingRatings(validRows, ratings), unavailable: false };
+  return { items: withListingRatings(validRows, locale, ratings), unavailable: false };
 }
 
 export async function getPublicListings(
@@ -235,6 +267,8 @@ async function queryAgricultureMarketListings(
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
+  const locale = await getLocale();
+  const select = publicSelect(locale);
 
   const page = Math.max(1, Math.floor(filters.page ?? 1));
   const pageSize = 12;
@@ -303,10 +337,10 @@ async function queryAgricultureMarketListings(
       skip: (page - 1) * pageSize,
       take: pageSize,
       select: {
-        ...publicSelect,
+        ...select,
         provider: {
           select: {
-            ...publicSelect.provider.select,
+            ...select.provider.select,
             capabilities: {
               where: { sectorSlug: "agriculture-labor", kind: "PRODUCE", status: "APPROVED" },
               select: { id: true },
@@ -326,7 +360,7 @@ async function queryAgricultureMarketListings(
   const validRows = rows.filter((row) => row.provider.capabilities.length > 0);
   const ratings = await listingRatings(validRows.map((row) => row.id));
   return {
-    items: withListingRatings(validRows, ratings),
+    items: withListingRatings(validRows, locale, ratings),
     total,
     page,
     totalPages: Math.max(1, Math.ceil(total / pageSize)),
@@ -371,6 +405,8 @@ async function queryConstructionMarketListings(
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
+  const locale = await getLocale();
+  const select = publicSelect(locale);
 
   const page = Math.max(1, Math.floor(filters.page ?? 1));
   const pageSize = 12;
@@ -477,10 +513,10 @@ async function queryConstructionMarketListings(
       skip: (page - 1) * pageSize,
       take: pageSize,
       select: {
-        ...publicSelect,
+        ...select,
         provider: {
           select: {
-            ...publicSelect.provider.select,
+            ...select.provider.select,
             capabilities: {
               where: { sectorSlug: "construction", status: "APPROVED" },
               select: { kind: true },
@@ -508,7 +544,7 @@ async function queryConstructionMarketListings(
   );
   const ratings = await listingRatings(validRows.map((row) => row.id));
   return {
-    items: withListingRatings(validRows, ratings),
+    items: withListingRatings(validRows, locale, ratings),
     total,
     page,
     totalPages: Math.max(1, Math.ceil(total / pageSize)),
@@ -541,6 +577,8 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
+  const locale = await getLocale();
+  const select = publicSelect(locale);
 
   const row = await prisma.marketplaceListing.findFirst({
     where: {
@@ -556,10 +594,10 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
       },
     },
     select: {
-      ...publicSelect,
+      ...select,
       provider: {
         select: {
-          ...publicSelect.provider.select,
+          ...select.provider.select,
           capabilities: {
             where: { status: "APPROVED" },
             select: { sectorSlug: true, kind: true },
@@ -587,7 +625,7 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
   ]);
   return {
     listing: {
-      ...toPublicListing(row),
+      ...toPublicListing(row, locale),
       ...(ratings.get(row.id) ?? { averageRating: null, reviewCount: 0 }),
       reviews: reviews.map((review) => ({
         rating: review.rating,
@@ -615,6 +653,8 @@ async function queryPublicProviderProfile(
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.providers, cacheTags.listings);
+  const locale = await getLocale();
+  const translationLocales = { in: [locale, defaultLocale] };
 
   const profile = await prisma.providerProfile.findFirst({
     where: {
@@ -625,10 +665,10 @@ async function queryPublicProviderProfile(
     },
     select: {
       id: true,
-      nameBn: true,
-      nameEn: true,
-      bioBn: true,
-      bioEn: true,
+      translations: {
+        where: { locale: translationLocales },
+        select: { locale: true, name: true, bio: true },
+      },
       district: true,
       upazila: true,
       profileImageKey: true,
@@ -648,10 +688,10 @@ async function queryPublicProviderProfile(
           id: true,
           sectorSlug: true,
           kind: true,
-          titleBn: true,
-          titleEn: true,
-          descriptionBn: true,
-          descriptionEn: true,
+          translations: {
+            where: { locale: translationLocales },
+            select: { locale: true, title: true, description: true },
+          },
           category: true,
           district: true,
           unit: true,
@@ -669,22 +709,37 @@ async function queryPublicProviderProfile(
     },
   });
   if (!profile) return { provider: null, unavailable: false };
+  const providerTranslation = resolveTranslation(profile.translations, locale, defaultLocale);
+  const providerName = providerTranslation?.name ?? "";
+  const providerBio = providerTranslation?.bio ?? "";
   const listings: PublicListing[] = profile.listings
     .filter((listing) =>
       profile.capabilities.some((capability) => capability.kind === listing.kind),
     )
-    .map((listing) => ({
+    .map((listing) => {
+      const translation = resolveTranslation(listing.translations, locale, defaultLocale);
+      const title = translation?.title ?? "";
+      const description = translation?.description ?? "";
+      return {
       ...listing,
+      title,
+      description,
+      titleBn: title,
+      titleEn: title,
+      descriptionBn: description,
+      descriptionEn: description,
       unitPrice: listing.unitPrice.toString(),
       stock: listing.stock.toString(),
       availableFrom: listing.availableFrom?.toISOString() ?? null,
       hasImage: Boolean(listing.imageKey),
       providerId: profile.id,
-      providerNameBn: profile.nameBn,
-      providerNameEn: profile.nameEn,
+      providerName,
+      providerNameBn: providerName,
+      providerNameEn: providerName,
       averageRating: null,
       reviewCount: 0,
-    }));
+      };
+    });
   const [ratingAggregate, ratingMap] = await Promise.all([
     prisma.review.aggregate({
       where: { providerId: profile.id },
@@ -697,10 +752,12 @@ async function queryPublicProviderProfile(
     provider: {
       id: profile.id,
       sectorSlug,
-      nameBn: profile.nameBn,
-      nameEn: profile.nameEn,
-      bioBn: profile.bioBn,
-      bioEn: profile.bioEn,
+      name: providerName,
+      bio: providerBio,
+      nameBn: providerName,
+      nameEn: providerName,
+      bioBn: providerBio,
+      bioEn: providerBio,
       district: profile.district,
       upazila: profile.upazila,
       hasProfileImage: Boolean(profile.profileImageKey),
