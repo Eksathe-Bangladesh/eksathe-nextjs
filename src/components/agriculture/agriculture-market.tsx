@@ -53,7 +53,7 @@ export function AgricultureMarket({
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-4 py-8 sm:px-6">
+    <main className="mx-auto flex w-full max-w-360 flex-col gap-7 px-4 py-8 sm:px-6">
       <Link
         href={routeBase}
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"

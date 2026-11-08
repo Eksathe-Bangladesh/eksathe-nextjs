@@ -48,7 +48,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
   ] satisfies { value: AgricultureAccountStatus; label: string }[];
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-4 py-8 sm:px-6">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-8 px-4 py-8 sm:px-6">
       <header>
         <p className="text-primary text-sm font-semibold">{t("workflow.agroAdmin")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">

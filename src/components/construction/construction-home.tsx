@@ -58,7 +58,7 @@ export function ConstructionHome({
     });
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
       {showDashboardBackLink && (
         <Link
           href="/dashboard"
@@ -177,8 +177,7 @@ export function ConstructionHome({
                   <CardHeader>
                     <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {listing.providerName} ·{" "}
-                      {listing.district}
+                      {listing.providerName} · {listing.district}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
