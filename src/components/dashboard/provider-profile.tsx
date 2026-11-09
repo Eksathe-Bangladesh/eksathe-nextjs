@@ -97,8 +97,7 @@ export function ProviderProfile({
             {provider.averageRating !== null && (
               <span className="inline-flex items-center gap-1">
                 <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
-                {provider.averageRating.toFixed(1)} · {provider.reviewCount}{" "}
-                {t("inline.reviews")}
+                {provider.averageRating.toFixed(1)} · {t("marketplace.labels.reviews", { count: provider.reviewCount })}
               </span>
             )}
           </CardDescription>
@@ -111,7 +110,7 @@ export function ProviderProfile({
       </Card>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.services_and_listings")}</h2>
+        <h2 className="text-xl font-bold">{t("marketplace.providerProfile.servicesAndListings")}</h2>
         {provider.listings.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("workflow.noRecords")}
@@ -160,10 +159,10 @@ export function ProviderProfile({
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.customer_reviews")}</h2>
+        <h2 className="text-xl font-bold">{t("marketplace.labels.customerReviews")}</h2>
         {provider.reviews.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-            {t("inline.reviews_from_completed_orders_will_appear")}
+            {t("marketplace.providerProfile.emptyReviews")}
           </p>
         ) : (
           provider.reviews.map((review, index) => (

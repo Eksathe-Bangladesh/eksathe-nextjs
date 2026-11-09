@@ -41,7 +41,7 @@ export function ConstructionServiceDetail({
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.all_construction_services")}
+        {t("construction.serviceDetail.allConstructionServices")}
       </Link>
       <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-6 rounded-[2rem] border bg-linear-to-br p-6 sm:p-9 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
@@ -49,25 +49,25 @@ export function ConstructionServiceDetail({
             {service.icon}
           </span>
           <p className="text-primary mt-4 text-sm font-semibold">
-            {t("inline.construction_service")}
+            {t("construction.serviceDetail.label")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
-            {t(`constructionServices.${service.slug}.title` as never)}
+            {t(`constructionServices.${service.slug}.title`)}
           </h1>
           <p className="text-muted-foreground mt-3 max-w-3xl text-sm leading-7">
-            {t(`constructionServices.${service.slug}.description` as never)}
+            {t(`constructionServices.${service.slug}.description`)}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href={projectHref} className={buttonVariants({ size: "lg" })}>
-            {t("inline.create_a_project_for_this_service")}
+            {t("construction.serviceDetail.createAProjectForThisService")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
           <Link
             href={`${routeBase}/market?${marketParams}`}
             className={buttonVariants({ variant: "outline", size: "lg" })}
           >
-            {t("inline.browse_marketplace")}
+            {t("marketplace.actions.browse")}
           </Link>
         </div>
       </section>
@@ -75,21 +75,19 @@ export function ConstructionServiceDetail({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-primary text-sm font-semibold">
-              {t("inline.approved_construction_listings")}
+              {t("construction.serviceDetail.approvedConstructionListings")}
             </p>
             <h2 className="mt-1 text-2xl font-bold">
-              {t("constructionServices.listingsFor", {
-                service: t(
-                  `constructionServices.${service.slug}.title` as never,
-                ).toLocaleLowerCase(),
-              } as never)}
+              {t("construction.serviceDetail.listingsFor", {
+                service: t(`constructionServices.${service.slug}.title`).toLocaleLowerCase(),
+              })}
             </h2>
           </div>
           <Link
             href={`${routeBase}/market?${marketParams}`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            {t("inline.view_all_results")}
+            {t("construction.serviceDetail.viewAllResults")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
         </div>
@@ -102,11 +100,9 @@ export function ConstructionServiceDetail({
           </p>
         ) : result.items.length === 0 ? (
           <div className="rounded-2xl border border-dashed p-7">
-            <p className="text-muted-foreground text-sm">
-              {t("inline.there_are_no_approved_listings_for_this_se")}
-            </p>
+            <p className="text-muted-foreground text-sm">{t("construction.serviceDetail.empty")}</p>
             <Link href={projectHref} className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>
-              {t("inline.create_a_project")}
+              {t("projects.actions.create")}
               <ArrowRightIcon data-icon="inline-end" />
             </Link>
           </div>

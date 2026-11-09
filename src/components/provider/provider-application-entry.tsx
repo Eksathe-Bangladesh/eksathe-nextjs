@@ -12,9 +12,7 @@ export function ProviderApplicationEntry() {
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">{t("workflow.applyProvider")}</CardTitle>
-          <CardDescription>
-            {t("inline.apply_once_to_serve_customers_in_agricultu")}
-          </CardDescription>
+          <CardDescription>{t("provider.application.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <ProviderApplicationForm />

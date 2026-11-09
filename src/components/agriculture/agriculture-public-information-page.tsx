@@ -36,16 +36,16 @@ export function AgriculturePublicInformationPage({
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-8 sm:px-6 sm:py-12">
       <Link href={routeBase} className="text-primary w-fit text-sm font-medium hover:underline">
-        {t("inline.back_to_all_agriculture_services")}
+        {t("agriculture.information.backToAllAgricultureServices")}
       </Link>
       <header>
         <p className="text-primary text-sm font-semibold">
-          {t("inline.verified_agriculture_information")}
+          {t("agriculture.information.eyebrow")}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {isPrices
-            ? t("inline.market_prices")
-            : t("inline.news_advice_and_alerts")}
+            ? t("agriculture.information.marketPrices")
+            : t("agriculture.information.updatesTitle")}
         </h1>
         <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
           {isPrices
@@ -53,7 +53,7 @@ export function AgriculturePublicInformationPage({
                 en: `Prices include their market, district, unit, observation date, and source. Only prices observed within the last ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} days are shown.`,
                 bn: `প্রতিটি দামে বাজার, জেলা, একক, পর্যবেক্ষণের তারিখ ও তথ্যসূত্র রয়েছে। গত ${AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS} দিনের মধ্যে পর্যবেক্ষিত দামই দেখানো হয়।`,
               }[locale]
-            : t("inline.agriculture_news_practical_advice_and_curr")}
+            : t("agriculture.information.description")}
         </p>
       </header>
 
@@ -62,11 +62,11 @@ export function AgriculturePublicInformationPage({
           role="alert"
           className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
         >
-          {t("inline.this_information_is_temporarily_unavailabl")}
+          {t("agriculture.information.unavailable")}
         </p>
       ) : isPrices ? (
         info.prices.length === 0 ? (
-          <Empty text={t("inline.no_published_market_prices_yet")} />
+          <Empty text={t("agriculture.information.emptyPrices")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {info.prices.map((item) => (
@@ -82,10 +82,10 @@ export function AgriculturePublicInformationPage({
                     {price(item.price)} / {item.unit}
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    {t("inline.observed")}: {date(item.observedAt)}
+                    {t("agriculture.information.observed")}: {date(item.observedAt)}
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    {t("inline.source")}: {item.source}
+                    {t("common.labels.source")}: {item.source}
                   </p>
                 </CardContent>
               </Card>
@@ -93,7 +93,7 @@ export function AgriculturePublicInformationPage({
           </div>
         )
       ) : info.updates.length === 0 ? (
-        <Empty text={t("inline.no_current_updates_or_alerts")} />
+        <Empty text={t("agriculture.information.noCurrentUpdatesOrAlerts")} />
       ) : (
         <div className="flex flex-col gap-4">
           {info.updates.map((item) => {
@@ -101,10 +101,10 @@ export function AgriculturePublicInformationPage({
             const body = item.body;
             const kind =
               item.kind === "NEWS"
-                ? t("inline.news")
+                ? t("agriculture.information.news")
                 : item.kind === "ADVICE"
-                  ? t("inline.advice")
-                  : t("inline.weather_alert");
+                  ? t("agriculture.information.advice")
+                  : t("agriculture.information.weatherAlert");
             return (
               <Card key={item.id}>
                 <CardHeader>
@@ -113,7 +113,7 @@ export function AgriculturePublicInformationPage({
                       {kind}
                     </Badge>
                     <CardDescription>
-                      {t("inline.published")}: {date(item.publishedAt)}
+                      {t("common.labels.published")}: {date(item.publishedAt)}
                     </CardDescription>
                   </div>
                   <CardTitle>{title}</CardTitle>
@@ -121,9 +121,9 @@ export function AgriculturePublicInformationPage({
                 <CardContent className="flex flex-col gap-3">
                   <p className="text-sm leading-6 whitespace-pre-line">{body}</p>
                   <p className="text-muted-foreground text-sm">
-                    {t("inline.source")}: {item.source}
+                    {t("common.labels.source")}: {item.source}
                     {item.expiresAt
-                      ? ` · ${t("inline.expires")}: ${date(item.expiresAt)}`
+                      ? ` · ${t("common.labels.expires")}: ${date(item.expiresAt)}`
                       : ""}
                   </p>
                 </CardContent>

@@ -27,16 +27,18 @@ export function ConstructionCommissionCalculator({ ratePercent }: { ratePercent:
     <Card>
       <CardContent className="flex flex-col gap-5 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="font-semibold">{t("inline.estimate_a_project_transaction")}</p>
+          <p className="font-semibold">
+            {t("construction.commissionCalculator.estimateAProjectTransaction")}
+          </p>
           <Badge variant="secondary">
-            {t("inline.estimate")}
+            {t("common.labels.estimate")}
             {estimate ? ` · ${ratePercent}%` : ""}
           </Badge>
         </div>
         <FieldGroup className="grid gap-4 sm:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="construction-eligible-amount">
-              {t("inline.work_or_material_amount_bdt")}
+              {t("construction.commissionCalculator.workOrMaterialAmountBdt")}
             </FieldLabel>
             <Input
               id="construction-eligible-amount"
@@ -51,7 +53,7 @@ export function ConstructionCommissionCalculator({ ratePercent }: { ratePercent:
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-transport-amount">
-              {t("inline.separate_transport_charge_bdt")}
+              {t("common.labels.separateTransportChargeBdt")}
             </FieldLabel>
             <Input
               id="construction-transport-amount"
@@ -66,22 +68,22 @@ export function ConstructionCommissionCalculator({ ratePercent }: { ratePercent:
           </Field>
         </FieldGroup>
         <p className="text-muted-foreground text-xs leading-5">
-          {t("inline.construction_transport_commission_notice")}
+          {t("construction.commissionCalculator.transportNotice")}
         </p>
         {estimate ? (
           <div className="flex flex-col gap-3 border-t pt-4 text-sm">
             <Result
-              label={t("inline.estimated_platform_commission")}
+              label={t("common.labels.estimatedPlatformCommission")}
               value={format(estimate.commissionCents)}
             />
             <Result
-              label={t("inline.estimated_provider_amount_including_transp")}
+              label={t("common.commissionCalculator.providerAmount")}
               value={format(estimate.providerCents)}
             />
           </div>
         ) : (
           <p role="status" className="text-muted-foreground text-sm">
-            {t("inline.the_construction_commission_rate_is_not_av")}
+            {t("construction.commissionCalculator.rateUnavailable")}
           </p>
         )}
       </CardContent>

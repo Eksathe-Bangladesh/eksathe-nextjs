@@ -22,11 +22,10 @@ export async function getPageMetadata(
   canonical?: string,
 ): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  const prefix = `${page}.`;
 
   return {
-    title: t(`${prefix}title` as never),
-    description: t(`${prefix}description` as never),
+    title: t(`${page}.title`),
+    description: t(`${page}.description`),
     ...(canonical
       ? {
           alternates: {

@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: SectorPageProps): Promise<Met
     getTranslations("metadata"),
   ]);
   return {
-    title: metadata("sectorTitle", { sector: sectors(slug as never) }),
-    description: metadata("sectorDescription", { sector: sectors(slug as never) }),
+    title: metadata("sectorTitle", { sector: sectors(sector.slug) }),
+    description: metadata("sectorDescription", { sector: sectors(sector.slug) }),
   };
 }
 

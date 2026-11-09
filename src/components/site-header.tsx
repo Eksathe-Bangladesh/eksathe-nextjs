@@ -118,7 +118,7 @@ export function SiteHeaderUserMenu({
               className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
             >
               <ShieldCheckIcon aria-hidden="true" className="size-4" />
-              {isAgroAdmin ? t("workflow.agroAdmin" as never) : t("nav.admin")}
+              {isAgroAdmin ? t("workflow.agroAdmin") : t("nav.admin")}
             </Link>
           )}
           <form action={signOutAction}>

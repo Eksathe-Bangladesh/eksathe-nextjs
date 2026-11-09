@@ -6,6 +6,7 @@ import path from "node:path";
 
 import bn from "../../messages/bn.json";
 import en from "../../messages/en.json";
+import keyMigrations from "../../scripts/i18n/key-migrations.json";
 import {
   fieldLabelKey,
   optionLabelKey,
@@ -17,6 +18,7 @@ import {
   constructionServiceCategories,
   constructionServiceRegistry,
 } from "./construction/service-registry";
+import { auditTranslationReferences, translationReferences } from "./i18n/source-audit";
 import { agricultureListings, constructionListings } from "./sectors";
 const { parseAgricultureServiceAnswers } = await import("./validations/agriculture");
 
@@ -39,7 +41,7 @@ const catalogs = {
 };
 
 // Namespaces whose keys are composed at runtime and cannot be resolved statically.
-const DYNAMIC_NAMESPACES = new Set([
+const REFERENCE_NAMESPACES = new Set([
   "metadata",
   "statuses",
   "sectors",
@@ -49,6 +51,9 @@ const DYNAMIC_NAMESPACES = new Set([
   "agricultureCategories",
   "constructionCategories",
 ]);
+// These calls use validated helpers rather than directly visible template literals.
+// Exact coverage is checked by registry parity and status-key tests.
+const DYNAMIC_NAMESPACES = new Set(["agricultureServices", "statuses"]);
 
 // Values that are intentionally identical across locales.
 const UNTRANSLATED_ALLOWLIST = new Set(["common.brandName", "requestForm.phonePlaceholder"]);
@@ -68,68 +73,18 @@ function walk(directory: string, output: string[] = []) {
   return output;
 }
 
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
 function collectReferencedKeys() {
   const used = new Set<string>();
-  const namespaces = new Set([...catalogs.en.keys()].map((key) => key.split(".")[0]));
-
-  const resolve = (candidate: string) => {
-    if (catalogs.en.has(candidate)) {
-      used.add(candidate);
-      return true;
-    }
-    let found = false;
-    for (const key of catalogs.en.keys()) {
-      if (key.startsWith(`${candidate}.`)) {
-        used.add(key);
-        found = true;
-      }
-    }
-    return found;
-  };
-
+  const keys = new Set(catalogs.en.keys());
+  const missing: string[] = [];
   for (const file of walk(sourceRoot)) {
     if (file.endsWith(".test.ts") || file.endsWith(".test.tsx")) continue;
     const source = fs.readFileSync(file, "utf8");
-    const declaredNamespaces = [
-      ...source.matchAll(/(?:useTranslations|getTranslations)\(\s*["']([^"']+)["']\s*\)/g),
-    ].map((match) => match[1]);
-
-    for (const match of source.matchAll(
-      /["']([A-Za-z][A-Za-z0-9_-]*(?:\.[A-Za-z0-9_${}.-]+)+)["']/g,
-    )) {
-      const value = match[1];
-      if (value.includes("${")) continue;
-      if (!namespaces.has(value.split(".")[0])) continue;
-      resolve(value);
-    }
-
-    for (const match of source.matchAll(/["']([A-Za-z][A-Za-z0-9_-]*)["']/g)) {
-      for (const namespace of declaredNamespaces) resolve(`${namespace}.${match[1]}`);
-    }
-
-    for (const match of source.matchAll(/`([^`]*)`/g)) {
-      const template = match[1];
-      if (!template.includes("${")) continue;
-      const parts = template.split(/\$\{[^}]*\}/);
-      const patterns: string[] = [];
-      if (namespaces.has(parts[0].split(".")[0])) {
-        patterns.push(parts.map(escapeRegExp).join("[^.]+"));
-      }
-      for (const namespace of declaredNamespaces) {
-        patterns.push(`${escapeRegExp(`${namespace}.`)}${parts.map(escapeRegExp).join("[^.]+")}`);
-      }
-      for (const pattern of patterns) {
-        const regex = new RegExp(`^${pattern}$`);
-        for (const key of catalogs.en.keys()) if (regex.test(key)) used.add(key);
-      }
-    }
+    const result = auditTranslationReferences(source, keys);
+    for (const key of result.used) used.add(key);
+    for (const key of result.missing) missing.push(`${path.relative(sourceRoot, file)}: ${key}`);
   }
-
-  return used;
+  return { used, missing };
 }
 
 function expectedAgricultureServiceKeys() {
@@ -207,11 +162,47 @@ describe("i18n catalog audit", () => {
   });
 
   test("no catalog key is unreferenced", () => {
-    const used = collectReferencedKeys();
+    const { used, missing } = collectReferencedKeys();
+    expect(missing).toEqual([]);
     const unused = [...catalogs.en.keys()].filter(
       (key) => !used.has(key) && !DYNAMIC_NAMESPACES.has(key.split(".")[0]),
     );
     expect(unused).toEqual([]);
+  });
+
+  test("migration aliases point to canonical keys and retired namespaces stay removed", () => {
+    const retired = new Set([
+      "inline",
+      "panels",
+      "requestForm",
+      "commission",
+      "marketAndPolicy",
+      "emergency",
+      "categoryGrid",
+    ]);
+    for (const [before, after] of Object.entries(keyMigrations)) {
+      expect(catalogs.en.has(before)).toBe(false);
+      expect(
+        [...catalogs.en.keys()].some((key) => key === after || key.startsWith(`${after}.`)),
+        after,
+      ).toBe(true);
+    }
+    for (const key of catalogs.en.keys()) {
+      const namespace = key.split(".")[0];
+      expect(retired.has(namespace), key).toBe(false);
+      if (REFERENCE_NAMESPACES.has(namespace)) continue;
+      for (const segment of key.split("."))
+        expect(segment, key).toMatch(/^(?:[a-z][A-Za-z0-9]*|\d+)$/);
+    }
+    for (const file of walk(sourceRoot)) {
+      if (/\.test\.tsx?$/.test(file)) continue;
+      const source = fs.readFileSync(file, "utf8");
+      expect(source, file).not.toMatch(/\bas never\b/);
+      for (const reference of translationReferences(source)) {
+        if (reference.kind !== "template")
+          expect(retired.has(reference.key.split(".")[0]), file).toBe(false);
+      }
+    }
   });
 
   test("catalog-backed reference data stays out of client component imports", () => {

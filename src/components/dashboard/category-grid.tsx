@@ -17,7 +17,7 @@ export function CategoryGrid() {
     const term = query.trim().toLowerCase();
     if (!term) return categories;
     return categories.filter((cat) => {
-      const haystack = `${t(`sectors.${cat.slug}` as never)} ${cat.slug} ${cat.id}`.toLowerCase();
+      const haystack = `${t(`sectors.${cat.slug}`)} ${cat.slug} ${cat.id}`.toLowerCase();
       return haystack.includes(term);
     });
   }, [categories, query, t]);
@@ -45,7 +45,7 @@ export function CategoryGrid() {
           )}
         </div>
         <span className="text-muted-foreground hidden text-xs sm:inline">
-          {t("categoryGrid.resultCount", { count: filtered.length })}
+          {t("dashboard.categoryGrid.resultCount", { count: filtered.length })}
         </span>
       </div>
 
@@ -56,7 +56,7 @@ export function CategoryGrid() {
       ) : (
         <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {filtered.map((cat) => {
-            const label = t(`sectors.${cat.slug}` as never);
+            const label = t(`sectors.${cat.slug}`);
             return (
               <Link
                 key={cat.id}

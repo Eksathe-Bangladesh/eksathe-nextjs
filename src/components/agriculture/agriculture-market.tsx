@@ -59,17 +59,17 @@ export function AgricultureMarket({
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.back_to_agriculture")}
+        {t("agriculture.market.backToAgriculture")}
       </Link>
       <header>
         <p className="text-primary text-sm font-semibold">
-          {t("inline.agriculture_marketplace")}
+          {t("agriculture.market.name")}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
-          {t("inline.find_farm_products")}
+          {t("agriculture.market.findFarmProducts")}
         </h1>
         <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
-          {t("inline.search_listings_by_seller_category_distric")}
+          {t("agriculture.market.description")}
         </p>
       </header>
       <form
@@ -86,7 +86,7 @@ export function AgricultureMarket({
             className="pl-9"
             name="q"
             defaultValue={filters.q}
-            placeholder={t("inline.search_products_or_sellers")}
+            placeholder={t("agriculture.market.searchProductsOrSellers")}
           />
         </div>
         <NativeSelect
@@ -95,7 +95,7 @@ export function AgricultureMarket({
           aria-label={t("workflow.category")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <NativeSelectOption value="">{t("inline.all_categories")}</NativeSelectOption>
+          <NativeSelectOption value="">{t("common.labels.allCategories")}</NativeSelectOption>
           {categoryOptions.map((item) => (
             <NativeSelectOption key={item.value} value={item.value}>
               {bn ? item.bn : item.en}
@@ -121,8 +121,8 @@ export function AgricultureMarket({
           min="0"
           step="0.01"
           defaultValue={filters.minPrice}
-          aria-label={t("inline.minimum_price")}
-          placeholder={t("inline.min_bdt")}
+          aria-label={t("common.labels.minimumPrice")}
+          placeholder={t("agriculture.market.minBdt")}
         />
         <Input
           name="maxPrice"
@@ -130,27 +130,27 @@ export function AgricultureMarket({
           min="0"
           step="0.01"
           defaultValue={filters.maxPrice}
-          aria-label={t("inline.maximum_price")}
-          placeholder={t("inline.max_bdt")}
+          aria-label={t("common.labels.maximumPrice")}
+          placeholder={t("agriculture.market.maxBdt")}
         />
         <NativeSelect
           name="sort"
           defaultValue={filters.sort ?? "newest"}
-          aria-label={t("inline.sort")}
+          aria-label={t("agriculture.market.sort")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <NativeSelectOption value="newest">{t("inline.newest")}</NativeSelectOption>
+          <NativeSelectOption value="newest">{t("common.labels.newest")}</NativeSelectOption>
           <NativeSelectOption value="price-asc">
-            {t("inline.price_low_to_high")}
+            {t("common.labels.priceLowToHigh")}
           </NativeSelectOption>
           <NativeSelectOption value="price-desc">
-            {t("inline.price_high_to_low")}
+            {t("common.labels.priceHighToLow")}
           </NativeSelectOption>
         </NativeSelect>
         <input type="hidden" name="page" value="1" />
         <Button type="submit" className="lg:col-span-7">
           <SearchIcon data-icon="inline-start" />
-          {t("inline.search")}
+          {t("common.actions.search")}
         </Button>
       </form>
       {result.unavailable ? (
@@ -163,11 +163,11 @@ export function AgricultureMarket({
       ) : (
         <>
           <p className="text-muted-foreground text-sm">
-            {formatter.number(result.total)} {t("inline.listings_count")}
+            {t("marketplace.listingCount", { count: result.total })}
           </p>
           {result.items.length === 0 ? (
             <p className="border-border text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-              {t("inline.no_published_products_match_these_filters")}
+              {t("agriculture.market.empty")}
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -214,7 +214,7 @@ export function AgricultureMarket({
                         className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
                         href={`${routeBase}/providers/${listing.providerId}`}
                       >
-                        {t("inline.seller")}
+                        {t("common.labels.seller")}
                       </Link>
                     </div>
                   </CardContent>
@@ -224,7 +224,7 @@ export function AgricultureMarket({
           )}
           {result.totalPages > 1 && (
             <nav
-              aria-label={t("inline.pagination")}
+              aria-label={t("common.labels.pagination")}
               className="flex flex-wrap items-center justify-center gap-3"
             >
               <Link
@@ -236,10 +236,10 @@ export function AgricultureMarket({
                 href={pageHref(Math.max(1, result.page - 1))}
               >
                 <ArrowLeftIcon data-icon="inline-start" />
-                {t("inline.previous")}
+                {t("common.labels.previous")}
               </Link>
               <span className="text-muted-foreground text-sm">
-                {t("inline.page")} {formatter.number(result.page)} /{" "}
+                {t("agriculture.market.page")} {formatter.number(result.page)} /{" "}
                 {formatter.number(result.totalPages)}
               </span>
               <Link
@@ -250,7 +250,7 @@ export function AgricultureMarket({
                 )}
                 href={pageHref(Math.min(result.totalPages, result.page + 1))}
               >
-                {t("inline.next")}
+                {t("common.labels.next")}
                 <ArrowRightIcon data-icon="inline-end" />
               </Link>
             </nav>

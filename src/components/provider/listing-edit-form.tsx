@@ -84,7 +84,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
       <input type="hidden" name="sectorSlug" value={listing.sectorSlug} />
       <input type="hidden" name="kind" value={listing.kind} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id={`edit-title-bn-${listing.id}`} label={t("inline.name_bangla")}>
+        <Field id={`edit-title-bn-${listing.id}`} label={t("common.fields.nameBangla")}>
           <Input
             id={`edit-title-bn-${listing.id}`}
             name="titleBn"
@@ -93,7 +93,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             defaultValue={listing.title}
           />
         </Field>
-        <Field id={`edit-title-en-${listing.id}`} label={t("inline.name_english")}>
+        <Field id={`edit-title-en-${listing.id}`} label={t("common.fields.nameEnglish")}>
           <Input
             id={`edit-title-en-${listing.id}`}
             name="titleEn"
@@ -139,7 +139,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             defaultValue={listing.unit}
           />
         </Field>
-        <Field id={`edit-price-${listing.id}`} label={t("inline.price_per_unit_bdt")}>
+        <Field id={`edit-price-${listing.id}`} label={t("provider.listingEdit.pricePerUnitBdt")}>
           <Input
             id={`edit-price-${listing.id}`}
             name="unitPrice"
@@ -167,7 +167,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         )}
         <Field
           id={`edit-available-${listing.id}`}
-          label={t("inline.available_from_optional")}
+          label={t("provider.labels.availableFromOptional")}
         >
           <DatePicker
             id={`edit-available-${listing.id}`}
@@ -199,7 +199,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
-      <Field id={`edit-image-${listing.id}`} label={t("inline.replace_photo_optional")}>
+      <Field id={`edit-image-${listing.id}`} label={t("provider.listingEdit.replacePhotoOptional")}>
         <Input
           ref={fileInput}
           id={`edit-image-${listing.id}`}
@@ -209,20 +209,20 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         />
       </Field>
       <p className="text-muted-foreground text-xs">
-        {t("inline.content_and_photo_edits_unpublish_the_list")}{" "}
-        {listing.hasImage ? t("inline.the_current_photo_stays_if_you_do_not_choo") : ""}
+        {t("provider.listingEdit.moderationNotice")}{" "}
+        {listing.hasImage ? t("provider.listingEdit.photoNotice") : ""}
       </p>
       <input type="hidden" name="imageKey" defaultValue="" />
       <input type="hidden" name="imageContentType" defaultValue="" />
       <input type="hidden" name="imageSizeBytes" defaultValue="" />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t("inline.the_image_could_not_be_uploaded_please_try")}
+          {t("provider.upload.error")}
         </p>
       )}
       <ActionFeedback state={state} />
       <Button type="submit" variant="outline" disabled={pending || uploading}>
-        {uploading || pending ? t("inline.saving") : t("inline.save_for_review")}
+        {uploading || pending ? t("common.states.saving") : t("provider.listingEdit.saveForReview")}
       </Button>
     </form>
   );

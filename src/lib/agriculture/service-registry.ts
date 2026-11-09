@@ -1280,15 +1280,15 @@ export const agricultureServiceRegistry = [
 
 export type AgricultureService = (typeof agricultureServiceRegistry)[number];
 export type AgricultureServiceField = AgricultureService["fields"][number];
-export type AgricultureServiceFieldWithContent = {
-  name: string;
-  type: "text" | "number" | "date" | "select" | "file";
-  required: boolean;
-  maxLength?: number;
+type FieldContent = {
   labelBn: string;
   labelEn: string;
-  options?: ReadonlyArray<{ value: string; labelBn: string; labelEn: string }>;
 };
+type WithFieldContent<Field> = Field extends { options: readonly { value: string }[] }
+  ? Omit<Field, "options"> &
+      FieldContent & { options: ReadonlyArray<{ value: string; labelBn: string; labelEn: string }> }
+  : Field & FieldContent;
+export type AgricultureServiceFieldWithContent = WithFieldContent<AgricultureServiceField>;
 
 export type AgricultureServiceWithContent = Omit<AgricultureService, "fields" | "icon"> & {
   titleBn: string;

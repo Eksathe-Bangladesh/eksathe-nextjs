@@ -133,10 +133,10 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
       <Dialog open={emergencyOpen} onOpenChange={setEmergencyOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("emergency.modalTitle")}</DialogTitle>
-            <DialogDescription>{t("emergency.modalSubtitle")}</DialogDescription>
+            <DialogTitle>{t("common.emergency.modalTitle")}</DialogTitle>
+            <DialogDescription>{t("common.emergency.modalSubtitle")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">{t("emergency.modalDescription")}</p>
+          <p className="text-muted-foreground text-sm">{t("common.emergency.modalDescription")}</p>
         </DialogContent>
       </Dialog>
 

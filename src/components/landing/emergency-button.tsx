@@ -21,16 +21,16 @@ export function EmergencyButton() {
     <>
       <Button type="button" variant="destructive" size="lg" onClick={() => setOpen(true)}>
         <PhoneIcon />
-        {t("emergency.buttonLabel")}
+        {t("common.emergency.buttonLabel")}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("emergency.modalTitle")}</DialogTitle>
-            <DialogDescription>{t("emergency.modalSubtitle")}</DialogDescription>
+            <DialogTitle>{t("common.emergency.modalTitle")}</DialogTitle>
+            <DialogDescription>{t("common.emergency.modalSubtitle")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">{t("emergency.modalDescription")}</p>
+          <p className="text-muted-foreground text-sm">{t("common.emergency.modalDescription")}</p>
         </DialogContent>
       </Dialog>
     </>

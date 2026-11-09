@@ -38,7 +38,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
         href="/account#agriculture-requests"
         className="text-muted-foreground hover:text-foreground text-sm"
       >
-        ← {t("inline.back_to_account")}
+        ← {t("account.agricultureRequest.backToAccount")}
       </Link>
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4">
@@ -66,23 +66,23 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
         <CardContent className="flex flex-col gap-5">
           <div className="bg-muted/50 grid gap-3 rounded-xl p-4 sm:grid-cols-2">
             <p className="text-sm">
-              <span className="text-muted-foreground">{t("inline.contact")}:</span>{" "}
+              <span className="text-muted-foreground">{t("account.agricultureRequest.contact")}:</span>{" "}
               {request.customerName} · {request.phone}
             </p>
             {request.budget && (
               <p className="text-sm">
-                <span className="text-muted-foreground">{t("inline.budget")}:</span> ৳
+                <span className="text-muted-foreground">{t("common.labels.budget")}:</span> ৳
                 {request.budget}
               </p>
             )}
             <p className="text-sm sm:col-span-2">
-              <span className="text-muted-foreground">{t("inline.requirement")}:</span>{" "}
+              <span className="text-muted-foreground">{t("account.agricultureRequest.requirement")}:</span>{" "}
               {request.details}
             </p>
           </div>
           {snapshot.fields?.some((field) => answers[field.name]) && (
             <section>
-              <h2 className="font-semibold">{t("inline.submitted_service_details")}</h2>
+              <h2 className="font-semibold">{t("account.agricultureRequest.submittedServiceDetails")}</h2>
               <dl className="mt-3 grid gap-2 sm:grid-cols-2">
                 {snapshot.fields
                   .filter((field) => answers[field.name])
@@ -105,7 +105,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           )}
           {request.attachments.length > 0 && (
             <section>
-              <h2 className="font-semibold">{t("inline.private_attachments")}</h2>
+              <h2 className="font-semibold">{t("common.labels.privateAttachments")}</h2>
               <ul className="mt-2 space-y-2">
                 {request.attachments.map((attachment) => (
                   <li key={attachment.id}>
@@ -124,10 +124,10 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
             </section>
           )}
           <section>
-            <h2 className="font-semibold">{t("inline.updates")}</h2>
+            <h2 className="font-semibold">{t("common.labels.updates")}</h2>
             {request.updates.length === 0 ? (
               <p className="text-muted-foreground mt-2 text-sm">
-                {t("inline.no_updates_yet")}
+                {t("account.agricultureRequest.noUpdatesYet")}
               </p>
             ) : (
               <ol className="mt-3 space-y-3 border-l pl-4">
@@ -156,12 +156,12 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
               <input type="hidden" name="requestId" value={request.id} />
               <ActionFeedback state={state} />
               <Button type="submit" variant="outline" disabled={pending} className="w-fit">
-                {t("inline.withdraw_request")}
+                {t("account.labels.withdrawRequest")}
               </Button>
             </form>
           )}
           <Link href="/agriculture" className={buttonVariants({ variant: "ghost", size: "sm" })}>
-            {t("inline.all_agriculture_services")}
+            {t("agriculture.services.all")}
           </Link>
         </CardContent>
       </Card>

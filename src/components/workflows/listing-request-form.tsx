@@ -110,7 +110,7 @@ export function ListingRequestForm({
       </div>
       {isScheduled && (
         <p className="text-muted-foreground -mt-2 text-xs">
-          {t("inline.daily_rates_are_calculated_for_the_selecte")}
+          {t("marketplace.requestForm.dailyRateNotice")}
         </p>
       )}
       <div className="flex flex-col gap-2">
@@ -121,7 +121,7 @@ export function ListingRequestForm({
           maxLength={2000}
           rows={4}
           className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 resize-y rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
-          placeholder={t("inline.add_requirements_collection_or_transport_d")}
+          placeholder={t("marketplace.requestForm.requirementsPlaceholder")}
         />
       </div>
       <ActionFeedback state={state} />

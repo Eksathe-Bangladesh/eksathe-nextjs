@@ -36,19 +36,19 @@ export function ProviderWorkspace({
 
   return (
     <WorkspaceNavigation
-      label={t("inline.provider_navigation")}
+      label={t("provider.workspace.providerNavigation")}
       items={[
         ...(workspace.profile.status === "APPROVED" && capabilities.length > 0
-          ? [{ id: "listings", label: t("inline.listings") }]
+          ? [{ id: "listings", label: t("common.labels.listings") }]
           : []),
-        { id: "requests", label: t("inline.requests") },
-        { id: "orders", label: t("inline.orders") },
+        { id: "requests", label: t("common.labels.requests") },
+        { id: "orders", label: t("common.labels.orders") },
         ...(workspace.projectMilestones.length > 0
           ? [{ id: "project-milestones", label: t("workflow.milestones") }]
           : []),
-        { id: "commissions", label: t("inline.commissions") },
+        { id: "commissions", label: t("common.labels.commissions") },
         ...(workspace.profile.status === "APPROVED"
-          ? [{ id: "storefront", label: t("inline.storefront") }]
+          ? [{ id: "storefront", label: t("provider.workspace.storefront") }]
           : []),
         {
           id: "application",
@@ -59,7 +59,7 @@ export function ProviderWorkspace({
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-primary text-sm">{t("inline.business_operations")}</p>
+          <p className="text-primary text-sm">{t("provider.workspace.businessOperations")}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{t("nav.provider")}</h1>
           <p className="text-muted-foreground mt-2 text-sm">
             {workspace.profile.name} ·{" "}
@@ -76,7 +76,7 @@ export function ProviderWorkspace({
       )}
       {workspace.profile.status === "SUSPENDED" && (
         <div className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm">
-          {t("inline.this_provider_profile_is_suspended_it_cann")}
+          {t("provider.workspace.suspendedNotice")}
         </div>
       )}
 
@@ -86,13 +86,13 @@ export function ProviderWorkspace({
             <CardHeader>
               <CardTitle>{t("workflow.createListing")}</CardTitle>
               <CardDescription>
-                {t("inline.new_listings_are_reviewed_by_the_operation")}
+                {t("provider.workspace.moderationNotice")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <details>
                 <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
-                  {t("inline.add_a_listing")}
+                  {t("provider.workspace.addAListing")}
                 </summary>
                 <ListingForm capabilities={capabilities} />
               </details>
@@ -131,7 +131,7 @@ export function ProviderWorkspace({
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-sm whitespace-pre-line">
-                  {request.details || t("inline.no_additional_details_provided")}
+                  {request.details || t("common.labels.noAdditionalDetailsProvided")}
                 </p>
                 {(request.requestedStart || request.requestedEnd) && (
                   <p className="mt-2 text-sm">
@@ -148,9 +148,9 @@ export function ProviderWorkspace({
 
       <section id="orders" className="flex scroll-mt-24 flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-xl font-bold">{t("inline.orders_and_bookings")}</h2>
+          <h2 className="text-xl font-bold">{t("common.labels.ordersAndBookings")}</h2>
           <Link className={buttonVariants({ variant: "outline", size: "sm" })} href="/account">
-            {t("inline.customer_workspace")}
+            {t("provider.workspace.customerWorkspace")}
           </Link>
         </div>
         {workspace.orders.length === 0 ? (
@@ -188,7 +188,7 @@ export function ProviderWorkspace({
       )}
 
       <section id="commissions" className="flex scroll-mt-24 flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.commission_records")}</h2>
+        <h2 className="text-xl font-bold">{t("provider.workspace.commissionRecords")}</h2>
         {workspace.orders.filter((order) => order.commission).length === 0 ? (
           <EmptyState text={t("workflow.noRecords")} />
         ) : (
@@ -213,9 +213,9 @@ export function ProviderWorkspace({
         <section id="storefront" className="scroll-mt-24">
           <Card>
             <CardHeader>
-              <CardTitle>{t("inline.your_storefront")}</CardTitle>
+              <CardTitle>{t("provider.workspace.yourStorefront")}</CardTitle>
               <CardDescription>
-                {t("inline.customers_see_these_details_your_profile_p")}
+                {t("provider.storefront.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -227,7 +227,7 @@ export function ProviderWorkspace({
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                     href={`/agriculture/providers/${workspace.profile.id}`}
                   >
-                    {t("inline.preview_agriculture_storefront")}
+                    {t("provider.workspace.previewAgricultureStorefront")}
                   </Link>
                 )}
                 {capabilities.some((capability) => capability.sectorSlug === "construction") && (
@@ -235,7 +235,7 @@ export function ProviderWorkspace({
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                     href={`/dashboard/construction/providers/${workspace.profile.id}`}
                   >
-                    {t("inline.preview_construction_profile")}
+                    {t("provider.workspace.previewConstructionProfile")}
                   </Link>
                 )}
               </div>
@@ -249,13 +249,13 @@ export function ProviderWorkspace({
         <CardHeader>
           <CardTitle>{t("workflow.providerApplication")}</CardTitle>
           <CardDescription>
-            {t("inline.apply_for_additional_sector_capabilities_f")}
+            {t("provider.capabilities.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <details>
             <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
-              {t("inline.update_profile_or_request_capabilities")}
+              {t("provider.workspace.updateProfileOrRequestCapabilities")}
             </summary>
             <ProviderApplicationForm
               initial={{
@@ -312,7 +312,7 @@ function ListingStockCard({
           <p className="text-muted-foreground mt-1 text-xs">
             {tracksStock
               ? `${listing.stock} ${listing.unit}`
-              : t("inline.availability_is_checked_against_booking_da")}{" "}
+              : t("provider.listings.availabilityNotice")}{" "}
             · {listing.unitPrice} BDT/{listing.unit}
           </p>
         </div>
@@ -320,7 +320,7 @@ function ListingStockCard({
       </div>
       {listing.archivedAt ? (
         <p className="text-muted-foreground mt-3 text-sm">
-          {t("inline.this_listing_is_archived")}
+          {t("provider.listings.archivedNotice")}
         </p>
       ) : (
         <>
@@ -340,13 +340,13 @@ function ListingStockCard({
                 />
               </div>
               <Button size="sm" variant="outline" type="submit" disabled={pending}>
-                {pending ? t("common.loading") : t("inline.save_quantity")}
+                {pending ? t("common.loading") : t("provider.workspace.saveQuantity")}
               </Button>
             </form>
           )}
           <details className="mt-4">
             <summary className="text-primary cursor-pointer text-sm font-semibold">
-              {t("inline.edit_listing")}
+              {t("provider.workspace.editListing")}
             </summary>
             <div className="mt-3">
               <ListingEditForm listing={listing} />
@@ -368,7 +368,7 @@ function ListingArchiveControl({ listingId }: { listingId: string }) {
       <form action={action}>
         <input type="hidden" name="listingId" value={listingId} />
         <Button size="sm" variant="ghost" type="submit" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.archive_listing")}
+          {pending ? t("common.loading") : t("provider.workspace.archiveListing")}
         </Button>
       </form>
       <ActionFeedback state={state} />

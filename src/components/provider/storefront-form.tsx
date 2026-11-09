@@ -103,7 +103,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
       className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="storefront-name-bn" label={t("inline.store_name_bangla")}>
+        <Field id="storefront-name-bn" label={t("provider.storefront.storeNameBangla")}>
           <Input
             id="storefront-name-bn"
             name="nameBn"
@@ -112,7 +112,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
             maxLength={100}
           />
         </Field>
-        <Field id="storefront-name-en" label={t("inline.store_name_english")}>
+        <Field id="storefront-name-en" label={t("provider.storefront.storeNameEnglish")}>
           <Input
             id="storefront-name-en"
             name="nameEn"
@@ -130,7 +130,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
             maxLength={80}
           />
         </Field>
-        <Field id="storefront-upazila" label={t("inline.upazila")}>
+        <Field id="storefront-upazila" label={t("provider.storefront.upazila")}>
           <Input
             id="storefront-upazila"
             name="upazila"
@@ -139,7 +139,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           />
         </Field>
       </div>
-      <Field id="storefront-bio-bn" label={t("inline.about_the_store_bangla")}>
+      <Field id="storefront-bio-bn" label={t("provider.storefront.aboutTheStoreBangla")}>
         <textarea
           id="storefront-bio-bn"
           name="bioBn"
@@ -149,7 +149,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
-      <Field id="storefront-bio-en" label={t("inline.about_the_store_english")}>
+      <Field id="storefront-bio-en" label={t("provider.storefront.aboutTheStoreEnglish")}>
         <textarea
           id="storefront-bio-en"
           name="bioEn"
@@ -160,7 +160,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="storefront-profile-image" label={t("inline.profile_photo")}>
+        <Field id="storefront-profile-image" label={t("provider.storefront.profilePhoto")}>
           <Input
             ref={profileFile}
             id="storefront-profile-image"
@@ -169,7 +169,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
             disabled={uploading || pending}
           />
         </Field>
-        <Field id="storefront-cover-image" label={t("inline.cover_photo")}>
+        <Field id="storefront-cover-image" label={t("provider.storefront.coverPhoto")}>
           <Input
             ref={coverFile}
             id="storefront-cover-image"
@@ -180,10 +180,10 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         </Field>
       </div>
       <p className="text-muted-foreground text-xs">
-        {t("inline.jpg_png_or_webp_up_to_5_mb_leave_blank_to")} ·{" "}
+        {t("provider.storefront.photoHelp")} ·{" "}
         {profile.hasProfileImage
-          ? t("inline.profile_photo_set")
-          : t("inline.no_profile_photo")}
+          ? t("provider.storefront.profilePhotoSet")
+          : t("provider.storefront.noProfilePhoto")}
       </p>
       {(
         [
@@ -199,12 +199,12 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
       ))}
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t("inline.the_image_could_not_be_uploaded_please_try")}
+          {t("provider.upload.error")}
         </p>
       )}
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending || uploading}>
-        {uploading || pending ? t("inline.saving") : t("inline.save_storefront")}
+        {uploading || pending ? t("common.states.saving") : t("provider.storefront.saveStorefront")}
       </Button>
     </form>
   );

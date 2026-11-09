@@ -47,22 +47,22 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
 
   return (
     <WorkspaceNavigation
-      label={t("inline.administration_navigation")}
+      label={t("admin.workspace.administrationNavigation")}
       items={[
         ...(operationsEnabled
           ? [
               { id: "provider-approvals", label: t("workflow.adminApprovals") },
-              { id: "listing-moderation", label: t("inline.listings") },
+              { id: "listing-moderation", label: t("common.labels.listings") },
               { id: "requests", label: t("workflow.adminRequests") },
-              { id: "disputes", label: t("inline.disputes") },
+              { id: "disputes", label: t("admin.workspace.disputes") },
             ]
           : []),
         ...(agricultureOperationsEnabled
           ? [
               {
                 id: "agriculture-requests",
-                label: t("inline.agriculture_intake"),
-                navLabel: t("inline.agriculture_intake"),
+                label: t("admin.workspace.agricultureIntake"),
+                navLabel: t("admin.workspace.agricultureIntake"),
               },
             ]
           : []),
@@ -70,18 +70,18 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           ? [
               {
                 id: "payment-mismatches",
-                label: t("inline.payments"),
-                navLabel: t("inline.payments"),
+                label: t("admin.workspace.payments"),
+                navLabel: t("admin.workspace.payments"),
               },
-              { id: "commission", label: t("inline.commissions") },
+              { id: "commission", label: t("common.labels.commissions") },
             ]
           : []),
         ...(data.access.isSuperAdmin
           ? [
               {
                 id: "commission-settings",
-                label: t("inline.rates"),
-                navLabel: t("inline.rates"),
+                label: t("admin.workspace.rates"),
+                navLabel: t("admin.workspace.rates"),
               },
               {
                 id: "staff-access",
@@ -93,7 +93,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       ]}
     >
       <div>
-        <p className="text-primary text-sm">{t("inline.platform_operations")}</p>
+        <p className="text-primary text-sm">{t("admin.workspace.platformOperations")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {agricultureManagementEnabled && !operationsEnabled && !financeEnabled
             ? t("workflow.agroAdmin")
@@ -124,7 +124,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
             href="/admin/agriculture/publishing"
             className="border-primary/30 text-primary hover:bg-primary/5 mt-3 inline-flex w-fit items-center rounded-lg border px-3 py-2 text-sm font-medium"
           >
-            {t("inline.publish_agriculture_prices_and_updates")}
+            {t("admin.workspace.publishAgriculturePricesAndUpdates")}
           </Link>
         )}
       </div>
@@ -169,7 +169,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           </section>
 
           <section id="listing-moderation" className="flex scroll-mt-24 flex-col gap-4">
-            <h2 className="text-xl font-bold">{t("inline.listing_moderation")}</h2>
+            <h2 className="text-xl font-bold">{t("admin.workspace.listingModeration")}</h2>
             {data.listings.length === 0 ? (
               <Empty text={t("workflow.noRecords")} />
             ) : (
@@ -239,16 +239,16 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <p className="text-sm">
                       {request.district} · {request.quantity} {request.unit}
                       {request.requestedStart
-                        ? ` · ${t("inline.starts")}: ${formatter.dateTime(new Date(request.requestedStart), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
+                        ? ` · ${t("admin.workspace.starts")}: ${formatter.dateTime(new Date(request.requestedStart), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
                         : ""}
                       {request.requestedEnd
-                        ? ` · ${t("inline.ends")}: ${formatter.dateTime(new Date(request.requestedEnd), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
+                        ? ` · ${t("admin.workspace.ends")}: ${formatter.dateTime(new Date(request.requestedEnd), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
                         : ""}
                     </p>
                     {request.quote && (
                       <p className="text-sm">
-                        {t("inline.quote")}: {formatMoney(request.quote.unitPrice)} /{" "}
-                        {request.unit} · {t("inline.transport")}:{" "}
+                        {t("admin.workspace.quote")}: {formatMoney(request.quote.unitPrice)} /{" "}
+                        {request.unit} · {t("admin.workspace.transport")}:{" "}
                         {formatMoney(request.quote.transportFee)}
                       </p>
                     )}
@@ -256,7 +256,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                       href={`/dashboard/${request.sectorSlug}/providers/${request.providerId}`}
                       className="text-primary w-fit text-sm font-medium hover:underline"
                     >
-                      {t("inline.view_provider_profile")}
+                      {t("admin.workspace.viewProviderProfile")}
                     </Link>
                   </CardContent>
                 </Card>
@@ -265,7 +265,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           </section>
 
           <section id="disputes" className="flex scroll-mt-24 flex-col gap-4">
-            <h2 className="text-xl font-bold">{t("inline.disputes")}</h2>
+            <h2 className="text-xl font-bold">{t("admin.workspace.disputes")}</h2>
             {data.disputes.length === 0 ? (
               <Empty text={t("workflow.noRecords")} />
             ) : (
@@ -306,7 +306,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       {financeEnabled && (
         <>
           <section id="payment-mismatches" className="flex scroll-mt-24 flex-col gap-4">
-            <h2 className="text-xl font-bold">{t("inline.payment_confirmations")}</h2>
+            <h2 className="text-xl font-bold">{t("admin.workspace.paymentConfirmations")}</h2>
             {data.paymentMismatches.length === 0 ? (
               <Empty text={t("workflow.noRecords")} />
             ) : (
@@ -387,7 +387,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       {data.access.isSuperAdmin && (
         <>
           <section id="commission-settings" className="flex scroll-mt-24 flex-col gap-4">
-            <h2 className="text-xl font-bold">{t("inline.sector_commission_settings")}</h2>
+            <h2 className="text-xl font-bold">{t("admin.workspace.sectorCommissionSettings")}</h2>
             {data.sectors.map((sector) => (
               <CommissionRateForm key={sector.slug} sector={sector} />
             ))}
@@ -468,17 +468,17 @@ function DisputeResolutionForm({ orderId }: { orderId: string }) {
   return (
     <form action={action} className="grid gap-3 sm:grid-cols-[180px_minmax(0,1fr)_auto]">
       <input type="hidden" name="orderId" value={orderId} />
-      <Field id={`dispute-outcome-${orderId}`} label={t("inline.resolution")}>
+      <Field id={`dispute-outcome-${orderId}`} label={t("admin.workspace.resolution")}>
         <NativeSelect
           id={`dispute-outcome-${orderId}`}
           name="decision"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <NativeSelectOption value="COMPLETE">
-            {t("inline.mark_completed")}
+            {t("admin.workspace.markCompleted")}
           </NativeSelectOption>
           <NativeSelectOption value="CANCEL">
-            {t("inline.cancel_and_release_stock")}
+            {t("admin.workspace.cancelAndReleaseStock")}
           </NativeSelectOption>
         </NativeSelect>
       </Field>
@@ -488,7 +488,7 @@ function DisputeResolutionForm({ orderId }: { orderId: string }) {
       <div className="flex flex-col gap-2 sm:justify-end">
         <ActionFeedback state={state} />
         <Button type="submit" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.record_decision")}
+          {pending ? t("common.loading") : t("admin.workspace.recordDecision")}
         </Button>
       </div>
     </form>
@@ -523,7 +523,7 @@ function RefundForm({ paymentId }: { paymentId: string }) {
   return (
     <details className="border-border/70 rounded-lg border p-3">
       <summary className="cursor-pointer text-sm font-medium">
-        {t("inline.record_a_refund")}
+        {t("admin.workspace.recordARefund")}
       </summary>
       <form action={action} className="mt-3 grid gap-3 sm:grid-cols-3">
         <input type="hidden" name="paymentId" value={paymentId} />
@@ -543,7 +543,7 @@ function RefundForm({ paymentId }: { paymentId: string }) {
         <div className="flex flex-col gap-2 sm:justify-end">
           <ActionFeedback state={state} />
           <Button type="submit" variant="outline" disabled={pending}>
-            {pending ? t("common.loading") : t("inline.record_refund")}
+            {pending ? t("common.loading") : t("admin.workspace.recordRefund")}
           </Button>
         </div>
       </form>
@@ -568,7 +568,7 @@ function CommissionRateForm({ sector }: { sector: AdminWorkspaceData["sectors"][
         <p className="font-semibold">{{ en: sector.title, bn: sector.title }[locale]}</p>
         <p className="text-muted-foreground text-xs">{sector.slug}</p>
       </div>
-      <Field id={`commission-rate-${sector.slug}`} label={t("inline.commission_rate")}>
+      <Field id={`commission-rate-${sector.slug}`} label={t("admin.workspace.commissionRate")}>
         <Input
           id={`commission-rate-${sector.slug}`}
           name="rate"
@@ -583,7 +583,7 @@ function CommissionRateForm({ sector }: { sector: AdminWorkspaceData["sectors"][
       <div className="flex flex-col gap-2 sm:justify-end">
         <ActionFeedback state={state} />
         <Button type="submit" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.update")}
+          {pending ? t("common.loading") : t("common.actions.update")}
         </Button>
       </div>
     </form>
@@ -608,9 +608,9 @@ function StaffGrantForm() {
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <NativeSelectOption value="OPERATIONS">
-            {t("inline.operations")}
+            {t("admin.workspace.operations")}
           </NativeSelectOption>
-          <NativeSelectOption value="FINANCE">{t("panels.categories.finance")}</NativeSelectOption>
+          <NativeSelectOption value="FINANCE">{t("admin.workspace.financeLabel")}</NativeSelectOption>
           <NativeSelectOption value="USERS">{t("workflow.permissionUsers")}</NativeSelectOption>
           <NativeSelectOption value="PANELS">{t("workflow.permissionPanels")}</NativeSelectOption>
           <NativeSelectOption value="REPORTS">{t("workflow.permissionReports")}</NativeSelectOption>
@@ -623,7 +623,7 @@ function StaffGrantForm() {
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <NativeSelectOption value="global">
-            {t("inline.platform_wide")}
+            {t("admin.workspace.platformWide")}
           </NativeSelectOption>
           <NativeSelectOption value="agriculture-labor">
             {t("sectors.agriculture-labor")}
@@ -636,7 +636,7 @@ function StaffGrantForm() {
       <div className="flex flex-col gap-2 sm:col-span-3">
         <ActionFeedback state={state} />
         <Button type="submit" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.grant_access")}
+          {pending ? t("common.loading") : t("admin.workspace.grantAccess")}
         </Button>
       </div>
     </form>
@@ -658,7 +658,7 @@ function StaffGrantRow({ grant }: { grant: AdminWorkspaceData["staffGrants"][num
       <div className="flex items-center gap-3">
         <ActionFeedback state={state} />
         <Button type="submit" size="sm" variant="outline" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.revoke")}
+          {pending ? t("common.loading") : t("admin.workspace.revoke")}
         </Button>
       </div>
     </form>

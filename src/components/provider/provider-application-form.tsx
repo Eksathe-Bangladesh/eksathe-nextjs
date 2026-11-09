@@ -44,7 +44,7 @@ export function ProviderApplicationForm({
   return (
     <form action={action} className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="provider-name-bn" label={t("inline.name_bangla")}>
+        <Field id="provider-name-bn" label={t("common.fields.nameBangla")}>
           <Input
             id="provider-name-bn"
             name="nameBn"
@@ -53,7 +53,7 @@ export function ProviderApplicationForm({
             maxLength={100}
           />
         </Field>
-        <Field id="provider-name-en" label={t("inline.name_english")}>
+        <Field id="provider-name-en" label={t("common.fields.nameEnglish")}>
           <Input
             id="provider-name-en"
             name="nameEn"
@@ -71,7 +71,7 @@ export function ProviderApplicationForm({
             maxLength={80}
           />
         </Field>
-        <Field id="provider-upazila" label={t("inline.upazila_optional")}>
+        <Field id="provider-upazila" label={t("provider.application.upazilaOptional")}>
           <Input
             id="provider-upazila"
             name="upazila"
@@ -79,7 +79,7 @@ export function ProviderApplicationForm({
             maxLength={80}
           />
         </Field>
-        <Field id="provider-bio-bn" label={t("inline.introduction_bangla")}>
+        <Field id="provider-bio-bn" label={t("provider.application.introductionBangla")}>
           <textarea
             id="provider-bio-bn"
             name="bioBn"
@@ -89,7 +89,7 @@ export function ProviderApplicationForm({
             className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
-        <Field id="provider-bio-en" label={t("inline.introduction_english")}>
+        <Field id="provider-bio-en" label={t("provider.application.introductionEnglish")}>
           <textarea
             id="provider-bio-en"
             name="bioEn"
@@ -108,9 +108,7 @@ export function ProviderApplicationForm({
             const options = capabilityOptions.filter((option) => option.sectorSlug === sector.slug);
             return (
               <div key={sector.slug} className="border-border/70 rounded-xl border p-4">
-                <h3 className="mb-3 text-sm font-semibold">
-                  {t(`sectors.${sector.slug}` as never)}
-                </h3>
+                <h3 className="mb-3 text-sm font-semibold">{t(`sectors.${sector.slug}`)}</h3>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {options.map((option) => {
                     const token = `${option.sectorSlug}:${option.kind}`;
@@ -127,7 +125,7 @@ export function ProviderApplicationForm({
                           className="accent-primary size-4"
                         />
                         <span aria-hidden="true">{option.icon}</span>
-                        <span>{t(`marketplaceServices.${option.slug}` as never)}</span>
+                        <span>{t(`marketplaceServices.${option.slug}`)}</span>
                       </label>
                     );
                   })}

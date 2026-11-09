@@ -31,7 +31,7 @@ export function SectorLanding({
   const t = useTranslations();
   const [query, setQuery] = useState("");
   const [district, setDistrict] = useState("");
-  const title = t(`sectors.${sector.slug}` as never);
+  const title = t(`sectors.${sector.slug}`);
   const price = (value: string) =>
     formatter.number(Number(value), {
       style: "currency",
@@ -88,13 +88,13 @@ export function SectorLanding({
                 className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
               >
                 <span aria-hidden="true">{service.icon}</span>
-                {t(`marketplaceServices.${service.slug}` as never)}
+                {t(`marketplaceServices.${service.slug}`)}
               </a>
             ))}
             {sector.slug === "construction" && (
               <Link href="/account/projects/new" className={buttonVariants({ size: "sm" })}>
                 <PlusIcon data-icon="inline-start" />
-                {t("inline.create_a_project")}
+                {t("projects.actions.create")}
               </Link>
             )}
           </div>
@@ -145,23 +145,23 @@ export function SectorLanding({
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
                     <h2 className="text-foreground text-xl font-bold">
-                      {t(`marketplaceServices.${service.slug}` as never)}
+                      {t(`marketplaceServices.${service.slug}`)}
                     </h2>
                     <p className="text-muted-foreground mt-1 text-sm">
-                      {serviceListings.length} {t("inline.available_listings")}
+                      {t("dashboard.sector.availableListings", { count: serviceListings.length })}
                     </p>
                   </div>
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
                   <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
                     <p className="text-muted-foreground text-sm">
-                      {t("inline.no_approved_listings_yet_apply_to_become_a")}
+                      {t("dashboard.sector.empty")}
                     </p>
                     <Link
                       href={`/register?next=${encodeURIComponent("/provider")}`}
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
                     >
-                      {t("inline.apply_to_provide")}
+                      {t("dashboard.sector.applyToProvide")}
                       <ArrowRightIcon data-icon="inline-end" />
                     </Link>
                   </div>
@@ -197,7 +197,7 @@ export function SectorLanding({
                                 {price(listing.unitPrice)} / {listing.unit}
                               </span>
                               <Button tabIndex={-1} size="sm" variant="outline">
-                                {t("inline.view")}
+                                {t("common.actions.view")}
                                 <ArrowRightIcon data-icon="inline-end" />
                               </Button>
                             </div>

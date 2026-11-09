@@ -54,17 +54,17 @@ export function ConstructionMarket({
           className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
-          {t("inline.back_to_construction_services")}
+          {t("construction.market.backToConstructionServices")}
         </Link>
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.approved_professionals_and_suppliers")}
+            {t("construction.market.approvedProfessionalsAndSuppliers")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
-            {t("inline.find_construction_services_and_materials")}
+            {t("construction.market.title")}
           </h1>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-            {t("inline.browse_by_work_type_location_and_price_cre")}
+            {t("construction.market.description")}
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export function ConstructionMarket({
         <FieldGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Field className="lg:col-span-2">
             <FieldLabel htmlFor="construction-search">
-              {t("inline.search_services_materials_or_providers")}
+              {t("construction.market.searchServicesMaterialsOrProviders")}
             </FieldLabel>
             <div className="relative">
               <SearchIcon
@@ -88,13 +88,13 @@ export function ConstructionMarket({
                 id="construction-search"
                 name="q"
                 defaultValue={filters.q}
-                placeholder={t("inline.e_g_bricks_engineer_dhaka")}
+                placeholder={t("construction.market.searchPlaceholder")}
                 className="pl-9"
               />
             </div>
           </Field>
           <Field>
-            <FieldLabel htmlFor="construction-type">{t("inline.type")}</FieldLabel>
+            <FieldLabel htmlFor="construction-type">{t("common.labels.type")}</FieldLabel>
             <NativeSelect
               id="construction-type"
               name="type"
@@ -102,10 +102,10 @@ export function ConstructionMarket({
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
               <NativeSelectOption value="">
-                {t("inline.all_construction_listings")}
+                {t("construction.market.allConstructionListings")}
               </NativeSelectOption>
               <NativeSelectOption value="CONSTRUCTION_SERVICE">
-                {t("inline.professionals_services")}
+                {t("construction.market.professionalsServices")}
               </NativeSelectOption>
               <NativeSelectOption value="CONSTRUCTION_MATERIAL">
                 {t("constructionServices.building-materials.title")}
@@ -120,7 +120,7 @@ export function ConstructionMarket({
               defaultValue={filters.category ?? ""}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <NativeSelectOption value="">{t("inline.all_categories")}</NativeSelectOption>
+              <NativeSelectOption value="">{t("common.labels.allCategories")}</NativeSelectOption>
               {result.categories.map((category) => (
                 <NativeSelectOption key={category} value={category}>
                   {category}
@@ -146,7 +146,7 @@ export function ConstructionMarket({
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-min-price">
-              {t("inline.minimum_price")}
+              {t("common.labels.minimumPrice")}
             </FieldLabel>
             <Input
               id="construction-min-price"
@@ -160,7 +160,7 @@ export function ConstructionMarket({
           </Field>
           <Field>
             <FieldLabel htmlFor="construction-max-price">
-              {t("inline.maximum_price")}
+              {t("common.labels.maximumPrice")}
             </FieldLabel>
             <Input
               id="construction-max-price"
@@ -173,19 +173,19 @@ export function ConstructionMarket({
             />
           </Field>
           <Field>
-            <FieldLabel htmlFor="construction-sort">{t("inline.sort_by")}</FieldLabel>
+            <FieldLabel htmlFor="construction-sort">{t("construction.market.sortBy")}</FieldLabel>
             <NativeSelect
               id="construction-sort"
               name="sort"
               defaultValue={filters.sort ?? "newest"}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <NativeSelectOption value="newest">{t("inline.newest")}</NativeSelectOption>
+              <NativeSelectOption value="newest">{t("common.labels.newest")}</NativeSelectOption>
               <NativeSelectOption value="price-asc">
-                {t("inline.price_low_to_high")}
+                {t("common.labels.priceLowToHigh")}
               </NativeSelectOption>
               <NativeSelectOption value="price-desc">
-                {t("inline.price_high_to_low")}
+                {t("common.labels.priceHighToLow")}
               </NativeSelectOption>
             </NativeSelect>
           </Field>
@@ -193,10 +193,10 @@ export function ConstructionMarket({
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <Button type="submit">
             <SearchIcon data-icon="inline-start" />
-            {t("inline.search")}
+            {t("common.actions.search")}
           </Button>
           <Link href={formAction} className={buttonVariants({ variant: "outline" })}>
-            {t("inline.clear_filters")}
+            {t("construction.market.clearFilters")}
           </Link>
         </div>
       </form>
@@ -204,14 +204,14 @@ export function ConstructionMarket({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-muted-foreground text-sm" aria-live="polite">
           {result.unavailable
-            ? t("inline.listings_are_temporarily_unavailable")
-            : `${formatter.number(result.total)} ${t("inline.listings_count")}`}
+            ? t("construction.market.unavailable")
+            : t("marketplace.listingCount", { count: result.total })}
         </p>
         <Link
           href="/account/projects/new?service=contractors"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
-          {t("inline.create_a_project_to_request_quotes")}
+          {t("construction.market.emptyAction")}
           <ArrowRightIcon data-icon="inline-end" />
         </Link>
       </div>
@@ -225,7 +225,7 @@ export function ConstructionMarket({
         </p>
       ) : result.items.length === 0 ? (
         <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-          {t("inline.no_approved_listings_match_these_filters_a")}
+          {t("construction.market.empty")}
         </p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -269,7 +269,7 @@ export function ConstructionMarket({
                     className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
                     href={`${routeBase}/providers/${listing.providerId}`}
                   >
-                    {t("inline.provider")}
+                    {t("common.labels.provider")}
                   </Link>
                 </div>
               </CardContent>
@@ -281,7 +281,7 @@ export function ConstructionMarket({
       {!result.unavailable && result.totalPages > 1 && (
         <nav
           className="flex items-center justify-center gap-3"
-          aria-label={t("inline.pagination")}
+          aria-label={t("common.labels.pagination")}
         >
           <Link
             href={pageHref(Math.max(1, result.page - 1))}
@@ -293,7 +293,7 @@ export function ConstructionMarket({
             )}
           >
             <ArrowLeftIcon data-icon="inline-start" />
-            {t("inline.previous")}
+            {t("common.labels.previous")}
           </Link>
           <span className="text-muted-foreground text-sm">
             {bn
@@ -309,7 +309,7 @@ export function ConstructionMarket({
               result.page >= result.totalPages && "pointer-events-none opacity-50",
             )}
           >
-            <span>{t("inline.next")}</span>
+            <span>{t("common.labels.next")}</span>
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
         </nav>

@@ -23,7 +23,7 @@ export async function generateMetadata({
   if (!service) notFound();
   const t = await getTranslations();
   return {
-    title: `${t(`constructionServices.${service.slug}.title` as never)} | ${t("common.brandName")}`,
+    title: `${t(`constructionServices.${service.slug}.title`)} | ${t("common.brandName")}`,
     alternates: { canonical: await localizedCanonical(`/construction/services/${slug}`) },
   };
 }

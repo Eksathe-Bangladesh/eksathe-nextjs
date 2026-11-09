@@ -30,16 +30,16 @@ export function AgricultureCommissionCalculator({ ratePercent }: { ratePercent: 
     <Card>
       <CardContent className="flex flex-col gap-5 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="font-semibold">{t("inline.estimate_the_split")}</p>
+          <p className="font-semibold">{t("agriculture.commissionCalculator.estimateTheSplit")}</p>
           <Badge variant="secondary">
-            {t("inline.estimate")}
+            {t("common.labels.estimate")}
             {estimate ? ` · ${ratePercent}%` : ""}
           </Badge>
         </div>
         <FieldGroup className="grid gap-4 sm:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="agriculture-eligible-amount">
-              {t("inline.goods_or_service_amount_bdt")}
+              {t("agriculture.commissionCalculator.goodsOrServiceAmountBdt")}
             </FieldLabel>
             <Input
               id="agriculture-eligible-amount"
@@ -54,7 +54,7 @@ export function AgricultureCommissionCalculator({ ratePercent }: { ratePercent: 
           </Field>
           <Field>
             <FieldLabel htmlFor="agriculture-transport-amount">
-              {t("inline.separate_transport_charge_bdt")}
+              {t("common.labels.separateTransportChargeBdt")}
             </FieldLabel>
             <Input
               id="agriculture-transport-amount"
@@ -69,20 +69,20 @@ export function AgricultureCommissionCalculator({ ratePercent }: { ratePercent: 
           </Field>
         </FieldGroup>
         <p className="text-muted-foreground text-xs leading-5">
-          {t("inline.agriculture_transport_commission_notice")}
+          {t("agriculture.commissionCalculator.transportNotice")}
         </p>
         {commissionCents === null || providerCents === null ? (
           <p role="status" className="text-muted-foreground text-sm">
-            {t("inline.the_agriculture_commission_rate_is_not_ava")}
+            {t("agriculture.commissionCalculator.rateUnavailable")}
           </p>
         ) : (
           <div className="flex flex-col gap-3 border-t pt-4 text-sm">
             <Result
-              label={t("inline.estimated_platform_commission")}
+              label={t("common.labels.estimatedPlatformCommission")}
               value={format(commissionCents)}
             />
             <Result
-              label={t("inline.estimated_provider_amount_including_transp")}
+              label={t("common.commissionCalculator.providerAmount")}
               value={format(providerCents)}
             />
           </div>

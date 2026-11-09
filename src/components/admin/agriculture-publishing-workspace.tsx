@@ -36,27 +36,27 @@ export function AgriculturePublishingWorkspace({
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.agriculture_operations")}
+            {t("admin.publishing.agricultureOperations")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
-            {t("inline.publish_prices_and_updates")}
+            {t("admin.publishing.publishPricesAndUpdates")}
           </h1>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-            {t("inline.review_submitted_information_add_a_source")}
+            {t("admin.publishing.description")}
           </p>
         </div>
         <Link href="/admin" className="text-primary text-sm font-medium hover:underline">
-          {t("inline.back_to_administration")}
+          {t("admin.publishing.backToAdministration")}
         </Link>
       </header>
 
       <section className="flex flex-col gap-4" aria-labelledby="price-heading">
         <div>
           <h2 id="price-heading" className="text-xl font-bold">
-            {t("inline.market_prices")}
+            {t("agriculture.information.marketPrices")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.price_submissions_awaiting_review")}
+            {t("admin.publishing.priceSubmissionsAwaitingReview")}
           </p>
         </div>
         {data.requests.length > 0 && (
@@ -68,7 +68,7 @@ export function AgriculturePublishingWorkspace({
                     {request.referenceCode ?? `#${request.id}`} · {request.district}
                   </CardTitle>
                   <CardDescription>
-                    {t("inline.submitted_price_information")}
+                    {t("admin.publishing.submittedPriceInformation")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -89,10 +89,10 @@ export function AgriculturePublishingWorkspace({
       <section className="flex flex-col gap-4" aria-labelledby="updates-heading">
         <div>
           <h2 id="updates-heading" className="text-xl font-bold">
-            {t("inline.news_advice_and_weather_alerts")}
+            {t("admin.publishing.newsAdviceAndWeatherAlerts")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.weather_alerts_require_an_expiry_date")}
+            {t("admin.publishing.weatherAlertsRequireAnExpiryDate")}
           </p>
         </div>
         {data.updates.map((update) => (
@@ -122,7 +122,7 @@ function PriceForm({
   const english = locale === "en";
   const prefix = `market-price-${initial?.id ?? "new"}`;
   const sourceOptions: [string, string][] = [
-    ["", t("inline.no_linked_request")],
+    ["", t("admin.publishing.noLinkedRequest")],
     ...requests.map(
       (request) =>
         [
@@ -137,7 +137,7 @@ function PriceForm({
   )
     sourceOptions.push([
       initial.sourceRequestId,
-      `${t("inline.linked_request")} #${initial.sourceRequestId}`,
+      `${t("admin.publishing.linkedRequest")} #${initial.sourceRequestId}`,
     ]);
   return (
     <Card>
@@ -147,7 +147,7 @@ function PriceForm({
             ? english
               ? `Edit ${initial.product}`
               : `${initial.product} সম্পাদনা`
-            : t("inline.add_market_price")}
+            : t("admin.publishing.addMarketPrice")}
         </CardTitle>
         <CardDescription>
           {english
@@ -163,21 +163,21 @@ function PriceForm({
             <TextField
               id={`${prefix}-product-bn`}
               name="productBn"
-              label={t("inline.product_name_bangla")}
+              label={t("admin.publishing.productNameBangla")}
               defaultValue={initial?.product}
               required
             />
             <TextField
               id={`${prefix}-product-en`}
               name="productEn"
-              label={t("inline.product_name_english")}
+              label={t("admin.publishing.productNameEnglish")}
               defaultValue={initial?.product}
               required
             />
             <TextField
               id={`${prefix}-market`}
               name="market"
-              label={t("panels.categories.market")}
+              label={t("admin.publishing.marketLabel")}
               defaultValue={initial?.market}
               required
             />
@@ -191,14 +191,14 @@ function PriceForm({
             <TextField
               id={`${prefix}-unit`}
               name="unit"
-              label={t("inline.unit_e_g_kg")}
+              label={t("admin.publishing.unitPlaceholder")}
               defaultValue={initial?.unit}
               required
             />
             <TextField
               id={`${prefix}-price`}
               name="price"
-              label={t("inline.price_bdt")}
+              label={t("admin.publishing.priceBdt")}
               type="number"
               min="0"
               step="0.01"
@@ -208,38 +208,38 @@ function PriceForm({
             <DateField
               id={`${prefix}-observed`}
               name="observedAt"
-              label={t("inline.observed_on")}
+              label={t("admin.publishing.observedOn")}
               defaultValue={initial?.observedAt}
               required
             />
             <TextField
               id={`${prefix}-source`}
               name="source"
-              label={t("inline.source")}
+              label={t("common.labels.source")}
               defaultValue={initial?.source}
               required
             />
             <SelectField
               id={`${prefix}-status`}
               name="status"
-              label={t("inline.publication_status")}
+              label={t("admin.publishing.publicationStatus")}
               defaultValue={initial?.status ?? "DRAFT"}
               options={[
-                ["DRAFT", t("inline.draft")],
-                ["PUBLISHED", t("inline.published")],
+                ["DRAFT", t("admin.publishing.draft")],
+                ["PUBLISHED", t("common.labels.published")],
               ]}
             />
             <SelectField
               id={`${prefix}-request`}
               name="sourceRequestId"
-              label={t("inline.link_a_price_submission")}
+              label={t("admin.publishing.linkAPriceSubmission")}
               defaultValue={initial?.sourceRequestId ?? ""}
               options={sourceOptions}
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving") : t("inline.save_market_price")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveMarketPrice")}
           </Button>
         </form>
       </CardContent>
@@ -264,7 +264,7 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
             ? english
               ? `Edit ${initial.title}`
               : `${initial.title} সম্পাদনা`
-            : t("inline.add_an_update")}
+            : t("admin.publishing.addAnUpdate")}
         </CardTitle>
         <CardDescription>
           {english
@@ -280,22 +280,22 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
             <SelectField
               id={`${prefix}-kind`}
               name="kind"
-              label={t("inline.type")}
+              label={t("common.labels.type")}
               defaultValue={initial?.kind ?? "NEWS"}
               options={[
-                ["NEWS", t("inline.news")],
-                ["ADVICE", t("inline.advice")],
-                ["WEATHER_ALERT", t("inline.weather_alert")],
+                ["NEWS", t("agriculture.information.news")],
+                ["ADVICE", t("agriculture.information.advice")],
+                ["WEATHER_ALERT", t("agriculture.information.weatherAlert")],
               ]}
             />
             <SelectField
               id={`${prefix}-status`}
               name="status"
-              label={t("inline.publication_status")}
+              label={t("admin.publishing.publicationStatus")}
               defaultValue={initial?.status ?? "DRAFT"}
               options={[
-                ["DRAFT", t("inline.draft")],
-                ["PUBLISHED", t("inline.published")],
+                ["DRAFT", t("admin.publishing.draft")],
+                ["PUBLISHED", t("common.labels.published")],
               ]}
             />
             <TextField
@@ -315,20 +315,20 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
             <DateField
               id={`${prefix}-published`}
               name="publishedAt"
-              label={t("inline.publication_date")}
+              label={t("admin.publishing.publicationDate")}
               defaultValue={initial?.publishedAt}
               required
             />
             <DateField
               id={`${prefix}-expiry`}
               name="expiresAt"
-              label={t("inline.expiry_date_required_for_weather_alerts")}
+              label={t("admin.publishing.weatherExpiryLabel")}
               defaultValue={initial?.expiresAt}
             />
             <TextField
               id={`${prefix}-source`}
               name="source"
-              label={t("inline.source")}
+              label={t("common.labels.source")}
               defaultValue={initial?.source}
               required
             />
@@ -336,7 +336,7 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               className="sm:col-span-2"
               id={`${prefix}-body-bn`}
               name="bodyBn"
-              label={t("inline.content_bangla")}
+              label={t("admin.publishing.contentBangla")}
               defaultValue={initial?.body}
               required
             />
@@ -344,14 +344,14 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               className="sm:col-span-2"
               id={`${prefix}-body-en`}
               name="bodyEn"
-              label={t("inline.content_english")}
+              label={t("admin.publishing.contentEnglish")}
               defaultValue={initial?.body}
               required
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving") : t("inline.save_update")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveUpdate")}
           </Button>
         </form>
       </CardContent>
@@ -368,9 +368,9 @@ function SupportForm({ initial }: { initial: AgriculturePublishingWorkspaceData[
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("inline.agriculture_support_contact")}</CardTitle>
+        <CardTitle>{t("admin.publishing.agricultureSupportContact")}</CardTitle>
         <CardDescription>
-          {t("inline.these_details_appear_publicly_on_the_agric")}
+          {t("admin.support.visibilityNotice")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -380,34 +380,34 @@ function SupportForm({ initial }: { initial: AgriculturePublishingWorkspaceData[
             <TextField
               id="agriculture-support-phone"
               name="phone"
-              label={t("inline.phone")}
+              label={t("admin.publishing.phone")}
               defaultValue={initial?.phone}
             />
             <TextField
               id="agriculture-support-email"
               name="email"
               type="email"
-              label={t("inline.email")}
+              label={t("admin.publishing.email")}
               defaultValue={initial?.email}
             />
             <TextAreaField
               className="sm:col-span-2"
               id="agriculture-support-bn"
               name="messageBn"
-              label={t("inline.support_message_bangla")}
+              label={t("admin.publishing.supportMessageBangla")}
               defaultValue={initial?.messageBn}
             />
             <TextAreaField
               className="sm:col-span-2"
               id="agriculture-support-en"
               name="messageEn"
-              label={t("inline.support_message_english")}
+              label={t("admin.publishing.supportMessageEnglish")}
               defaultValue={initial?.messageEn}
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving") : t("inline.save_support_details")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveSupportDetails")}
           </Button>
         </form>
       </CardContent>
@@ -538,8 +538,8 @@ function FormFeedback({ state }: { state: "idle" | "success" | "error" }) {
       className={state === "error" ? "text-destructive text-sm" : "text-primary text-sm"}
     >
       {state === "error"
-        ? t("inline.could_not_save_check_the_fields_and_try_ag")
-        : t("inline.saved")}
+        ? t("admin.publishing.saveError")
+        : t("admin.publishing.saved")}
     </p>
   );
 }

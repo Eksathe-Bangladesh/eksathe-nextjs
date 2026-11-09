@@ -19,23 +19,21 @@ export function withAgricultureServiceContent(
     icon: content.icon,
     fields: service.fields.map((field) => {
       const label = resolveCatalogPair(fieldLabelKey(service.slug, field.name));
-      const { options: rawOptions, ...fieldStructure } = field as {
-        name: string;
-        type: "text" | "number" | "date" | "select" | "file";
-        required: boolean;
-        maxLength?: number;
-        options?: readonly { value: string }[];
-      };
-      const options = rawOptions?.map((option, index) => {
-        const optionLabel = resolveCatalogPair(optionLabelKey(service.slug, field.name, index));
-        return {
-          ...option,
-          labelBn: optionLabel.bn,
-          labelEn: optionLabel.en,
-        };
-      });
+      const options =
+        "options" in field
+          ? field.options.map((option, index) => {
+              const optionLabel = resolveCatalogPair(
+                optionLabelKey(service.slug, field.name, index),
+              );
+              return {
+                ...option,
+                labelBn: optionLabel.bn,
+                labelEn: optionLabel.en,
+              };
+            })
+          : undefined;
       return {
-        ...fieldStructure,
+        ...field,
         labelBn: label.bn,
         labelEn: label.en,
         ...(options === undefined ? {} : { options }),

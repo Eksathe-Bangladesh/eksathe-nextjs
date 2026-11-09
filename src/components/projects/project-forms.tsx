@@ -50,7 +50,7 @@ export function CreateProjectForm({
         <Input
           id="project-type"
           name="projectType"
-          placeholder={t("inline.house_shop_renovation")}
+          placeholder={t("projects.forms.projectTypePlaceholder")}
           maxLength={80}
           required
         />
@@ -103,7 +103,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <Field id={`package-label-${projectId}`} label={t("workflow.workPackage")}>
         <Input id={`package-label-${projectId}`} name="label" maxLength={120} required />
       </Field>
-      <Field id={`package-kind-${projectId}`} label={t("inline.package_type")}>
+      <Field id={`package-kind-${projectId}`} label={t("projects.forms.packageType")}>
         <NativeSelect
           id={`package-kind-${projectId}`}
           name="kind"
@@ -111,7 +111,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <NativeSelectOption value="CONSTRUCTION_SERVICE">
-            {t("inline.professional_service")}
+            {t("projects.forms.professionalService")}
           </NativeSelectOption>
           <NativeSelectOption value="CONSTRUCTION_MATERIAL">
             {t("constructionServices.building-materials.title")}
@@ -124,7 +124,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <div className="flex flex-col gap-2 sm:col-span-2">
         <ActionFeedback state={state} />
         <Button type="submit" variant="outline" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.add_work_package")}
+          {pending ? t("common.loading") : t("projects.forms.addWorkPackage")}
         </Button>
       </div>
     </form>
@@ -153,7 +153,7 @@ export function AddMilestoneForm({
           required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <NativeSelectOption value="">{t("inline.choose_a_provider")}</NativeSelectOption>
+          <NativeSelectOption value="">{t("projects.forms.chooseAProvider")}</NativeSelectOption>
           {providers.map((provider) => (
             <NativeSelectOption key={provider.id} value={provider.id}>
               {provider.name}
@@ -173,7 +173,7 @@ export function AddMilestoneForm({
           step="0.01"
         />
       </Field>
-      <Field id={`milestone-due-${projectId}`} label={t("inline.due_date")}>
+      <Field id={`milestone-due-${projectId}`} label={t("projects.forms.dueDate")}>
         <DatePicker id={`milestone-due-${projectId}`} name="dueAt" />
       </Field>
       <Field id={`milestone-description-${projectId}`} label={t("workflow.milestoneDescription")}>
@@ -336,7 +336,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
       />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t(`workflow.${uploadError}` as never)}
+          {t(`workflow.${uploadError}`)}
         </p>
       )}
       <ActionFeedback state={state} />
@@ -428,7 +428,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
       />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t(`workflow.${uploadError}` as never)}
+          {t(`workflow.${uploadError}`)}
         </p>
       )}
       <ActionFeedback state={state} />

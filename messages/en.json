@@ -3,7 +3,70 @@
     "brandName": "EKsathe Bangladesh",
     "brandSlogan": "Farmer • Market • Labor • Service",
     "loading": "Loading...",
-    "other": "Other"
+    "other": "Other",
+    "commissionCalculator": {
+      "tag": "Transparent Calculation",
+      "title": "10% Commission Calculator",
+      "description": "The calculation below is illustrative. Final commission is determined according to official policy and approved transaction terms.",
+      "amountLabel": "Total Transaction Amount (৳)",
+      "platformShare": "Platform Commission (10%)",
+      "providerShare": "Provider Share (90%)",
+      "providerAmount": "Estimated provider amount, including transport"
+    },
+    "emergency": {
+      "buttonLabel": "Emergency Helpline 100",
+      "modalTitle": "Emergency Assistance",
+      "modalSubtitle": "This button does not place a phone call automatically.",
+      "modalDescription": "For urgent assistance, please contact the verified official government emergency services in your local area directly."
+    },
+    "labels": {
+      "requests": "Requests",
+      "orders": "Orders",
+      "expires": "Expires",
+      "ordersAndBookings": "Orders and bookings",
+      "budget": "Budget",
+      "privateAttachments": "Private attachments",
+      "updates": "Updates",
+      "listings": "Listings",
+      "commissions": "Commissions",
+      "source": "Source",
+      "published": "Published",
+      "type": "Type",
+      "allServices": "All services",
+      "estimate": "Estimate",
+      "separateTransportChargeBdt": "Separate transport charge (BDT)",
+      "estimatedPlatformCommission": "Estimated platform commission",
+      "allCategories": "All categories",
+      "commissionCalculator": "Commission calculator",
+      "estimateThePlatformFee": "Estimate the platform fee",
+      "minimumPrice": "Minimum price",
+      "maximumPrice": "Maximum price",
+      "priceLowToHigh": "Price: low to high",
+      "priceHighToLow": "Price: high to low",
+      "seller": "Seller",
+      "pagination": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "newest": "Newest",
+      "provider": "Provider",
+      "total": "Total",
+      "confirmedByBothParties": "Confirmed by both parties",
+      "awaitingConfirmation": "Awaiting confirmation",
+      "noAdditionalDetailsProvided": "No additional details provided."
+    },
+    "actions": {
+      "update": "Update",
+      "clear": "Clear",
+      "search": "Search",
+      "view": "View"
+    },
+    "states": {
+      "saving": "Saving…"
+    },
+    "fields": {
+      "nameBangla": "Name (Bangla)",
+      "nameEnglish": "Name (English)"
+    }
   },
   "home": {
     "eyebrow": "Bangladesh's digital services and marketplace",
@@ -17,7 +80,28 @@
     "constructionDescription": "Find materials and professionals, then track project progress.",
     "comingSoon": "Coming soon",
     "hubTitle": "Explore 13 service sectors",
-    "hubDescription": "Discover services across EKsathe Bangladesh and choose the one that meets your needs."
+    "hubDescription": "Discover services across EKsathe Bangladesh and choose the one that meets your needs.",
+    "marketUpdates": {
+      "eyebrow": "Market Updates",
+      "title": "News & Market Feed",
+      "sampleBadge": "Sample Feed",
+      "sampleTitle": "Verify local market prices prior to publishing",
+      "sampleDescription": "Live prices and news are not yet automated. Admin verification and publication module will be integrated.",
+      "warningBadge": "Caution",
+      "warningTitle": "Verify details before agricultural commodity deals",
+      "warningDescription": "Always confirm product quality, weight, price, transport, and payment terms in writing."
+    },
+    "policy": {
+      "eyebrow": "Policy & Safety",
+      "title": "Usage Policies",
+      "items": [
+        "No guarantee is provided regarding approval of agricultural loans, insurance, or government grants.",
+        "This platform must not be used as a substitute for professional medical, legal, or official government decisions.",
+        "Area, date, unit of measurement, and source must be verified before publishing market rates.",
+        "Fake listings, fraud, misleading weight or grade information, and unauthorized charges are strictly prohibited.",
+        "Personal data must only be utilized in direct accordance with operational service requirements."
+      ]
+    }
   },
   "auth": {
     "signIn": "Sign in",
@@ -261,25 +345,189 @@
     "commissionLabel": "Commission Calculator",
     "commissionValue": "10%"
   },
-  "panels": {
-    "searchAriaLabel": "Search services",
-    "categoryAriaLabel": "Filter by category",
-    "categories": {
-      "market": "Market",
-      "finance": "Finance"
+  "agriculture": {
+    "services": {
+      "searchLabel": "Search services",
+      "categoryLabel": "Filter by category",
+      "all": "All agriculture services",
+      "description": "Choose a service to see its details and request form. The agriculture operations team reviews and coordinates service requests.",
+      "title": "What do you need help with?",
+      "empty": "No services match your search."
+    },
+    "requestForm": {
+      "fullName": "Your Name *",
+      "phone": "Mobile Number *",
+      "district": "District / Area *",
+      "districtPlaceholder": "e.g., Bogura, Rangpur",
+      "budget": "Estimated Budget (৳)",
+      "budgetPlaceholder": "Optional",
+      "details": "Describe your requirements in detail *",
+      "detailsPlaceholder": "Write job details, quantity, or specific requirements...",
+      "submit": "Submit Request",
+      "submitting": "Submitting...",
+      "signInNotice": "Preview the fields below. Sign in and verify your email to send this request.",
+      "verifyEmail": "Verify email",
+      "photoHelp": "Optional · JPEG, PNG, or WebP up to 5 MB",
+      "photoUploading": "Uploading private photo…",
+      "photoReady": "Photo ready",
+      "optionPlaceholder": "Choose an option",
+      "coordinationNotice": "Requesting coordination does not create an order, promise a provider, approve finance or insurance, or trigger a payment.",
+      "requestReference": "Request reference",
+      "trackRequest": "Track request"
+    },
+    "information": {
+      "marketPrices": "Market prices",
+      "news": "News",
+      "advice": "Advice",
+      "weatherAlert": "Weather alert",
+      "emptyPrices": "No published market prices yet.",
+      "backToAllAgricultureServices": "← All agriculture services",
+      "eyebrow": "Verified agriculture information",
+      "updatesTitle": "News, advice, and alerts",
+      "description": "Agriculture news, practical advice, and current weather alerts published by the operations team.",
+      "unavailable": "This information is temporarily unavailable. Please try again later.",
+      "observed": "Observed",
+      "noCurrentUpdatesOrAlerts": "No current updates or alerts."
+    },
+    "commissionCalculator": {
+      "estimateTheSplit": "Estimate the split",
+      "goodsOrServiceAmountBdt": "Goods or service amount (BDT)",
+      "transportNotice": "Transport is excluded from the commission calculation. Actual charges and agreed terms may differ.",
+      "rateUnavailable": "The agriculture commission rate is not available right now."
+    },
+    "home": {
+      "eyebrow": "Agriculture services across Bangladesh",
+      "title": "Grow, find support, and reach markets together.",
+      "description": "Find farm products, workers, machinery, advice, and support in one place. Browse freely; verified accounts can send a request for the operations team to review.",
+      "exploreMarketplace": "Explore marketplace",
+      "farmServices": "Farm services",
+      "marketplace": "Marketplace",
+      "findProductsAndProviders": "Find products and providers",
+      "viewMarketplace": "View marketplace",
+      "emptyListings": "No published listings yet. Please check back soon.",
+      "serviceDetails": "service details",
+      "commissionNotice": "This estimate uses the current agriculture rate. It does not include separately agreed transport costs.",
+      "publicationsEyebrow": "Reviewed by the agriculture team",
+      "publicationsTitle": "Market prices and agriculture updates",
+      "publicationsDescription": "Market prices, news, advice, and weather alerts are published by staff with a source and date.",
+      "publicationsUnavailable": "Published information is temporarily unavailable.",
+      "latestMarketPrices": "Latest market prices",
+      "recentUpdates": "Recent updates",
+      "noCurrentAgricultureUpdates": "No current agriculture updates."
+    },
+    "market": {
+      "name": "Agriculture marketplace",
+      "backToAgriculture": "Back to agriculture",
+      "findFarmProducts": "Find farm products",
+      "description": "Search listings by seller, category, district, and price. Confirm terms with the provider before accepting an offer.",
+      "searchProductsOrSellers": "Search products or sellers",
+      "minBdt": "Min BDT",
+      "maxBdt": "Max BDT",
+      "sort": "Sort",
+      "empty": "No published products match these filters. Adjust your search and try again.",
+      "page": "Page"
+    },
+    "support": {
+      "title": "Agriculture support",
+      "loadError": "Support information could not be loaded.",
+      "notConfigured": "Support contact details have not been configured yet."
+    },
+    "serviceDetail": {
+      "coordinationNotice": "Service requests are reviewed and coordinated by agriculture operations staff. Sending a request does not create an order or payment."
     }
   },
-  "requestForm": {
-    "fullName": "Your Name *",
-    "phone": "Mobile Number *",
-    "district": "District / Area *",
-    "districtPlaceholder": "e.g., Bogura, Rangpur",
-    "budget": "Estimated Budget (৳)",
-    "budgetPlaceholder": "Optional",
-    "details": "Describe your requirements in detail *",
-    "detailsPlaceholder": "Write job details, quantity, or specific requirements...",
-    "submit": "Submit Request",
-    "submitting": "Submitting..."
+  "admin": {
+    "publishing": {
+      "marketLabel": "Market",
+      "agricultureOperations": "Agriculture operations",
+      "publishPricesAndUpdates": "Publish prices and updates",
+      "description": "Review submitted information, add a source and observation date, then publish it for customers.",
+      "backToAdministration": "Back to administration",
+      "priceSubmissionsAwaitingReview": "Price submissions awaiting review",
+      "submittedPriceInformation": "Submitted price information",
+      "newsAdviceAndWeatherAlerts": "News, advice, and weather alerts",
+      "weatherAlertsRequireAnExpiryDate": "Weather alerts require an expiry date.",
+      "noLinkedRequest": "No linked request",
+      "linkedRequest": "Linked request",
+      "addMarketPrice": "Add market price",
+      "productNameBangla": "Product name (Bangla)",
+      "productNameEnglish": "Product name (English)",
+      "unitPlaceholder": "Unit (e.g. kg)",
+      "priceBdt": "Price (BDT)",
+      "observedOn": "Observed on",
+      "publicationStatus": "Publication status",
+      "draft": "Draft",
+      "linkAPriceSubmission": "Link a price submission",
+      "saveMarketPrice": "Save market price",
+      "addAnUpdate": "Add an update",
+      "publicationDate": "Publication date",
+      "weatherExpiryLabel": "Expiry date (required for weather alerts)",
+      "contentBangla": "Content (Bangla)",
+      "contentEnglish": "Content (English)",
+      "saveUpdate": "Save update",
+      "agricultureSupportContact": "Agriculture support contact",
+      "phone": "Phone",
+      "email": "Email",
+      "supportMessageBangla": "Support message (Bangla)",
+      "supportMessageEnglish": "Support message (English)",
+      "saveSupportDetails": "Save support details",
+      "saveError": "Could not save. Check the fields and try again.",
+      "saved": "Saved."
+    },
+    "workspace": {
+      "financeLabel": "Finance",
+      "administrationNavigation": "Administration navigation",
+      "disputes": "Disputes",
+      "agricultureIntake": "Agriculture intake",
+      "payments": "Payments",
+      "rates": "Rates",
+      "platformOperations": "Platform operations",
+      "publishAgriculturePricesAndUpdates": "Publish agriculture prices and updates",
+      "listingModeration": "Listing moderation",
+      "starts": "Starts",
+      "ends": "Ends",
+      "quote": "Quote",
+      "transport": "Transport",
+      "viewProviderProfile": "View provider profile",
+      "paymentConfirmations": "Payment confirmations",
+      "sectorCommissionSettings": "Sector commission settings",
+      "resolution": "Resolution",
+      "markCompleted": "Mark completed",
+      "cancelAndReleaseStock": "Cancel and release stock",
+      "recordDecision": "Record decision",
+      "recordARefund": "Record a refund",
+      "recordRefund": "Record refund",
+      "commissionRate": "Commission rate (%)",
+      "operations": "Operations",
+      "platformWide": "Platform-wide",
+      "grantAccess": "Grant access",
+      "revoke": "Revoke"
+    },
+    "support": {
+      "visibilityNotice": "These details appear publicly on the agriculture pages. Leave blank to remove a contact method."
+    },
+    "agricultureRequests": {
+      "agricultureServiceIntake": "Agriculture service intake",
+      "description": "Review requests, coordinate follow-up, and keep internal notes private.",
+      "service": "Service",
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "assignee": "Assignee",
+      "anyone": "Anyone",
+      "fromDate": "From date",
+      "toDate": "To date",
+      "filterRequests": "Filter requests",
+      "empty": "No agriculture requests match these filters.",
+      "notAssigned": "Not assigned",
+      "marketplaceMatch": "Marketplace match",
+      "internalNote": "Internal note",
+      "customerUpdate": "Customer update",
+      "assignToStaff": "Assign to staff",
+      "marketplaceRequestLabel": "Matched marketplace request ID (optional)",
+      "customerVisibleUpdate": "Customer-visible update",
+      "privateStaffNote": "Private staff note",
+      "saveReview": "Save review"
+    }
   },
   "howItWorks": {
     "tag": "Simple Workflow",
@@ -307,39 +555,6 @@
       }
     ]
   },
-  "commission": {
-    "tag": "Transparent Calculation",
-    "title": "10% Commission Calculator",
-    "description": "The calculation below is illustrative. Final commission is determined according to official policy and approved transaction terms.",
-    "amountLabel": "Total Transaction Amount (৳)",
-    "platformShare": "Platform Commission (10%)",
-    "providerShare": "Provider Share (90%)"
-  },
-  "marketAndPolicy": {
-    "marketTag": "Market Updates",
-    "marketTitle": "News & Market Feed",
-    "feedSampleBadge": "Sample Feed",
-    "feedSampleTitle": "Verify local market prices prior to publishing",
-    "feedSampleDescription": "Live prices and news are not yet automated. Admin verification and publication module will be integrated.",
-    "feedWarningBadge": "Caution",
-    "feedWarningTitle": "Verify details before agricultural commodity deals",
-    "feedWarningDescription": "Always confirm product quality, weight, price, transport, and payment terms in writing.",
-    "policyTag": "Policy & Safety",
-    "policyTitle": "Usage Policies",
-    "policies": [
-      "No guarantee is provided regarding approval of agricultural loans, insurance, or government grants.",
-      "This platform must not be used as a substitute for professional medical, legal, or official government decisions.",
-      "Area, date, unit of measurement, and source must be verified before publishing market rates.",
-      "Fake listings, fraud, misleading weight or grade information, and unauthorized charges are strictly prohibited.",
-      "Personal data must only be utilized in direct accordance with operational service requirements."
-    ]
-  },
-  "emergency": {
-    "buttonLabel": "Emergency Helpline 100",
-    "modalTitle": "Emergency Assistance",
-    "modalSubtitle": "This button does not place a phone call automatically.",
-    "modalDescription": "For urgent assistance, please contact the verified official government emergency services in your local area directly."
-  },
   "footer": {
     "tagline": "Farmer • Market • Labor • Service"
   },
@@ -352,373 +567,283 @@
     "profile": "Profile",
     "emergencyCall": "Emergency Call",
     "adminRole": "Admin",
-    "guestRole": "Guest"
+    "guestRole": "Guest",
+    "actions": {
+      "back": "Back to dashboard"
+    },
+    "sector": {
+      "availableListings": "{count, plural, one {# available listing} other {# available listings}}",
+      "empty": "No approved listings yet. Apply to become a provider.",
+      "applyToProvide": "Apply to provide"
+    },
+    "categoryGrid": {
+      "resultCount": "{count, plural, one {# sector} other {# sectors}}"
+    }
   },
-  "inline": {
-    "account_navigation": "Account navigation",
-    "requests": "Requests",
-    "agriculture_service_requests": "Agriculture service requests",
-    "orders": "Orders",
-    "your_account": "Your account",
-    "welcome": "Welcome, {name}",
-    "these_details_are_used_for_requests_and_bo": "These details are used for requests and bookings.",
-    "track_request_status_submitted_details_and": "Track request status, submitted details, and updates from the operations team.",
-    "view_request": "View request",
-    "requests_and_quotes": "Requests and quotes",
-    "provider_quote": "Provider quote",
-    "quoted_total": "Quoted total",
-    "expires": "Expires",
-    "orders_and_bookings": "Orders and bookings",
-    "track_construction_scope_quotes_milestones": "Track construction scope, quotes, milestones and recorded costs.",
-    "accepted_quote_orders": "accepted quote orders",
-    "open_project": "Open project",
-    "open": "Open",
-    "accepting_confirms_the_quoted_price_quanti": "Accepting confirms the quoted price, quantity and booking terms.",
-    "withdraw_request": "Withdraw request",
-    "mark_read": "Mark read",
-    "back_to_account": "Back to account",
-    "contact": "Contact",
-    "budget": "Budget",
-    "requirement": "Requirement",
-    "submitted_service_details": "Submitted service details",
-    "private_attachments": "Private attachments",
-    "updates": "Updates",
-    "no_updates_yet": "No updates yet.",
-    "all_agriculture_services": "All agriculture services",
-    "administration_navigation": "Administration navigation",
-    "listings": "Listings",
-    "disputes": "Disputes",
-    "agriculture_intake": "Agriculture intake",
-    "payments": "Payments",
-    "commissions": "Commissions",
-    "rates": "Rates",
-    "platform_operations": "Platform operations",
-    "publish_agriculture_prices_and_updates": "Publish agriculture prices and updates",
-    "listing_moderation": "Listing moderation",
-    "starts": "Starts",
-    "ends": "Ends",
-    "quote": "Quote",
-    "transport": "Transport",
-    "view_provider_profile": "View provider profile",
-    "payment_confirmations": "Payment confirmations",
-    "sector_commission_settings": "Sector commission settings",
-    "resolution": "Resolution",
-    "mark_completed": "Mark completed",
-    "cancel_and_release_stock": "Cancel and release stock",
-    "record_decision": "Record decision",
-    "record_a_refund": "Record a refund",
-    "record_refund": "Record refund",
-    "commission_rate": "Commission rate (%)",
-    "update": "Update",
-    "operations": "Operations",
-    "platform_wide": "Platform-wide",
-    "grant_access": "Grant access",
-    "revoke": "Revoke",
-    "agriculture_operations": "Agriculture operations",
-    "publish_prices_and_updates": "Publish prices and updates",
-    "review_submitted_information_add_a_source": "Review submitted information, add a source and observation date, then publish it for customers.",
-    "back_to_administration": "Back to administration",
-    "market_prices": "Market prices",
-    "price_submissions_awaiting_review": "Price submissions awaiting review",
-    "submitted_price_information": "Submitted price information",
-    "news_advice_and_weather_alerts": "News, advice, and weather alerts",
-    "weather_alerts_require_an_expiry_date": "Weather alerts require an expiry date.",
-    "no_linked_request": "No linked request",
-    "linked_request": "Linked request",
-    "add_market_price": "Add market price",
-    "product_name_bangla": "Product name (Bangla)",
-    "product_name_english": "Product name (English)",
-    "unit_e_g_kg": "Unit (e.g. kg)",
-    "price_bdt": "Price (BDT)",
-    "observed_on": "Observed on",
-    "source": "Source",
-    "publication_status": "Publication status",
-    "draft": "Draft",
-    "published": "Published",
-    "link_a_price_submission": "Link a price submission",
-    "saving": "Saving…",
-    "save_market_price": "Save market price",
-    "add_an_update": "Add an update",
-    "type": "Type",
-    "news": "News",
-    "advice": "Advice",
-    "weather_alert": "Weather alert",
-    "publication_date": "Publication date",
-    "expiry_date_required_for_weather_alerts": "Expiry date (required for weather alerts)",
-    "content_bangla": "Content (Bangla)",
-    "content_english": "Content (English)",
-    "save_update": "Save update",
-    "agriculture_support_contact": "Agriculture support contact",
-    "these_details_appear_publicly_on_the_agric": "These details appear publicly on the agriculture pages. Leave blank to remove a contact method.",
-    "phone": "Phone",
-    "email": "Email",
-    "support_message_bangla": "Support message (Bangla)",
-    "support_message_english": "Support message (English)",
-    "save_support_details": "Save support details",
-    "could_not_save_check_the_fields_and_try_ag": "Could not save. Check the fields and try again.",
-    "saved": "Saved.",
-    "agriculture_service_intake": "Agriculture service intake",
-    "review_requests_coordinate_follow_up_and_k": "Review requests, coordinate follow-up, and keep internal notes private.",
-    "service": "Service",
-    "all_services": "All services",
-    "status": "Status",
-    "all_statuses": "All statuses",
-    "assignee": "Assignee",
-    "anyone": "Anyone",
-    "from_date": "From date",
-    "to_date": "To date",
-    "filter_requests": "Filter requests",
-    "clear": "Clear",
-    "no_agriculture_requests_match_these_filter": "No agriculture requests match these filters.",
-    "not_assigned": "Not assigned",
-    "marketplace_match": "Marketplace match",
-    "internal_note": "Internal note",
-    "customer_update": "Customer update",
-    "assign_to_staff": "Assign to staff",
-    "matched_marketplace_request_id_optional": "Matched marketplace request ID (optional)",
-    "customer_visible_update": "Customer-visible update",
-    "private_staff_note": "Private staff note",
-    "save_review": "Save review",
-    "estimate_the_split": "Estimate the split",
-    "estimate": "Estimate",
-    "goods_or_service_amount_bdt": "Goods or service amount (BDT)",
-    "separate_transport_charge_bdt": "Separate transport charge (BDT)",
-    "agriculture_transport_commission_notice": "Transport is excluded from the commission calculation. Actual charges and agreed terms may differ.",
-    "the_agriculture_commission_rate_is_not_ava": "The agriculture commission rate is not available right now.",
-    "estimated_platform_commission": "Estimated platform commission",
-    "estimated_provider_amount_including_transp": "Estimated provider amount, including transport",
-    "back_to_dashboard": "Back to dashboard",
-    "agriculture_services_across_bangladesh": "Agriculture services across Bangladesh",
-    "grow_find_support_and_reach_markets_togeth": "Grow, find support, and reach markets together.",
-    "find_farm_products_workers_machinery_advic": "Find farm products, workers, machinery, advice, and support in one place. Browse freely; verified accounts can send a request for the operations team to review.",
-    "explore_marketplace": "Explore marketplace",
-    "farm_services": "Farm services",
-    "marketplace": "Marketplace",
-    "find_products_and_providers": "Find products and providers",
-    "agriculture_marketplace": "Agriculture marketplace",
-    "view_marketplace": "View marketplace",
-    "marketplace_listings_could_not_be_loaded_p": "Marketplace listings could not be loaded. Please try again later.",
-    "no_published_listings_yet_please_check_bac": "No published listings yet. Please check back soon.",
-    "what_do_you_need_help_with": "What do you need help with?",
-    "choose_a_service_to_see_its_details_and_re": "Choose a service to see its details and request form. The agriculture operations team reviews and coordinates service requests.",
-    "all_categories": "All categories",
-    "no_services_match_your_search": "No services match your search.",
-    "service_details": "service details",
-    "commission_calculator": "Commission calculator",
-    "estimate_the_platform_fee": "Estimate the platform fee",
-    "this_estimate_uses_the_current_agriculture": "This estimate uses the current agriculture rate. It does not include separately agreed transport costs.",
-    "reviewed_by_the_agriculture_team": "Reviewed by the agriculture team",
-    "market_prices_and_agriculture_updates": "Market prices and agriculture updates",
-    "market_prices_news_advice_and_weather_aler": "Market prices, news, advice, and weather alerts are published by staff with a source and date.",
-    "published_information_is_temporarily_unava": "Published information is temporarily unavailable.",
-    "latest_market_prices": "Latest market prices",
-    "no_published_market_prices_yet": "No published market prices yet.",
-    "recent_updates": "Recent updates",
-    "no_current_agriculture_updates": "No current agriculture updates.",
-    "agriculture_support": "Agriculture support",
-    "support_information_could_not_be_loaded": "Support information could not be loaded.",
-    "support_contact_details_have_not_been_conf": "Support contact details have not been configured yet.",
-    "back_to_agriculture": "Back to agriculture",
-    "find_farm_products": "Find farm products",
-    "search_listings_by_seller_category_distric": "Search listings by seller, category, district, and price. Confirm terms with the provider before accepting an offer.",
-    "search_products_or_sellers": "Search products or sellers",
-    "minimum_price": "Minimum price",
-    "min_bdt": "Min BDT",
-    "maximum_price": "Maximum price",
-    "max_bdt": "Max BDT",
-    "sort": "Sort",
-    "price_low_to_high": "Price: low to high",
-    "price_high_to_low": "Price: high to low",
-    "search": "Search",
-    "listings_count": "listings",
-    "no_published_products_match_these_filters": "No published products match these filters. Adjust your search and try again.",
-    "seller": "Seller",
-    "pagination": "Pagination",
-    "previous": "Previous",
-    "page": "Page",
-    "next": "Next",
-    "back_to_all_agriculture_services": "← All agriculture services",
-    "verified_agriculture_information": "Verified agriculture information",
-    "news_advice_and_alerts": "News, advice, and alerts",
-    "agriculture_news_practical_advice_and_curr": "Agriculture news, practical advice, and current weather alerts published by the operations team.",
-    "this_information_is_temporarily_unavailabl": "This information is temporarily unavailable. Please try again later.",
-    "observed": "Observed",
-    "no_current_updates_or_alerts": "No current updates or alerts.",
-    "service_requests_are_reviewed_and_coordina": "Service requests are reviewed and coordinated by agriculture operations staff. Sending a request does not create an order or payment.",
-    "browse_marketplace": "Browse marketplace",
-    "preview_the_fields_below_sign_in_and_verif": "Preview the fields below. Sign in and verify your email to send this request.",
-    "verify_email": "Verify email",
-    "optional_jpeg_png_or_webp_up_to_5_mb": "Optional · JPEG, PNG, or WebP up to 5 MB",
-    "uploading_private_photo": "Uploading private photo…",
-    "photo_ready": "Photo ready",
-    "choose_an_option": "Choose an option",
-    "requesting_coordination_does_not_create_an": "Requesting coordination does not create an order, promise a provider, approve finance or insurance, or trigger a payment.",
-    "request_reference": "Request reference",
-    "track_request": "Track request",
-    "estimate_a_project_transaction": "Estimate a project transaction",
-    "work_or_material_amount_bdt": "Work or material amount (BDT)",
-    "construction_transport_commission_notice": "Transport is excluded from the commission calculation. Actual accepted terms determine the final amounts.",
-    "the_construction_commission_rate_is_not_av": "The construction commission rate is not available right now.",
-    "construction_services_across_bangladesh": "Construction services across Bangladesh",
-    "plan_your_build_and_find_the_right_people": "Plan your build and find the right people.",
-    "find_approved_professionals_and_material_s": "Find approved professionals and material suppliers, compare project quotes, and keep work, milestones, and payments together.",
-    "explore_construction_marketplace": "Explore construction marketplace",
-    "start_a_project": "Start a project",
-    "construction_service_areas": "Construction service areas",
-    "published_offers": "Published offers",
-    "professionals_and_materials": "Professionals and materials",
-    "construction_marketplace": "Construction marketplace",
-    "view_all_offers": "View all offers",
-    "no_approved_construction_listings_yet_plea": "No approved construction listings yet. Please check back soon.",
-    "8_construction_service_areas": "8 construction service areas",
-    "what_do_you_need_for_your_project": "What do you need for your project?",
-    "browse_an_approved_provider_or_create_a_pr": "Browse an approved provider or create a project to invite several professionals and compare their quotes.",
-    "search_construction_services": "Search construction services",
-    "filter_by_service_area": "Filter by service area",
-    "all_service_areas": "All service areas",
-    "no_service_areas_match_your_search": "No service areas match your search.",
-    "find_professionals": "Find professionals",
-    "a_clear_way_to_organize_your_build": "A clear way to organize your build",
-    "how_construction_projects_work": "How construction projects work",
-    "the_estimate_uses_the_current_construction": "The estimate uses the current construction rate and excludes separately agreed transport charges.",
-    "keep_your_project_in_one_place": "Keep your project in one place",
-    "track_providers_material_orders_project_mi": "Track providers, material orders, project milestones, private documents, expenses, and payment confirmations in your account.",
-    "create_a_project": "Create a project",
-    "back_to_construction_services": "Back to construction services",
-    "approved_professionals_and_suppliers": "Approved professionals and suppliers",
-    "find_construction_services_and_materials": "Find construction services and materials",
-    "browse_by_work_type_location_and_price_cre": "Browse by work type, location, and price. Create a project when you want to compare quotes from several providers.",
-    "search_services_materials_or_providers": "Search services, materials, or providers",
-    "e_g_bricks_engineer_dhaka": "e.g. bricks, engineer, Dhaka",
-    "all_construction_listings": "All construction listings",
-    "professionals_services": "Professionals & services",
-    "sort_by": "Sort by",
-    "newest": "Newest",
-    "clear_filters": "Clear filters",
-    "listings_are_temporarily_unavailable": "Listings are temporarily unavailable",
-    "create_a_project_to_request_quotes": "Create a project to request quotes",
-    "no_approved_listings_match_these_filters_a": "No approved listings match these filters. Adjust your search and try again.",
-    "provider": "Provider",
-    "all_construction_services": "All construction services",
-    "construction_service": "Construction service",
-    "create_a_project_for_this_service": "Create a project for this service",
-    "approved_construction_listings": "Approved construction listings",
-    "view_all_results": "View all results",
-    "there_are_no_approved_listings_for_this_se": "There are no approved listings for this service yet. Create a project to invite providers for your specific work.",
-    "booking_availability": "Booking availability",
-    "from": "From",
-    "checked_for_requested_dates": "Checked for requested dates",
-    "create_a_project_with_this_listing": "Create a project with this listing",
-    "visit_storefront": "Visit storefront",
-    "more_from_this_seller": "More from this seller",
-    "all_sectors": "All sectors",
-    "send_a_request": "Send a request",
-    "the_provider_will_send_terms_for_you_to_re": "The provider will send terms for you to review before confirming.",
-    "try_again": "Try again",
-    "reviews": "reviews",
-    "services_and_listings": "Services and listings",
-    "customer_reviews": "Customer reviews",
-    "reviews_from_completed_orders_will_appear": "Reviews from completed orders will appear here.",
-    "available_listings": "available listings",
-    "no_approved_listings_yet_apply_to_become_a": "No approved listings yet. Apply to become a provider.",
-    "apply_to_provide": "Apply to provide",
-    "view": "View",
-    "my_projects": "My projects",
-    "describe_the_work_you_can_invite_construct": "Describe the work. You can invite construction providers to quote after creating the project.",
-    "selected_service": "Selected service",
-    "due": "Due",
-    "not_specified": "Not specified",
-    "work_packages": "Work packages",
-    "compare_several_quotes_per_package_create": "Compare several quotes per package. Create a new package for additional work after accepting a quote.",
-    "quotes_and_work_packages": "Quotes and work packages",
-    "compare_scope_quantity_transport_price_and": "Compare scope, quantity, transport, price, and dates for each package.",
-    "create_a_work_package_before_inviting_prov": "Create a work package before inviting providers to quote.",
-    "defined_work": "Defined work",
-    "no_provider_invitations_have_been_sent_for": "No provider invitations have been sent for this package yet.",
-    "no_additional_scope_details": "No additional scope details.",
-    "total": "Total",
-    "waiting_for_a_provider_quote": "Waiting for a provider quote.",
-    "invite_more_providers": "Invite more providers",
-    "invite": "Invite",
-    "providers_submit_progress_for_your_approva": "Providers submit progress for your approval.",
-    "accept_a_construction_service_provider_s_q": "Accept a construction service provider’s quote before assigning project milestones.",
-    "engaged_providers_and_materials": "Engaged providers and materials",
-    "confirmed_by_both_parties": "Confirmed by both parties",
-    "awaiting_confirmation": "Awaiting confirmation",
-    "refunded": "Refunded",
-    "these_records_are_visible_only_to_the_proj": "These records are visible only to the project owner.",
-    "recorded_project_expenses": "Recorded project expenses",
-    "no_project_files_have_been_added_yet": "No project files have been added yet.",
-    "no_project_photos_have_been_added_yet": "No project photos have been added yet.",
-    "only_one_quote_can_be_accepted_for_this_wo": "Only one quote can be accepted for this work package.",
-    "house_shop_renovation": "House, shop, renovation",
-    "package_type": "Package type",
-    "professional_service": "Professional service",
-    "add_work_package": "Add work package",
-    "choose_a_provider": "Choose a provider",
-    "due_date": "Due date",
-    "name_bangla": "Name (Bangla)",
-    "name_english": "Name (English)",
-    "price_per_unit_bdt": "Price per unit (BDT)",
-    "available_from_optional": "Available from (optional)",
-    "replace_photo_optional": "Replace photo (optional)",
-    "content_and_photo_edits_unpublish_the_list": "Content and photo edits unpublish the listing until they are reviewed.",
-    "the_current_photo_stays_if_you_do_not_choo": "The current photo stays if you do not choose a replacement.",
-    "the_image_could_not_be_uploaded_please_try": "The image could not be uploaded. Please try again.",
-    "save_for_review": "Save for review",
-    "service_sector": "Service sector",
-    "e_g_vegetables_bricks_masonry": "e.g. vegetables, bricks, masonry",
-    "kg_day_bag": "kg, day, bag",
-    "goods_need_stock_to_sell_worker_and_machin": "Goods need stock to sell. Worker and machinery listings may use zero stock; booking dates determine availability.",
-    "apply_once_to_serve_customers_in_agricultu": "Apply once to serve customers in agriculture or construction. The operations team will review your requested capabilities.",
-    "upazila_optional": "Upazila (optional)",
-    "introduction_bangla": "Introduction (Bangla)",
-    "introduction_english": "Introduction (English)",
-    "provider_navigation": "Provider navigation",
-    "storefront": "Storefront",
-    "business_operations": "Business operations",
-    "this_provider_profile_is_suspended_it_cann": "This provider profile is suspended. It cannot publish listings or accept new requests; contact the administration team.",
-    "new_listings_are_reviewed_by_the_operation": "New listings are reviewed by the operations team before publication.",
-    "add_a_listing": "Add a listing",
-    "no_additional_details_provided": "No additional details provided.",
-    "customer_workspace": "Customer workspace",
-    "commission_records": "Commission records",
-    "your_storefront": "Your storefront",
-    "customers_see_these_details_your_profile_p": "Customers see these details, your profile photo, and cover photo.",
-    "preview_agriculture_storefront": "Preview agriculture storefront",
-    "preview_construction_profile": "Preview construction profile",
-    "apply_for_additional_sector_capabilities_f": "Apply for additional sector capabilities from the same business profile.",
-    "update_profile_or_request_capabilities": "Update profile or request capabilities",
-    "availability_is_checked_against_booking_da": "Availability is checked against booking dates",
-    "this_listing_is_archived": "This listing is archived.",
-    "save_quantity": "Save quantity",
-    "edit_listing": "Edit listing",
-    "archive_listing": "Archive listing",
-    "store_name_bangla": "Store name (Bangla)",
-    "store_name_english": "Store name (English)",
-    "upazila": "Upazila",
-    "about_the_store_bangla": "About the store (Bangla)",
-    "about_the_store_english": "About the store (English)",
-    "profile_photo": "Profile photo",
-    "cover_photo": "Cover photo",
-    "jpg_png_or_webp_up_to_5_mb_leave_blank_to": "JPG, PNG or WebP, up to 5 MB. Leave blank to keep the current photo.",
-    "profile_photo_set": "Profile photo set",
-    "no_profile_photo": "No profile photo",
-    "save_storefront": "Save storefront",
-    "daily_rates_are_calculated_for_the_selecte": "Daily rates are calculated for the selected date range.",
-    "add_requirements_collection_or_transport_d": "Add requirements, collection, or transport details",
-    "order": "Order",
-    "unit_price": "Unit price",
-    "items_or_service": "Items or service",
-    "confirmed_paid": "Confirmed paid",
-    "balance_due": "Balance due",
-    "payment_records": "Payment records",
-    "platform_commission": "Platform commission",
-    "cash": "Cash",
-    "bank_transfer": "Bank transfer",
-    "mobile_wallet": "Mobile wallet",
-    "pay_the_provider_directly_the_payment_is_n": "Pay the provider directly. The payment is not counted as confirmed until both parties verify it.",
-    "you_can_leave_one_review_for_each_complete": "You can leave one review for each completed order."
+  "account": {
+    "workspace": {
+      "accountNavigation": "Account navigation",
+      "agricultureServiceRequests": "Agriculture service requests",
+      "yourAccount": "Your account",
+      "welcome": "Welcome, {name}",
+      "viewRequest": "View request",
+      "requestsAndQuotes": "Requests and quotes",
+      "providerQuote": "Provider quote",
+      "quotedTotal": "Quoted total",
+      "acceptedQuoteOrders": "{count, plural, one {# accepted quote order} other {# accepted quote orders}}",
+      "openProject": "Open project",
+      "open": "Open",
+      "markRead": "Mark read"
+    },
+    "profile": {
+      "usageNotice": "These details are used for requests and bookings."
+    },
+    "requests": {
+      "description": "Track request status, submitted details, and updates from the operations team.",
+      "acceptanceNotice": "Accepting confirms the quoted price, quantity and booking terms."
+    },
+    "projects": {
+      "description": "Track construction scope, quotes, milestones and recorded costs."
+    },
+    "labels": {
+      "withdrawRequest": "Withdraw request"
+    },
+    "agricultureRequest": {
+      "backToAccount": "Back to account",
+      "contact": "Contact",
+      "requirement": "Requirement",
+      "submittedServiceDetails": "Submitted service details",
+      "noUpdatesYet": "No updates yet."
+    }
+  },
+  "marketplace": {
+    "listings": {
+      "loadError": "Marketplace listings could not be loaded. Please try again later."
+    },
+    "listingCount": "{count, plural, one {# listing} other {# listings}}",
+    "actions": {
+      "browse": "Browse marketplace"
+    },
+    "listingDetail": {
+      "bookingAvailability": "Booking availability",
+      "from": "From",
+      "checkedForRequestedDates": "Checked for requested dates",
+      "createAProjectWithThisListing": "Create a project with this listing",
+      "visitStorefront": "Visit storefront",
+      "moreFromThisSeller": "More from this seller",
+      "allSectors": "All sectors",
+      "sendARequest": "Send a request",
+      "requestNotice": "The provider will send terms for you to review before confirming.",
+      "tryAgain": "Try again"
+    },
+    "labels": {
+      "reviews": "{count, plural, one {# review} other {# reviews}}",
+      "customerReviews": "Customer reviews"
+    },
+    "providerProfile": {
+      "servicesAndListings": "Services and listings",
+      "emptyReviews": "Reviews from completed orders will appear here."
+    },
+    "requestForm": {
+      "dailyRateNotice": "Daily rates are calculated for the selected date range.",
+      "requirementsPlaceholder": "Add requirements, collection, or transport details"
+    },
+    "order": {
+      "order": "Order",
+      "unitPrice": "Unit price",
+      "itemsOrService": "Items or service",
+      "confirmedPaid": "Confirmed paid",
+      "balanceDue": "Balance due",
+      "paymentRecords": "Payment records",
+      "platformCommission": "Platform commission",
+      "cash": "Cash",
+      "bankTransfer": "Bank transfer",
+      "mobileWallet": "Mobile wallet",
+      "paymentNotice": "Pay the provider directly. The payment is not counted as confirmed until both parties verify it.",
+      "reviewNotice": "You can leave one review for each completed order."
+    }
+  },
+  "construction": {
+    "commissionCalculator": {
+      "estimateAProjectTransaction": "Estimate a project transaction",
+      "workOrMaterialAmountBdt": "Work or material amount (BDT)",
+      "transportNotice": "Transport is excluded from the commission calculation. Actual accepted terms determine the final amounts.",
+      "rateUnavailable": "The construction commission rate is not available right now."
+    },
+    "home": {
+      "eyebrow": "Construction services across Bangladesh",
+      "title": "Plan your build and find the right people.",
+      "description": "Find approved professionals and material suppliers, compare project quotes, and keep work, milestones, and payments together.",
+      "exploreConstructionMarketplace": "Explore construction marketplace",
+      "startAProject": "Start a project",
+      "constructionServiceAreas": "Construction service areas",
+      "publishedOffers": "Published offers",
+      "professionalsAndMaterials": "Professionals and materials",
+      "constructionMarketplace": "Construction marketplace",
+      "viewAllOffers": "View all offers",
+      "emptyListings": "No approved construction listings yet. Please check back soon.",
+      "serviceAreaCount": "{count, plural, one {# construction service area} other {# construction service areas}}",
+      "searchConstructionServices": "Search construction services",
+      "filterByServiceArea": "Filter by service area",
+      "allServiceAreas": "All service areas",
+      "findProfessionals": "Find professionals",
+      "workflowEyebrow": "A clear way to organize your build",
+      "workflowTitle": "How construction projects work",
+      "commissionNotice": "The estimate uses the current construction rate and excludes separately agreed transport charges.",
+      "projectTitle": "Keep your project in one place",
+      "projectDescription": "Track providers, material orders, project milestones, private documents, expenses, and payment confirmations in your account."
+    },
+    "services": {
+      "title": "What do you need for your project?",
+      "empty": "No service areas match your search.",
+      "description": "Browse an approved provider or create a project to invite several professionals and compare their quotes."
+    },
+    "market": {
+      "backToConstructionServices": "Back to construction services",
+      "approvedProfessionalsAndSuppliers": "Approved professionals and suppliers",
+      "title": "Find construction services and materials",
+      "description": "Browse by work type, location, and price. Create a project when you want to compare quotes from several providers.",
+      "searchServicesMaterialsOrProviders": "Search services, materials, or providers",
+      "searchPlaceholder": "e.g. bricks, engineer, Dhaka",
+      "allConstructionListings": "All construction listings",
+      "professionalsServices": "Professionals & services",
+      "sortBy": "Sort by",
+      "clearFilters": "Clear filters",
+      "unavailable": "Listings are temporarily unavailable",
+      "emptyAction": "Create a project to request quotes",
+      "empty": "No approved listings match these filters. Adjust your search and try again."
+    },
+    "serviceDetail": {
+      "allConstructionServices": "All construction services",
+      "label": "Construction service",
+      "createAProjectForThisService": "Create a project for this service",
+      "approvedConstructionListings": "Approved construction listings",
+      "viewAllResults": "View all results",
+      "empty": "There are no approved listings for this service yet. Create a project to invite providers for your specific work.",
+      "listingsFor": "Listings for {service}"
+    }
+  },
+  "projects": {
+    "actions": {
+      "create": "Create a project"
+    },
+    "labels": {
+      "myProjects": "My projects"
+    },
+    "create": {
+      "description": "Describe the work. You can invite construction providers to quote after creating the project.",
+      "selectedService": "Selected service"
+    },
+    "milestones": {
+      "count": "{count, plural, one {# milestone} other {# milestones}}",
+      "due": "Due",
+      "approvalNotice": "Providers submit progress for your approval.",
+      "quoteRequired": "Accept a construction service provider’s quote before assigning project milestones."
+    },
+    "detail": {
+      "notSpecified": "Not specified",
+      "workPackages": "Work packages",
+      "quotesAndWorkPackages": "Quotes and work packages",
+      "definedWork": "Defined work",
+      "noAdditionalScopeDetails": "No additional scope details.",
+      "waitingForAProviderQuote": "Waiting for a provider quote.",
+      "inviteMoreProviders": "Invite more providers",
+      "invite": "Invite",
+      "engagedProvidersAndMaterials": "Engaged providers and materials",
+      "refunded": "Refunded",
+      "recordedProjectExpenses": "Recorded project expenses"
+    },
+    "packages": {
+      "description": "Compare several quotes per package. Create a new package for additional work after accepting a quote.",
+      "requiredNotice": "Create a work package before inviting providers to quote.",
+      "noInvitations": "No provider invitations have been sent for this package yet.",
+      "acceptanceNotice": "Only one quote can be accepted for this work package."
+    },
+    "quotes": {
+      "description": "Compare scope, quantity, transport, price, and dates for each package."
+    },
+    "expenses": {
+      "visibilityNotice": "These records are visible only to the project owner."
+    },
+    "files": {
+      "empty": "No project files have been added yet."
+    },
+    "photos": {
+      "empty": "No project photos have been added yet."
+    },
+    "forms": {
+      "projectTypePlaceholder": "House, shop, renovation",
+      "packageType": "Package type",
+      "professionalService": "Professional service",
+      "addWorkPackage": "Add work package",
+      "chooseAProvider": "Choose a provider",
+      "dueDate": "Due date"
+    }
+  },
+  "provider": {
+    "listingEdit": {
+      "pricePerUnitBdt": "Price per unit (BDT)",
+      "replacePhotoOptional": "Replace photo (optional)",
+      "moderationNotice": "Content and photo edits unpublish the listing until they are reviewed.",
+      "photoNotice": "The current photo stays if you do not choose a replacement.",
+      "saveForReview": "Save for review"
+    },
+    "labels": {
+      "availableFromOptional": "Available from (optional)"
+    },
+    "upload": {
+      "error": "The image could not be uploaded. Please try again."
+    },
+    "listingForm": {
+      "serviceSector": "Service sector",
+      "categoryPlaceholder": "e.g. vegetables, bricks, masonry",
+      "unitPlaceholder": "kg, day, bag",
+      "stockHelp": "Goods need stock to sell. Worker and machinery listings may use zero stock; booking dates determine availability."
+    },
+    "application": {
+      "description": "Apply once to serve customers in agriculture or construction. The operations team will review your requested capabilities.",
+      "upazilaOptional": "Upazila (optional)",
+      "introductionBangla": "Introduction (Bangla)",
+      "introductionEnglish": "Introduction (English)"
+    },
+    "workspace": {
+      "providerNavigation": "Provider navigation",
+      "storefront": "Storefront",
+      "businessOperations": "Business operations",
+      "suspendedNotice": "This provider profile is suspended. It cannot publish listings or accept new requests; contact the administration team.",
+      "moderationNotice": "New listings are reviewed by the operations team before publication.",
+      "addAListing": "Add a listing",
+      "customerWorkspace": "Customer workspace",
+      "commissionRecords": "Commission records",
+      "yourStorefront": "Your storefront",
+      "previewAgricultureStorefront": "Preview agriculture storefront",
+      "previewConstructionProfile": "Preview construction profile",
+      "updateProfileOrRequestCapabilities": "Update profile or request capabilities",
+      "saveQuantity": "Save quantity",
+      "editListing": "Edit listing",
+      "archiveListing": "Archive listing"
+    },
+    "listings": {
+      "archivedNotice": "This listing is archived.",
+      "availabilityNotice": "Availability is checked against booking dates"
+    },
+    "storefront": {
+      "description": "Customers see these details, your profile photo, and cover photo.",
+      "storeNameBangla": "Store name (Bangla)",
+      "storeNameEnglish": "Store name (English)",
+      "upazila": "Upazila",
+      "aboutTheStoreBangla": "About the store (Bangla)",
+      "aboutTheStoreEnglish": "About the store (English)",
+      "profilePhoto": "Profile photo",
+      "coverPhoto": "Cover photo",
+      "photoHelp": "JPG, PNG or WebP, up to 5 MB. Leave blank to keep the current photo.",
+      "profilePhotoSet": "Profile photo set",
+      "noProfilePhoto": "No profile photo",
+      "saveStorefront": "Save storefront"
+    },
+    "capabilities": {
+      "description": "Apply for additional sector capabilities from the same business profile."
+    }
   },
   "sectors": {
     "family-household": "Family & Household",
@@ -734,9 +859,6 @@
     "jobs-professionals": "Jobs & Professionals",
     "social-feed": "Social Feed",
     "payment-compliance": "Payment & Compliance"
-  },
-  "categoryGrid": {
-    "resultCount": "{count, plural, one {# sector} other {# sectors}}"
   },
   "metadata": {
     "home": {
@@ -799,17 +921,17 @@
       "fields": {
         "seed_kind": {
           "label": "Seed Kind",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Seeds"
             },
-            {
+            "1": {
               "label": "Seedlings"
             },
-            {
+            "2": {
               "label": "Seeds and seedlings"
             }
-          ]
+          }
         },
         "seed_variety": {
           "label": "Seed Variety"
@@ -834,17 +956,17 @@
         },
         "soil_test_status": {
           "label": "Soil Test Status",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Not tested yet"
             },
-            {
+            "1": {
               "label": "Tested"
             },
-            {
+            "2": {
               "label": "Request a test"
             }
-          ]
+          }
         },
         "soil_need": {
           "label": "Soil Need"
@@ -884,20 +1006,20 @@
         },
         "water_source": {
           "label": "Water Source",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Tube well"
             },
-            {
+            "1": {
               "label": "Pond/canal"
             },
-            {
+            "2": {
               "label": "River"
             },
-            {
+            "3": {
               "label": "Other"
             }
-          ]
+          }
         },
         "irrigation_time": {
           "label": "Irrigation Time"
@@ -910,37 +1032,37 @@
       "fields": {
         "machine_type": {
           "label": "Machine Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Tractor"
             },
-            {
+            "1": {
               "label": "Power tiller"
             },
-            {
+            "2": {
               "label": "Harvester"
             },
-            {
+            "3": {
               "label": "Sprayer"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "machine_service": {
           "label": "Machine Service",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Hire"
             },
-            {
+            "1": {
               "label": "Repair"
             },
-            {
+            "2": {
               "label": "Other service"
             }
-          ]
+          }
         },
         "machine_area": {
           "label": "Machine Area"
@@ -956,23 +1078,23 @@
       "fields": {
         "labour_task": {
           "label": "Labour Task",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Planting"
             },
-            {
+            "1": {
               "label": "Weeding"
             },
-            {
+            "2": {
               "label": "Harvesting"
             },
-            {
+            "3": {
               "label": "Threshing"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "labour_count": {
           "label": "Labour Count"
@@ -997,20 +1119,20 @@
         },
         "livestock_need": {
           "label": "Livestock Need",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Rearing/farm management"
             },
-            {
+            "1": {
               "label": "Feed"
             },
-            {
+            "2": {
               "label": "Animal health advice"
             },
-            {
+            "3": {
               "label": "Other"
             }
-          ]
+          }
         },
         "livestock_issue": {
           "label": "Livestock Issue"
@@ -1029,23 +1151,23 @@
         },
         "poultry_need": {
           "label": "Poultry Need",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Feed"
             },
-            {
+            "1": {
               "label": "Farm management"
             },
-            {
+            "2": {
               "label": "Poultry health advice"
             },
-            {
+            "3": {
               "label": "Equipment"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "poultry_issue": {
           "label": "Poultry Issue"
@@ -1064,43 +1186,43 @@
         },
         "fish_stage": {
           "label": "Fish Stage",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Pond preparation"
             },
-            {
+            "1": {
               "label": "Stock fingerlings"
             },
-            {
+            "2": {
               "label": "Ongoing cultivation"
             },
-            {
+            "3": {
               "label": "Sell fish"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "fish_need": {
           "label": "Fish Need",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Fingerlings"
             },
-            {
+            "1": {
               "label": "Feed"
             },
-            {
+            "2": {
               "label": "Pond management"
             },
-            {
+            "3": {
               "label": "Market/sales"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         }
       }
     },
@@ -1113,14 +1235,14 @@
         },
         "input_trade": {
           "label": "Input Trade",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "I want to buy"
             },
-            {
+            "1": {
               "label": "I want to sell"
             }
-          ]
+          }
         },
         "input_quantity": {
           "label": "Input Quantity"
@@ -1139,14 +1261,14 @@
         },
         "produce_trade": {
           "label": "Produce Trade",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Seller/farmer"
             },
-            {
+            "1": {
               "label": "Buyer"
             }
-          ]
+          }
         },
         "produce_quantity": {
           "label": "Produce Quantity"
@@ -1171,17 +1293,17 @@
         },
         "wholesale_role": {
           "label": "Wholesale Role",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Seller/farmer"
             },
-            {
+            "1": {
               "label": "Wholesale buyer"
             },
-            {
+            "2": {
               "label": "Wholesaler"
             }
-          ]
+          }
         },
         "wholesale_timing": {
           "label": "Wholesale Timing"
@@ -1221,20 +1343,20 @@
         },
         "storage_type": {
           "label": "Storage Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "General warehouse"
             },
-            {
+            "1": {
               "label": "Cold storage"
             },
-            {
+            "2": {
               "label": "Dry storage"
             },
-            {
+            "3": {
               "label": "Other"
             }
-          ]
+          }
         },
         "storage_duration": {
           "label": "Storage Duration"
@@ -1274,23 +1396,23 @@
         },
         "processing_type": {
           "label": "Processing Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Cleaning/sorting"
             },
-            {
+            "1": {
               "label": "Grading"
             },
-            {
+            "2": {
               "label": "Processing"
             },
-            {
+            "3": {
               "label": "Packaging"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "processing_package": {
           "label": "Processing Package"
@@ -1321,37 +1443,37 @@
       "fields": {
         "asset_type": {
           "label": "Asset Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Farm land"
             },
-            {
+            "1": {
               "label": "Farm machinery"
             },
-            {
+            "2": {
               "label": "Other farm asset"
             }
-          ]
+          }
         },
         "asset_size": {
           "label": "Asset Size"
         },
         "asset_transaction": {
           "label": "Asset Transaction",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Rent"
             },
-            {
+            "1": {
               "label": "Offer for rent"
             },
-            {
+            "2": {
               "label": "I want to buy"
             },
-            {
+            "3": {
               "label": "I want to sell"
             }
-          ]
+          }
         },
         "asset_timing": {
           "label": "Asset Timing"
@@ -1370,17 +1492,17 @@
         },
         "training_format": {
           "label": "Training Format",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "In person"
             },
-            {
+            "1": {
               "label": "Online"
             },
-            {
+            "2": {
               "label": "Either"
             }
-          ]
+          }
         },
         "training_date": {
           "label": "Training Date"
@@ -1402,23 +1524,23 @@
         },
         "organic_need": {
           "label": "Organic Need",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Compost"
             },
-            {
+            "1": {
               "label": "Organic pest management"
             },
-            {
+            "2": {
               "label": "Production methods"
             },
-            {
+            "3": {
               "label": "Certification/standards"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         }
       }
     },
@@ -1434,14 +1556,14 @@
         },
         "contract_role": {
           "label": "Contract Role",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Farmer/producer"
             },
-            {
+            "1": {
               "label": "Buyer"
             }
-          ]
+          }
         },
         "contract_terms": {
           "label": "Contract Terms"
@@ -1454,23 +1576,23 @@
       "fields": {
         "finance_purpose": {
           "label": "Finance Purpose",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Crop production"
             },
-            {
+            "1": {
               "label": "Farm inputs"
             },
-            {
+            "2": {
               "label": "Equipment"
             },
-            {
+            "3": {
               "label": "Farm/business expansion"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "finance_enterprise": {
           "label": "Finance Enterprise"
@@ -1492,40 +1614,40 @@
         },
         "insurance_event": {
           "label": "Insurance Event",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Flood"
             },
-            {
+            "1": {
               "label": "Drought"
             },
-            {
+            "2": {
               "label": "Storm/natural disaster"
             },
-            {
+            "3": {
               "label": "Pest/disease"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "insurance_event_date": {
           "label": "Insurance Event Date"
         },
         "insurance_status": {
           "label": "Insurance Status",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Request information"
             },
-            {
+            "1": {
               "label": "Insured"
             },
-            {
+            "2": {
               "label": "Claim submitted"
             }
-          ]
+          }
         }
       }
     },
@@ -1541,23 +1663,23 @@
         },
         "weather_alert_type": {
           "label": "Weather Alert Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Rain/flood"
             },
-            {
+            "1": {
               "label": "Storm/lightning"
             },
-            {
+            "2": {
               "label": "Heatwave"
             },
-            {
+            "3": {
               "label": "Cold/fog"
             },
-            {
+            "4": {
               "label": "General forecast"
             }
-          ]
+          }
         },
         "weather_period": {
           "label": "Weather Period"
@@ -1570,23 +1692,23 @@
       "fields": {
         "disaster_type": {
           "label": "Disaster Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Flood"
             },
-            {
+            "1": {
               "label": "Drought"
             },
-            {
+            "2": {
               "label": "Cyclone/storm"
             },
-            {
+            "3": {
               "label": "Waterlogging"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "disaster_area": {
           "label": "Disaster Area"
@@ -1608,43 +1730,43 @@
         },
         "women_role": {
           "label": "Women Role",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Farmer/producer"
             },
-            {
+            "1": {
               "label": "Entrepreneur"
             },
-            {
+            "2": {
               "label": "Processor"
             },
-            {
+            "3": {
               "label": "Other"
             }
-          ]
+          }
         },
         "women_capacity": {
           "label": "Women Capacity"
         },
         "women_support": {
           "label": "Women Support",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Market/buyer"
             },
-            {
+            "1": {
               "label": "Training"
             },
-            {
+            "2": {
               "label": "Inputs/services"
             },
-            {
+            "3": {
               "label": "Finance information"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         }
       }
     },
@@ -1657,37 +1779,37 @@
         },
         "youth_stage": {
           "label": "Youth Stage",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Planning"
             },
-            {
+            "1": {
               "label": "Started"
             },
-            {
+            "2": {
               "label": "Ongoing business"
             }
-          ]
+          }
         },
         "youth_support": {
           "label": "Youth Support",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Training/advice"
             },
-            {
+            "1": {
               "label": "Market/buyer"
             },
-            {
+            "2": {
               "label": "Partner"
             },
-            {
+            "3": {
               "label": "Finance information"
             },
-            {
+            "4": {
               "label": "Other"
             }
-          ]
+          }
         },
         "youth_capacity": {
           "label": "Youth Capacity"
@@ -1718,20 +1840,20 @@
       "fields": {
         "report_type": {
           "label": "Report Type",
-          "options": [
-            {
+          "options": {
+            "0": {
               "label": "Agriculture issue"
             },
-            {
+            "1": {
               "label": "Market irregularity"
             },
-            {
+            "2": {
               "label": "Service issue"
             },
-            {
+            "3": {
               "label": "Other"
             }
-          ]
+          }
         },
         "report_location": {
           "label": "Report Location"
@@ -1785,8 +1907,7 @@
     "building-materials": {
       "title": "Building materials",
       "description": "Browse approved suppliers of construction materials and invite them to quote for a project package."
-    },
-    "listingsFor": "Listings for {service}"
+    }
   },
   "constructionCategories": {
     "professionals": "Design & professionals",

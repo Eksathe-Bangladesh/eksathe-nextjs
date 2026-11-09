@@ -1,6 +1,8 @@
+import type { SectorMessageKey } from "@/i18n/message-keys";
+
 export interface DashboardCategory {
   id: number;
-  slug: string;
+  slug: SectorMessageKey;
   icon: string;
   status: "live" | "coming-soon";
 }

@@ -1,5 +1,7 @@
+import type { ConstructionServiceSlug } from "@/i18n/message-keys";
+
 export type ConstructionService = {
-  slug: string;
+  slug: ConstructionServiceSlug;
   group: "professionals" | "trades" | "materials";
   kind: "CONSTRUCTION_SERVICE" | "CONSTRUCTION_MATERIAL";
   icon: string;

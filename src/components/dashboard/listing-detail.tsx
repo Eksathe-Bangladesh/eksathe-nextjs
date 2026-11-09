@@ -63,7 +63,7 @@ export function ListingDetail({
           className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
-          {t("inline.all_services")}
+          {t("common.labels.allServices")}
         </Link>
         {unavailable ? (
           <p
@@ -100,8 +100,7 @@ export function ListingDetail({
               {listing.averageRating !== null && (
                 <p className="inline-flex items-center gap-1 text-sm font-medium">
                   <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
-                  {listing.averageRating.toFixed(1)} · {listing.reviewCount}{" "}
-                  {t("inline.reviews")}
+                  {listing.averageRating.toFixed(1)} · {t("marketplace.labels.reviews", { count: listing.reviewCount })}
                 </p>
               )}
             </CardHeader>
@@ -118,14 +117,14 @@ export function ListingDetail({
                 </div>
                 <div>
                   <p className="text-muted-foreground text-xs">
-                    {scheduled ? t("inline.booking_availability") : t("workflow.stock")}
+                    {scheduled ? t("marketplace.listingDetail.bookingAvailability") : t("workflow.stock")}
                   </p>
                   <p className="mt-1 inline-flex items-center gap-1 font-semibold">
                     <PackageIcon aria-hidden="true" className="size-4" />
                     {scheduled
                       ? listing.availableFrom
-                        ? `${t("inline.from")} ${formatter.dateTime(new Date(listing.availableFrom), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
-                        : t("inline.checked_for_requested_dates")
+                        ? `${t("marketplace.listingDetail.from")} ${formatter.dateTime(new Date(listing.availableFrom), { dateStyle: "medium", timeZone: "Asia/Dhaka" })}`
+                        : t("marketplace.listingDetail.checkedForRequestedDates")
                       : `${listing.stock} ${listing.unit}`}
                   </p>
                 </div>
@@ -146,7 +145,7 @@ export function ListingDetail({
                   href={`/account/projects/new?listing=${encodeURIComponent(listing.id)}`}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-fit gap-2")}
                 >
-                  {t("inline.create_a_project_with_this_listing")}
+                  {t("marketplace.listingDetail.createAProjectWithThisListing")}
                   <ArrowRightIcon aria-hidden="true" className="size-4" />
                 </Link>
               )}
@@ -157,7 +156,7 @@ export function ListingDetail({
           <>
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">{t("inline.seller")}</CardTitle>
+                <CardTitle className="text-xl">{t("common.labels.seller")}</CardTitle>
                 <CardDescription className="flex flex-wrap items-center gap-2">
                   {provider.name} · {provider.district}
                   {provider.averageRating !== null && (
@@ -176,14 +175,14 @@ export function ListingDetail({
                   href={`${base}/providers/${provider.id}`}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
                 >
-                  {t("inline.visit_storefront")}
+                  {t("marketplace.listingDetail.visitStorefront")}
                   <ArrowRightIcon aria-hidden="true" className="size-4" />
                 </Link>
               </CardContent>
             </Card>
             {provider.listings.filter((item) => item.id !== listing.id).length > 0 && (
               <section className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold">{t("inline.more_from_this_seller")}</h2>
+                <h2 className="text-xl font-bold">{t("marketplace.listingDetail.moreFromThisSeller")}</h2>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {provider.listings
                     .filter((item) => item.id !== listing.id)
@@ -209,7 +208,7 @@ export function ListingDetail({
         )}
         {listing && !unavailable && listing.reviews && listing.reviews.length > 0 && (
           <section className="flex flex-col gap-4">
-            <h2 className="text-xl font-bold">{t("inline.customer_reviews")}</h2>
+            <h2 className="text-xl font-bold">{t("marketplace.labels.customerReviews")}</h2>
             {listing.reviews.map((review, index) => (
               <Card key={`${review.createdAt}-${index}`}>
                 <CardContent className="flex flex-col gap-2 p-4">
@@ -236,16 +235,16 @@ export function ListingDetail({
             {t("nav.browse")}
           </Link>
           <Link href="/dashboard" className={buttonVariants({ variant: "ghost" })}>
-            {t("inline.all_sectors")}
+            {t("marketplace.listingDetail.allSectors")}
           </Link>
         </div>
       </div>
       {listing && !unavailable && (
         <Card className="h-fit lg:sticky lg:top-24">
           <CardHeader>
-            <CardTitle className="text-xl">{t("inline.send_a_request")}</CardTitle>
+            <CardTitle className="text-xl">{t("marketplace.listingDetail.sendARequest")}</CardTitle>
             <CardDescription>
-              {t("inline.the_provider_will_send_terms_for_you_to_re")}
+              {t("marketplace.listingDetail.requestNotice")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -284,7 +283,7 @@ export function ListingDetail({
           onClick={() => window.location.reload()}
           className="h-fit"
         >
-          {t("inline.try_again")}
+          {t("marketplace.listingDetail.tryAgain")}
         </Button>
       )}
     </div>

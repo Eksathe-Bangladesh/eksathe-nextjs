@@ -77,16 +77,14 @@ export function ServiceRequestForm({
       )}
       {!canSubmit && (
         <div className="border-primary/20 bg-primary/5 flex flex-col gap-3 rounded-xl border p-4">
-          <p className="text-sm leading-6">
-            {t("inline.preview_the_fields_below_sign_in_and_verif")}
-          </p>
+          <p className="text-sm leading-6">{t("agriculture.requestForm.signInNotice")}</p>
           <div className="flex flex-wrap gap-2">
             {customer ? (
               <Link
                 href={`/verify?next=${encodeURIComponent(returnTo)}`}
                 className={buttonVariants({ size: "sm" })}
               >
-                {t("inline.verify_email")}
+                {t("agriculture.requestForm.verifyEmail")}
               </Link>
             ) : (
               <>
@@ -110,7 +108,7 @@ export function ServiceRequestForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
           id="service-customer-name"
-          label={t("requestForm.fullName")}
+          label={t("agriculture.requestForm.fullName")}
           error={state.errors?.customerName?.[0]}
         >
           <Input
@@ -124,7 +122,7 @@ export function ServiceRequestForm({
         </Field>
         <Field
           id="service-customer-phone"
-          label={t("requestForm.phone")}
+          label={t("agriculture.requestForm.phone")}
           error={state.errors?.phone?.[0]}
         >
           <Input
@@ -139,7 +137,7 @@ export function ServiceRequestForm({
         </Field>
         <Field
           id="service-customer-district"
-          label={t("requestForm.district")}
+          label={t("agriculture.requestForm.district")}
           error={state.errors?.district?.[0]}
         >
           <Input
@@ -147,20 +145,20 @@ export function ServiceRequestForm({
             name="district"
             required
             maxLength={100}
-            placeholder={t("requestForm.districtPlaceholder")}
+            placeholder={t("agriculture.requestForm.districtPlaceholder")}
             disabled={!canSubmit}
           />
         </Field>
         <Field
           id="service-customer-budget"
-          label={t("requestForm.budget")}
+          label={t("agriculture.requestForm.budget")}
           error={state.errors?.budget?.[0]}
         >
           <Input
             id="service-customer-budget"
             name="budget"
             inputMode="decimal"
-            placeholder={t("requestForm.budgetPlaceholder")}
+            placeholder={t("agriculture.requestForm.budgetPlaceholder")}
             disabled={!canSubmit}
           />
         </Field>
@@ -173,8 +171,8 @@ export function ServiceRequestForm({
               <Field
                 key={field.name}
                 id={`answer-${field.name}`}
-                label={t(fieldLabelKey(service.slug, field.name) as never)}
-                help={t("inline.optional_jpeg_png_or_webp_up_to_5_mb")}
+                label={t(fieldLabelKey(service.slug, field.name))}
+                help={t("agriculture.requestForm.photoHelp")}
               >
                 <Input
                   id={`answer-${field.name}`}
@@ -185,10 +183,12 @@ export function ServiceRequestForm({
                 />
                 {uploading && (
                   <p className="text-muted-foreground text-xs">
-                    {t("inline.uploading_private_photo")}
+                    {t("agriculture.requestForm.photoUploading")}
                   </p>
                 )}
-                {photo && <p className="text-primary text-xs">{t("inline.photo_ready")}</p>}
+                {photo && (
+                  <p className="text-primary text-xs">{t("agriculture.requestForm.photoReady")}</p>
+                )}
                 {uploadError && (
                   <p role="alert" className="text-destructive text-xs">
                     {t("workflow.uploadFailed")}
@@ -196,7 +196,7 @@ export function ServiceRequestForm({
                 )}
               </Field>
             );
-          const label = t(fieldLabelKey(service.slug, field.name) as never);
+          const label = t(fieldLabelKey(service.slug, field.name));
           const error = state.errors?.[field.name]?.[0];
           if (field.type === "select")
             return (
@@ -209,10 +209,12 @@ export function ServiceRequestForm({
                   disabled={!canSubmit}
                   className="border-input bg-background h-10 rounded-lg border px-3 text-sm"
                 >
-                  <NativeSelectOption value="">{t("inline.choose_an_option")}</NativeSelectOption>
+                  <NativeSelectOption value="">
+                    {t("agriculture.requestForm.optionPlaceholder")}
+                  </NativeSelectOption>
                   {field.options?.map((option, index) => (
                     <NativeSelectOption key={option.value} value={option.value}>
-                      {t(optionLabelKey(service.slug, field.name, index) as never)}
+                      {t(optionLabelKey(service.slug, field.name, index))}
                     </NativeSelectOption>
                   ))}
                 </NativeSelect>
@@ -248,7 +250,7 @@ export function ServiceRequestForm({
 
       <Field
         id="service-request-details"
-        label={t("requestForm.details")}
+        label={t("agriculture.requestForm.details")}
         error={state.errors?.details?.[0]}
       >
         <Textarea
@@ -258,31 +260,31 @@ export function ServiceRequestForm({
           maxLength={5000}
           rows={4}
           required
-          placeholder={t("requestForm.detailsPlaceholder")}
+          placeholder={t("agriculture.requestForm.detailsPlaceholder")}
           disabled={!canSubmit}
         />
       </Field>
       <p className="text-muted-foreground text-xs leading-5">
-        {t("inline.requesting_coordination_does_not_create_an")}
+        {t("agriculture.requestForm.coordinationNotice")}
       </p>
       <ActionFeedback state={state} />
       {state.status === "success" && state.entityId && (
         <div className="border-primary/20 bg-primary/5 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4">
           <div>
-            <p className="text-sm font-semibold">{t("inline.request_reference")}</p>
+            <p className="text-sm font-semibold">{t("agriculture.requestForm.requestReference")}</p>
             <p className="text-primary mt-1 font-mono">{state.referenceCode}</p>
           </div>
           <Link
             href={`/account/agriculture-requests/${state.entityId}`}
             className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
-            {t("inline.track_request")}
+            {t("agriculture.requestForm.trackRequest")}
           </Link>
         </div>
       )}
       {canSubmit && state.status !== "success" && (
         <Button type="submit" disabled={pending || uploading} className="w-fit">
-          {pending ? t("requestForm.submitting") : t("requestForm.submit")}
+          {pending ? t("agriculture.requestForm.submitting") : t("agriculture.requestForm.submit")}
         </Button>
       )}
     </form>
