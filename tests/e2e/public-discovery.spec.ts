@@ -70,7 +70,7 @@ test("planned sectors show a coming-soon page and unknown sectors return 404", a
   await expect(page.getByText("এই বিভাগে সেবা শিগগিরই চালু হবে।")).toBeVisible();
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
-    /ইকসাথে বাংলাদেশে .+ সেবা ও সেবাদাতা খুঁজুন।/,
+    /একসাথে বাংলাদেশে .+ সেবা ও সেবাদাতা খুঁজুন।/,
   );
   const response = await page.goto("/dashboard/not-a-sector");
   expect([200, 404]).toContain(response?.status());
@@ -253,14 +253,14 @@ test("construction listing and provider details preserve direct and dashboard ro
     (image) => getComputedStyle(image.parentElement!).paddingTop,
   );
   expect(cardTopPadding).toBe("0px");
-  await expect(page.getByRole("link", { name: "সেবাদাতার পরিচিতি" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাদাতা পরিচিতি" })).toHaveAttribute(
     "href",
     "/bn/construction/providers/demo-construction-provider",
   );
 
   await page.goto("/dashboard/construction/listings/demo-listing-brick");
   await expect(page.getByText("প্রথম শ্রেণির লাল ইট", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "সেবাদাতার পরিচিতি" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাদাতা পরিচিতি" })).toHaveAttribute(
     "href",
     "/bn/dashboard/construction/providers/demo-construction-provider",
   );
