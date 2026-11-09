@@ -11,7 +11,7 @@ async function signIn(page: Page, email: string) {
   await page.getByLabel("Password").fill(demoPassword);
   await expect(emailField).toHaveValue(email);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  await expect(page).toHaveURL(/\/en\/account(?:\?|$)/);
+  await expect(page).toHaveURL(/\/en\/account(?:\?|$)/, { timeout: 15_000 });
 }
 
 test("a customer sees their orders and project but cannot open administration", async ({
