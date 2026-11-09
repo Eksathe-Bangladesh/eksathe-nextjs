@@ -100,9 +100,9 @@ export function parseAgricultureServiceAnswers(
         required: field.required,
         options:
           "options" in field && field.options
-            ? field.options.map((option, index) => {
+            ? field.options.map((option) => {
                 const optionLabel = resolveCatalogPair(
-                  optionLabelKey(service.slug, field.name, index),
+                  optionLabelKey(service.slug, field.name, option.id),
                 );
                 return {
                   value: option.value,

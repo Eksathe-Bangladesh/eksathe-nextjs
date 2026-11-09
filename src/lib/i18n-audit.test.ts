@@ -21,6 +21,7 @@ import {
 import { auditTranslationReferences, translationReferences } from "./i18n/source-audit";
 import { agricultureListings, constructionListings } from "./sectors";
 const { parseAgricultureServiceAnswers } = await import("./validations/agriculture");
+const migrationAliases: Record<string, string> = keyMigrations;
 
 function flattenMessages(value: unknown, prefix = "", output = new Map<string, string>()) {
   if (typeof value === "string") {
@@ -95,8 +96,8 @@ function expectedAgricultureServiceKeys() {
     for (const field of service.fields) {
       keys.add(fieldLabelKey(service.slug, field.name));
       if ("options" in field && field.options) {
-        field.options.forEach((_, index) => {
-          keys.add(optionLabelKey(service.slug, field.name, index));
+        field.options.forEach((option) => {
+          keys.add(optionLabelKey(service.slug, field.name, option.id));
         });
       }
     }
@@ -150,6 +151,48 @@ describe("i18n catalog audit", () => {
     const actual = [...catalogs.en.keys()].filter((key) => key.startsWith("agricultureServices."));
     expect(actual.filter((key) => !expected.has(key))).toEqual([]);
     expect([...expected].filter((key) => !catalogs.en.has(key))).toEqual([]);
+  });
+
+  test("semantic option IDs match catalog keys exactly with no numeric option keys", () => {
+    for (const service of agricultureServiceRegistry) {
+      for (const field of service.fields) {
+        if (!("options" in field)) continue;
+        const expectedIds = field.options.map((option) => option.id).sort();
+        expect(new Set(expectedIds).size, `${service.slug}.${field.name}`).toBe(expectedIds.length);
+        for (const locale of ["en", "bn"] as const) {
+          const prefix = `agricultureServices.${service.slug}.fields.${field.name}.options.`;
+          const actualIds = [...catalogs[locale].keys()]
+            .filter((key) => key.startsWith(prefix))
+            .map((key) => key.slice(prefix.length))
+            .sort();
+          expect(actualIds, `${locale} ${service.slug}.${field.name}`).toEqual(expectedIds);
+        }
+      }
+    }
+    expect(
+      [...catalogs.en.keys()].filter((key) =>
+        /^agricultureServices\..*\.options\.\d+(?:\.label)?$/.test(key),
+      ),
+    ).toEqual([]);
+  });
+
+  test("every former numeric option key aliases to the matching semantic ID", () => {
+    const optionAliases = Object.keys(keyMigrations).filter((key) =>
+      /^agricultureServices\..*\.options\.\d+\.label$/.test(key),
+    );
+    expect(optionAliases).toHaveLength(119);
+    for (const service of agricultureServiceRegistry) {
+      for (const field of service.fields) {
+        if (!("options" in field)) continue;
+        field.options.forEach((option, index) => {
+          const oldKey = `agricultureServices.${service.slug}.fields.${field.name}.options.${index}.label`;
+          const newKey = optionLabelKey(service.slug, field.name, option.id);
+          expect(migrationAliases[oldKey], oldKey).toBe(newKey);
+          expect(catalogs.en.has(newKey)).toBe(true);
+          expect(catalogs.bn.has(newKey)).toBe(true);
+        });
+      }
+    }
   });
 
   test("no catalog value is left untranslated", () => {
@@ -275,10 +318,10 @@ describe("i18n catalog audit", () => {
           labelBn: catalogs.bn.get(fieldLabelKey(service.slug, field.name)),
           options:
             "options" in field
-              ? field.options.map((option, index) => ({
+              ? field.options.map((option) => ({
                   value: option.value,
-                  labelEn: catalogs.en.get(optionLabelKey(service.slug, field.name, index)),
-                  labelBn: catalogs.bn.get(optionLabelKey(service.slug, field.name, index)),
+                  labelEn: catalogs.en.get(optionLabelKey(service.slug, field.name, option.id)),
+                  labelBn: catalogs.bn.get(optionLabelKey(service.slug, field.name, option.id)),
                 }))
               : [],
         })),

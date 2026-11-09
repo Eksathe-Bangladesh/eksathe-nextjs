@@ -922,15 +922,9 @@
         "seed_kind": {
           "label": "Seed Kind",
           "options": {
-            "0": {
-              "label": "Seeds"
-            },
-            "1": {
-              "label": "Seedlings"
-            },
-            "2": {
-              "label": "Seeds and seedlings"
-            }
+            "seeds": "Seeds",
+            "seedlings": "Seedlings",
+            "seedsAndSeedlings": "Seeds and seedlings"
           }
         },
         "seed_variety": {
@@ -957,15 +951,9 @@
         "soil_test_status": {
           "label": "Soil Test Status",
           "options": {
-            "0": {
-              "label": "Not tested yet"
-            },
-            "1": {
-              "label": "Tested"
-            },
-            "2": {
-              "label": "Request a test"
-            }
+            "notTested": "Not tested yet",
+            "tested": "Tested",
+            "testRequested": "Request a test"
           }
         },
         "soil_need": {
@@ -1007,18 +995,10 @@
         "water_source": {
           "label": "Water Source",
           "options": {
-            "0": {
-              "label": "Tube well"
-            },
-            "1": {
-              "label": "Pond/canal"
-            },
-            "2": {
-              "label": "River"
-            },
-            "3": {
-              "label": "Other"
-            }
+            "tubeWell": "Tube well",
+            "pondOrCanal": "Pond/canal",
+            "river": "River",
+            "other": "Other"
           }
         },
         "irrigation_time": {
@@ -1033,35 +1013,19 @@
         "machine_type": {
           "label": "Machine Type",
           "options": {
-            "0": {
-              "label": "Tractor"
-            },
-            "1": {
-              "label": "Power tiller"
-            },
-            "2": {
-              "label": "Harvester"
-            },
-            "3": {
-              "label": "Sprayer"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "tractor": "Tractor",
+            "powerTiller": "Power tiller",
+            "harvester": "Harvester",
+            "sprayer": "Sprayer",
+            "other": "Other"
           }
         },
         "machine_service": {
           "label": "Machine Service",
           "options": {
-            "0": {
-              "label": "Hire"
-            },
-            "1": {
-              "label": "Repair"
-            },
-            "2": {
-              "label": "Other service"
-            }
+            "rental": "Hire",
+            "repair": "Repair",
+            "otherService": "Other service"
           }
         },
         "machine_area": {
@@ -1079,21 +1043,11 @@
         "labour_task": {
           "label": "Labour Task",
           "options": {
-            "0": {
-              "label": "Planting"
-            },
-            "1": {
-              "label": "Weeding"
-            },
-            "2": {
-              "label": "Harvesting"
-            },
-            "3": {
-              "label": "Threshing"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "planting": "Planting",
+            "weeding": "Weeding",
+            "harvesting": "Harvesting",
+            "threshing": "Threshing",
+            "other": "Other"
           }
         },
         "labour_count": {
@@ -1120,18 +1074,10 @@
         "livestock_need": {
           "label": "Livestock Need",
           "options": {
-            "0": {
-              "label": "Rearing/farm management"
-            },
-            "1": {
-              "label": "Feed"
-            },
-            "2": {
-              "label": "Animal health advice"
-            },
-            "3": {
-              "label": "Other"
-            }
+            "farmManagement": "Rearing/farm management",
+            "feed": "Feed",
+            "animalHealthAdvice": "Animal health advice",
+            "other": "Other"
           }
         },
         "livestock_issue": {
@@ -1152,21 +1098,11 @@
         "poultry_need": {
           "label": "Poultry Need",
           "options": {
-            "0": {
-              "label": "Feed"
-            },
-            "1": {
-              "label": "Farm management"
-            },
-            "2": {
-              "label": "Poultry health advice"
-            },
-            "3": {
-              "label": "Equipment"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "feed": "Feed",
+            "farmManagement": "Farm management",
+            "poultryHealthAdvice": "Poultry health advice",
+            "equipment": "Equipment",
+            "other": "Other"
           }
         },
         "poultry_issue": {
@@ -1187,41 +1123,21 @@
         "fish_stage": {
           "label": "Fish Stage",
           "options": {
-            "0": {
-              "label": "Pond preparation"
-            },
-            "1": {
-              "label": "Stock fingerlings"
-            },
-            "2": {
-              "label": "Ongoing cultivation"
-            },
-            "3": {
-              "label": "Sell fish"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "pondPreparation": "Pond preparation",
+            "stockFingerlings": "Stock fingerlings",
+            "ongoingCultivation": "Ongoing cultivation",
+            "sellFish": "Sell fish",
+            "other": "Other"
           }
         },
         "fish_need": {
           "label": "Fish Need",
           "options": {
-            "0": {
-              "label": "Fingerlings"
-            },
-            "1": {
-              "label": "Feed"
-            },
-            "2": {
-              "label": "Pond management"
-            },
-            "3": {
-              "label": "Market/sales"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "fingerlings": "Fingerlings",
+            "feed": "Feed",
+            "pondManagement": "Pond management",
+            "marketAndSales": "Market/sales",
+            "other": "Other"
           }
         }
       }
@@ -1236,12 +1152,8 @@
         "input_trade": {
           "label": "Input Trade",
           "options": {
-            "0": {
-              "label": "I want to buy"
-            },
-            "1": {
-              "label": "I want to sell"
-            }
+            "buy": "I want to buy",
+            "sell": "I want to sell"
           }
         },
         "input_quantity": {
@@ -1262,12 +1174,8 @@
         "produce_trade": {
           "label": "Produce Trade",
           "options": {
-            "0": {
-              "label": "Seller/farmer"
-            },
-            "1": {
-              "label": "Buyer"
-            }
+            "sellerOrFarmer": "Seller/farmer",
+            "buyer": "Buyer"
           }
         },
         "produce_quantity": {
@@ -1294,15 +1202,9 @@
         "wholesale_role": {
           "label": "Wholesale Role",
           "options": {
-            "0": {
-              "label": "Seller/farmer"
-            },
-            "1": {
-              "label": "Wholesale buyer"
-            },
-            "2": {
-              "label": "Wholesaler"
-            }
+            "sellerOrFarmer": "Seller/farmer",
+            "wholesaleBuyer": "Wholesale buyer",
+            "wholesaler": "Wholesaler"
           }
         },
         "wholesale_timing": {
@@ -1344,18 +1246,10 @@
         "storage_type": {
           "label": "Storage Type",
           "options": {
-            "0": {
-              "label": "General warehouse"
-            },
-            "1": {
-              "label": "Cold storage"
-            },
-            "2": {
-              "label": "Dry storage"
-            },
-            "3": {
-              "label": "Other"
-            }
+            "generalWarehouse": "General warehouse",
+            "coldStorage": "Cold storage",
+            "dryStorage": "Dry storage",
+            "other": "Other"
           }
         },
         "storage_duration": {
@@ -1397,21 +1291,11 @@
         "processing_type": {
           "label": "Processing Type",
           "options": {
-            "0": {
-              "label": "Cleaning/sorting"
-            },
-            "1": {
-              "label": "Grading"
-            },
-            "2": {
-              "label": "Processing"
-            },
-            "3": {
-              "label": "Packaging"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "cleaningAndSorting": "Cleaning/sorting",
+            "grading": "Grading",
+            "processing": "Processing",
+            "packaging": "Packaging",
+            "other": "Other"
           }
         },
         "processing_package": {
@@ -1444,15 +1328,9 @@
         "asset_type": {
           "label": "Asset Type",
           "options": {
-            "0": {
-              "label": "Farm land"
-            },
-            "1": {
-              "label": "Farm machinery"
-            },
-            "2": {
-              "label": "Other farm asset"
-            }
+            "farmLand": "Farm land",
+            "farmMachinery": "Farm machinery",
+            "otherFarmAsset": "Other farm asset"
           }
         },
         "asset_size": {
@@ -1461,18 +1339,10 @@
         "asset_transaction": {
           "label": "Asset Transaction",
           "options": {
-            "0": {
-              "label": "Rent"
-            },
-            "1": {
-              "label": "Offer for rent"
-            },
-            "2": {
-              "label": "I want to buy"
-            },
-            "3": {
-              "label": "I want to sell"
-            }
+            "rent": "Rent",
+            "offerForRent": "Offer for rent",
+            "buy": "I want to buy",
+            "sell": "I want to sell"
           }
         },
         "asset_timing": {
@@ -1493,15 +1363,9 @@
         "training_format": {
           "label": "Training Format",
           "options": {
-            "0": {
-              "label": "In person"
-            },
-            "1": {
-              "label": "Online"
-            },
-            "2": {
-              "label": "Either"
-            }
+            "inPerson": "In person",
+            "online": "Online",
+            "either": "Either"
           }
         },
         "training_date": {
@@ -1525,21 +1389,11 @@
         "organic_need": {
           "label": "Organic Need",
           "options": {
-            "0": {
-              "label": "Compost"
-            },
-            "1": {
-              "label": "Organic pest management"
-            },
-            "2": {
-              "label": "Production methods"
-            },
-            "3": {
-              "label": "Certification/standards"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "compost": "Compost",
+            "organicPestManagement": "Organic pest management",
+            "productionMethods": "Production methods",
+            "certificationAndStandards": "Certification/standards",
+            "other": "Other"
           }
         }
       }
@@ -1557,12 +1411,8 @@
         "contract_role": {
           "label": "Contract Role",
           "options": {
-            "0": {
-              "label": "Farmer/producer"
-            },
-            "1": {
-              "label": "Buyer"
-            }
+            "farmerOrProducer": "Farmer/producer",
+            "buyer": "Buyer"
           }
         },
         "contract_terms": {
@@ -1577,21 +1427,11 @@
         "finance_purpose": {
           "label": "Finance Purpose",
           "options": {
-            "0": {
-              "label": "Crop production"
-            },
-            "1": {
-              "label": "Farm inputs"
-            },
-            "2": {
-              "label": "Equipment"
-            },
-            "3": {
-              "label": "Farm/business expansion"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "cropProduction": "Crop production",
+            "farmInputs": "Farm inputs",
+            "equipment": "Equipment",
+            "businessExpansion": "Farm/business expansion",
+            "other": "Other"
           }
         },
         "finance_enterprise": {
@@ -1615,21 +1455,11 @@
         "insurance_event": {
           "label": "Insurance Event",
           "options": {
-            "0": {
-              "label": "Flood"
-            },
-            "1": {
-              "label": "Drought"
-            },
-            "2": {
-              "label": "Storm/natural disaster"
-            },
-            "3": {
-              "label": "Pest/disease"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "flood": "Flood",
+            "drought": "Drought",
+            "stormOrNaturalDisaster": "Storm/natural disaster",
+            "pestOrDisease": "Pest/disease",
+            "other": "Other"
           }
         },
         "insurance_event_date": {
@@ -1638,15 +1468,9 @@
         "insurance_status": {
           "label": "Insurance Status",
           "options": {
-            "0": {
-              "label": "Request information"
-            },
-            "1": {
-              "label": "Insured"
-            },
-            "2": {
-              "label": "Claim submitted"
-            }
+            "requestInformation": "Request information",
+            "insured": "Insured",
+            "claimSubmitted": "Claim submitted"
           }
         }
       }
@@ -1664,21 +1488,11 @@
         "weather_alert_type": {
           "label": "Weather Alert Type",
           "options": {
-            "0": {
-              "label": "Rain/flood"
-            },
-            "1": {
-              "label": "Storm/lightning"
-            },
-            "2": {
-              "label": "Heatwave"
-            },
-            "3": {
-              "label": "Cold/fog"
-            },
-            "4": {
-              "label": "General forecast"
-            }
+            "rainOrFlood": "Rain/flood",
+            "stormOrLightning": "Storm/lightning",
+            "heatwave": "Heatwave",
+            "coldOrFog": "Cold/fog",
+            "generalForecast": "General forecast"
           }
         },
         "weather_period": {
@@ -1693,21 +1507,11 @@
         "disaster_type": {
           "label": "Disaster Type",
           "options": {
-            "0": {
-              "label": "Flood"
-            },
-            "1": {
-              "label": "Drought"
-            },
-            "2": {
-              "label": "Cyclone/storm"
-            },
-            "3": {
-              "label": "Waterlogging"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "flood": "Flood",
+            "drought": "Drought",
+            "cycloneOrStorm": "Cyclone/storm",
+            "waterlogging": "Waterlogging",
+            "other": "Other"
           }
         },
         "disaster_area": {
@@ -1731,18 +1535,10 @@
         "women_role": {
           "label": "Women Role",
           "options": {
-            "0": {
-              "label": "Farmer/producer"
-            },
-            "1": {
-              "label": "Entrepreneur"
-            },
-            "2": {
-              "label": "Processor"
-            },
-            "3": {
-              "label": "Other"
-            }
+            "farmerOrProducer": "Farmer/producer",
+            "entrepreneur": "Entrepreneur",
+            "processor": "Processor",
+            "other": "Other"
           }
         },
         "women_capacity": {
@@ -1751,21 +1547,11 @@
         "women_support": {
           "label": "Women Support",
           "options": {
-            "0": {
-              "label": "Market/buyer"
-            },
-            "1": {
-              "label": "Training"
-            },
-            "2": {
-              "label": "Inputs/services"
-            },
-            "3": {
-              "label": "Finance information"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "marketOrBuyer": "Market/buyer",
+            "training": "Training",
+            "inputsAndServices": "Inputs/services",
+            "financeInformation": "Finance information",
+            "other": "Other"
           }
         }
       }
@@ -1780,35 +1566,19 @@
         "youth_stage": {
           "label": "Youth Stage",
           "options": {
-            "0": {
-              "label": "Planning"
-            },
-            "1": {
-              "label": "Started"
-            },
-            "2": {
-              "label": "Ongoing business"
-            }
+            "planning": "Planning",
+            "started": "Started",
+            "ongoingBusiness": "Ongoing business"
           }
         },
         "youth_support": {
           "label": "Youth Support",
           "options": {
-            "0": {
-              "label": "Training/advice"
-            },
-            "1": {
-              "label": "Market/buyer"
-            },
-            "2": {
-              "label": "Partner"
-            },
-            "3": {
-              "label": "Finance information"
-            },
-            "4": {
-              "label": "Other"
-            }
+            "trainingAndAdvice": "Training/advice",
+            "marketOrBuyer": "Market/buyer",
+            "partner": "Partner",
+            "financeInformation": "Finance information",
+            "other": "Other"
           }
         },
         "youth_capacity": {
@@ -1841,18 +1611,10 @@
         "report_type": {
           "label": "Report Type",
           "options": {
-            "0": {
-              "label": "Agriculture issue"
-            },
-            "1": {
-              "label": "Market irregularity"
-            },
-            "2": {
-              "label": "Service issue"
-            },
-            "3": {
-              "label": "Other"
-            }
+            "agricultureIssue": "Agriculture issue",
+            "marketIrregularity": "Market irregularity",
+            "serviceIssue": "Service issue",
+            "other": "Other"
           }
         },
         "report_location": {

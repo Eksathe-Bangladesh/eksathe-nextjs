@@ -15,17 +15,22 @@ test("status keys are exhaustive and unknown runtime statuses have an explicit f
   expect(statusMessageKey("toString")).toBeNull();
 });
 
-test("agriculture helpers reject mismatched runtime fields and invalid option indices", () => {
+test("agriculture helpers reject mismatched runtime fields and invalid option IDs", () => {
   expect(fieldLabelKey("seeds-seedlings", "seed_kind")).toBe(
     "agricultureServices.seeds-seedlings.fields.seed_kind.label",
   );
-  expect(optionLabelKey("seeds-seedlings", "seed_kind", 0)).toBe(
-    "agricultureServices.seeds-seedlings.fields.seed_kind.options.0.label",
+  expect(optionLabelKey("seeds-seedlings", "seed_kind", "seeds")).toBe(
+    "agricultureServices.seeds-seedlings.fields.seed_kind.options.seeds",
   );
-  for (const index of [-1, 0.5, 3, Number.NaN])
-    expect(() => optionLabelKey("seeds-seedlings", "seed_kind", index)).toThrow(
-      "Unknown agriculture option",
-    );
+  expect(() =>
+    Reflect.apply(optionLabelKey, undefined, ["seeds-seedlings", "seed_kind", "unknownOption"]),
+  ).toThrow("Unknown agriculture option");
+  expect(() =>
+    Reflect.apply(optionLabelKey, undefined, ["seeds-seedlings", "unknown_field", "seeds"]),
+  ).toThrow("Unknown agriculture field");
+  expect(() =>
+    Reflect.apply(optionLabelKey, undefined, ["crop-farming", "crop_name", "seeds"]),
+  ).toThrow("Unknown agriculture option");
   // Deliberately widen to the union to exercise the check used by mixed-service loops.
   const slug: Parameters<typeof serviceTitleKey>[0] = "crop-farming" as Parameters<
     typeof serviceTitleKey
@@ -68,5 +73,9 @@ const checkKeyTypes = () => {
   fieldLabelKey("crop-farming", "seed_kind");
   // @ts-expect-error Text fields do not have option messages.
   optionLabelKey("crop-farming", "crop_name", 0);
+  // @ts-expect-error Option IDs are constrained by the service field.
+  optionLabelKey("seeds-seedlings", "seed_kind", "unknownOption");
+  // @ts-expect-error A valid ID from another field is not valid for seed_kind.
+  optionLabelKey("seeds-seedlings", "seed_kind", "tractor");
 };
 void checkKeyTypes;

@@ -38,12 +38,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "seeds",
             value: "বীজ",
           },
           {
+            id: "seedlings",
             value: "চারা",
           },
           {
+            id: "seedsAndSeedlings",
             value: "বীজ ও চারা",
           },
         ],
@@ -87,12 +90,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "notTested",
             value: "এখনও করাইনি",
           },
           {
+            id: "tested",
             value: "পরীক্ষা করিয়েছি",
           },
           {
+            id: "testRequested",
             value: "পরীক্ষা করাতে চাই",
           },
         ],
@@ -159,15 +165,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "tubeWell",
             value: "নলকূপ",
           },
           {
+            id: "pondOrCanal",
             value: "পুকুর/খাল",
           },
           {
+            id: "river",
             value: "নদী",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -191,18 +201,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "tractor",
             value: "ট্রাক্টর",
           },
           {
+            id: "powerTiller",
             value: "পাওয়ার টিলার",
           },
           {
+            id: "harvester",
             value: "হারভেস্টার",
           },
           {
+            id: "sprayer",
             value: "স্প্রেয়ার",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -213,12 +228,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "rental",
             value: "ভাড়া",
           },
           {
+            id: "repair",
             value: "মেরামত",
           },
           {
+            id: "otherService",
             value: "অন্য সেবা",
           },
         ],
@@ -247,18 +265,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "planting",
             value: "রোপণ",
           },
           {
+            id: "weeding",
             value: "আগাছা পরিষ্কার",
           },
           {
+            id: "harvesting",
             value: "ফসল কাটা",
           },
           {
+            id: "threshing",
             value: "মাড়াই",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -302,15 +325,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "farmManagement",
             value: "পালন/খামার ব্যবস্থাপনা",
           },
           {
+            id: "feed",
             value: "খাদ্য",
           },
           {
+            id: "animalHealthAdvice",
             value: "পশুস্বাস্থ্য পরামর্শ",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -344,18 +371,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "feed",
             value: "খাদ্য",
           },
           {
+            id: "farmManagement",
             value: "খামার ব্যবস্থাপনা",
           },
           {
+            id: "poultryHealthAdvice",
             value: "পাখির স্বাস্থ্য পরামর্শ",
           },
           {
+            id: "equipment",
             value: "সরঞ্জাম",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -389,18 +421,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "pondPreparation",
             value: "পুকুর প্রস্তুতি",
           },
           {
+            id: "stockFingerlings",
             value: "পোনা ছাড়ব",
           },
           {
+            id: "ongoingCultivation",
             value: "চলমান চাষ",
           },
           {
+            id: "sellFish",
             value: "মাছ বিক্রি",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -411,18 +448,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "fingerlings",
             value: "পোনা",
           },
           {
+            id: "feed",
             value: "খাদ্য",
           },
           {
+            id: "pondManagement",
             value: "পুকুর ব্যবস্থাপনা",
           },
           {
+            id: "marketAndSales",
             value: "বাজার/বিক্রি",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -446,9 +488,11 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "buy",
             value: "কিনতে চাই",
           },
           {
+            id: "sell",
             value: "বিক্রি করতে চাই",
           },
         ],
@@ -482,9 +526,11 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "sellerOrFarmer",
             value: "বিক্রেতা/কৃষক",
           },
           {
+            id: "buyer",
             value: "ক্রেতা",
           },
         ],
@@ -528,12 +574,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "sellerOrFarmer",
             value: "বিক্রেতা/কৃষক",
           },
           {
+            id: "wholesaleBuyer",
             value: "পাইকারি ক্রেতা",
           },
           {
+            id: "wholesaler",
             value: "আড়তদার",
           },
         ],
@@ -600,15 +649,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "generalWarehouse",
             value: "সাধারণ গুদাম",
           },
           {
+            id: "coldStorage",
             value: "শীতল সংরক্ষণ",
           },
           {
+            id: "dryStorage",
             value: "শুকনো সংরক্ষণ",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -675,18 +728,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "cleaningAndSorting",
             value: "পরিষ্কার/বাছাই",
           },
           {
+            id: "grading",
             value: "গ্রেডিং",
           },
           {
+            id: "processing",
             value: "প্রক্রিয়াজাতকরণ",
           },
           {
+            id: "packaging",
             value: "প্যাকেজিং",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -738,12 +796,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "farmLand",
             value: "কৃষিজমি",
           },
           {
+            id: "farmMachinery",
             value: "কৃষিযন্ত্র",
           },
           {
+            id: "otherFarmAsset",
             value: "অন্যান্য কৃষি সম্পদ",
           },
         ],
@@ -759,15 +820,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "rent",
             value: "ভাড়া নিতে চাই",
           },
           {
+            id: "offerForRent",
             value: "ভাড়া দিতে চাই",
           },
           {
+            id: "buy",
             value: "কিনতে চাই",
           },
           {
+            id: "sell",
             value: "বিক্রি করতে চাই",
           },
         ],
@@ -801,12 +866,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "inPerson",
             value: "সশরীরে",
           },
           {
+            id: "online",
             value: "অনলাইন",
           },
           {
+            id: "either",
             value: "যেকোনো",
           },
         ],
@@ -845,18 +913,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "compost",
             value: "কম্পোস্ট",
           },
           {
+            id: "organicPestManagement",
             value: "জৈব বালাই ব্যবস্থাপনা",
           },
           {
+            id: "productionMethods",
             value: "উৎপাদন পদ্ধতি",
           },
           {
+            id: "certificationAndStandards",
             value: "সনদ/মান",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -885,9 +958,11 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "farmerOrProducer",
             value: "চাষি/উৎপাদক",
           },
           {
+            id: "buyer",
             value: "ক্রেতা",
           },
         ],
@@ -911,18 +986,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "cropProduction",
             value: "ফসল উৎপাদন",
           },
           {
+            id: "farmInputs",
             value: "কৃষি উপকরণ",
           },
           {
+            id: "equipment",
             value: "যন্ত্রপাতি",
           },
           {
+            id: "businessExpansion",
             value: "খামার/ব্যবসা সম্প্রসারণ",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -961,18 +1041,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "flood",
             value: "বন্যা",
           },
           {
+            id: "drought",
             value: "খরা",
           },
           {
+            id: "stormOrNaturalDisaster",
             value: "ঝড়/প্রাকৃতিক দুর্যোগ",
           },
           {
+            id: "pestOrDisease",
             value: "রোগবালাই",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -988,12 +1073,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "requestInformation",
             value: "তথ্য জানতে চাই",
           },
           {
+            id: "insured",
             value: "বীমা করা আছে",
           },
           {
+            id: "claimSubmitted",
             value: "দাবি জমা দিয়েছি",
           },
         ],
@@ -1022,18 +1110,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "rainOrFlood",
             value: "বৃষ্টি/বন্যা",
           },
           {
+            id: "stormOrLightning",
             value: "ঝড়/বজ্রপাত",
           },
           {
+            id: "heatwave",
             value: "তাপপ্রবাহ",
           },
           {
+            id: "coldOrFog",
             value: "ঠান্ডা/কুয়াশা",
           },
           {
+            id: "generalForecast",
             value: "সাধারণ পূর্বাভাস",
           },
         ],
@@ -1057,18 +1150,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "flood",
             value: "বন্যা",
           },
           {
+            id: "drought",
             value: "খরা",
           },
           {
+            id: "cycloneOrStorm",
             value: "ঘূর্ণিঝড়/ঝড়",
           },
           {
+            id: "waterlogging",
             value: "জলাবদ্ধতা",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -1107,15 +1205,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "farmerOrProducer",
             value: "কৃষক/উৎপাদক",
           },
           {
+            id: "entrepreneur",
             value: "উদ্যোক্তা",
           },
           {
+            id: "processor",
             value: "প্রক্রিয়াজাতকারী",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -1131,18 +1233,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "marketOrBuyer",
             value: "বাজার/ক্রেতা",
           },
           {
+            id: "training",
             value: "প্রশিক্ষণ",
           },
           {
+            id: "inputsAndServices",
             value: "উপকরণ/সেবা",
           },
           {
+            id: "financeInformation",
             value: "অর্থায়ন তথ্য",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -1166,12 +1273,15 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "planning",
             value: "পরিকল্পনা করছি",
           },
           {
+            id: "started",
             value: "শুরু করেছি",
           },
           {
+            id: "ongoingBusiness",
             value: "চলমান উদ্যোগ",
           },
         ],
@@ -1182,18 +1292,23 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "trainingAndAdvice",
             value: "প্রশিক্ষণ/পরামর্শ",
           },
           {
+            id: "marketOrBuyer",
             value: "বাজার/ক্রেতা",
           },
           {
+            id: "partner",
             value: "অংশীদার",
           },
           {
+            id: "financeInformation",
             value: "অর্থায়ন তথ্য",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -1245,15 +1360,19 @@ export const agricultureServiceRegistry = [
         type: "select",
         options: [
           {
+            id: "agricultureIssue",
             value: "কৃষি সমস্যা",
           },
           {
+            id: "marketIrregularity",
             value: "বাজার অনিয়ম",
           },
           {
+            id: "serviceIssue",
             value: "সেবা-সংক্রান্ত সমস্যা",
           },
           {
+            id: "other",
             value: "অন্যান্য",
           },
         ],
@@ -1284,9 +1403,13 @@ type FieldContent = {
   labelBn: string;
   labelEn: string;
 };
-type WithFieldContent<Field> = Field extends { options: readonly { value: string }[] }
-  ? Omit<Field, "options"> &
-      FieldContent & { options: ReadonlyArray<{ value: string; labelBn: string; labelEn: string }> }
+type WithFieldContent<Field> = Field extends { options: readonly (infer Option)[] }
+  ? Option extends { id: string; value: string }
+    ? Omit<Field, "options"> &
+        FieldContent & {
+          options: ReadonlyArray<Option & { labelBn: string; labelEn: string }>;
+        }
+    : Field & FieldContent
   : Field & FieldContent;
 export type AgricultureServiceFieldWithContent = WithFieldContent<AgricultureServiceField>;
 

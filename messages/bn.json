@@ -922,15 +922,9 @@
         "seed_kind": {
           "label": "যা প্রয়োজন",
           "options": {
-            "0": {
-              "label": "বীজ"
-            },
-            "1": {
-              "label": "চারা"
-            },
-            "2": {
-              "label": "বীজ ও চারা"
-            }
+            "seeds": "বীজ",
+            "seedlings": "চারা",
+            "seedsAndSeedlings": "বীজ ও চারা"
           }
         },
         "seed_variety": {
@@ -957,15 +951,9 @@
         "soil_test_status": {
           "label": "মাটি পরীক্ষা",
           "options": {
-            "0": {
-              "label": "এখনও করাইনি"
-            },
-            "1": {
-              "label": "পরীক্ষা করিয়েছি"
-            },
-            "2": {
-              "label": "পরীক্ষা করাতে চাই"
-            }
+            "notTested": "এখনও করাইনি",
+            "tested": "পরীক্ষা করিয়েছি",
+            "testRequested": "পরীক্ষা করাতে চাই"
           }
         },
         "soil_need": {
@@ -1007,18 +995,10 @@
         "water_source": {
           "label": "পানির উৎস",
           "options": {
-            "0": {
-              "label": "নলকূপ"
-            },
-            "1": {
-              "label": "পুকুর/খাল"
-            },
-            "2": {
-              "label": "নদী"
-            },
-            "3": {
-              "label": "অন্যান্য"
-            }
+            "tubeWell": "নলকূপ",
+            "pondOrCanal": "পুকুর/খাল",
+            "river": "নদী",
+            "other": "অন্যান্য"
           }
         },
         "irrigation_time": {
@@ -1033,35 +1013,19 @@
         "machine_type": {
           "label": "প্রয়োজনীয় যন্ত্র",
           "options": {
-            "0": {
-              "label": "ট্রাক্টর"
-            },
-            "1": {
-              "label": "পাওয়ার টিলার"
-            },
-            "2": {
-              "label": "হারভেস্টার"
-            },
-            "3": {
-              "label": "স্প্রেয়ার"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "tractor": "ট্রাক্টর",
+            "powerTiller": "পাওয়ার টিলার",
+            "harvester": "হারভেস্টার",
+            "sprayer": "স্প্রেয়ার",
+            "other": "অন্যান্য"
           }
         },
         "machine_service": {
           "label": "কাজের ধরন",
           "options": {
-            "0": {
-              "label": "ভাড়া"
-            },
-            "1": {
-              "label": "মেরামত"
-            },
-            "2": {
-              "label": "অন্য সেবা"
-            }
+            "rental": "ভাড়া",
+            "repair": "মেরামত",
+            "otherService": "অন্য সেবা"
           }
         },
         "machine_area": {
@@ -1079,21 +1043,11 @@
         "labour_task": {
           "label": "কাজের ধরন",
           "options": {
-            "0": {
-              "label": "রোপণ"
-            },
-            "1": {
-              "label": "আগাছা পরিষ্কার"
-            },
-            "2": {
-              "label": "ফসল কাটা"
-            },
-            "3": {
-              "label": "মাড়াই"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "planting": "রোপণ",
+            "weeding": "আগাছা পরিষ্কার",
+            "harvesting": "ফসল কাটা",
+            "threshing": "মাড়াই",
+            "other": "অন্যান্য"
           }
         },
         "labour_count": {
@@ -1120,18 +1074,10 @@
         "livestock_need": {
           "label": "সহায়তার ধরন",
           "options": {
-            "0": {
-              "label": "পালন/খামার ব্যবস্থাপনা"
-            },
-            "1": {
-              "label": "খাদ্য"
-            },
-            "2": {
-              "label": "পশুস্বাস্থ্য পরামর্শ"
-            },
-            "3": {
-              "label": "অন্যান্য"
-            }
+            "farmManagement": "পালন/খামার ব্যবস্থাপনা",
+            "feed": "খাদ্য",
+            "animalHealthAdvice": "পশুস্বাস্থ্য পরামর্শ",
+            "other": "অন্যান্য"
           }
         },
         "livestock_issue": {
@@ -1152,21 +1098,11 @@
         "poultry_need": {
           "label": "সহায়তার ধরন",
           "options": {
-            "0": {
-              "label": "খাদ্য"
-            },
-            "1": {
-              "label": "খামার ব্যবস্থাপনা"
-            },
-            "2": {
-              "label": "পাখির স্বাস্থ্য পরামর্শ"
-            },
-            "3": {
-              "label": "সরঞ্জাম"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "feed": "খাদ্য",
+            "farmManagement": "খামার ব্যবস্থাপনা",
+            "poultryHealthAdvice": "পাখির স্বাস্থ্য পরামর্শ",
+            "equipment": "সরঞ্জাম",
+            "other": "অন্যান্য"
           }
         },
         "poultry_issue": {
@@ -1187,41 +1123,21 @@
         "fish_stage": {
           "label": "চাষের পর্যায়",
           "options": {
-            "0": {
-              "label": "পুকুর প্রস্তুতি"
-            },
-            "1": {
-              "label": "পোনা ছাড়ব"
-            },
-            "2": {
-              "label": "চলমান চাষ"
-            },
-            "3": {
-              "label": "মাছ বিক্রি"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "pondPreparation": "পুকুর প্রস্তুতি",
+            "stockFingerlings": "পোনা ছাড়ব",
+            "ongoingCultivation": "চলমান চাষ",
+            "sellFish": "মাছ বিক্রি",
+            "other": "অন্যান্য"
           }
         },
         "fish_need": {
           "label": "সহায়তার ধরন",
           "options": {
-            "0": {
-              "label": "পোনা"
-            },
-            "1": {
-              "label": "খাদ্য"
-            },
-            "2": {
-              "label": "পুকুর ব্যবস্থাপনা"
-            },
-            "3": {
-              "label": "বাজার/বিক্রি"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "fingerlings": "পোনা",
+            "feed": "খাদ্য",
+            "pondManagement": "পুকুর ব্যবস্থাপনা",
+            "marketAndSales": "বাজার/বিক্রি",
+            "other": "অন্যান্য"
           }
         }
       }
@@ -1236,12 +1152,8 @@
         "input_trade": {
           "label": "আপনার প্রয়োজন",
           "options": {
-            "0": {
-              "label": "কিনতে চাই"
-            },
-            "1": {
-              "label": "বিক্রি করতে চাই"
-            }
+            "buy": "কিনতে চাই",
+            "sell": "বিক্রি করতে চাই"
           }
         },
         "input_quantity": {
@@ -1262,12 +1174,8 @@
         "produce_trade": {
           "label": "আপনার ভূমিকা",
           "options": {
-            "0": {
-              "label": "বিক্রেতা/কৃষক"
-            },
-            "1": {
-              "label": "ক্রেতা"
-            }
+            "sellerOrFarmer": "বিক্রেতা/কৃষক",
+            "buyer": "ক্রেতা"
           }
         },
         "produce_quantity": {
@@ -1294,15 +1202,9 @@
         "wholesale_role": {
           "label": "আপনার ভূমিকা",
           "options": {
-            "0": {
-              "label": "বিক্রেতা/কৃষক"
-            },
-            "1": {
-              "label": "পাইকারি ক্রেতা"
-            },
-            "2": {
-              "label": "আড়তদার"
-            }
+            "sellerOrFarmer": "বিক্রেতা/কৃষক",
+            "wholesaleBuyer": "পাইকারি ক্রেতা",
+            "wholesaler": "আড়তদার"
           }
         },
         "wholesale_timing": {
@@ -1344,18 +1246,10 @@
         "storage_type": {
           "label": "সংরক্ষণের ধরন",
           "options": {
-            "0": {
-              "label": "সাধারণ গুদাম"
-            },
-            "1": {
-              "label": "শীতল সংরক্ষণ"
-            },
-            "2": {
-              "label": "শুকনো সংরক্ষণ"
-            },
-            "3": {
-              "label": "অন্যান্য"
-            }
+            "generalWarehouse": "সাধারণ গুদাম",
+            "coldStorage": "শীতল সংরক্ষণ",
+            "dryStorage": "শুকনো সংরক্ষণ",
+            "other": "অন্যান্য"
           }
         },
         "storage_duration": {
@@ -1397,21 +1291,11 @@
         "processing_type": {
           "label": "প্রয়োজনীয় কাজ",
           "options": {
-            "0": {
-              "label": "পরিষ্কার/বাছাই"
-            },
-            "1": {
-              "label": "গ্রেডিং"
-            },
-            "2": {
-              "label": "প্রক্রিয়াজাতকরণ"
-            },
-            "3": {
-              "label": "প্যাকেজিং"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "cleaningAndSorting": "পরিষ্কার/বাছাই",
+            "grading": "গ্রেডিং",
+            "processing": "প্রক্রিয়াজাতকরণ",
+            "packaging": "প্যাকেজিং",
+            "other": "অন্যান্য"
           }
         },
         "processing_package": {
@@ -1444,15 +1328,9 @@
         "asset_type": {
           "label": "যা খুঁজছেন",
           "options": {
-            "0": {
-              "label": "কৃষিজমি"
-            },
-            "1": {
-              "label": "কৃষিযন্ত্র"
-            },
-            "2": {
-              "label": "অন্যান্য কৃষি সম্পদ"
-            }
+            "farmLand": "কৃষিজমি",
+            "farmMachinery": "কৃষিযন্ত্র",
+            "otherFarmAsset": "অন্যান্য কৃষি সম্পদ"
           }
         },
         "asset_size": {
@@ -1461,18 +1339,10 @@
         "asset_transaction": {
           "label": "প্রয়োজনের ধরন",
           "options": {
-            "0": {
-              "label": "ভাড়া নিতে চাই"
-            },
-            "1": {
-              "label": "ভাড়া দিতে চাই"
-            },
-            "2": {
-              "label": "কিনতে চাই"
-            },
-            "3": {
-              "label": "বিক্রি করতে চাই"
-            }
+            "rent": "ভাড়া নিতে চাই",
+            "offerForRent": "ভাড়া দিতে চাই",
+            "buy": "কিনতে চাই",
+            "sell": "বিক্রি করতে চাই"
           }
         },
         "asset_timing": {
@@ -1493,15 +1363,9 @@
         "training_format": {
           "label": "পছন্দের মাধ্যম",
           "options": {
-            "0": {
-              "label": "সশরীরে"
-            },
-            "1": {
-              "label": "অনলাইন"
-            },
-            "2": {
-              "label": "যেকোনো"
-            }
+            "inPerson": "সশরীরে",
+            "online": "অনলাইন",
+            "either": "যেকোনো"
           }
         },
         "training_date": {
@@ -1525,21 +1389,11 @@
         "organic_need": {
           "label": "কী বিষয়ে সহায়তা চান",
           "options": {
-            "0": {
-              "label": "কম্পোস্ট"
-            },
-            "1": {
-              "label": "জৈব বালাই ব্যবস্থাপনা"
-            },
-            "2": {
-              "label": "উৎপাদন পদ্ধতি"
-            },
-            "3": {
-              "label": "সনদ/মান"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "compost": "কম্পোস্ট",
+            "organicPestManagement": "জৈব বালাই ব্যবস্থাপনা",
+            "productionMethods": "উৎপাদন পদ্ধতি",
+            "certificationAndStandards": "সনদ/মান",
+            "other": "অন্যান্য"
           }
         }
       }
@@ -1557,12 +1411,8 @@
         "contract_role": {
           "label": "আপনার ভূমিকা",
           "options": {
-            "0": {
-              "label": "চাষি/উৎপাদক"
-            },
-            "1": {
-              "label": "ক্রেতা"
-            }
+            "farmerOrProducer": "চাষি/উৎপাদক",
+            "buyer": "ক্রেতা"
           }
         },
         "contract_terms": {
@@ -1577,21 +1427,11 @@
         "finance_purpose": {
           "label": "অর্থায়নের উদ্দেশ্য",
           "options": {
-            "0": {
-              "label": "ফসল উৎপাদন"
-            },
-            "1": {
-              "label": "কৃষি উপকরণ"
-            },
-            "2": {
-              "label": "যন্ত্রপাতি"
-            },
-            "3": {
-              "label": "খামার/ব্যবসা সম্প্রসারণ"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "cropProduction": "ফসল উৎপাদন",
+            "farmInputs": "কৃষি উপকরণ",
+            "equipment": "যন্ত্রপাতি",
+            "businessExpansion": "খামার/ব্যবসা সম্প্রসারণ",
+            "other": "অন্যান্য"
           }
         },
         "finance_enterprise": {
@@ -1615,21 +1455,11 @@
         "insurance_event": {
           "label": "ক্ষতির কারণ",
           "options": {
-            "0": {
-              "label": "বন্যা"
-            },
-            "1": {
-              "label": "খরা"
-            },
-            "2": {
-              "label": "ঝড়/প্রাকৃতিক দুর্যোগ"
-            },
-            "3": {
-              "label": "রোগবালাই"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "flood": "বন্যা",
+            "drought": "খরা",
+            "stormOrNaturalDisaster": "ঝড়/প্রাকৃতিক দুর্যোগ",
+            "pestOrDisease": "রোগবালাই",
+            "other": "অন্যান্য"
           }
         },
         "insurance_event_date": {
@@ -1638,15 +1468,9 @@
         "insurance_status": {
           "label": "পলিসি/দাবির অবস্থা",
           "options": {
-            "0": {
-              "label": "তথ্য জানতে চাই"
-            },
-            "1": {
-              "label": "বীমা করা আছে"
-            },
-            "2": {
-              "label": "দাবি জমা দিয়েছি"
-            }
+            "requestInformation": "তথ্য জানতে চাই",
+            "insured": "বীমা করা আছে",
+            "claimSubmitted": "দাবি জমা দিয়েছি"
           }
         }
       }
@@ -1664,21 +1488,11 @@
         "weather_alert_type": {
           "label": "তথ্য/সতর্কতার ধরন",
           "options": {
-            "0": {
-              "label": "বৃষ্টি/বন্যা"
-            },
-            "1": {
-              "label": "ঝড়/বজ্রপাত"
-            },
-            "2": {
-              "label": "তাপপ্রবাহ"
-            },
-            "3": {
-              "label": "ঠান্ডা/কুয়াশা"
-            },
-            "4": {
-              "label": "সাধারণ পূর্বাভাস"
-            }
+            "rainOrFlood": "বৃষ্টি/বন্যা",
+            "stormOrLightning": "ঝড়/বজ্রপাত",
+            "heatwave": "তাপপ্রবাহ",
+            "coldOrFog": "ঠান্ডা/কুয়াশা",
+            "generalForecast": "সাধারণ পূর্বাভাস"
           }
         },
         "weather_period": {
@@ -1693,21 +1507,11 @@
         "disaster_type": {
           "label": "দুর্যোগের ধরন",
           "options": {
-            "0": {
-              "label": "বন্যা"
-            },
-            "1": {
-              "label": "খরা"
-            },
-            "2": {
-              "label": "ঘূর্ণিঝড়/ঝড়"
-            },
-            "3": {
-              "label": "জলাবদ্ধতা"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "flood": "বন্যা",
+            "drought": "খরা",
+            "cycloneOrStorm": "ঘূর্ণিঝড়/ঝড়",
+            "waterlogging": "জলাবদ্ধতা",
+            "other": "অন্যান্য"
           }
         },
         "disaster_area": {
@@ -1731,18 +1535,10 @@
         "women_role": {
           "label": "আপনার ভূমিকা",
           "options": {
-            "0": {
-              "label": "কৃষক/উৎপাদক"
-            },
-            "1": {
-              "label": "উদ্যোক্তা"
-            },
-            "2": {
-              "label": "প্রক্রিয়াজাতকারী"
-            },
-            "3": {
-              "label": "অন্যান্য"
-            }
+            "farmerOrProducer": "কৃষক/উৎপাদক",
+            "entrepreneur": "উদ্যোক্তা",
+            "processor": "প্রক্রিয়াজাতকারী",
+            "other": "অন্যান্য"
           }
         },
         "women_capacity": {
@@ -1751,21 +1547,11 @@
         "women_support": {
           "label": "কী ধরনের সংযোগ প্রয়োজন",
           "options": {
-            "0": {
-              "label": "বাজার/ক্রেতা"
-            },
-            "1": {
-              "label": "প্রশিক্ষণ"
-            },
-            "2": {
-              "label": "উপকরণ/সেবা"
-            },
-            "3": {
-              "label": "অর্থায়ন তথ্য"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "marketOrBuyer": "বাজার/ক্রেতা",
+            "training": "প্রশিক্ষণ",
+            "inputsAndServices": "উপকরণ/সেবা",
+            "financeInformation": "অর্থায়ন তথ্য",
+            "other": "অন্যান্য"
           }
         }
       }
@@ -1780,35 +1566,19 @@
         "youth_stage": {
           "label": "উদ্যোগের বর্তমান পর্যায়",
           "options": {
-            "0": {
-              "label": "পরিকল্পনা করছি"
-            },
-            "1": {
-              "label": "শুরু করেছি"
-            },
-            "2": {
-              "label": "চলমান উদ্যোগ"
-            }
+            "planning": "পরিকল্পনা করছি",
+            "started": "শুরু করেছি",
+            "ongoingBusiness": "চলমান উদ্যোগ"
           }
         },
         "youth_support": {
           "label": "কী ধরনের সহায়তা চান",
           "options": {
-            "0": {
-              "label": "প্রশিক্ষণ/পরামর্শ"
-            },
-            "1": {
-              "label": "বাজার/ক্রেতা"
-            },
-            "2": {
-              "label": "অংশীদার"
-            },
-            "3": {
-              "label": "অর্থায়ন তথ্য"
-            },
-            "4": {
-              "label": "অন্যান্য"
-            }
+            "trainingAndAdvice": "প্রশিক্ষণ/পরামর্শ",
+            "marketOrBuyer": "বাজার/ক্রেতা",
+            "partner": "অংশীদার",
+            "financeInformation": "অর্থায়ন তথ্য",
+            "other": "অন্যান্য"
           }
         },
         "youth_capacity": {
@@ -1841,18 +1611,10 @@
         "report_type": {
           "label": "সমস্যার ধরন",
           "options": {
-            "0": {
-              "label": "কৃষি সমস্যা"
-            },
-            "1": {
-              "label": "বাজার অনিয়ম"
-            },
-            "2": {
-              "label": "সেবা-সংক্রান্ত সমস্যা"
-            },
-            "3": {
-              "label": "অন্যান্য"
-            }
+            "agricultureIssue": "কৃষি সমস্যা",
+            "marketIrregularity": "বাজার অনিয়ম",
+            "serviceIssue": "সেবা-সংক্রান্ত সমস্যা",
+            "other": "অন্যান্য"
           }
         },
         "report_location": {

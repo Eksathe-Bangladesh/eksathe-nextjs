@@ -27,10 +27,20 @@ type OptionLabelKey = {
     [Field in keyof Services[Slug]["fields"]]: Services[Slug]["fields"][Field] extends {
       options: infer Options;
     }
-      ? `agricultureServices.${Slug}.fields.${Field & string}.options.${keyof Options & string}.label`
+      ? `agricultureServices.${Slug}.fields.${Field & string}.options.${keyof Options & string}`
       : never;
   }[keyof Services[Slug]["fields"]];
 }[AgricultureServiceSlug];
+type OptionFieldId<
+  Slug extends AgricultureServiceSlug,
+  Field extends OptionFieldName<Slug>,
+> = Slug extends AgricultureServiceSlug
+  ? Field extends keyof Services[Slug]["fields"]
+    ? Services[Slug]["fields"][Field] extends { options: infer Options }
+      ? keyof Options & string
+      : never
+    : never
+  : never;
 
 export function serviceTitleKey<Slug extends AgricultureServiceSlug>(slug: Slug) {
   return `agricultureServices.${slug}.title` as const;
@@ -57,19 +67,13 @@ export function fieldLabelKey<Slug extends AgricultureServiceSlug>(
   return `agricultureServices.${slug}.fields.${field}.label` as FieldLabelKey;
 }
 
-export function optionLabelKey<Slug extends AgricultureServiceSlug>(
-  slug: Slug,
-  field: OptionFieldName<Slug>,
-  index: number,
-): OptionLabelKey {
+export function optionLabelKey<
+  Slug extends AgricultureServiceSlug,
+  Field extends OptionFieldName<Slug>,
+>(slug: Slug, field: Field, optionId: OptionFieldId<Slug, Field>): OptionLabelKey {
   const definition = requireField(slug, field);
-  if (
-    !("options" in definition) ||
-    !Number.isInteger(index) ||
-    index < 0 ||
-    index >= definition.options.length
-  ) {
-    throw new Error(`Unknown agriculture option: ${slug}.${field}.${index}`);
+  if (!("options" in definition) || !definition.options.some((option) => option.id === optionId)) {
+    throw new Error(`Unknown agriculture option: ${slug}.${field}.${optionId}`);
   }
-  return `agricultureServices.${slug}.fields.${field}.options.${index}.label` as OptionLabelKey;
+  return `agricultureServices.${slug}.fields.${field}.options.${optionId}` as OptionLabelKey;
 }

@@ -212,9 +212,9 @@ export function ServiceRequestForm({
                   <NativeSelectOption value="">
                     {t("agriculture.requestForm.optionPlaceholder")}
                   </NativeSelectOption>
-                  {field.options?.map((option, index) => (
-                    <NativeSelectOption key={option.value} value={option.value}>
-                      {t(optionLabelKey(service.slug, field.name, index))}
+                  {field.options?.map((option) => (
+                    <NativeSelectOption key={option.id} value={option.value}>
+                      {t(optionLabelKey(service.slug, field.name, option.id))}
                     </NativeSelectOption>
                   ))}
                 </NativeSelect>

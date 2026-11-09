@@ -35,11 +35,34 @@ describe("agriculture service registry", () => {
           resolveCatalogPair(fieldLabelKey(service.slug, field.name)).en.length,
         ).toBeGreaterThan(0);
         if ("options" in field && field.options) {
-          field.options.forEach((_, index) => {
-            const option = resolveCatalogPair(optionLabelKey(service.slug, field.name, index));
-            expect(option.bn.length).toBeGreaterThan(0);
-            expect(option.en.length).toBeGreaterThan(0);
+          const optionIds = field.options.map((option) => option.id);
+          expect(new Set(optionIds).size).toBe(optionIds.length);
+          field.options.forEach((option) => {
+            expect(option.id).toMatch(/^[a-z][A-Za-z0-9]*$/);
+            const label = resolveCatalogPair(optionLabelKey(service.slug, field.name, option.id));
+            expect(label.bn.length).toBeGreaterThan(0);
+            expect(label.en.length).toBeGreaterThan(0);
           });
+        }
+      }
+    }
+  });
+
+  test("semantic option IDs keep labels and submitted values stable when display order changes", () => {
+    for (const service of agricultureServiceRegistry) {
+      for (const field of service.fields) {
+        if (!("options" in field)) continue;
+        const original = new Map(field.options.map((option) => [option.id, option.value]));
+        const originalLabels = new Map(
+          field.options.map((option) => [
+            option.id,
+            resolveCatalogPair(optionLabelKey(service.slug, field.name, option.id)),
+          ]),
+        );
+        for (const option of [...field.options].reverse()) {
+          expect(original.get(option.id)).toBe(option.value);
+          const key = optionLabelKey(service.slug, field.name, option.id);
+          expect(resolveCatalogPair(key)).toEqual(originalLabels.get(option.id)!);
         }
       }
     }
