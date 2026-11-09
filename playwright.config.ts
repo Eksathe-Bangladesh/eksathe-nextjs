@@ -19,8 +19,7 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
-        command:
-          "node ./node_modules/next/dist/bin/next dev --turbo --hostname 127.0.0.1 --port 3100",
+        command: "bun run dev -- --turbo --hostname 127.0.0.1 --port 3100",
         url: baseURL,
         env: {
           NEXT_DIST_DIR: ".next-e2e-node",
