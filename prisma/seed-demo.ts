@@ -48,6 +48,13 @@ async function main() {
     phone: "+8801700000103",
     passwordHash,
   });
+  const constructionOperations = await ensureUser({
+    id: "demo-construction-ops-ek",
+    name: "Demo Construction Operations",
+    email: "demo.construction.ops@example.com",
+    phone: "+8801700000104",
+    passwordHash,
+  });
 
   const farmProfile = await prisma.providerProfile.upsert({
     where: { userId: farmer.id },
@@ -55,14 +62,24 @@ async function main() {
     create: {
       id: "demo-farm-provider",
       userId: farmer.id,
-      nameBn: "সবুজ মাঠ খামার",
-      nameEn: "Green Fields Farm",
-      bioBn: "স্থানীয় মৌসুমি ফসল, কৃষিশ্রমিক ও যন্ত্র ভাড়ার সেবা।",
-      bioEn: "Local seasonal produce, farm workers and equipment hire.",
       district: "Dhaka",
       upazila: "Savar",
       status: "APPROVED",
       reviewedAt: new Date(),
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            name: "সবুজ মাঠ খামার",
+            bio: "স্থানীয় মৌসুমি ফসল, কৃষিশ্রমিক ও যন্ত্র ভাড়ার সেবা।",
+          },
+          {
+            locale: "en",
+            name: "Green Fields Farm",
+            bio: "Local seasonal produce, farm workers and equipment hire.",
+          },
+        ],
+      },
     },
   });
   const constructionProfile = await prisma.providerProfile.upsert({
@@ -71,14 +88,24 @@ async function main() {
     create: {
       id: "demo-construction-provider",
       userId: builder.id,
-      nameBn: "নির্মাণ সাথী",
-      nameEn: "Nirman Sathi",
-      bioBn: "নির্মাণসামগ্রী সরবরাহ ও অভিজ্ঞ প্রকৌশলী পরামর্শ।",
-      bioEn: "Construction material supply and experienced engineering advice.",
       district: "Dhaka",
       upazila: "Dhanmondi",
       status: "APPROVED",
       reviewedAt: new Date(),
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            name: "নির্মাণ সাথী",
+            bio: "নির্মাণসামগ্রী সরবরাহ ও অভিজ্ঞ প্রকৌশলী পরামর্শ।",
+          },
+          {
+            locale: "en",
+            name: "Nirman Sathi",
+            bio: "Construction material supply and experienced engineering advice.",
+          },
+        ],
+      },
     },
   });
 
@@ -100,8 +127,91 @@ async function main() {
   for (const capability of capabilities) {
     await prisma.providerCapability.upsert({
       where: { providerId_sectorSlug_kind: capability },
-      update: { status: "APPROVED", reviewedAt: new Date() },
+      update: {},
       create: { ...capability, status: "APPROVED", reviewedAt: new Date() },
+    });
+  }
+
+  for (const permission of ["OPERATIONS", "FINANCE"] as const) {
+    await prisma.staffGrant.upsert({
+      where: {
+        userId_permission_scopeKey: {
+          userId: constructionOperations.id,
+          permission,
+          scopeKey: "construction",
+        },
+      },
+      update: {},
+      create: {
+        userId: constructionOperations.id,
+        permission,
+        scopeKey: "construction",
+        sectorSlug: "construction",
+      },
+    });
+  }
+
+  const constructionVerifications = [
+    {
+      type: "CONTRACTOR" as const,
+      legalName: "Demo Construction Provider",
+      businessName: "Nirman Sathi",
+      registrationNumber: "DEMO-CONTRACTOR-001",
+      yearsExperience: 8,
+      teamSize: 4,
+      specializations: ["Engineering", "Residential construction"],
+      materialCategories: [],
+      brands: [],
+    },
+    {
+      type: "SUPPLIER" as const,
+      legalName: "Demo Construction Provider",
+      businessName: "Nirman Sathi",
+      registrationNumber: "DEMO-SUPPLIER-001",
+      yearsExperience: null,
+      teamSize: null,
+      specializations: [],
+      materialCategories: ["Cement", "Bricks"],
+      brands: ["Local demo suppliers"],
+    },
+  ];
+  for (const verification of constructionVerifications) {
+    const application = await prisma.providerVerificationApplication.upsert({
+      where: {
+        providerId_type: { providerId: constructionProfile.id, type: verification.type },
+      },
+      update: {},
+      create: {
+        providerId: constructionProfile.id,
+        ...verification,
+        applicantType: "BUSINESS",
+        businessAddress: "Dhanmondi, Dhaka",
+        serviceAreas: ["Dhaka"],
+        status: "APPROVED",
+        reviewedAt: new Date(),
+        reviewedById: constructionOperations.id,
+        reviewNote: "Local demo verification record.",
+        expiresAt: inDays(365),
+      },
+    });
+    const reviewId = `demo-verification-review-${verification.type.toLowerCase()}`;
+    await prisma.providerVerificationReview.upsert({
+      where: { id: reviewId },
+      update: {},
+      create: {
+        id: reviewId,
+        applicationId: application.id,
+        actorId: constructionOperations.id,
+        version: application.version,
+        action: "APPROVED",
+        note: "Local demo verification record.",
+      },
+    });
+    await ensureActivityLog({
+      userId: constructionOperations.id,
+      action: "provider_verification.approved",
+      entityType: "provider_verification_application",
+      entityId: application.id,
     });
   }
 
@@ -111,11 +221,22 @@ async function main() {
       providerId: farmProfile.id,
       sectorSlug: "agriculture-labor",
       kind: "PRODUCE" as const,
-      titleBn: "সাভারের নতুন আমন চাল",
-      titleEn: "Fresh Savar Aman Rice",
-      descriptionBn: "পরিষ্কার, সদ্য প্রক্রিয়াজাত আমন চাল। সংগ্রহ বা পরিবহনের ব্যবস্থা ক্রেতা ও বিক্রেতা ঠিক করবেন।",
-      descriptionEn:
-        "Clean, freshly processed Aman rice. Buyer and seller can agree on collection or transport.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "সাভারের নতুন আমন চাল",
+            description:
+              "পরিষ্কার, সদ্য প্রক্রিয়াজাত আমন চাল। সংগ্রহ বা পরিবহনের ব্যবস্থা ক্রেতা ও বিক্রেতা ঠিক করবেন।",
+          },
+          {
+            locale: "en",
+            title: "Fresh Savar Aman Rice",
+            description:
+              "Clean, freshly processed Aman rice. Buyer and seller can agree on collection or transport.",
+          },
+        ],
+      },
       category: "Rice",
       district: "Dhaka",
       unit: "kg",
@@ -130,10 +251,20 @@ async function main() {
       providerId: farmProfile.id,
       sectorSlug: "agriculture-labor",
       kind: "PRODUCE" as const,
-      titleBn: "মৌসুমি টমেটো",
-      titleEn: "Seasonal Tomatoes",
-      descriptionBn: "সাভারে উৎপাদিত তাজা টমেটো, সীমিত পরিমাণে পাওয়া যাচ্ছে।",
-      descriptionEn: "Fresh tomatoes grown in Savar, available in limited quantities.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "মৌসুমি টমেটো",
+            description: "সাভারে উৎপাদিত তাজা টমেটো, সীমিত পরিমাণে পাওয়া যাচ্ছে।",
+          },
+          {
+            locale: "en",
+            title: "Seasonal Tomatoes",
+            description: "Fresh tomatoes grown in Savar, available in limited quantities.",
+          },
+        ],
+      },
       category: "Vegetables",
       district: "Dhaka",
       unit: "kg",
@@ -148,11 +279,21 @@ async function main() {
       providerId: farmProfile.id,
       sectorSlug: "agriculture-labor",
       kind: "WORKER" as const,
-      titleBn: "ধান কাটার অভিজ্ঞ শ্রমিক দল",
-      titleEn: "Experienced Rice Harvesting Crew",
-      descriptionBn: "চারজন অভিজ্ঞ শ্রমিকের দল। কাজের সময়, জমির অবস্থা ও যাতায়াতের শর্ত আগে আলোচনা করুন।",
-      descriptionEn:
-        "A crew of four experienced workers. Agree on schedule, field conditions and travel terms first.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "ধান কাটার অভিজ্ঞ শ্রমিক দল",
+            description: "চারজন অভিজ্ঞ শ্রমিকের দল। কাজের সময়, জমির অবস্থা ও যাতায়াতের শর্ত আগে আলোচনা করুন।",
+          },
+          {
+            locale: "en",
+            title: "Experienced Rice Harvesting Crew",
+            description:
+              "A crew of four experienced workers. Agree on schedule, field conditions and travel terms first.",
+          },
+        ],
+      },
       category: "Harvesting",
       district: "Dhaka",
       unit: "day",
@@ -166,10 +307,21 @@ async function main() {
       providerId: farmProfile.id,
       sectorSlug: "agriculture-labor",
       kind: "MACHINERY" as const,
-      titleBn: "অপারেটরসহ পাওয়ার টিলার",
-      titleEn: "Power Tiller with Operator",
-      descriptionBn: "অপারেটরসহ দৈনিক ভাড়া। জ্বালানি ও পরিবহন খরচ বুকিংয়ের আগে নিশ্চিত করুন।",
-      descriptionEn: "Daily hire with operator. Confirm fuel and transport charges before booking.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "অপারেটরসহ পাওয়ার টিলার",
+            description: "অপারেটরসহ দৈনিক ভাড়া। জ্বালানি ও পরিবহন খরচ বুকিংয়ের আগে নিশ্চিত করুন।",
+          },
+          {
+            locale: "en",
+            title: "Power Tiller with Operator",
+            description:
+              "Daily hire with operator. Confirm fuel and transport charges before booking.",
+          },
+        ],
+      },
       category: "Tillage",
       district: "Dhaka",
       unit: "day",
@@ -183,11 +335,21 @@ async function main() {
       providerId: constructionProfile.id,
       sectorSlug: "construction",
       kind: "CONSTRUCTION_MATERIAL" as const,
-      titleBn: "৫০ কেজি পোর্টল্যান্ড সিমেন্ট",
-      titleEn: "50 kg Portland Cement",
-      descriptionBn: "মানসম্মত সিমেন্টের বস্তা। স্টক, পরিবহন ও সাইটে নামানোর খরচ অর্ডারের আগে নিশ্চিত করুন।",
-      descriptionEn:
-        "Quality cement bags. Confirm stock, transport and site unloading charges before ordering.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "৫০ কেজি পোর্টল্যান্ড সিমেন্ট",
+            description: "মানসম্মত সিমেন্টের বস্তা। স্টক, পরিবহন ও সাইটে নামানোর খরচ অর্ডারের আগে নিশ্চিত করুন।",
+          },
+          {
+            locale: "en",
+            title: "50 kg Portland Cement",
+            description:
+              "Quality cement bags. Confirm stock, transport and site unloading charges before ordering.",
+          },
+        ],
+      },
       category: "Cement",
       district: "Dhaka",
       unit: "bag",
@@ -201,10 +363,20 @@ async function main() {
       providerId: constructionProfile.id,
       sectorSlug: "construction",
       kind: "CONSTRUCTION_MATERIAL" as const,
-      titleBn: "প্রথম শ্রেণির লাল ইট",
-      titleEn: "First Class Red Bricks",
-      descriptionBn: "পরিদর্শন ও পরিবহন শর্ত সরবরাহকারীর সঙ্গে নিশ্চিত করুন।",
-      descriptionEn: "Confirm inspection and delivery terms with the supplier.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "প্রথম শ্রেণির লাল ইট",
+            description: "পরিদর্শন ও পরিবহন শর্ত সরবরাহকারীর সঙ্গে নিশ্চিত করুন।",
+          },
+          {
+            locale: "en",
+            title: "First Class Red Bricks",
+            description: "Confirm inspection and delivery terms with the supplier.",
+          },
+        ],
+      },
       category: "Bricks",
       district: "Dhaka",
       unit: "piece",
@@ -218,12 +390,22 @@ async function main() {
       providerId: constructionProfile.id,
       sectorSlug: "construction",
       kind: "CONSTRUCTION_SERVICE" as const,
-      titleBn: "বাড়ির কাঠামোগত পরামর্শ",
-      titleEn: "Residential Structural Consultation",
-      descriptionBn:
-        "প্রাথমিক নকশা পর্যালোচনা, সাইট পরিদর্শন ও কাঠামোগত পরামর্শ। কাজের পরিধি কোটেশনে নির্ধারিত হবে।",
-      descriptionEn:
-        "Initial plan review, site visit and structural advice. Scope is agreed in the quote.",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "বাড়ির কাঠামোগত পরামর্শ",
+            description:
+              "প্রাথমিক নকশা পর্যালোচনা, সাইট পরিদর্শন ও কাঠামোগত পরামর্শ। কাজের পরিধি কোটেশনে নির্ধারিত হবে।",
+          },
+          {
+            locale: "en",
+            title: "Residential Structural Consultation",
+            description:
+              "Initial plan review, site visit and structural advice. Scope is agreed in the quote.",
+          },
+        ],
+      },
       category: "Engineering",
       district: "Dhaka",
       unit: "job",
@@ -420,7 +602,7 @@ async function main() {
       commissionRate: decimal("10"),
       commissionAmount: decimal("1500"),
       providerAmount: decimal("13500"),
-      status: "CONFIRMED" as const,
+      status: "COMPLETED" as const,
     },
   ];
   for (const order of orders) {
@@ -430,6 +612,10 @@ async function main() {
       create: order,
     });
   }
+  const engineerOrder = await prisma.order.findUniqueOrThrow({
+    where: { id: "demo-order-engineer" },
+    select: { status: true, commissionAmount: true },
+  });
 
   await prisma.paymentRecord.upsert({
     where: { id: "demo-payment-rice" },
@@ -447,6 +633,73 @@ async function main() {
     },
   });
 
+  await prisma.paymentRecord.upsert({
+    where: { id: "demo-payment-engineer" },
+    update: {},
+    create: {
+      id: "demo-payment-engineer",
+      orderId: "demo-order-engineer",
+      submittedById: buyer.id,
+      amount: decimal("15000"),
+      method: "BANK_TRANSFER",
+      reference: "DEMO-BANK-002",
+      paidAt: new Date(),
+      buyerConfirmedAt: new Date(),
+    },
+  });
+
+  if (engineerOrder.status === "COMPLETED") {
+    await prisma.commissionRecord.upsert({
+      where: { orderId: "demo-order-engineer" },
+      update: {},
+      create: {
+        orderId: "demo-order-engineer",
+        amount: engineerOrder.commissionAmount,
+        status: "DUE",
+      },
+    });
+  }
+
+  const orderEvents = [
+    {
+      userId: buyer.id,
+      action: "quote.accepted",
+      entityType: "order",
+      entityId: "demo-order-engineer",
+    },
+    {
+      userId: buyer.id,
+      action: "payment.recorded",
+      entityType: "payment",
+      entityId: "demo-payment-engineer",
+    },
+  ];
+  if (engineerOrder.status === "COMPLETED") {
+    orderEvents.push(
+      {
+        userId: builder.id,
+        action: "order.start",
+        entityType: "order",
+        entityId: "demo-order-engineer",
+      },
+      {
+        userId: builder.id,
+        action: "order.submit",
+        entityType: "order",
+        entityId: "demo-order-engineer",
+      },
+      {
+        userId: buyer.id,
+        action: "order.confirm",
+        entityType: "order",
+        entityId: "demo-order-engineer",
+      },
+    );
+  }
+  for (const event of orderEvents) {
+    await ensureActivityLog(event);
+  }
+
   const milestones = [
     {
       id: "demo-milestone-planning",
@@ -460,11 +713,12 @@ async function main() {
     {
       id: "demo-milestone-structural-review",
       projectId: project.id,
+      assignedProviderId: constructionProfile.id,
       title: "Structural plan review",
       description: "Provider to review the plan and submit written recommendations.",
       amount: decimal("15000"),
       dueAt: inDays(28),
-      status: "IN_PROGRESS" as const,
+      status: "APPROVED" as const,
     },
     {
       id: "demo-milestone-foundation",
@@ -488,35 +742,89 @@ async function main() {
     {
       id: "demo-notification-buyer",
       userId: buyer.id,
-      title: "A construction quote is ready",
-      message: "The structural consultation quote is accepted for your project.",
-      titleBn: "নির্মাণের কোটেশন প্রস্তুত",
-      titleEn: "A construction quote is ready",
-      messageBn: "আপনার প্রকল্পে কাঠামোগত পরামর্শের কোটেশন গ্রহণ করা হয়েছে।",
-      messageEn: "The structural consultation quote is accepted for your project.",
+      title: "Project consultation completed",
+      message:
+        "The engineer completed the consultation. The provider still needs to confirm the payment.",
       href: "/account#projects",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "প্রকল্পের পরামর্শ সম্পন্ন",
+            message: "প্রকৌশলী পরামর্শের কাজ শেষ করেছেন। সেবাদাতার পেমেন্ট নিশ্চিত করা বাকি।",
+          },
+          {
+            locale: "en",
+            title: "Project consultation completed",
+            message:
+              "The engineer completed the consultation. The provider still needs to confirm the payment.",
+          },
+        ],
+      },
     },
     {
       id: "demo-notification-farmer",
       userId: farmer.id,
       title: "A buyer has confirmed a produce order",
       message: "The buyer confirmed payment for the rice order.",
-      titleBn: "একজন ক্রেতা পণ্যের অর্ডার নিশ্চিত করেছেন",
-      titleEn: "A buyer has confirmed a produce order",
-      messageBn: "ক্রেতা চালের অর্ডারের পেমেন্ট নিশ্চিত করেছেন।",
-      messageEn: "The buyer confirmed payment for the rice order.",
       href: "/provider#orders",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "একজন ক্রেতা পণ্যের অর্ডার নিশ্চিত করেছেন",
+            message: "ক্রেতা চালের অর্ডারের পেমেন্ট নিশ্চিত করেছেন।",
+          },
+          {
+            locale: "en",
+            title: "A buyer has confirmed a produce order",
+            message: "The buyer confirmed payment for the rice order.",
+          },
+        ],
+      },
     },
     {
       id: "demo-notification-builder",
       userId: builder.id,
-      title: "A project consultation is booked",
-      message: "A customer accepted your structural consultation quote.",
-      titleBn: "প্রকল্পের পরামর্শের কাজ নিশ্চিত হয়েছে",
-      titleEn: "A project consultation is booked",
-      messageBn: "একজন গ্রাহক আপনার কাঠামোগত পরামর্শের কোটেশন গ্রহণ করেছেন।",
-      messageEn: "A customer accepted your structural consultation quote.",
+      title: "Construction consultation completed",
+      message: "Your structural consultation is complete. BDT 1,500 commission is due.",
       href: "/provider#orders",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "নির্মাণ পরামর্শ সম্পন্ন",
+            message: "কাঠামোগত পরামর্শ সম্পন্ন হয়েছে। ১,৫০০ টাকা কমিশন বকেয়া।",
+          },
+          {
+            locale: "en",
+            title: "Construction consultation completed",
+            message: "Your structural consultation is complete. BDT 1,500 commission is due.",
+          },
+        ],
+      },
+    },
+    {
+      id: "demo-notification-builder-payment",
+      userId: builder.id,
+      title: "Payment confirmation needed",
+      message: "The customer recorded BDT 15,000 for the consultation; please confirm receipt.",
+      href: "/provider#orders",
+      translations: {
+        create: [
+          {
+            locale: "bn",
+            title: "পেমেন্ট নিশ্চিত করা বাকি",
+            message: "গ্রাহক পরামর্শের জন্য ১৫,০০০ টাকা পেমেন্ট রেকর্ড করেছেন; প্রাপ্তি নিশ্চিত করুন।",
+          },
+          {
+            locale: "en",
+            title: "Payment confirmation needed",
+            message:
+              "The customer recorded BDT 15,000 for the consultation; please confirm receipt.",
+          },
+        ],
+      },
     },
   ];
   for (const notification of notifications) {
@@ -528,7 +836,7 @@ async function main() {
   }
 
   console.log(
-    "Loaded local EKsathe demo data: 3 accounts, 7 listings, 5 requests, 2 orders and 1 project.",
+    "Loaded local EKsathe demo data: 4 accounts, 7 listings, 5 requests, 2 orders and 1 project.",
   );
   console.log("Demo account password: Demo-only-123!");
 }
@@ -542,7 +850,7 @@ async function ensureUser(input: {
 }) {
   const user = await prisma.user.upsert({
     where: { email: input.email },
-    update: { emailVerified: true, phone: input.phone, status: "active" },
+    update: {},
     create: {
       id: input.id,
       name: input.name,
@@ -571,6 +879,19 @@ async function ensureUser(input: {
     },
   });
   return user;
+}
+
+async function ensureActivityLog(input: {
+  userId: string;
+  action: string;
+  entityType: string;
+  entityId: string;
+}) {
+  const existing = await prisma.activityLog.findFirst({
+    where: input,
+    select: { id: true },
+  });
+  if (!existing) await prisma.activityLog.create({ data: input });
 }
 
 main()
