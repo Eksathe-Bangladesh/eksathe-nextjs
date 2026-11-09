@@ -4,7 +4,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { cacheTags } from "@/lib/cache-tags";
 import type { StaffAccess } from "@/lib/dal";
 import { defaultLocale, type Locale } from "@/i18n/locales";
-import { resolveTranslation } from "@/i18n/content";
+import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
 import { prisma } from "@/lib/prisma";
 
 const sectorSlug = "agriculture-labor";
@@ -19,7 +19,7 @@ export async function getActiveAgricultureServiceCatalog() {
     select: {
       slug: true,
       icon: true,
-      translations: { where: { locale: defaultLocale }, select: { locale: true, title: true, description: true } },
+      translations: { where: { locale: { in: translationLocalesFor(defaultLocale) } }, select: { locale: true, title: true, description: true } },
     },
     orderBy: [{ category: "asc" }, { slug: "asc" }],
   });
@@ -45,7 +45,7 @@ export async function getActiveAgricultureService(slug: string, locale: Locale) 
       icon: true,
       formVersion: true,
       translations: {
-        where: { locale: { in: [locale, defaultLocale] } },
+        where: { locale: { in: translationLocalesFor(locale) } },
         select: { locale: true, title: true, description: true },
       },
     },
@@ -98,7 +98,7 @@ export async function getAgricultureAdminWorkspace(access: StaffAccess) {
             id: true,
             slug: true,
             isActive: true,
-            translations: { where: { locale: defaultLocale }, select: { locale: true, title: true, description: true } },
+            translations: { where: { locale: { in: translationLocalesFor(defaultLocale) } }, select: { locale: true, title: true, description: true } },
           },
           orderBy: [{ category: "asc" }, { slug: "asc" }],
         })

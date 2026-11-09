@@ -1,9 +1,9 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, mock, test } from "bun:test";
 
-import {
-  parseAgricultureServiceAnswers,
-  agricultureServiceRequestSchema,
-} from "@/lib/validations/agriculture";
+void mock.module("server-only", () => ({}));
+
+const { parseAgricultureServiceAnswers, agricultureServiceRequestSchema } =
+  await import("@/lib/validations/agriculture");
 
 describe("agriculture request validation", () => {
   test("accepts numeric worker counts without using prototype digit limits as quantity limits", () => {

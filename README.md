@@ -46,6 +46,26 @@ To load sample agriculture and construction listings, orders, and a project,
 follow [the demo data guide](docs/demo-data.md). The guide includes local demo
 logins.
 
+## Integration tests
+
+Start the isolated PostgreSQL test container and apply migrations:
+
+```bash
+bun run db:test:setup
+bun run test:integration
+```
+
+The test database uses port **5433**, separate credentials, and temporary storage.
+Its data is discarded when the container stops. Run setup again after restarting it.
+Tests create their own fixtures; no demo seed is needed.
+
+Both commands use `TEST_DATABASE_URL`, falling back to the Docker test URL in
+`.env.example`. For CI or a custom database, set `TEST_DATABASE_URL` to an existing,
+dedicated PostgreSQL database with `test` as an underscore-separated part of its
+name. Setup then skips Docker and applies migrations to that database. The commands
+reject a URL pointing to the configured application database. Run integration tests
+through the package command so these safeguards apply.
+
 ## Useful commands
 
 | Command             | Purpose                       |

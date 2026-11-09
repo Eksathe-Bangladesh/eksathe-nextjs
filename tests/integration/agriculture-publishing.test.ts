@@ -7,6 +7,12 @@ if (!testDatabaseUrl)
   );
 process.env.DATABASE_URL = testDatabaseUrl;
 void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
 
 const [{ prisma }, agriculture, publishing] = await Promise.all([
   import("@/lib/prisma"),
@@ -40,8 +46,6 @@ describe("PostgreSQL agriculture publishing", () => {
       create: {
         slug: "agriculture-labor",
         position: 4,
-        titleBn: "কৃষি ও শ্রমিক",
-        titleEn: "Agriculture & Labor",
         icon: "🌾",
         status: "LIVE",
       },
@@ -57,11 +61,7 @@ describe("PostgreSQL agriculture publishing", () => {
       update: { isActive: true, formVersion: 1 },
       create: {
         slug: "daily-market-price",
-        titleBn: "দৈনিক বাজারদর",
-        titleEn: "Daily market prices",
         category: "কৃষি",
-        descriptionBn: "বাজারদর জানান",
-        descriptionEn: "Report a market price",
         sectorSlug: "agriculture-labor",
         isActive: true,
       },

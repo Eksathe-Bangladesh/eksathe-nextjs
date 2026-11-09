@@ -1,9 +1,19 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, mock, test } from "bun:test";
 
+void mock.module("server-only", () => ({}));
+
+import {
+  fieldLabelKey,
+  optionLabelKey,
+  serviceDescriptionKey,
+  serviceTitleKey,
+} from "@/lib/agriculture/service-messages";
 import {
   agricultureServiceCategories,
   agricultureServiceRegistry,
 } from "@/lib/agriculture/service-registry";
+
+const { resolveCatalogPair } = await import("@/i18n/catalog");
 
 describe("agriculture service registry", () => {
   test("contains all 30 stable prototype services with versioned structured fields", () => {
@@ -13,13 +23,24 @@ describe("agriculture service registry", () => {
     for (const service of agricultureServiceRegistry) {
       expect(service.formVersion).toBeGreaterThan(0);
       expect(service.fields.length).toBeGreaterThan(0);
-      expect(service.titleBn.length).toBeGreaterThan(0);
-      expect(service.titleEn.length).toBeGreaterThan(0);
-      expect(service.descriptionBn.length).toBeGreaterThan(0);
-      expect(service.descriptionEn.length).toBeGreaterThan(0);
+      expect(resolveCatalogPair(serviceTitleKey(service.slug)).bn.length).toBeGreaterThan(0);
+      expect(resolveCatalogPair(serviceTitleKey(service.slug)).en.length).toBeGreaterThan(0);
+      expect(resolveCatalogPair(serviceDescriptionKey(service.slug)).bn.length).toBeGreaterThan(0);
+      expect(resolveCatalogPair(serviceDescriptionKey(service.slug)).en.length).toBeGreaterThan(0);
       for (const field of service.fields) {
-        expect(field.labelBn.length).toBeGreaterThan(0);
-        expect(field.labelEn.length).toBeGreaterThan(0);
+        expect(
+          resolveCatalogPair(fieldLabelKey(service.slug, field.name)).bn.length,
+        ).toBeGreaterThan(0);
+        expect(
+          resolveCatalogPair(fieldLabelKey(service.slug, field.name)).en.length,
+        ).toBeGreaterThan(0);
+        if ("options" in field && field.options) {
+          field.options.forEach((_, index) => {
+            const option = resolveCatalogPair(optionLabelKey(service.slug, field.name, index));
+            expect(option.bn.length).toBeGreaterThan(0);
+            expect(option.en.length).toBeGreaterThan(0);
+          });
+        }
       }
     }
   });

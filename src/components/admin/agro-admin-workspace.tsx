@@ -321,7 +321,7 @@ function UserUpdateForm({
           </NativeSelect>
         </Field>
         <Button type="submit" disabled={pending} className="self-end">
-          {pending ? t("common.loading") : t("inline.update_1raohb6")}
+          {pending ? t("common.loading") : t("inline.update")}
         </Button>
       </FieldGroup>
       <ActionFeedback state={state} />
@@ -354,7 +354,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
           <FieldGroup className="grid gap-3 sm:grid-cols-2">
             <Field>
               <FieldLabel htmlFor={`panel-title-bn-${panel.id}`}>
-                {t("inline.name_bangla_1lm9czd")}
+                {t("inline.name_bangla")}
               </FieldLabel>
               <Input
                 id={`panel-title-bn-${panel.id}`}
@@ -366,7 +366,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
             </Field>
             <Field>
               <FieldLabel htmlFor={`panel-title-en-${panel.id}`}>
-                {t("inline.name_english_1odtjyj")}
+                {t("inline.name_english")}
               </FieldLabel>
               <Input
                 id={`panel-title-en-${panel.id}`}
@@ -403,7 +403,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
           </FieldGroup>
           <ActionFeedback state={updateState} />
           <Button type="submit" className="w-fit" disabled={updatePending}>
-            {updatePending ? t("common.loading") : t("inline.update_1raohb6")}
+            {updatePending ? t("common.loading") : t("inline.update")}
           </Button>
         </form>
         <form action={action} className="flex flex-wrap items-center gap-3">

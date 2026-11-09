@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { Link } from "@/i18n/navigation";
+import { serviceTitleKey } from "@/lib/agriculture/service-messages";
 import { agricultureServiceRegistry } from "@/lib/agriculture/service-registry";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { AdminWorkspace } from "@/lib/workspaces";
@@ -34,9 +35,9 @@ export function AgricultureRequestsQueue({
   return (
     <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
       <div>
-        <h2 className="text-xl font-bold">{t("inline.agriculture_service_intake_13v216g")}</h2>
+        <h2 className="text-xl font-bold">{t("inline.agriculture_service_intake")}</h2>
         <p className="text-muted-foreground mt-1 text-sm">
-          {t("inline.review_requests_coordinate_follow_up_and_k_id40eo")}
+          {t("inline.review_requests_coordinate_follow_up_and_k")}
         </p>
       </div>
       <form
@@ -44,32 +45,32 @@ export function AgricultureRequestsQueue({
         action="/admin#agriculture-requests"
         className="bg-card grid gap-3 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-3"
       >
-        <Field id="ag-filter-service" label={t("inline.service_1m16zkb")}>
+        <Field id="ag-filter-service" label={t("inline.service")}>
           <NativeSelect
             id="ag-filter-service"
             name="agService"
             defaultValue={filters.serviceSlug ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="">{t("inline.all_services_1pdbxg7")}</NativeSelectOption>
+            <NativeSelectOption value="">{t("inline.all_services")}</NativeSelectOption>
             {agricultureServiceRegistry.map((service) => (
               <NativeSelectOption key={service.slug} value={service.slug}>
-                {t(`agricultureServices.${service.slug}.title` as never)}
+                {t(serviceTitleKey(service.slug) as never)}
               </NativeSelectOption>
             ))}
           </NativeSelect>
         </Field>
-        <Field id="ag-filter-district" label={t("inline.district_135um58")}>
+        <Field id="ag-filter-district" label={t("workflow.district")}>
           <Input id="ag-filter-district" name="agDistrict" defaultValue={filters.district ?? ""} />
         </Field>
-        <Field id="ag-filter-status" label={t("inline.status_qhepgk")}>
+        <Field id="ag-filter-status" label={t("inline.status")}>
           <NativeSelect
             id="ag-filter-status"
             name="agStatus"
             defaultValue={filters.status ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="">{t("inline.all_statuses_153nc2f")}</NativeSelectOption>
+            <NativeSelectOption value="">{t("inline.all_statuses")}</NativeSelectOption>
             {["NEW", "REVIEWING", "ASSIGNED", "COMPLETED", "REJECTED", "CANCELLED"].map(
               (status) => (
                 <NativeSelectOption key={status} value={status}>
@@ -79,14 +80,14 @@ export function AgricultureRequestsQueue({
             )}
           </NativeSelect>
         </Field>
-        <Field id="ag-filter-assignee" label={t("inline.assignee_1g6jeev")}>
+        <Field id="ag-filter-assignee" label={t("inline.assignee")}>
           <NativeSelect
             id="ag-filter-assignee"
             name="agAssignee"
             defaultValue={filters.assigneeId ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="">{t("inline.anyone_itav5z")}</NativeSelectOption>
+            <NativeSelectOption value="">{t("inline.anyone")}</NativeSelectOption>
             {staff.map((person) => (
               <NativeSelectOption key={person.id} value={person.id}>
                 {person.name} · {person.email}
@@ -94,27 +95,27 @@ export function AgricultureRequestsQueue({
             ))}
           </NativeSelect>
         </Field>
-        <Field id="ag-filter-from" label={t("inline.from_date_172hp5u")}>
+        <Field id="ag-filter-from" label={t("inline.from_date")}>
           <DatePicker id="ag-filter-from" name="agFrom" defaultValue={filters.dateFrom ?? ""} />
         </Field>
-        <Field id="ag-filter-to" label={t("inline.to_date_8xio37")}>
+        <Field id="ag-filter-to" label={t("inline.to_date")}>
           <DatePicker id="ag-filter-to" name="agTo" defaultValue={filters.dateTo ?? ""} />
         </Field>
         <div className="flex gap-2 sm:col-span-2 lg:col-span-3">
           <Button type="submit" variant="outline">
-            {t("inline.filter_requests_12do0dv")}
+            {t("inline.filter_requests")}
           </Button>
           <Link
             href="/admin#agriculture-requests"
             className="text-muted-foreground hover:bg-muted inline-flex h-9 items-center rounded-lg px-3 text-sm"
           >
-            {t("inline.clear_193qb1d")}
+            {t("inline.clear")}
           </Link>
         </div>
       </form>
       {requests.length === 0 ? (
         <div className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-          {t("inline.no_agriculture_requests_match_these_filter_1wybrur")}
+          {t("inline.no_agriculture_requests_match_these_filter")}
         </div>
       ) : (
         requests.map((request) => <RequestCard key={request.id} request={request} staff={staff} />)
@@ -160,8 +161,8 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
                   timeZone: "Asia/Dhaka",
                 })
               : ""}{" "}
-            · {t("inline.assignee_1g6jeev")}:{" "}
-            {request.assignedTo?.name ?? t("inline.not_assigned_jyfmtj")}
+            · {t("inline.assignee")}:{" "}
+            {request.assignedTo?.name ?? t("inline.not_assigned")}
           </CardDescription>
         </div>
         <StatusBadge status={request.status} />
@@ -171,7 +172,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           <p className="text-sm font-medium">{request.details}</p>
           {request.budget && (
             <p className="text-muted-foreground mt-1 text-xs">
-              {t("inline.budget_1cc4s4c")}: ৳{request.budget}
+              {t("inline.budget")}: ৳{request.budget}
             </p>
           )}
         </div>
@@ -197,7 +198,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         )}
         {request.attachments.length > 0 && (
           <div>
-            <p className="text-sm font-semibold">{t("inline.private_attachments_fpiomb")}</p>
+            <p className="text-sm font-semibold">{t("inline.private_attachments")}</p>
             {request.attachments.map((attachment) => (
               <a
                 key={attachment.id}
@@ -211,7 +212,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         )}
         {request.marketplaceRequest && (
           <p className="text-sm">
-            {t("inline.marketplace_match_mo0a3k")}:{" "}
+            {t("inline.marketplace_match")}:{" "}
             {{ en: request.marketplaceRequest.listing.title, bn: request.marketplaceRequest.listing.title }[locale]}
           </p>
         )}
@@ -222,8 +223,8 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           >
             <p className="text-muted-foreground mb-1 text-xs font-semibold">
               {update.visibility === "INTERNAL"
-                ? t("inline.internal_note_na2msi")
-                : t("inline.customer_update_1i5e277")}
+                ? t("inline.internal_note")
+                : t("inline.customer_update")}
             </p>
             <p>
               {{ en: update.message ?? update.message, bn: update.message ?? update.message }[locale]}
@@ -233,7 +234,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         <form action={action} className="grid gap-3 rounded-xl border p-4 sm:grid-cols-2">
           <input type="hidden" name="requestId" value={request.id} />
           <input type="hidden" name="locale" value={locale} />
-          <Field id={`ag-status-${request.id}`} label={t("inline.status_qhepgk")}>
+          <Field id={`ag-status-${request.id}`} label={t("inline.status")}>
             <NativeSelect
               id={`ag-status-${request.id}`}
               name="status"
@@ -247,7 +248,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               ))}
             </NativeSelect>
           </Field>
-          <Field id={`ag-assignee-${request.id}`} label={t("inline.assign_to_staff_od32ej")}>
+          <Field id={`ag-assignee-${request.id}`} label={t("inline.assign_to_staff")}>
             <NativeSelect
               id={`ag-assignee-${request.id}`}
               name="assignedToId"
@@ -264,7 +265,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           </Field>
           <Field
             id={`ag-market-match-${request.id}`}
-            label={t("inline.matched_marketplace_request_id_optional_ek7ufe")}
+            label={t("inline.matched_marketplace_request_id_optional")}
           >
             <Input
               id={`ag-market-match-${request.id}`}
@@ -275,7 +276,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           </Field>
           <Field
             id={`ag-public-message-${request.id}`}
-            label={t("inline.customer_visible_update_1ix5pp7")}
+            label={t("inline.customer_visible_update")}
           >
             <Textarea
               id={`ag-public-message-${request.id}`}
@@ -284,7 +285,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               rows={2}
             />
           </Field>
-          <Field id={`ag-private-note-${request.id}`} label={t("inline.private_staff_note_84za12")}>
+          <Field id={`ag-private-note-${request.id}`} label={t("inline.private_staff_note")}>
             <Textarea
               id={`ag-private-note-${request.id}`}
               name="privateNote"
@@ -295,7 +296,7 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
           <div className="flex flex-col gap-2 sm:col-span-2">
             <ActionFeedback state={state} />
             <Button type="submit" disabled={pending} className="w-fit">
-              {pending ? t("inline.saving_4kkf1l") : t("inline.save_review_2j822r")}
+              {pending ? t("inline.saving") : t("inline.save_review")}
             </Button>
           </div>
         </form>

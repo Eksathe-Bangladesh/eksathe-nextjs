@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { CreateProjectEntry } from "@/components/projects/create-project-entry";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { resolveCatalogPair } from "@/i18n/catalog";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import { requireUser } from "@/lib/dal";
 import { getPublicListing } from "@/lib/listings";
@@ -31,7 +32,11 @@ async function CreateProjectContent({
     <CreateProjectEntry
       context={{
         ...(service && !listing
-          ? { serviceSlug: service.slug, labelBn: service.titleBn, labelEn: service.titleEn }
+          ? {
+              serviceSlug: service.slug,
+              labelBn: resolveCatalogPair(`constructionServices.${service.slug}.title`).bn,
+              labelEn: resolveCatalogPair(`constructionServices.${service.slug}.title`).en,
+            }
           : {}),
         ...(listing
           ? { listingId: listing.id, labelBn: listing.title, labelEn: listing.title }

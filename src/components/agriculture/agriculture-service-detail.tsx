@@ -33,7 +33,7 @@ export function AgricultureServiceDetail({
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.all_agriculture_services_170e4nu")}
+        {t("inline.all_agriculture_services")}
       </Link>
       <Card>
         <CardHeader className="gap-4 sm:flex-row sm:items-start">
@@ -54,7 +54,7 @@ export function AgricultureServiceDetail({
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <p className="text-muted-foreground text-sm leading-6">
-            {t("inline.service_requests_are_reviewed_and_coordina_cb1lo1")}
+            {t("inline.service_requests_are_reviewed_and_coordina")}
           </p>
           <ServiceRequestForm
             service={service}
@@ -64,7 +64,7 @@ export function AgricultureServiceDetail({
           />
           <div className="flex flex-wrap gap-3">
             <Link href={`${routeBase}/market`} className={buttonVariants({ variant: "outline" })}>
-              {t("inline.browse_marketplace_1v4g2rg")}
+              {t("inline.browse_marketplace")}
             </Link>
           </div>
         </CardContent>

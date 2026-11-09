@@ -94,7 +94,7 @@ export function SectorLanding({
             {sector.slug === "construction" && (
               <Link href="/account/projects/new" className={buttonVariants({ size: "sm" })}>
                 <PlusIcon data-icon="inline-start" />
-                {t("inline.create_a_project_dhtxqj")}
+                {t("inline.create_a_project")}
               </Link>
             )}
           </div>
@@ -148,20 +148,20 @@ export function SectorLanding({
                       {t(`marketplaceServices.${service.slug}` as never)}
                     </h2>
                     <p className="text-muted-foreground mt-1 text-sm">
-                      {serviceListings.length} {t("inline.available_listings_yzc9nu")}
+                      {serviceListings.length} {t("inline.available_listings")}
                     </p>
                   </div>
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
                   <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
                     <p className="text-muted-foreground text-sm">
-                      {t("inline.no_approved_listings_yet_apply_to_become_a_o0ezrc")}
+                      {t("inline.no_approved_listings_yet_apply_to_become_a")}
                     </p>
                     <Link
                       href={`/register?next=${encodeURIComponent("/provider")}`}
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
                     >
-                      {t("inline.apply_to_provide_13ovigs")}
+                      {t("inline.apply_to_provide")}
                       <ArrowRightIcon data-icon="inline-end" />
                     </Link>
                   </div>
@@ -197,7 +197,7 @@ export function SectorLanding({
                                 {price(listing.unitPrice)} / {listing.unit}
                               </span>
                               <Button tabIndex={-1} size="sm" variant="outline">
-                                {t("inline.view_1ngfptr")}
+                                {t("inline.view")}
                                 <ArrowRightIcon data-icon="inline-end" />
                               </Button>
                             </div>

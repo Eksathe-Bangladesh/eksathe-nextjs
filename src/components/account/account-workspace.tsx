@@ -45,17 +45,17 @@ export function AccountWorkspace({
 
   return (
     <WorkspaceNavigation
-      label={t("inline.account_navigation_1vkrrr0")}
+      label={t("inline.account_navigation")}
       items={[
         { id: "profile", label: t("dashboard.profile"), icon: UserRoundIcon },
         {
           id: "agriculture-requests",
-          label: t("inline.agriculture_service_requests_zyhcii"),
-          navLabel: t("inline.agriculture_service_requests_zyhcii"),
+          label: t("inline.agriculture_service_requests"),
+          navLabel: t("inline.agriculture_service_requests"),
           icon: ClipboardListIcon,
         },
-        { id: "requests", label: t("inline.requests_1muw0v3"), icon: ClipboardListIcon },
-        { id: "orders", label: t("inline.orders_v5igup"), icon: ShoppingBagIcon },
+        { id: "requests", label: t("inline.requests"), icon: ClipboardListIcon },
+        { id: "orders", label: t("inline.orders"), icon: ShoppingBagIcon },
         {
           id: "projects",
           label: t("workflow.projectTitle"),
@@ -66,7 +66,7 @@ export function AccountWorkspace({
       ]}
     >
       <div>
-        <p className="text-primary text-sm">{t("inline.your_account_1fpb5vs")}</p>
+        <p className="text-primary text-sm">{t("inline.your_account")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {t("inline.welcome", { name: user.name })}
         </h1>
@@ -81,7 +81,7 @@ export function AccountWorkspace({
               {t("dashboard.profile")}
             </CardTitle>
             <CardDescription>
-              {t("inline.these_details_are_used_for_requests_and_bo_1kkltya")}
+              {t("inline.these_details_are_used_for_requests_and_bo")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -92,9 +92,9 @@ export function AccountWorkspace({
 
       <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
         <div>
-          <h2 className="text-xl font-bold">{t("inline.agriculture_service_requests_zyhcii")}</h2>
+          <h2 className="text-xl font-bold">{t("inline.agriculture_service_requests")}</h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.track_request_status_submitted_details_and_12mh9sv")}
+            {t("inline.track_request_status_submitted_details_and")}
           </p>
         </div>
         {workspace.agricultureRequests.length === 0 ? (
@@ -126,7 +126,7 @@ export function AccountWorkspace({
                     href={`/account/agriculture-requests/${request.id}`}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                   >
-                    {t("inline.view_request_t2wjgb")}
+                    {t("inline.view_request")}
                   </Link>
                   {request.updates[0] && (
                     <span className="text-muted-foreground self-center text-xs">
@@ -142,7 +142,7 @@ export function AccountWorkspace({
 
       <section id="requests" className="flex scroll-mt-24 flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-xl font-bold">{t("inline.requests_and_quotes_1tbsj16")}</h2>
+          <h2 className="text-xl font-bold">{t("inline.requests_and_quotes")}</h2>
           <Link href="/dashboard" className={buttonVariants({ variant: "outline", size: "sm" })}>
             {t("nav.browse")}
           </Link>
@@ -166,7 +166,7 @@ export function AccountWorkspace({
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
                 <p className="text-muted-foreground text-sm">
-                  {request.details || t("inline.no_additional_details_provided_gccbx2")}
+                  {request.details || t("inline.no_additional_details_provided")}
                 </p>
                 {request.requestedStart && request.requestedEnd && (
                   <p className="text-sm">
@@ -177,7 +177,7 @@ export function AccountWorkspace({
                 {request.quote && (
                   <div className="border-primary/20 bg-primary/5 rounded-xl border p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="font-semibold">{t("inline.provider_quote_nzyvip")}</h3>
+                      <h3 className="font-semibold">{t("inline.provider_quote")}</h3>
                       <StatusBadge status={request.quote.status} />
                     </div>
                     <p className="mt-2 text-sm">
@@ -190,7 +190,7 @@ export function AccountWorkspace({
                       </p>
                     )}
                     <p className="mt-1 text-sm">
-                      {t("inline.quoted_total_1h15mur")}:{" "}
+                      {t("inline.quoted_total")}:{" "}
                       <strong>
                         {formatMoney(
                           Number(request.quote.quantity) * Number(request.quote.unitPrice) +
@@ -205,7 +205,7 @@ export function AccountWorkspace({
                     )}
                     {request.quote.expiresAt && (
                       <p className="text-muted-foreground mt-2 text-xs">
-                        {t("inline.expires_w9jxxl")}:{" "}
+                        {t("inline.expires")}:{" "}
                         {formatter.dateTime(new Date(request.quote.expiresAt), {
                           dateStyle: "medium",
                           timeZone: "Asia/Dhaka",
@@ -225,7 +225,7 @@ export function AccountWorkspace({
       </section>
 
       <section id="orders" className="flex scroll-mt-24 flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.orders_and_bookings_13untom")}</h2>
+        <h2 className="text-xl font-bold">{t("inline.orders_and_bookings")}</h2>
         {workspace.orders.length === 0 ? (
           <Empty text={t("workflow.noRecords")} />
         ) : (
@@ -240,7 +240,7 @@ export function AccountWorkspace({
           <div>
             <h2 className="text-xl font-bold">{t("workflow.projectTitle")}</h2>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("inline.track_construction_scope_quotes_milestones_hkmiut")}
+              {t("inline.track_construction_scope_quotes_milestones")}
             </p>
           </div>
           <Link href="/account/projects/new" className={buttonVariants({ size: "sm" })}>
@@ -273,14 +273,14 @@ export function AccountWorkspace({
                 )}
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-sm">
-                    {project.orders.length} {t("inline.accepted_quote_orders_1hoh8n")} ·{" "}
+                    {project.orders.length} {t("inline.accepted_quote_orders")} ·{" "}
                     {project.milestones.length} {t("workflow.milestones")}
                   </p>
                   <Link
                     href={`/account/projects/${project.id}`}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                   >
-                    {t("inline.open_project_sc36kf")}
+                    {t("inline.open_project")}
                   </Link>
                 </div>
                 {project.milestones.length > 0 && (
@@ -325,7 +325,7 @@ export function AccountWorkspace({
                   href={notification.href}
                   className="text-primary text-sm font-medium hover:underline"
                 >
-                  {t("inline.open_3w3yc3")}
+                  {t("inline.open")}
                 </Link>
               )}
               {!notification.readAt && <MarkReadForm notificationId={notification.id} />}
@@ -396,7 +396,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
       <p className="text-muted-foreground text-xs">
-        {t("inline.accepting_confirms_the_quoted_price_quanti_14khsnk")}
+        {t("inline.accepting_confirms_the_quoted_price_quanti")}
       </p>
       <Button type="submit" disabled={pending} className="w-fit">
         {pending ? t("common.loading") : t("workflow.acceptQuote")}
@@ -422,7 +422,7 @@ function CancelRequestForm({ requestId }: { requestId: string }) {
         disabled={pending}
         className="text-muted-foreground w-fit"
       >
-        {t("inline.withdraw_request_16j3pnu")}
+        {t("inline.withdraw_request")}
       </Button>
     </form>
   );
@@ -435,7 +435,7 @@ function MarkReadForm({ notificationId }: { notificationId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="notificationId" value={notificationId} />
       <Button type="submit" variant="ghost" size="sm" disabled={pending}>
-        {t("inline.mark_read_1dcjkuu")}
+        {t("inline.mark_read")}
       </Button>
       <ActionFeedback state={state} />
     </form>

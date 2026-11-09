@@ -7,6 +7,7 @@ import { AgricultureServiceDetail } from "@/components/agriculture/agriculture-s
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
 import { localizedCanonical } from "@/i18n/metadata";
 import { getActiveAgricultureService } from "@/lib/agriculture/admin";
+import { withAgricultureServiceContent } from "@/lib/agriculture/service-content";
 import { agricultureServiceRegistry } from "@/lib/agriculture/service-registry";
 import { getCurrentUser } from "@/lib/dal";
 
@@ -24,18 +25,12 @@ export async function generateMetadata({
   const locale = await getLocale();
   const serviceDefinition = await getActiveAgricultureService(slug, locale);
   if (!registryService || !serviceDefinition) notFound();
-  const service = {
-    ...registryService,
-    titleBn: serviceDefinition.title,
-    titleEn: serviceDefinition.title,
-    descriptionBn: serviceDefinition.description,
-    descriptionEn: serviceDefinition.description,
-    icon: serviceDefinition.icon,
-  };
   const t = await getTranslations();
   return {
     title: `${serviceDefinition.title} | ${t("common.brandName")}`,
-    alternates: { canonical: await localizedCanonical(`/agriculture/services/${service.slug}`) },
+    alternates: {
+      canonical: await localizedCanonical(`/agriculture/services/${registryService.slug}`),
+    },
   };
 }
 
@@ -45,14 +40,11 @@ async function AgricultureServiceContent({ params }: { params: Promise<{ slug: s
   const locale = await getLocale();
   const serviceDefinition = await getActiveAgricultureService(slug, locale);
   if (!registryService || !serviceDefinition) notFound();
-  const service = {
-    ...registryService,
-    titleBn: serviceDefinition.title,
-    titleEn: serviceDefinition.title,
-    descriptionBn: serviceDefinition.description,
-    descriptionEn: serviceDefinition.description,
+  const service = withAgricultureServiceContent(registryService, {
+    title: serviceDefinition.title,
+    description: serviceDefinition.description,
     icon: serviceDefinition.icon,
-  };
+  });
   const user = await getCurrentUser();
   const customer = user?.status === "active" ? { name: user.name, phone: user.phone } : null;
   return (

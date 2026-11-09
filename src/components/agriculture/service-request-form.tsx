@@ -12,6 +12,7 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { Link } from "@/i18n/navigation";
+import { fieldLabelKey, optionLabelKey } from "@/lib/agriculture/service-messages";
 import type { AgricultureServiceWithContent } from "@/lib/agriculture/service-registry";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -77,7 +78,7 @@ export function ServiceRequestForm({
       {!canSubmit && (
         <div className="border-primary/20 bg-primary/5 flex flex-col gap-3 rounded-xl border p-4">
           <p className="text-sm leading-6">
-            {t("inline.preview_the_fields_below_sign_in_and_verif_ttja")}
+            {t("inline.preview_the_fields_below_sign_in_and_verif")}
           </p>
           <div className="flex flex-wrap gap-2">
             {customer ? (
@@ -85,7 +86,7 @@ export function ServiceRequestForm({
                 href={`/verify?next=${encodeURIComponent(returnTo)}`}
                 className={buttonVariants({ size: "sm" })}
               >
-                {t("inline.verify_email_lecgan")}
+                {t("inline.verify_email")}
               </Link>
             ) : (
               <>
@@ -93,13 +94,13 @@ export function ServiceRequestForm({
                   href={`/login?next=${encodeURIComponent(returnTo)}`}
                   className={buttonVariants({ size: "sm" })}
                 >
-                  {t("inline.sign_in_hu4rdx")}
+                  {t("auth.signIn")}
                 </Link>
                 <Link
                   href={`/register?next=${encodeURIComponent(returnTo)}`}
                   className={buttonVariants({ size: "sm", variant: "outline" })}
                 >
-                  {t("inline.create_account_1b7e6x3")}
+                  {t("workflow.createAccount")}
                 </Link>
               </>
             )}
@@ -172,8 +173,8 @@ export function ServiceRequestForm({
               <Field
                 key={field.name}
                 id={`answer-${field.name}`}
-                label={t(`agricultureServices.${service.slug}.fields.${field.name}.label` as never)}
-                help={t("inline.optional_jpeg_png_or_webp_up_to_5_mb_mh8jo9")}
+                label={t(fieldLabelKey(service.slug, field.name) as never)}
+                help={t("inline.optional_jpeg_png_or_webp_up_to_5_mb")}
               >
                 <Input
                   id={`answer-${field.name}`}
@@ -184,10 +185,10 @@ export function ServiceRequestForm({
                 />
                 {uploading && (
                   <p className="text-muted-foreground text-xs">
-                    {t("inline.uploading_private_photo_1pwwdgh")}
+                    {t("inline.uploading_private_photo")}
                   </p>
                 )}
-                {photo && <p className="text-primary text-xs">{t("inline.photo_ready_7n37mt")}</p>}
+                {photo && <p className="text-primary text-xs">{t("inline.photo_ready")}</p>}
                 {uploadError && (
                   <p role="alert" className="text-destructive text-xs">
                     {t("workflow.uploadFailed")}
@@ -195,9 +196,7 @@ export function ServiceRequestForm({
                 )}
               </Field>
             );
-          const label = t(
-            `agricultureServices.${service.slug}.fields.${field.name}.label` as never,
-          );
+          const label = t(fieldLabelKey(service.slug, field.name) as never);
           const error = state.errors?.[field.name]?.[0];
           if (field.type === "select")
             return (
@@ -210,14 +209,10 @@ export function ServiceRequestForm({
                   disabled={!canSubmit}
                   className="border-input bg-background h-10 rounded-lg border px-3 text-sm"
                 >
-                  <NativeSelectOption value="">
-                    {t("inline.choose_an_option_5bc3rc")}
-                  </NativeSelectOption>
-                  {field.options.map((option, index) => (
+                  <NativeSelectOption value="">{t("inline.choose_an_option")}</NativeSelectOption>
+                  {field.options?.map((option, index) => (
                     <NativeSelectOption key={option.value} value={option.value}>
-                      {t(
-                        `agricultureServices.${service.slug}.fields.${field.name}.options.option_${index}.label` as never,
-                      )}
+                      {t(optionLabelKey(service.slug, field.name, index) as never)}
                     </NativeSelectOption>
                   ))}
                 </NativeSelect>
@@ -268,20 +263,20 @@ export function ServiceRequestForm({
         />
       </Field>
       <p className="text-muted-foreground text-xs leading-5">
-        {t("inline.requesting_coordination_does_not_create_an_1lp8p66")}
+        {t("inline.requesting_coordination_does_not_create_an")}
       </p>
       <ActionFeedback state={state} />
       {state.status === "success" && state.entityId && (
         <div className="border-primary/20 bg-primary/5 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4">
           <div>
-            <p className="text-sm font-semibold">{t("inline.request_reference_15i948e")}</p>
+            <p className="text-sm font-semibold">{t("inline.request_reference")}</p>
             <p className="text-primary mt-1 font-mono">{state.referenceCode}</p>
           </div>
           <Link
             href={`/account/agriculture-requests/${state.entityId}`}
             className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
-            {t("inline.track_request_1fx82cp")}
+            {t("inline.track_request")}
           </Link>
         </div>
       )}

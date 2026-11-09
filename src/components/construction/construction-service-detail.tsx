@@ -41,7 +41,7 @@ export function ConstructionServiceDetail({
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.all_construction_services_dtmafp")}
+        {t("inline.all_construction_services")}
       </Link>
       <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-6 rounded-[2rem] border bg-linear-to-br p-6 sm:p-9 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
@@ -49,7 +49,7 @@ export function ConstructionServiceDetail({
             {service.icon}
           </span>
           <p className="text-primary mt-4 text-sm font-semibold">
-            {t("inline.construction_service_199i3gz")}
+            {t("inline.construction_service")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
             {t(`constructionServices.${service.slug}.title` as never)}
@@ -60,14 +60,14 @@ export function ConstructionServiceDetail({
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href={projectHref} className={buttonVariants({ size: "lg" })}>
-            {t("inline.create_a_project_for_this_service_1oz0kdq")}
+            {t("inline.create_a_project_for_this_service")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
           <Link
             href={`${routeBase}/market?${marketParams}`}
             className={buttonVariants({ variant: "outline", size: "lg" })}
           >
-            {t("inline.browse_marketplace_1v4g2rg")}
+            {t("inline.browse_marketplace")}
           </Link>
         </div>
       </section>
@@ -75,7 +75,7 @@ export function ConstructionServiceDetail({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-primary text-sm font-semibold">
-              {t("inline.approved_construction_listings_vb7f0k")}
+              {t("inline.approved_construction_listings")}
             </p>
             <h2 className="mt-1 text-2xl font-bold">
               {t("constructionServices.listingsFor", {
@@ -89,7 +89,7 @@ export function ConstructionServiceDetail({
             href={`${routeBase}/market?${marketParams}`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            {t("inline.view_all_results_h55f6r")}
+            {t("inline.view_all_results")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
         </div>
@@ -103,10 +103,10 @@ export function ConstructionServiceDetail({
         ) : result.items.length === 0 ? (
           <div className="rounded-2xl border border-dashed p-7">
             <p className="text-muted-foreground text-sm">
-              {t("inline.there_are_no_approved_listings_for_this_se_1ouvm32")}
+              {t("inline.there_are_no_approved_listings_for_this_se")}
             </p>
             <Link href={projectHref} className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>
-              {t("inline.create_a_project_dhtxqj")}
+              {t("inline.create_a_project")}
               <ArrowRightIcon data-icon="inline-end" />
             </Link>
           </div>
@@ -152,7 +152,7 @@ export function ConstructionServiceDetail({
                     href={`${routeBase}/listings/${listing.id}`}
                     className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
                   >
-                    {t("inline.details_ccvazu")}
+                    {t("workflow.details")}
                     <ArrowRightIcon data-icon="inline-end" />
                   </Link>
                 </CardContent>

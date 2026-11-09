@@ -6,7 +6,7 @@ import { cacheTags } from "@/lib/cache-tags";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
 import { defaultLocale, type Locale } from "@/i18n/locales";
-import { resolveTranslation } from "@/i18n/content";
+import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
 import { getLocale } from "next-intl/server";
 
 export type PublicListing = {
@@ -47,7 +47,7 @@ export type PublicProvider = {
 export type PublicProviderResult = { provider: PublicProvider | null; unavailable: boolean };
 
 function publicSelect(locale: Locale) {
-  const translationLocales = { in: [locale, defaultLocale] };
+  const translationLocales = { in: translationLocalesFor(locale) };
   return {
   id: true,
   sectorSlug: true,
@@ -631,7 +631,7 @@ async function queryPublicProviderProfile(
   cacheLife("minutes");
   cacheTag(cacheTags.providers, cacheTags.listings);
   const locale = await getLocale();
-  const translationLocales = { in: [locale, defaultLocale] };
+  const translationLocales = { in: translationLocalesFor(locale) };
 
   const profile = await prisma.providerProfile.findFirst({
     where: {

@@ -7,6 +7,12 @@ if (!testDatabaseUrl)
   );
 process.env.DATABASE_URL = testDatabaseUrl;
 void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
 
 const [{ prisma }, agriculture, workspaces] = await Promise.all([
   import("@/lib/prisma"),
@@ -31,6 +37,16 @@ const currentUser = (id: string, role = "customer") => ({
 
 describe("PostgreSQL agriculture service requests", () => {
   beforeAll(async () => {
+    await prisma.sector.upsert({
+      where: { slug: "agriculture-labor" },
+      update: { status: "LIVE" },
+      create: {
+        slug: "agriculture-labor",
+        position: 4,
+        icon: "🌾",
+        status: "LIVE",
+      },
+    });
     for (const user of [
       currentUser(customerId),
       currentUser(otherCustomerId),
@@ -43,11 +59,7 @@ describe("PostgreSQL agriculture service requests", () => {
       update: { isActive: true, formVersion: 1 },
       create: {
         slug: "crop-farming",
-        titleBn: "ফসল উৎপাদন ও চাষাবাদ",
-        titleEn: "Crop farming",
         category: "কৃষি",
-        descriptionBn: "ফসল পরিকল্পনা",
-        descriptionEn: "Crop planning",
         sectorSlug: "agriculture-labor",
         isActive: true,
       },
@@ -94,9 +106,9 @@ describe("PostgreSQL agriculture service requests", () => {
       privateLocale: "en",
     });
     const afterReview = await workspaces.getCustomerAgricultureRequest(customerId, result.id);
-    expect(
-      afterReview?.updates.some((update) => update.message?.includes("Verify district")),
-    ).toBe(false);
+    expect(afterReview?.updates.some((update) => update.message?.includes("Verify district"))).toBe(
+      false,
+    );
     expect(
       afterReview?.updates.some((update) =>
         update.message?.includes("checking local availability"),

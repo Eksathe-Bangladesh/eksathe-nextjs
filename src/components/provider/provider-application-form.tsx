@@ -16,16 +16,12 @@ const capabilityOptions = [
     sectorSlug: "agriculture-labor",
     kind: service.kind,
     slug: service.slug,
-    titleEn: service.titleEn,
-    titleBn: service.titleBn,
     icon: service.icon,
   })),
   ...constructionListings.map((service) => ({
     sectorSlug: "construction",
     kind: service.kind,
     slug: service.slug,
-    titleEn: service.titleEn,
-    titleBn: service.titleBn,
     icon: service.icon,
   })),
 ];
@@ -48,7 +44,7 @@ export function ProviderApplicationForm({
   return (
     <form action={action} className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="provider-name-bn" label={t("inline.name_bangla_1lm9czd")}>
+        <Field id="provider-name-bn" label={t("inline.name_bangla")}>
           <Input
             id="provider-name-bn"
             name="nameBn"
@@ -57,7 +53,7 @@ export function ProviderApplicationForm({
             maxLength={100}
           />
         </Field>
-        <Field id="provider-name-en" label={t("inline.name_english_1odtjyj")}>
+        <Field id="provider-name-en" label={t("inline.name_english")}>
           <Input
             id="provider-name-en"
             name="nameEn"
@@ -75,7 +71,7 @@ export function ProviderApplicationForm({
             maxLength={80}
           />
         </Field>
-        <Field id="provider-upazila" label={t("inline.upazila_optional_1sd5g73")}>
+        <Field id="provider-upazila" label={t("inline.upazila_optional")}>
           <Input
             id="provider-upazila"
             name="upazila"
@@ -83,7 +79,7 @@ export function ProviderApplicationForm({
             maxLength={80}
           />
         </Field>
-        <Field id="provider-bio-bn" label={t("inline.introduction_bangla_1chcalt")}>
+        <Field id="provider-bio-bn" label={t("inline.introduction_bangla")}>
           <textarea
             id="provider-bio-bn"
             name="bioBn"
@@ -93,7 +89,7 @@ export function ProviderApplicationForm({
             className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
-        <Field id="provider-bio-en" label={t("inline.introduction_english_1b79c5l")}>
+        <Field id="provider-bio-en" label={t("inline.introduction_english")}>
           <textarea
             id="provider-bio-en"
             name="bioEn"

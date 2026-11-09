@@ -98,7 +98,7 @@ export function ProviderProfile({
               <span className="inline-flex items-center gap-1">
                 <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
                 {provider.averageRating.toFixed(1)} · {provider.reviewCount}{" "}
-                {t("inline.reviews_265xd0")}
+                {t("inline.reviews")}
               </span>
             )}
           </CardDescription>
@@ -111,7 +111,7 @@ export function ProviderProfile({
       </Card>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.services_and_listings_f1v32t")}</h2>
+        <h2 className="text-xl font-bold">{t("inline.services_and_listings")}</h2>
         {provider.listings.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("workflow.noRecords")}
@@ -149,7 +149,7 @@ export function ProviderProfile({
                       href={`${base}/listings/${listing.id}`}
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                     >
-                      {t("inline.details_ccvazu")}
+                      {t("workflow.details")}
                     </Link>
                   </div>
                 </CardContent>
@@ -160,10 +160,10 @@ export function ProviderProfile({
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.customer_reviews_1gf1uai")}</h2>
+        <h2 className="text-xl font-bold">{t("inline.customer_reviews")}</h2>
         {provider.reviews.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-            {t("inline.reviews_from_completed_orders_will_appear__1g9e5me")}
+            {t("inline.reviews_from_completed_orders_will_appear")}
           </p>
         ) : (
           provider.reviews.map((review, index) => (

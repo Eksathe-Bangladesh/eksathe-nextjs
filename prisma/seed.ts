@@ -4,6 +4,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import bnMessages from "../messages/bn.json";
 import enMessages from "../messages/en.json";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { resolveCatalogPair } from "../src/i18n/catalog-data";
+import { serviceDescriptionKey, serviceTitleKey } from "../src/lib/agriculture/service-messages";
 import { agricultureServiceRegistry } from "../src/lib/agriculture/service-registry";
 import { sectors } from "../src/lib/sectors";
 
@@ -29,19 +31,29 @@ async function main() {
     await prisma.sectorTranslation.upsert({
       where: { sectorSlug_locale: { sectorSlug: savedSector.slug, locale: "en" } },
       update: { title: enMessages.sectors[sector.slug] },
-      create: { sectorSlug: savedSector.slug, locale: "en", title: enMessages.sectors[sector.slug] },
+      create: {
+        sectorSlug: savedSector.slug,
+        locale: "en",
+        title: enMessages.sectors[sector.slug],
+      },
     });
     await prisma.sectorTranslation.upsert({
       where: { sectorSlug_locale: { sectorSlug: savedSector.slug, locale: "bn" } },
       update: { title: bnMessages.sectors[sector.slug] },
-      create: { sectorSlug: savedSector.slug, locale: "bn", title: bnMessages.sectors[sector.slug] },
+      create: {
+        sectorSlug: savedSector.slug,
+        locale: "bn",
+        title: bnMessages.sectors[sector.slug],
+      },
     });
   }
 
   for (const service of agricultureServiceRegistry) {
+    const title = resolveCatalogPair(serviceTitleKey(service.slug));
+    const description = resolveCatalogPair(serviceDescriptionKey(service.slug));
     const serviceData = {
       slug: service.slug,
-      category: service.category,
+      category: service.categoryId,
       icon: service.icon,
       formVersion: service.formVersion,
     };
@@ -56,22 +68,22 @@ async function main() {
     });
     await prisma.serviceDefinitionTranslation.upsert({
       where: { serviceDefinitionId_locale: { serviceDefinitionId: savedService.id, locale: "en" } },
-      update: { title: service.titleEn, description: service.descriptionEn },
+      update: { title: title.en, description: description.en },
       create: {
         serviceDefinitionId: savedService.id,
         locale: "en",
-        title: service.titleEn,
-        description: service.descriptionEn,
+        title: title.en,
+        description: description.en,
       },
     });
     await prisma.serviceDefinitionTranslation.upsert({
       where: { serviceDefinitionId_locale: { serviceDefinitionId: savedService.id, locale: "bn" } },
-      update: { title: service.titleBn, description: service.descriptionBn },
+      update: { title: title.bn, description: description.bn },
       create: {
         serviceDefinitionId: savedService.id,
         locale: "bn",
-        title: service.titleBn,
-        description: service.descriptionBn,
+        title: title.bn,
+        description: description.bn,
       },
     });
   }

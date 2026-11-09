@@ -41,14 +41,17 @@ export function ConstructionHome({
   const services = useMemo(
     () =>
       constructionServiceRegistry.filter((service) => {
-        const content =
-          `${service.titleEn} ${service.titleBn} ${service.descriptionEn} ${service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
+        const title = t(`constructionServices.${service.slug}.title` as never);
+        const description = t(`constructionServices.${service.slug}.description` as never);
+        const content = [title, description, service.slug, ...service.searchTerms]
+          .join(" ")
+          .toLocaleLowerCase();
         return (
           (!normalizedQuery || content.includes(normalizedQuery)) &&
           (category === "all" || service.group === category)
         );
       }),
-    [normalizedQuery, category],
+    [normalizedQuery, category, t],
   );
   const formatMoney = (amount: string) =>
     formatter.number(Number(amount), {
@@ -65,7 +68,7 @@ export function ConstructionHome({
           className="text-muted-foreground hover:text-foreground -mb-3 inline-flex w-fit items-center gap-2 px-2 text-sm font-medium"
         >
           <ArrowLeftIcon aria-hidden="true" className="size-4" />
-          {t("inline.back_to_dashboard_2v17ca")}
+          {t("inline.back_to_dashboard")}
         </Link>
       )}
 
@@ -75,27 +78,27 @@ export function ConstructionHome({
             <BrandLogo />
           </div>
           <p className="text-primary text-sm font-semibold tracking-wide uppercase">
-            {t("inline.construction_services_across_bangladesh_sgrzhm")}
+            {t("inline.construction_services_across_bangladesh")}
           </p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-            {t("inline.plan_your_build_and_find_the_right_people_1u905pu")}
+            {t("inline.plan_your_build_and_find_the_right_people")}
           </h1>
           <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            {t("inline.find_approved_professionals_and_material_s_1of70ek")}
+            {t("inline.find_approved_professionals_and_material_s")}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href={`${routeBase}/market`}
               className={cn(buttonVariants({ size: "lg" }), "gap-2")}
             >
-              {t("inline.explore_construction_marketplace_1210lvr")}
+              {t("inline.explore_construction_marketplace")}
               <ArrowRightIcon data-icon="inline-end" />
             </Link>
             <Link
               href="/account/projects/new?service=contractors"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
-              {t("inline.start_a_project_1tk0yro")}
+              {t("inline.start_a_project")}
             </Link>
           </div>
         </div>
@@ -110,7 +113,7 @@ export function ConstructionHome({
                   {formatter.number(constructionServiceRegistry.length)}
                 </p>
                 <p className="text-muted-foreground text-sm">
-                  {t("inline.construction_service_areas_1fwvn52")}
+                  {t("inline.construction_service_areas")}
                 </p>
               </div>
             </CardContent>
@@ -122,9 +125,7 @@ export function ConstructionHome({
               </span>
               <div>
                 <p className="text-2xl font-bold">{formatter.number(listings.length)}</p>
-                <p className="text-muted-foreground text-sm">
-                  {t("inline.published_offers_181lve9")}
-                </p>
+                <p className="text-muted-foreground text-sm">{t("inline.published_offers")}</p>
               </div>
             </CardContent>
           </Card>
@@ -135,17 +136,15 @@ export function ConstructionHome({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-primary text-sm font-semibold">
-              {t("inline.professionals_and_materials_1d2igvn")}
+              {t("inline.professionals_and_materials")}
             </p>
-            <h2 className="mt-1 text-2xl font-bold">
-              {t("inline.construction_marketplace_1d9og8y")}
-            </h2>
+            <h2 className="mt-1 text-2xl font-bold">{t("inline.construction_marketplace")}</h2>
           </div>
           <Link
             href={`${routeBase}/market`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            {t("inline.view_all_offers_jpb7ai")}
+            {t("inline.view_all_offers")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
         </div>
@@ -154,12 +153,12 @@ export function ConstructionHome({
             role="alert"
             className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
           >
-            {t("inline.marketplace_listings_could_not_be_loaded_p_97902w")}
+            {t("inline.marketplace_listings_could_not_be_loaded_p")}
           </p>
         )}
         {!unavailable && listings.length === 0 ? (
           <div className="text-muted-foreground rounded-2xl border border-dashed p-6 text-sm">
-            {t("inline.no_approved_construction_listings_yet_plea_eqf7os")}
+            {t("inline.no_approved_construction_listings_yet_plea")}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -199,13 +198,13 @@ export function ConstructionHome({
       <section id="services" className="flex scroll-mt-24 flex-col gap-5">
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.8_construction_service_areas_1jvofqa")}
+            {t("inline.8_construction_service_areas")}
           </p>
           <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.what_do_you_need_for_your_project_1u3al0")}
+            {t("inline.what_do_you_need_for_your_project")}
           </h2>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-            {t("inline.browse_an_approved_provider_or_create_a_pr_kxlufj")}
+            {t("inline.browse_an_approved_provider_or_create_a_pr")}
           </p>
         </div>
         <div className="border-border/70 bg-card grid gap-3 rounded-2xl border p-4 sm:grid-cols-[minmax(0,1fr)_240px]">
@@ -217,20 +216,18 @@ export function ConstructionHome({
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={t("inline.search_construction_services_1cd8gib")}
-              aria-label={t("inline.search_construction_services_1cd8gib")}
+              placeholder={t("inline.search_construction_services")}
+              aria-label={t("inline.search_construction_services")}
               className="pl-9"
             />
           </div>
           <NativeSelect
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            aria-label={t("inline.filter_by_service_area_17ejr7w")}
+            aria-label={t("inline.filter_by_service_area")}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="all">
-              {t("inline.all_service_areas_1x8orpz")}
-            </NativeSelectOption>
+            <NativeSelectOption value="all">{t("inline.all_service_areas")}</NativeSelectOption>
             {constructionServiceCategories.map((item) => (
               <NativeSelectOption key={item.id} value={item.id}>
                 {t(`constructionCategories.${item.id}` as never)}
@@ -240,7 +237,7 @@ export function ConstructionHome({
         </div>
         {services.length === 0 ? (
           <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-            {t("inline.no_service_areas_match_your_search_1n05vd6")}
+            {t("inline.no_service_areas_match_your_search")}
           </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -267,8 +264,8 @@ export function ConstructionHome({
                   <CardContent className="text-muted-foreground flex items-center justify-between text-xs">
                     <span>
                       {service.kind === "CONSTRUCTION_MATERIAL"
-                        ? t("inline.materials_1i2zdwy")
-                        : t("inline.find_professionals_1svymkf")}
+                        ? t("constructionCategories.materials")
+                        : t("inline.find_professionals")}
                     </span>
                     <ArrowRightIcon aria-hidden="true" className="size-4" />
                   </CardContent>
@@ -282,11 +279,9 @@ export function ConstructionHome({
       <section id="how" className="flex flex-col gap-5">
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.a_clear_way_to_organize_your_build_11mvr7p")}
+            {t("inline.a_clear_way_to_organize_your_build")}
           </p>
-          <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.how_construction_projects_work_pdcpmd")}
-          </h2>
+          <h2 className="mt-1 text-2xl font-bold">{t("inline.how_construction_projects_work")}</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
@@ -343,14 +338,10 @@ export function ConstructionHome({
         className="bg-secondary/40 grid items-center gap-6 rounded-3xl border p-5 sm:p-8 lg:grid-cols-2"
       >
         <div>
-          <p className="text-primary text-sm font-semibold">
-            {t("inline.commission_calculator_1rnx2pf")}
-          </p>
-          <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.estimate_the_platform_fee_uiwzmc")}
-          </h2>
+          <p className="text-primary text-sm font-semibold">{t("inline.commission_calculator")}</p>
+          <h2 className="mt-1 text-2xl font-bold">{t("inline.estimate_the_platform_fee")}</h2>
           <p className="text-muted-foreground mt-2 text-sm leading-6">
-            {t("inline.the_estimate_uses_the_current_construction_1fxpsqc")}
+            {t("inline.the_estimate_uses_the_current_construction")}
           </p>
         </div>
         <ConstructionCommissionCalculator ratePercent={commissionRate} />
@@ -360,11 +351,9 @@ export function ConstructionHome({
         <div className="flex items-start gap-4">
           <Building2Icon aria-hidden="true" className="text-primary mt-1 size-8 shrink-0" />
           <div>
-            <h2 className="text-xl font-bold">
-              {t("inline.keep_your_project_in_one_place_r8vy6r")}
-            </h2>
+            <h2 className="text-xl font-bold">{t("inline.keep_your_project_in_one_place")}</h2>
             <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-6">
-              {t("inline.track_providers_material_orders_project_mi_fmixtg")}
+              {t("inline.track_providers_material_orders_project_mi")}
             </p>
           </div>
         </div>
@@ -372,7 +361,7 @@ export function ConstructionHome({
           href="/account/projects/new?service=contractors"
           className={buttonVariants({ size: "lg" })}
         >
-          {t("inline.create_a_project_dhtxqj")}
+          {t("inline.create_a_project")}
           <ArrowRightIcon data-icon="inline-end" />
         </Link>
       </section>

@@ -44,7 +44,7 @@ export function MilestoneList({
             )}
             {milestone.dueAt && (
               <p className="text-muted-foreground mt-1 text-xs">
-                {t("inline.due_1yneuku")}:{" "}
+                {t("inline.due")}:{" "}
                 {formatter.dateTime(new Date(milestone.dueAt), {
                   dateStyle: "medium",
                   timeZone: "Asia/Dhaka",

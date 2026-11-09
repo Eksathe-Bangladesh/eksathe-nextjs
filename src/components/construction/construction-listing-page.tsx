@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
+import { resolveCatalogPair } from "@/i18n/catalog";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import { getCurrentUser } from "@/lib/dal";
 import { getPublicListing, getPublicProviderProfile } from "@/lib/listings";
@@ -47,6 +48,9 @@ export async function ConstructionListingPage({
   const contextService = compatiblePackage?.serviceSlug
     ? getConstructionService(compatiblePackage.serviceSlug)
     : undefined;
+  const localizedServiceTitle = contextService
+    ? resolveCatalogPair(`constructionServices.${contextService.slug}.title`)[locale]
+    : undefined;
 
   return (
     <ListingDetail
@@ -58,11 +62,7 @@ export async function ConstructionListingPage({
       signedIn={Boolean(user && user.status === "active")}
       projectId={compatiblePackage ? projectId : undefined}
       packageId={compatiblePackage?.id}
-      packageLabel={
-        contextService
-          ? locale === "bn" ? contextService.titleBn : contextService.titleEn
-          : compatiblePackage?.label
-      }
+      packageLabel={localizedServiceTitle ?? compatiblePackage?.label}
     />
   );
 }

@@ -1,7 +1,7 @@
 import "server-only";
 import type { RequestStatus } from "@/generated/prisma/client";
 import { defaultLocale, type Locale } from "@/i18n/locales";
-import { resolveTranslation } from "@/i18n/content";
+import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
 import type { StaffAccess } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
@@ -9,7 +9,7 @@ const decimal = (value: { toString(): string } | null | undefined) => value?.toS
 const iso = (value: Date | null | undefined) => value?.toISOString() ?? null;
 
 export async function getCustomerWorkspace(userId: string, locale: Locale) {
-  const translationLocales = { in: [locale, defaultLocale] };
+  const translationLocales = { in: translationLocalesFor(locale) };
   const [requests, orders, projects, notifications, agricultureRequests] = await Promise.all([
     prisma.marketplaceRequest.findMany({
       where: { buyerId: userId },
@@ -327,7 +327,7 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
 }
 
 export async function getProviderWorkspace(userId: string, locale: Locale) {
-  const translationLocales = { in: [locale, defaultLocale] };
+  const translationLocales = { in: translationLocalesFor(locale) };
   const profile = await prisma.providerProfile.findUnique({
     where: { userId },
     include: {

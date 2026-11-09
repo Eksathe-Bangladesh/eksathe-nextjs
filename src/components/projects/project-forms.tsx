@@ -50,7 +50,7 @@ export function CreateProjectForm({
         <Input
           id="project-type"
           name="projectType"
-          placeholder={t("inline.house_shop_renovation_s3o7z0")}
+          placeholder={t("inline.house_shop_renovation")}
           maxLength={80}
           required
         />
@@ -103,7 +103,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <Field id={`package-label-${projectId}`} label={t("workflow.workPackage")}>
         <Input id={`package-label-${projectId}`} name="label" maxLength={120} required />
       </Field>
-      <Field id={`package-kind-${projectId}`} label={t("inline.package_type_1ql3wh2")}>
+      <Field id={`package-kind-${projectId}`} label={t("inline.package_type")}>
         <NativeSelect
           id={`package-kind-${projectId}`}
           name="kind"
@@ -111,10 +111,10 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           <NativeSelectOption value="CONSTRUCTION_SERVICE">
-            {t("inline.professional_service_c7s4sh")}
+            {t("inline.professional_service")}
           </NativeSelectOption>
           <NativeSelectOption value="CONSTRUCTION_MATERIAL">
-            {t("inline.building_materials_j98vuw")}
+            {t("constructionServices.building-materials.title")}
           </NativeSelectOption>
         </NativeSelect>
       </Field>
@@ -124,7 +124,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <div className="flex flex-col gap-2 sm:col-span-2">
         <ActionFeedback state={state} />
         <Button type="submit" variant="outline" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.add_work_package_1q2zkvw")}
+          {pending ? t("common.loading") : t("inline.add_work_package")}
         </Button>
       </div>
     </form>
@@ -153,7 +153,7 @@ export function AddMilestoneForm({
           required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <NativeSelectOption value="">{t("inline.choose_a_provider_1my4w7f")}</NativeSelectOption>
+          <NativeSelectOption value="">{t("inline.choose_a_provider")}</NativeSelectOption>
           {providers.map((provider) => (
             <NativeSelectOption key={provider.id} value={provider.id}>
               {provider.name}
@@ -173,7 +173,7 @@ export function AddMilestoneForm({
           step="0.01"
         />
       </Field>
-      <Field id={`milestone-due-${projectId}`} label={t("inline.due_date_1yoc6no")}>
+      <Field id={`milestone-due-${projectId}`} label={t("inline.due_date")}>
         <DatePicker id={`milestone-due-${projectId}`} name="dueAt" />
       </Field>
       <Field id={`milestone-description-${projectId}`} label={t("workflow.milestoneDescription")}>

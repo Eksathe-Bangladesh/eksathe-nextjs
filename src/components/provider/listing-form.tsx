@@ -89,7 +89,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
       className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="listing-sector" label={t("inline.service_sector_1l9k566")}>
+        <Field id="listing-sector" label={t("inline.service_sector")}>
           <NativeSelect
             id="listing-sector"
             name="sectorSlug"
@@ -118,10 +118,10 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             ))}
           </NativeSelect>
         </Field>
-        <Field id="listing-title-bn" label={t("inline.name_bangla_1lm9czd")}>
+        <Field id="listing-title-bn" label={t("inline.name_bangla")}>
           <Input id="listing-title-bn" name="titleBn" required maxLength={120} />
         </Field>
-        <Field id="listing-title-en" label={t("inline.name_english_1odtjyj")}>
+        <Field id="listing-title-en" label={t("inline.name_english")}>
           <Input id="listing-title-en" name="titleEn" required maxLength={120} />
         </Field>
         <Field id="listing-category" label={t("workflow.category")}>
@@ -131,7 +131,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             list="agriculture-category-options"
             required
             maxLength={80}
-            placeholder={t("inline.e_g_vegetables_bricks_masonry_zjz3sh")}
+            placeholder={t("inline.e_g_vegetables_bricks_masonry")}
           />
           <datalist id="agriculture-category-options">
             <option value="Grains / শস্য" />
@@ -152,7 +152,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             name="unit"
             required
             maxLength={30}
-            placeholder={t("inline.kg_day_bag_2nppii")}
+            placeholder={t("inline.kg_day_bag")}
           />
         </Field>
         <Field id="listing-unit-price" label={t("workflow.price")}>
@@ -176,7 +176,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             required
           />
         </Field>
-        <Field id="listing-available-from" label={t("inline.available_from_optional_c5ahok")}>
+        <Field id="listing-available-from" label={t("inline.available_from_optional")}>
           <DatePicker id="listing-available-from" name="availableFrom" />
         </Field>
       </div>
@@ -218,7 +218,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
       </Field>
       <p className="text-muted-foreground text-xs">{t("workflow.listingImageHelp")}</p>
       <p className="text-muted-foreground text-xs">
-        {t("inline.goods_need_stock_to_sell_worker_and_machin_j3xozu")}
+        {t("inline.goods_need_stock_to_sell_worker_and_machin")}
       </p>
       <input type="hidden" name="imageKey" defaultValue="" />
       <input type="hidden" name="imageContentType" defaultValue="" />

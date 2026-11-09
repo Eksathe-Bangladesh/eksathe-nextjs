@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { resolveCatalogPair } from "@/i18n/catalog";
+import { fieldLabelKey, optionLabelKey, serviceTitleKey } from "@/lib/agriculture/service-messages";
 import { agricultureServiceRegistry } from "@/lib/agriculture/service-registry";
 
 const requiredText = (max: number) => z.string().trim().min(1).max(max);
@@ -86,16 +88,31 @@ export function parseAgricultureServiceAnswers(
   const snapshot = {
     serviceSlug: service.slug,
     formVersion: service.formVersion,
-    titleBn: service.titleBn,
-    titleEn: service.titleEn,
-    fields: service.fields.map((field) => ({
-      name: field.name,
-      labelBn: field.labelBn,
-      labelEn: field.labelEn,
-      type: field.type,
-      required: field.required,
-      options: "options" in field ? field.options : [],
-    })),
+    titleBn: resolveCatalogPair(serviceTitleKey(service.slug)).bn,
+    titleEn: resolveCatalogPair(serviceTitleKey(service.slug)).en,
+    fields: service.fields.map((field) => {
+      const label = resolveCatalogPair(fieldLabelKey(service.slug, field.name));
+      return {
+        name: field.name,
+        labelBn: label.bn,
+        labelEn: label.en,
+        type: field.type,
+        required: field.required,
+        options:
+          "options" in field && field.options
+            ? field.options.map((option, index) => {
+                const optionLabel = resolveCatalogPair(
+                  optionLabelKey(service.slug, field.name, index),
+                );
+                return {
+                  value: option.value,
+                  labelBn: optionLabel.bn,
+                  labelEn: optionLabel.en,
+                };
+              })
+            : [],
+      };
+    }),
   };
 
   return { values, errors, snapshot };

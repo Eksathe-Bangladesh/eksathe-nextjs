@@ -9,6 +9,13 @@ if (!testDatabaseUrl)
   );
 process.env.DATABASE_URL = testDatabaseUrl;
 void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
+void mock.module("next-intl/server", () => ({ getLocale: async () => "en" }));
 
 const [{ prisma }, marketplace, { getAdminWorkspace }, listings] = await Promise.all([
   import("@/lib/prisma"),
@@ -61,15 +68,21 @@ async function createListing(
       providerId,
       sectorSlug,
       kind,
-      titleBn: "পরীক্ষার ধান",
-      titleEn:
-        kind === "PRODUCE"
-          ? "Test rice"
-          : kind === "CONSTRUCTION_MATERIAL"
-            ? "Test cement"
-            : "Test worker",
-      descriptionBn: "",
-      descriptionEn: "",
+      translations: {
+        create: [
+          { locale: "bn", title: "পরীক্ষার ধান", description: "" },
+          {
+            locale: "en",
+            title:
+              kind === "PRODUCE"
+                ? "Test rice"
+                : kind === "CONSTRUCTION_MATERIAL"
+                  ? "Test cement"
+                  : "Test worker",
+            description: "",
+          },
+        ],
+      },
       category:
         kind === "PRODUCE" ? "Rice" : kind === "CONSTRUCTION_MATERIAL" ? "Cement" : "Farm labor",
       district: "Dhaka",
@@ -93,8 +106,6 @@ describe("PostgreSQL marketplace transactions", () => {
       create: {
         slug: "agriculture-labor",
         position: 4,
-        titleBn: "কৃষি ও শ্রমিক",
-        titleEn: "Agriculture & Labor",
         icon: "🌾",
         status: "LIVE",
         commissionRate: new Prisma.Decimal("10.00"),
@@ -106,8 +117,6 @@ describe("PostgreSQL marketplace transactions", () => {
       create: {
         slug: "construction",
         position: 5,
-        titleBn: "নির্মাণ",
-        titleEn: "Construction",
         icon: "🏗️",
         status: "LIVE",
         commissionRate: new Prisma.Decimal("10.00"),
@@ -134,10 +143,14 @@ describe("PostgreSQL marketplace transactions", () => {
     const profile = await prisma.providerProfile.create({
       data: {
         userId: providerUserId,
-        nameBn: "পরীক্ষার কৃষক",
-        nameEn: "Test farmer",
         district: "Dhaka",
         status: "APPROVED",
+        translations: {
+          create: [
+            { locale: "bn", name: "পরীক্ষার কৃষক", bio: "" },
+            { locale: "en", name: "Test farmer", bio: "" },
+          ],
+        },
       },
       select: { id: true },
     });
@@ -162,10 +175,15 @@ describe("PostgreSQL marketplace transactions", () => {
     const listingId = await createListing("5");
     const requestId = await createRequestAndQuote(listingId, buyerId);
     const requestNotification = await prisma.notification.findFirstOrThrow({
-      where: { userId: buyerId, translations: { some: { locale: "en", title: "New quote received" } } },
+      where: {
+        userId: buyerId,
+        translations: { some: { locale: "en", title: "New quote received" } },
+      },
       include: { translations: true },
     });
-    const bengaliNotification = requestNotification.translations.find((translation) => translation.locale === "bn");
+    const bengaliNotification = requestNotification.translations.find(
+      (translation) => translation.locale === "bn",
+    );
     expect(bengaliNotification?.title).toBe("নতুন দরপ্রস্তাব এসেছে");
     expect(bengaliNotification?.message).toContain("নতুন মূল্য");
     const order = await marketplace.acceptQuote(buyerId, requestId);
