@@ -3,16 +3,20 @@ import { Suspense } from "react";
 import { CreateProjectEntry } from "@/components/projects/create-project-entry";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
 import { resolveCatalogPair } from "@/i18n/catalog";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import { requireUser } from "@/lib/dal";
 import { getPublicListing } from "@/lib/listings";
 
 async function CreateProjectContent({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const query = await searchParams;
+  const [{ locale: routeLocale }, query] = await Promise.all([params, searchParams]);
+  const locale = getLocaleOrDefault(routeLocale);
   const serviceSlug =
     typeof query.service === "string" && getConstructionService(query.service)
       ? query.service
@@ -25,7 +29,7 @@ async function CreateProjectContent({
   await requireUser(`/account/projects/new${intent.size ? `?${intent.toString()}` : ""}`);
 
   const service = serviceSlug ? getConstructionService(serviceSlug) : undefined;
-  const listingResult = listingId ? await getPublicListing(listingId) : null;
+  const listingResult = listingId ? await getPublicListing(listingId, locale) : null;
   const listing =
     listingResult?.listing?.sectorSlug === "construction" ? listingResult.listing : null;
   return (
@@ -47,13 +51,15 @@ async function CreateProjectContent({
 }
 
 export default function CreateProjectPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
     <Suspense fallback={<DetailPageSkeleton />}>
-      <CreateProjectContent searchParams={searchParams} />
+      <CreateProjectContent params={params} searchParams={searchParams} />
     </Suspense>
   );
 }

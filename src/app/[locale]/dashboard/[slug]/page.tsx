@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { SectorLanding } from "@/components/dashboard/sector-landing";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { getPublicListings } from "@/lib/listings";
 import { getSector, agricultureListings, constructionListings, sectors } from "@/lib/sectors";
 
@@ -10,7 +11,7 @@ export function generateStaticParams() {
   return sectors.map((s) => ({ slug: s.slug }));
 }
 
-type SectorPageProps = { params: Promise<{ slug: string }> };
+type SectorPageProps = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: SectorPageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: SectorPageProps): Promise<Met
 }
 
 export default async function SectorPage({ params }: SectorPageProps) {
-  const { slug } = await params;
+  const { locale: routeLocale, slug } = await params;
+  const locale = getLocaleOrDefault(routeLocale);
   const sector = getSector(slug);
   if (!sector) notFound();
 
@@ -37,7 +39,7 @@ export default async function SectorPage({ params }: SectorPageProps) {
 
   const isAgriculture = slug === "agriculture-labor";
   const services = isAgriculture ? agricultureListings : constructionListings;
-  const listingResult = await getPublicListings(slug);
+  const listingResult = await getPublicListings(slug, locale);
   return (
     <SectorLanding
       sector={sector}

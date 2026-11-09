@@ -1,4 +1,5 @@
 import { ConstructionMarket } from "@/components/construction/construction-market";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { getConstructionMarketListings, type ConstructionMarketFilters } from "@/lib/listings";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -14,13 +15,16 @@ function validPrice(value: string | undefined) {
 }
 
 export async function ConstructionMarketPage({
+  params,
   routeBase,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   routeBase: string;
   searchParams: Promise<SearchParams>;
 }) {
-  const query = await searchParams;
+  const [{ locale: routeLocale }, query] = await Promise.all([params, searchParams]);
+  const locale = getLocaleOrDefault(routeLocale);
   const rawKind = first(query.type);
   const rawSort = first(query.sort);
   const rawPage = first(query.page);
@@ -42,6 +46,6 @@ export async function ConstructionMarketPage({
       : {}),
     ...(rawPage && /^\d{1,6}$/.test(rawPage) ? { page: Math.max(1, Number(rawPage)) } : {}),
   };
-  const result = await getConstructionMarketListings(filters);
+  const result = await getConstructionMarketListings(filters, locale);
   return <ConstructionMarket routeBase={routeBase} filters={filters} result={result} />;
 }

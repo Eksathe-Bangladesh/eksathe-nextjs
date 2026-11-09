@@ -3,12 +3,13 @@ import { Suspense } from "react";
 
 import { ConstructionListingPage } from "@/components/construction/construction-listing-page";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedCanonical } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
 }): Promise<Metadata> {
   const { listingId } = await params;
   return {
@@ -25,7 +26,7 @@ function ConstructionListingContent({
   params,
   searchParams,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return <ConstructionListingInner params={params} searchParams={searchParams} />;
@@ -35,12 +36,13 @@ async function ConstructionListingInner({
   params,
   searchParams,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { listingId } = await params;
+  const { locale: routeLocale, listingId } = await params;
   return (
     <ConstructionListingPage
+      locale={getLocaleOrDefault(routeLocale)}
       listingId={listingId}
       routeBase="/construction"
       searchParams={searchParams}
@@ -52,7 +54,7 @@ export default function DirectListingPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (

@@ -1,5 +1,4 @@
 import "server-only";
-import { getLocale } from "next-intl/server";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { Prisma } from "@/generated/prisma/client";
@@ -108,6 +107,13 @@ const publicAvailabilityWhere = (
         ],
       };
 
+function andConditions(
+  where: Prisma.MarketplaceListingWhereInput,
+): Prisma.MarketplaceListingWhereInput[] {
+  if (!where.AND) return [];
+  return Array.isArray(where.AND) ? where.AND : [where.AND];
+}
+
 function toPublicListing(row: PublicListingRow, locale: Locale): PublicListing {
   const translation = resolveTranslation(row.translations, locale, defaultLocale);
   const providerTranslation = resolveTranslation(row.provider.translations, locale, defaultLocale);
@@ -169,13 +175,13 @@ function withListingRatings(
 
 async function queryPublicListings(
   sectorSlug: string,
+  locale: Locale,
   kind?: PublicListing["kind"],
 ): Promise<PublicListingsResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
 
-  const locale = await getLocale();
   const select = publicSelect(locale);
   const verificationAsOf =
     sectorSlug === "construction" ? await constructionVerificationAsOf() : new Date(0);
@@ -228,10 +234,11 @@ async function queryPublicListings(
 
 export async function getPublicListings(
   sectorSlug: string,
+  locale: Locale,
   kind?: PublicListing["kind"],
 ): Promise<PublicListingsResult> {
   try {
-    return await queryPublicListings(sectorSlug, kind);
+    return await queryPublicListings(sectorSlug, locale, kind);
   } catch (error) {
     logError("listing.public_query_failed", error);
     return { items: [], unavailable: true };
@@ -275,11 +282,11 @@ function categoryConditions(
 
 async function queryAgricultureMarketListings(
   filters: AgricultureMarketFilters,
+  locale: Locale,
 ): Promise<AgricultureMarketResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
-  const locale = await getLocale();
   const select = publicSelect(locale);
 
   const page = Math.max(1, Math.floor(filters.page ?? 1));
@@ -332,7 +339,7 @@ async function queryAgricultureMarketListings(
   const where: Prisma.MarketplaceListingWhereInput = {
     ...base,
     ...(and.length
-      ? { AND: [...(base.AND as Prisma.MarketplaceListingWhereInput[]), ...and] }
+      ? { AND: [...andConditions(base), ...and] }
       : {}),
   };
   const orderBy =
@@ -382,9 +389,10 @@ async function queryAgricultureMarketListings(
 
 export async function getAgricultureMarketListings(
   filters: AgricultureMarketFilters,
+  locale: Locale,
 ): Promise<AgricultureMarketResult> {
   try {
-    return await queryAgricultureMarketListings(filters);
+    return await queryAgricultureMarketListings(filters, locale);
   } catch (error) {
     logError("listing.agriculture_market_failed", error);
     return { items: [], total: 0, page: 1, totalPages: 1, districts: [], unavailable: true };
@@ -412,11 +420,11 @@ export type ConstructionMarketResult = PublicListingsResult & {
 
 async function queryConstructionMarketListings(
   filters: ConstructionMarketFilters,
+  locale: Locale,
 ): Promise<ConstructionMarketResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
-  const locale = await getLocale();
   const select = publicSelect(locale);
   const verificationAsOf = await constructionVerificationAsOf();
 
@@ -492,10 +500,9 @@ async function queryConstructionMarketListings(
           ],
         },
       ];
-  const existingBaseConditions = Array.isArray(base.AND) ? base.AND : base.AND ? [base.AND] : [];
   const verifiedBase: Prisma.MarketplaceListingWhereInput = {
     ...base,
-    AND: [...existingBaseConditions, ...verificationConditions],
+    AND: [...andConditions(base), ...verificationConditions],
   };
   const and: Prisma.MarketplaceListingWhereInput[] = [];
   const makeSearch = (term: string): Prisma.MarketplaceListingWhereInput => ({
@@ -523,7 +530,7 @@ async function queryConstructionMarketListings(
   const where: Prisma.MarketplaceListingWhereInput = {
     ...verifiedBase,
     ...(and.length
-      ? { AND: [...(verifiedBase.AND as Prisma.MarketplaceListingWhereInput[]), ...and] }
+      ? { AND: [...andConditions(verifiedBase), ...and] }
       : {}),
   };
   const orderBy =
@@ -582,9 +589,10 @@ async function queryConstructionMarketListings(
 
 export async function getConstructionMarketListings(
   filters: ConstructionMarketFilters,
+  locale: Locale,
 ): Promise<ConstructionMarketResult> {
   try {
-    return await queryConstructionMarketListings(filters);
+    return await queryConstructionMarketListings(filters, locale);
   } catch (error) {
     logError("listing.construction_market_failed", error);
     return {
@@ -599,11 +607,10 @@ export async function getConstructionMarketListings(
   }
 }
 
-async function queryPublicListing(id: string): Promise<PublicListingResult> {
+async function queryPublicListing(id: string, locale: Locale): Promise<PublicListingResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
-  const locale = await getLocale();
   const select = publicSelect(locale);
   const verificationAsOf = await constructionVerificationAsOf();
 
@@ -677,9 +684,9 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
   };
 }
 
-export async function getPublicListing(id: string): Promise<PublicListingResult> {
+export async function getPublicListing(id: string, locale: Locale): Promise<PublicListingResult> {
   try {
-    return await queryPublicListing(id);
+    return await queryPublicListing(id, locale);
   } catch (error) {
     logError("listing.public_query_failed", error);
     return { listing: null, unavailable: true };
@@ -689,11 +696,11 @@ export async function getPublicListing(id: string): Promise<PublicListingResult>
 async function queryPublicProviderProfile(
   sectorSlug: string,
   providerId: string,
+  locale: Locale,
 ): Promise<PublicProviderResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.providers, cacheTags.listings);
-  const locale = await getLocale();
   const translationLocales = { in: translationLocalesFor(locale) };
   const verificationAsOf =
     sectorSlug === "construction" ? await constructionVerificationAsOf() : new Date(0);
@@ -847,9 +854,10 @@ async function queryPublicProviderProfile(
 export async function getPublicProviderProfile(
   sectorSlug: string,
   providerId: string,
+  locale: Locale,
 ): Promise<PublicProviderResult> {
   try {
-    return await queryPublicProviderProfile(sectorSlug, providerId);
+    return await queryPublicProviderProfile(sectorSlug, providerId, locale);
   } catch (error) {
     logError("provider.public_query_failed", error);
     return { provider: null, unavailable: true };

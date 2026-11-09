@@ -226,7 +226,7 @@ describe("construction contractor and supplier verification", () => {
       where: { id: serviceListing.id },
       data: { isPublished: true, moderationStatus: "APPROVED" },
     });
-    const publicServiceListing = await listings.getPublicListing(serviceListing.id);
+    const publicServiceListing = await listings.getPublicListing(serviceListing.id, "en");
     expect(publicServiceListing.listing?.id).toBe(serviceListing.id);
 
     await prisma.providerVerificationApplication.update({
@@ -249,15 +249,18 @@ describe("construction contractor and supplier verification", () => {
       "notAllowed",
     );
 
-    const market = await listings.getConstructionMarketListings({ kind: "CONSTRUCTION_SERVICE" });
+    const market = await listings.getConstructionMarketListings(
+      { kind: "CONSTRUCTION_SERVICE" },
+      "en",
+    );
     expect(market.items.some((item) => item.id === serviceListing.id)).toBe(false);
-    const publicExpiredListing = await listings.getPublicListing(serviceListing.id);
+    const publicExpiredListing = await listings.getPublicListing(serviceListing.id, "en");
     expect(publicExpiredListing.listing).toBeNull();
-    const publicProvider = await listings.getPublicProviderProfile("construction", providerId);
+    const publicProvider = await listings.getPublicProviderProfile("construction", providerId, "en");
     expect(publicProvider.provider?.verifications.map(({ type }) => type)).toEqual(["SUPPLIER"]);
     const supplierMarket = await listings.getConstructionMarketListings({
       kind: "CONSTRUCTION_MATERIAL",
-    });
+    }, "en");
     expect(supplierMarket.items.some((item) => item.id === materialListing.id)).toBe(true);
   });
 

@@ -1,10 +1,9 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { locale as rootLocale } from "next/root-params";
 import { Suspense } from "react";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
-import { defaultLocale, isLocale, type Locale } from "@/i18n/locales";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/paths";
 import { getCurrentUser } from "@/lib/dal";
 import { getPublicListing, getPublicProviderProfile } from "@/lib/listings";
@@ -14,15 +13,14 @@ async function ListingContent({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string; listingId: string }>;
+  params: Promise<{ locale: string; slug: string; listingId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const [{ slug, listingId }, query, paramLocale] = await Promise.all([
+  const [{ locale: routeLocale, slug, listingId }, query] = await Promise.all([
     params,
     searchParams,
-    rootLocale(),
   ]);
-  const locale: Locale = isLocale(paramLocale) ? paramLocale : defaultLocale;
+  const locale = getLocaleOrDefault(routeLocale);
   const sector = getSector(slug);
   if (slug === "agriculture-labor") {
     const queryString = new URLSearchParams();
@@ -39,11 +37,14 @@ async function ListingContent({
   }
   if (!sector || sector.status !== "live") notFound();
 
-  const [result, user] = await Promise.all([getPublicListing(listingId), getCurrentUser()]);
+  const [result, user] = await Promise.all([
+    getPublicListing(listingId, locale),
+    getCurrentUser(),
+  ]);
   if (result.listing && result.listing.sectorSlug !== slug) notFound();
   if (!result.listing && !result.unavailable) notFound();
   const providerResult = result.listing
-    ? await getPublicProviderProfile(sector.slug, result.listing.providerId)
+    ? await getPublicProviderProfile(sector.slug, result.listing.providerId, locale)
     : null;
 
   return (
@@ -71,7 +72,7 @@ export default function ListingPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string; listingId: string }>;
+  params: Promise<{ locale: string; slug: string; listingId: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
 import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import { getCurrentUser } from "@/lib/dal";
 import { getPublicListing, getPublicProviderProfile } from "@/lib/listings";
 import { getSector } from "@/lib/sectors";
@@ -11,17 +12,21 @@ async function DashboardAgricultureListingContent({
   params,
   searchParams,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
   searchParams: Promise<{ projectId?: string | string[]; packageLabel?: string | string[] }>;
 }) {
-  const [{ listingId }, query] = await Promise.all([params, searchParams]);
+  const [{ locale: routeLocale, listingId }, query] = await Promise.all([params, searchParams]);
+  const locale = getLocaleOrDefault(routeLocale);
   const sector = getSector("agriculture-labor");
   if (!sector) notFound();
-  const [result, user] = await Promise.all([getPublicListing(listingId), getCurrentUser()]);
+  const [result, user] = await Promise.all([
+    getPublicListing(listingId, locale),
+    getCurrentUser(),
+  ]);
   if (result.listing && result.listing.sectorSlug !== sector.slug) notFound();
   if (!result.listing && !result.unavailable) notFound();
   const providerResult = result.listing
-    ? await getPublicProviderProfile(sector.slug, result.listing.providerId)
+    ? await getPublicProviderProfile(sector.slug, result.listing.providerId, locale)
     : null;
   return (
     <ListingDetail
@@ -49,7 +54,7 @@ export default function DashboardAgricultureListingPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ listingId: string }>;
+  params: Promise<{ locale: string; listingId: string }>;
   searchParams: Promise<{ projectId?: string | string[]; packageLabel?: string | string[] }>;
 }) {
   return (

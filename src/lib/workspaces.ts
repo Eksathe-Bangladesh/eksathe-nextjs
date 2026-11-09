@@ -179,11 +179,11 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       createdAt: iso(request.createdAt),
       listing: {
         ...request.listing,
-        ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+        ...resolveTranslation(request.listing.translations, locale, defaultLocale),
       },
       provider: {
         ...request.provider,
-        ...resolveTranslation(request.provider.translations, defaultLocale, defaultLocale),
+        ...resolveTranslation(request.provider.translations, locale, defaultLocale),
       },
       quote: request.quote
         ? {
@@ -213,12 +213,12 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       listing: {
         ...order.listing,
         title:
-          resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
       },
       provider: {
         ...order.provider,
         name:
-          resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+          resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
       },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
@@ -257,10 +257,10 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
         subtotal: order.subtotal.toString(),
         transportFee: order.transportFee.toString(),
         title:
-          resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
         kind: order.listing.kind,
         providerName:
-          resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+          resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
         payments: order.payments.map((payment) => ({
           id: payment.id,
           amount: payment.amount.toString(),
@@ -282,11 +282,11 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
         requestedEnd: iso(request.requestedEnd),
         listing: {
           ...request.listing,
-          ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+          ...resolveTranslation(request.listing.translations, locale, defaultLocale),
         },
         providerId: request.provider.id,
         providerName:
-          resolveTranslation(request.provider.translations, defaultLocale, defaultLocale)?.name ??
+          resolveTranslation(request.provider.translations, locale, defaultLocale)?.name ??
           "",
         quote: request.quote
           ? {
@@ -323,10 +323,10 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
     notifications: notifications.map((notification) => ({
       id: notification.id,
       title:
-        resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.title ??
+        resolveTranslation(notification.translations, locale, defaultLocale)?.title ??
         notification.title,
       message:
-        resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.message ??
+        resolveTranslation(notification.translations, locale, defaultLocale)?.message ??
         notification.message,
       href: notification.href,
       readAt: iso(notification.readAt),
@@ -342,12 +342,12 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       createdAt: iso(request.createdAt),
       service: {
         ...request.serviceDefinition,
-        ...resolveTranslation(request.serviceDefinition.translations, defaultLocale, defaultLocale),
+        ...resolveTranslation(request.serviceDefinition.translations, locale, defaultLocale),
       },
       updates: request.updates.map((update) => ({
         id: update.id,
         message:
-          resolveTranslation(update.translations, defaultLocale, defaultLocale)?.message ?? "",
+          resolveTranslation(update.translations, locale, defaultLocale)?.message ?? "",
         createdAt: iso(update.createdAt),
       })),
       attachments: request.attachments,
@@ -444,8 +444,8 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
   return {
     profile: {
       id: profile.id,
-      name: resolveTranslation(profile.translations, defaultLocale, defaultLocale)?.name ?? "",
-      bio: resolveTranslation(profile.translations, defaultLocale, defaultLocale)?.bio ?? "",
+      name: resolveTranslation(profile.translations, locale, defaultLocale)?.name ?? "",
+      bio: resolveTranslation(profile.translations, locale, defaultLocale)?.bio ?? "",
       district: profile.district,
       upazila: profile.upazila,
       status: profile.status,
@@ -495,9 +495,9 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       id: listing.id,
       sectorSlug: listing.sectorSlug,
       kind: listing.kind,
-      title: resolveTranslation(listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+      title: resolveTranslation(listing.translations, locale, defaultLocale)?.title ?? "",
       description:
-        resolveTranslation(listing.translations, defaultLocale, defaultLocale)?.description ?? "",
+        resolveTranslation(listing.translations, locale, defaultLocale)?.description ?? "",
       category: listing.category,
       district: listing.district,
       unit: listing.unit,
@@ -520,7 +520,7 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       buyerName: request.buyer.name,
       listing: {
         ...request.listing,
-        ...resolveTranslation(request.listing.translations, defaultLocale, defaultLocale),
+        ...resolveTranslation(request.listing.translations, locale, defaultLocale),
       },
       quote: request.quote
         ? {
@@ -546,9 +546,9 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       commissionAmount: order.commissionAmount.toString(),
       listing: {
         ...order.listing,
-        ...resolveTranslation(order.listing.translations, defaultLocale, defaultLocale),
+        ...resolveTranslation(order.listing.translations, locale, defaultLocale),
         title:
-          resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
       },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
@@ -573,10 +573,10 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
     notifications: notifications.map((notification) => ({
       id: notification.id,
       title:
-        resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.title ??
+        resolveTranslation(notification.translations, locale, defaultLocale)?.title ??
         notification.title,
       message:
-        resolveTranslation(notification.translations, defaultLocale, defaultLocale)?.message ??
+        resolveTranslation(notification.translations, locale, defaultLocale)?.message ??
         notification.message,
       href: notification.href,
       createdAt: iso(notification.createdAt),

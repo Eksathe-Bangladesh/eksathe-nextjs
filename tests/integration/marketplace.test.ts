@@ -431,9 +431,9 @@ describe("PostgreSQL marketplace transactions", () => {
   it("keeps zero-stock workers visible and uses bookings instead of stock for availability", async () => {
     const workerListingId = await createListing("0", "agriculture-labor", "WORKER");
     const [market, detail, profile] = await Promise.all([
-      listings.getPublicListings("agriculture-labor", "WORKER"),
-      listings.getPublicListing(workerListingId),
-      listings.getPublicProviderProfile("agriculture-labor", providerId),
+      listings.getPublicListings("agriculture-labor", "en", "WORKER"),
+      listings.getPublicListing(workerListingId, "en"),
+      listings.getPublicProviderProfile("agriculture-labor", providerId, "en"),
     ]);
     expect(market.items.some((item) => item.id === workerListingId)).toBe(true);
     expect(detail.listing?.id).toBe(workerListingId);
@@ -491,7 +491,7 @@ describe("PostgreSQL marketplace transactions", () => {
     });
     expect(archived.archivedAt).toBeInstanceOf(Date);
     expect(archived.isPublished).toBe(false);
-    expect((await listings.getPublicListing(listingId)).listing).toBeNull();
+    expect((await listings.getPublicListing(listingId, "en")).listing).toBeNull();
   });
 
   it("limits provider and finance workspaces to a staff member's granted sector", async () => {

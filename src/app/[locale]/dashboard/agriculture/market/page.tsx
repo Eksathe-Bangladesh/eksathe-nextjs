@@ -9,13 +9,19 @@ export function generateMetadata() {
 }
 
 export default function DashboardAgricultureMarketPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
     <Suspense fallback={<GridPageSkeleton />}>
-      <AgricultureMarketPage routeBase="/dashboard/agriculture" searchParams={searchParams} />
+      <AgricultureMarketPage
+        params={params}
+        routeBase="/dashboard/agriculture"
+        searchParams={searchParams}
+      />
     </Suspense>
   );
 }
