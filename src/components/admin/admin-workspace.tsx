@@ -14,6 +14,7 @@ import {
   updateSectorCommissionRateAction,
 } from "@/app/actions/admin";
 import { AgricultureRequestsQueue } from "@/components/admin/agriculture-requests-queue";
+import { ProviderVerificationReviewQueue } from "@/components/admin/provider-verification-review";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       maximumFractionDigits: 2,
     });
   const operationsEnabled = data.access.operationSectors.length > 0;
+  const constructionOperationsEnabled = data.access.operationSectors.includes("construction");
   const agricultureOperationsEnabled = data.access.operationSectors.includes("agriculture-labor");
   const financeEnabled = data.access.financeSectors.length > 0;
   const agricultureManagementEnabled = [
@@ -55,6 +57,15 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               { id: "listing-moderation", label: t("common.labels.listings") },
               { id: "requests", label: t("workflow.adminRequests") },
               { id: "disputes", label: t("admin.workspace.disputes") },
+            ]
+          : []),
+        ...(constructionOperationsEnabled
+          ? [
+              {
+                id: "construction-verifications",
+                label: t("verification.admin.title"),
+                navLabel: t("verification.admin.title"),
+              },
             ]
           : []),
         ...(agricultureOperationsEnabled
@@ -102,13 +113,15 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
         <p className="text-muted-foreground mt-2 text-sm">
           {t("workflow.sectorsSummary", {
             sectors:
-              [...new Set([
-                ...data.access.operationSectors,
-                ...data.access.financeSectors,
-                ...data.access.userManagementSectors,
-                ...data.access.panelManagementSectors,
-                ...data.access.reportSectors,
-              ])].join(", ") || t("workflow.platformWide"),
+              [
+                ...new Set([
+                  ...data.access.operationSectors,
+                  ...data.access.financeSectors,
+                  ...data.access.userManagementSectors,
+                  ...data.access.panelManagementSectors,
+                  ...data.access.reportSectors,
+                ]),
+              ].join(", ") || t("workflow.platformWide"),
           })}
         </p>
         {agricultureManagementEnabled && (
@@ -152,9 +165,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <StatusBadge status="PENDING" />
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
-                    <p className="text-muted-foreground text-sm">
-                      {capability.bio}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{capability.bio}</p>
                     <p className="text-sm">
                       {t("workflow.district")}: {capability.district}
                     </p>
@@ -167,6 +178,10 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
               ))
             )}
           </section>
+
+          {constructionOperationsEnabled && (
+            <ProviderVerificationReviewQueue applications={data.verificationApplications} />
+          )}
 
           <section id="listing-moderation" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("admin.workspace.listingModeration")}</h2>
@@ -341,9 +356,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
                     <p className="text-muted-foreground text-xs">
                       {t("workflow.confirmationSummary", {
                         buyer: payment.buyerConfirmed ? t("workflow.yes") : t("workflow.no"),
-                        provider: payment.providerConfirmed
-                          ? t("workflow.yes")
-                          : t("workflow.no"),
+                        provider: payment.providerConfirmed ? t("workflow.yes") : t("workflow.no"),
                       })}
                     </p>
                     <RefundForm paymentId={payment.id} />
@@ -610,7 +623,9 @@ function StaffGrantForm() {
           <NativeSelectOption value="OPERATIONS">
             {t("admin.workspace.operations")}
           </NativeSelectOption>
-          <NativeSelectOption value="FINANCE">{t("admin.workspace.financeLabel")}</NativeSelectOption>
+          <NativeSelectOption value="FINANCE">
+            {t("admin.workspace.financeLabel")}
+          </NativeSelectOption>
           <NativeSelectOption value="USERS">{t("workflow.permissionUsers")}</NativeSelectOption>
           <NativeSelectOption value="PANELS">{t("workflow.permissionPanels")}</NativeSelectOption>
           <NativeSelectOption value="REPORTS">{t("workflow.permissionReports")}</NativeSelectOption>
@@ -628,9 +643,7 @@ function StaffGrantForm() {
           <NativeSelectOption value="agriculture-labor">
             {t("sectors.agriculture-labor")}
           </NativeSelectOption>
-          <NativeSelectOption value="construction">
-            {t("sectors.construction")}
-          </NativeSelectOption>
+          <NativeSelectOption value="construction">{t("sectors.construction")}</NativeSelectOption>
         </NativeSelect>
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-3">

@@ -1,5 +1,6 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
+import { isConstructionProviderVerified } from "@/lib/construction/verification-policy";
 import {
   calculateCommission,
   calculateCommissionReduction,
@@ -229,6 +230,17 @@ async function assertApprovedCapability(
   if (!capability) fail("notAllowed");
 }
 
+async function assertConstructionVerification(
+  tx: Tx,
+  providerId: string,
+  sectorSlug: string,
+  kind: ListingKind,
+) {
+  if (sectorSlug !== "construction") return;
+  if (kind !== "CONSTRUCTION_SERVICE" && kind !== "CONSTRUCTION_MATERIAL") fail("notAllowed");
+  if (!(await isConstructionProviderVerified(tx, providerId, kind))) fail("notAllowed");
+}
+
 async function requireLiveSector(tx: Tx, sectorSlug: string) {
   const sector = await tx.sector.findUnique({ where: { slug: sectorSlug } });
   if (!sector || sector.status !== "LIVE") fail("unavailable");
@@ -356,6 +368,7 @@ export async function createProviderListing(actorId: string, input: CreateListin
     });
     if (!profile || profile.status !== "APPROVED") fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, input.sectorSlug, input.kind);
+    await assertConstructionVerification(tx, profile.id, input.sectorSlug, input.kind);
 
     const listing = await tx.marketplaceListing.create({
       data: {
@@ -421,6 +434,7 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
     if (!listing) fail("notFound");
     if (listing.sectorSlug !== input.sectorSlug || listing.kind !== input.kind) fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, listing.sectorSlug, listing.kind);
+    await assertConstructionVerification(tx, profile.id, listing.sectorSlug, listing.kind);
     const updated = await tx.marketplaceListing.update({
       where: { id: listing.id },
       data: {
@@ -490,6 +504,7 @@ export async function updateProviderListingStock(
     if (!listing) fail("notFound");
     if (!isFiniteStock(listing.kind)) fail("invalidState");
     await assertApprovedCapability(tx, profile.id, listing.sectorSlug, listing.kind);
+    await assertConstructionVerification(tx, profile.id, listing.sectorSlug, listing.kind);
     await tx.marketplaceListing.update({
       where: { id: listing.id },
       data: { stock: new Prisma.Decimal(stock) },
@@ -541,6 +556,7 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
       fail("notAllowed");
     }
     await requireLiveSector(tx, listing.sectorSlug);
+    await assertConstructionVerification(tx, listing.providerId, listing.sectorSlug, listing.kind);
 
     let requestedQuantity = new Prisma.Decimal(input.quantity);
     if (isScheduled(listing.kind)) {
@@ -639,6 +655,7 @@ export async function submitQuote(actorId: string, input: CreateQuoteInput) {
     if (!profile || profile.id !== request.providerId || profile.status !== "APPROVED")
       fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, request.sectorSlug, request.listing.kind);
+    await assertConstructionVerification(tx, profile.id, request.sectorSlug, request.listing.kind);
     if (request.status !== "OPEN" && request.status !== "QUOTED") fail("invalidState");
     if (request.quote && request.quote.status !== "PENDING") fail("invalidState");
 
@@ -702,6 +719,12 @@ export async function acceptQuote(actorId: string, requestId: string) {
           if (accepted) fail("invalidState");
         }
         await assertApprovedCapability(
+          tx,
+          request.providerId,
+          request.sectorSlug,
+          request.listing.kind,
+        );
+        await assertConstructionVerification(
           tx,
           request.providerId,
           request.sectorSlug,

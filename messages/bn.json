@@ -52,7 +52,8 @@
       "total": "মোট",
       "confirmedByBothParties": "উভয় পক্ষ নিশ্চিত করেছে",
       "awaitingConfirmation": "নিশ্চিতকরণ বাকি",
-      "noAdditionalDetailsProvided": "কোনো অতিরিক্ত তথ্য নেই।"
+      "noAdditionalDetailsProvided": "কোনো অতিরিক্ত তথ্য নেই।",
+      "notProvided": "দেওয়া হয়নি"
     },
     "actions": {
       "update": "হালনাগাদ",
@@ -173,6 +174,8 @@
     "dispute": "সমস্যার বিবরণ",
     "refundRecorded": "ফেরতের তথ্য নথিভুক্ত হয়েছে।",
     "providerApproved": "সেবাদাতার আবেদন পর্যালোচনা করা হয়েছে।",
+    "verificationSubmitted": "যাচাইকরণের আবেদন জমা হয়েছে।",
+    "verificationReviewed": "সেবাদাতার যাচাইকরণের পর্যালোচনা নথিভুক্ত হয়েছে।",
     "listingApproved": "তালিকার পর্যালোচনা হালনাগাদ হয়েছে।",
     "disputeResolved": "বিরোধের সিদ্ধান্ত নথিভুক্ত হয়েছে।",
     "commissionRateUpdated": "বিভাগের কমিশন হার হালনাগাদ হয়েছে।",
@@ -844,6 +847,98 @@
     "capabilities": {
       "description": "আরও সেবা বিভাগে কাজ করতে অতিরিক্ত সক্ষমতার জন্য আবেদন করুন।"
     }
+  },
+  "verification": {
+    "provider": {
+      "title": "নির্মাণসেবা প্রদানকারীর যাচাইকরণ",
+      "description": "ব্যবসায়িক বা পেশাগত প্রমাণপত্র জমা দিন। কেবল অনুমোদিত নির্মাণ অপারেশনস কর্মীরা আপনার ব্যক্তিগত নথি দেখতে পারবেন।",
+      "typeDescription": {
+        "contractor": "নির্মাণ ঠিকাদার, প্রকৌশলী এবং ভবন নির্মাণ পেশাজীবীদের জন্য।",
+        "supplier": "নির্মাণসামগ্রী সরবরাহকারী ও পরিবেশকদের জন্য।"
+      },
+      "reviewNote": "সর্বশেষ পর্যালোচনার মন্তব্য",
+      "validUntil": "যাচাইকরণের মেয়াদ {date} পর্যন্ত।",
+      "waitingForReview": "আপনার আবেদন প্রশাসকের পর্যালোচনার অপেক্ষায় আছে।",
+      "documentPrivacy": "নথিগুলো ব্যক্তিগত থাকবে এবং শুধু আপনি ও অনুমোদিত নির্মাণ পর্যালোচক দেখতে পারবেন। সর্বোচ্চ ১০ এমবি PDF, JPG, PNG বা WebP ফাইল দিন।"
+    },
+    "admin": {
+      "title": "নির্মাণসেবা যাচাইকরণ",
+      "description": "ঠিকাদার ও সরবরাহকারীর প্রমাণপত্র পর্যালোচনা করুন। অনুমোদন শুধু সংশ্লিষ্ট ধরনের জন্য প্রযোজ্য এবং এক বছর পর মেয়াদোত্তীর্ণ হবে।",
+      "documents": "জমা দেওয়া প্রমাণপত্র",
+      "fileDetails": "{size} কেবি · {type}",
+      "documentDecision": "নথির সিদ্ধান্ত",
+      "documentNote": "নথির মন্তব্য (ঐচ্ছিক)",
+      "noDocuments": "বর্তমান সংস্করণে কোনো প্রমাণপত্র জমা পড়েনি।",
+      "history": "পর্যালোচনার ইতিহাস",
+      "reviewNote": "সিদ্ধান্তের কারণ বা প্রয়োজনীয় সংশোধন"
+    },
+    "public": {
+      "verified": "যাচাইকৃত {type}",
+      "verifiedOn": "যাচাইকৃত {type} · পর্যালোচনা {date}"
+    },
+    "types": {
+      "contractor": "ঠিকাদার / প্রকৌশলী",
+      "supplier": "নির্মাণসামগ্রী সরবরাহকারী"
+    },
+    "applicantTypes": {
+      "individual": "ব্যক্তি",
+      "business": "নিবন্ধিত প্রতিষ্ঠান"
+    },
+    "fields": {
+      "applicantType": "আবেদনকারীর ধরন",
+      "legalName": "আবেদনকারীর আইনগত নাম",
+      "businessName": "প্রতিষ্ঠানের নাম",
+      "businessAddress": "প্রতিষ্ঠান বা কার্যক্রমের ঠিকানা",
+      "registrationNumber": "প্রতিষ্ঠান নিবন্ধন নম্বর",
+      "tradeLicenseNumber": "ট্রেড লাইসেন্স নম্বর",
+      "taxIdentifier": "কর শনাক্তকরণ নম্বর (ঐচ্ছিক)",
+      "yearsExperience": "অভিজ্ঞতার বছর",
+      "teamSize": "দলের সদস্যসংখ্যা",
+      "specializations": "বিশেষায়িত কাজ (কমা দিয়ে আলাদা করুন)",
+      "materialCategories": "সামগ্রীর ধরন (কমা দিয়ে আলাদা করুন)",
+      "brands": "সরবরাহ করা ব্র্যান্ড (কমা দিয়ে আলাদা করুন)",
+      "serviceAreas": "সেবা বা সরবরাহের এলাকা (কমা দিয়ে আলাদা করুন)",
+      "documents": "সহায়ক নথি",
+      "documentType": "নথির ধরন",
+      "file": "ফাইল"
+    },
+    "documents": {
+      "businessRegistration": "প্রতিষ্ঠান নিবন্ধন",
+      "tradeLicense": "ট্রেড লাইসেন্স",
+      "taxDocument": "কর-সংক্রান্ত নথি",
+      "professionalCredential": "পেশাগত যোগ্যতার প্রমাণ",
+      "portfolioOrReference": "কাজের নমুনা বা রেফারেন্স",
+      "supplierAuthorization": "সরবরাহকারী বা ডিলার অনুমোদন",
+      "productCertificate": "পণ্যের সনদ",
+      "warehouseProof": "গুদাম বা দোকানের প্রমাণ",
+      "other": "অন্যান্য সহায়ক নথি"
+    },
+    "documentStatuses": {
+      "pending": "পর্যালোচনা হয়নি",
+      "approved": "গৃহীত",
+      "rejected": "পরিবর্তিত নথি প্রয়োজন"
+    },
+    "statuses": {
+      "submitted": "জমা হয়েছে",
+      "inReview": "পর্যালোচনাধীন",
+      "changesRequested": "সংশোধন চাওয়া হয়েছে",
+      "approved": "অনুমোদিত",
+      "rejected": "প্রত্যাখ্যাত",
+      "expired": "মেয়াদ শেষ",
+      "revoked": "বাতিল"
+    },
+    "actions": {
+      "addDocument": "আরেকটি নথি যোগ করুন",
+      "remove": "সরান",
+      "submit": "যাচাইকরণের আবেদন জমা দিন",
+      "inReview": "পর্যালোচনা শুরু করুন",
+      "approved": "যাচাইকরণ অনুমোদন করুন",
+      "changesRequested": "সংশোধন চান",
+      "rejected": "আবেদন প্রত্যাখ্যান করুন",
+      "revoked": "যাচাইকরণ বাতিল করুন"
+    },
+    "uploading": "আপলোড হচ্ছে…",
+    "uploadError": "নথিটি আপলোড করা যায়নি। ফাইলটি পরীক্ষা করে আবার চেষ্টা করুন।"
   },
   "sectors": {
     "family-household": "পরিবার ও গৃহস্থালি",
@@ -1705,6 +1800,11 @@
     "WAIVED": "মওকুফ",
     "REVIEW": "অনুমোদনের অপেক্ষায়",
     "PLANNING": "পরিকল্পনায়",
-    "ACTIVE": "চলমান"
+    "ACTIVE": "চলমান",
+    "SUBMITTED": "জমা হয়েছে",
+    "IN_REVIEW": "পর্যালোচনাধীন",
+    "CHANGES_REQUESTED": "সংশোধন চাওয়া হয়েছে",
+    "EXPIRED": "মেয়াদ শেষ",
+    "REVOKED": "বাতিল"
   }
 }

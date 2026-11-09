@@ -1,13 +1,18 @@
 import "server-only";
+import { getLocale } from "next-intl/server";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { Prisma } from "@/generated/prisma/client";
+import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
+import { defaultLocale, type Locale } from "@/i18n/locales";
 import { cacheTags } from "@/lib/cache-tags";
+import {
+  constructionVerificationIsEnforced,
+  verifiedConstructionListingWhere,
+  verifiedConstructionProviderWhere,
+} from "@/lib/construction/verification-policy";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
-import { defaultLocale, type Locale } from "@/i18n/locales";
-import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
-import { getLocale } from "next-intl/server";
 
 export type PublicListing = {
   id: string;
@@ -41,6 +46,7 @@ export type PublicProvider = {
   hasCoverImage: boolean;
   averageRating: number | null;
   reviewCount: number;
+  verifications: Array<{ type: "CONTRACTOR" | "SUPPLIER"; reviewedAt: string | null }>;
   listings: PublicListing[];
   reviews: Array<{ rating: number; comment: string; createdAt: string }>;
 };
@@ -49,30 +55,37 @@ export type PublicProviderResult = { provider: PublicProvider | null; unavailabl
 function publicSelect(locale: Locale) {
   const translationLocales = { in: translationLocalesFor(locale) };
   return {
-  id: true,
-  sectorSlug: true,
-  kind: true,
-  translations: {
-    where: { locale: translationLocales },
-    select: { locale: true, title: true, description: true },
-  },
-  category: true,
-  district: true,
-  unit: true,
-  unitPrice: true,
-  stock: true,
-  availableFrom: true,
-  imageKey: true,
-  provider: {
-    select: {
-      id: true,
-      translations: {
-        where: { locale: translationLocales },
-        select: { locale: true, name: true, bio: true },
+    id: true,
+    sectorSlug: true,
+    kind: true,
+    translations: {
+      where: { locale: translationLocales },
+      select: { locale: true, title: true, description: true },
+    },
+    category: true,
+    district: true,
+    unit: true,
+    unitPrice: true,
+    stock: true,
+    availableFrom: true,
+    imageKey: true,
+    provider: {
+      select: {
+        id: true,
+        translations: {
+          where: { locale: translationLocales },
+          select: { locale: true, name: true, bio: true },
+        },
       },
     },
-  },
-} as const;
+  } as const;
+}
+
+async function constructionVerificationAsOf() {
+  if (!constructionVerificationIsEnforced()) return new Date(0);
+  const [row] = await prisma.$queryRaw<Array<{ asOf: Date }>>`SELECT CURRENT_TIMESTAMP AS "asOf"`;
+  if (!row) throw new Error("The database did not return its current time.");
+  return row.asOf;
 }
 
 type PublicListingRow = Prisma.MarketplaceListingGetPayload<{
@@ -164,6 +177,21 @@ async function queryPublicListings(
 
   const locale = await getLocale();
   const select = publicSelect(locale);
+  const verificationAsOf =
+    sectorSlug === "construction" ? await constructionVerificationAsOf() : new Date(0);
+  const constructionVerificationFilter =
+    sectorSlug === "construction"
+      ? kind === "CONSTRUCTION_SERVICE" || kind === "CONSTRUCTION_MATERIAL"
+        ? [verifiedConstructionListingWhere(kind, verificationAsOf)]
+        : [
+            {
+              OR: [
+                verifiedConstructionListingWhere("CONSTRUCTION_MATERIAL", verificationAsOf),
+                verifiedConstructionListingWhere("CONSTRUCTION_SERVICE", verificationAsOf),
+              ],
+            },
+          ]
+      : [];
   const rows = await prisma.marketplaceListing.findMany({
     where: {
       sectorSlug,
@@ -177,6 +205,7 @@ async function queryPublicListings(
         user: { status: "active" },
         capabilities: { some: { sectorSlug, status: "APPROVED" } },
       },
+      ...(constructionVerificationFilter.length ? { AND: constructionVerificationFilter } : {}),
     },
     select: {
       ...select,
@@ -302,7 +331,9 @@ async function queryAgricultureMarketListings(
     });
   const where: Prisma.MarketplaceListingWhereInput = {
     ...base,
-    ...(and.length ? { AND: and } : {}),
+    ...(and.length
+      ? { AND: [...(base.AND as Prisma.MarketplaceListingWhereInput[]), ...and] }
+      : {}),
   };
   const orderBy =
     filters.sort === "price-asc"
@@ -387,6 +418,7 @@ async function queryConstructionMarketListings(
   cacheTag(cacheTags.listings);
   const locale = await getLocale();
   const select = publicSelect(locale);
+  const verificationAsOf = await constructionVerificationAsOf();
 
   const page = Math.max(1, Math.floor(filters.page ?? 1));
   const pageSize = 12;
@@ -450,6 +482,21 @@ async function queryConstructionMarketListings(
             ],
           }),
   };
+  const verificationConditions: Prisma.MarketplaceListingWhereInput[] = filters.kind
+    ? [verifiedConstructionListingWhere(filters.kind, verificationAsOf)]
+    : [
+        {
+          OR: [
+            verifiedConstructionListingWhere("CONSTRUCTION_MATERIAL", verificationAsOf),
+            verifiedConstructionListingWhere("CONSTRUCTION_SERVICE", verificationAsOf),
+          ],
+        },
+      ];
+  const existingBaseConditions = Array.isArray(base.AND) ? base.AND : base.AND ? [base.AND] : [];
+  const verifiedBase: Prisma.MarketplaceListingWhereInput = {
+    ...base,
+    AND: [...existingBaseConditions, ...verificationConditions],
+  };
   const and: Prisma.MarketplaceListingWhereInput[] = [];
   const makeSearch = (term: string): Prisma.MarketplaceListingWhereInput => ({
     OR: [
@@ -474,8 +521,10 @@ async function queryConstructionMarketListings(
     });
   }
   const where: Prisma.MarketplaceListingWhereInput = {
-    ...base,
-    ...(and.length ? { AND: and } : {}),
+    ...verifiedBase,
+    ...(and.length
+      ? { AND: [...(verifiedBase.AND as Prisma.MarketplaceListingWhereInput[]), ...and] }
+      : {}),
   };
   const orderBy =
     filters.sort === "price-asc"
@@ -504,13 +553,13 @@ async function queryConstructionMarketListings(
     }),
     prisma.marketplaceListing.count({ where }),
     prisma.marketplaceListing.findMany({
-      where: base,
+      where: verifiedBase,
       select: { district: true },
       distinct: ["district"],
       orderBy: { district: "asc" },
     }),
     prisma.marketplaceListing.findMany({
-      where: base,
+      where: verifiedBase,
       select: { category: true },
       distinct: ["category"],
       orderBy: { category: "asc" },
@@ -556,6 +605,7 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
   cacheTag(cacheTags.listings);
   const locale = await getLocale();
   const select = publicSelect(locale);
+  const verificationAsOf = await constructionVerificationAsOf();
 
   const row = await prisma.marketplaceListing.findFirst({
     where: {
@@ -569,6 +619,19 @@ async function queryPublicListing(id: string): Promise<PublicListingResult> {
         user: { status: "active" },
         capabilities: { some: { status: "APPROVED" } },
       },
+      ...(constructionVerificationIsEnforced()
+        ? {
+            AND: [
+              {
+                OR: [
+                  { sectorSlug: { not: "construction" } },
+                  verifiedConstructionListingWhere("CONSTRUCTION_MATERIAL", verificationAsOf),
+                  verifiedConstructionListingWhere("CONSTRUCTION_SERVICE", verificationAsOf),
+                ],
+              },
+            ],
+          }
+        : {}),
     },
     select: {
       ...select,
@@ -632,6 +695,8 @@ async function queryPublicProviderProfile(
   cacheTag(cacheTags.providers, cacheTags.listings);
   const locale = await getLocale();
   const translationLocales = { in: translationLocalesFor(locale) };
+  const verificationAsOf =
+    sectorSlug === "construction" ? await constructionVerificationAsOf() : new Date(0);
 
   const profile = await prisma.providerProfile.findFirst({
     where: {
@@ -639,6 +704,14 @@ async function queryPublicProviderProfile(
       status: "APPROVED",
       user: { status: "active" },
       capabilities: { some: { sectorSlug, status: "APPROVED" } },
+      ...(sectorSlug === "construction" && constructionVerificationIsEnforced()
+        ? {
+            OR: [
+              verifiedConstructionProviderWhere("CONTRACTOR", verificationAsOf),
+              verifiedConstructionProviderWhere("SUPPLIER", verificationAsOf),
+            ],
+          }
+        : {}),
     },
     select: {
       id: true,
@@ -651,6 +724,13 @@ async function queryPublicProviderProfile(
       profileImageKey: true,
       coverImageKey: true,
       capabilities: { where: { sectorSlug, status: "APPROVED" }, select: { kind: true } },
+      verificationApplications: {
+        where: {
+          status: "APPROVED",
+          expiresAt: { gt: verificationAsOf },
+        },
+        select: { type: true, reviewedAt: true },
+      },
       listings: {
         where: {
           sectorSlug,
@@ -658,6 +738,18 @@ async function queryPublicProviderProfile(
           moderationStatus: "APPROVED",
           archivedAt: null,
           ...publicAvailabilityWhere(),
+          ...(sectorSlug === "construction" && constructionVerificationIsEnforced()
+            ? {
+                AND: [
+                  {
+                    OR: [
+                      verifiedConstructionListingWhere("CONSTRUCTION_MATERIAL", verificationAsOf),
+                      verifiedConstructionListingWhere("CONSTRUCTION_SERVICE", verificationAsOf),
+                    ],
+                  },
+                ],
+              }
+            : {}),
         },
         orderBy: { createdAt: "desc" },
         take: 60,
@@ -698,17 +790,17 @@ async function queryPublicProviderProfile(
       const title = translation?.title ?? "";
       const description = translation?.description ?? "";
       return {
-      ...listing,
-      title,
-      description,
-      unitPrice: listing.unitPrice.toString(),
-      stock: listing.stock.toString(),
-      availableFrom: listing.availableFrom?.toISOString() ?? null,
-      hasImage: Boolean(listing.imageKey),
-      providerId: profile.id,
-      providerName,
-      averageRating: null,
-      reviewCount: 0,
+        ...listing,
+        title,
+        description,
+        unitPrice: listing.unitPrice.toString(),
+        stock: listing.stock.toString(),
+        availableFrom: listing.availableFrom?.toISOString() ?? null,
+        hasImage: Boolean(listing.imageKey),
+        providerId: profile.id,
+        providerName,
+        averageRating: null,
+        reviewCount: 0,
       };
     });
   const [ratingAggregate, ratingMap] = await Promise.all([
@@ -731,6 +823,13 @@ async function queryPublicProviderProfile(
       hasCoverImage: Boolean(profile.coverImageKey),
       averageRating: ratingAggregate._avg.rating,
       reviewCount: ratingAggregate._count.rating,
+      verifications:
+        sectorSlug === "construction"
+          ? profile.verificationApplications.map((verification) => ({
+              type: verification.type,
+              reviewedAt: verification.reviewedAt?.toISOString() ?? null,
+            }))
+          : [],
       listings: listings.map((listing) => ({
         ...listing,
         ...(ratingMap.get(listing.id) ?? { averageRating: null, reviewCount: 0 }),

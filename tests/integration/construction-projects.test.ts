@@ -202,6 +202,45 @@ describe("PostgreSQL construction project workflows", () => {
         },
       ],
     });
+    const expiresAt = new Date();
+    expiresAt.setUTCFullYear(expiresAt.getUTCFullYear() + 1);
+    await prisma.providerVerificationApplication.createMany({
+      data: [
+        {
+          providerId: serviceOne.id,
+          type: "CONTRACTOR",
+          applicantType: "BUSINESS",
+          legalName: "Service One",
+          businessName: "Service One Builders",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
+        },
+        {
+          providerId: serviceTwo.id,
+          type: "CONTRACTOR",
+          applicantType: "BUSINESS",
+          legalName: "Service Two",
+          businessName: "Service Two Builders",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
+        },
+        {
+          providerId: material.id,
+          type: "SUPPLIER",
+          applicantType: "BUSINESS",
+          legalName: "Materials Supplier",
+          businessName: "Materials Supply",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
+        },
+      ],
+    });
     const project = await projects.createConstructionProject(ownerId, {
       title: "Integration home project",
       projectType: "Residential",

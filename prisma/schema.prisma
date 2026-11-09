@@ -13,37 +13,40 @@ datasource db {
 }
 
 model User {
-  id                        String                     @id
-  name                      String
-  email                     String
-  emailVerified             Boolean                    @default(false)
-  image                     String?
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  phone                     String
-  role                      String                     @default("customer")
-  status                    String                     @default("active")
-  accountType               String                     @default("customer") @map("account_type")
-  sessions                  Session[]
-  accounts                  Account[]
-  requests                  ServiceRequest[]
-  assignedServiceRequests   ServiceRequest[]           @relation("ServiceRequestAssignee")
-  serviceRequestUpdates     ServiceRequestUpdate[]
-  serviceRequestAttachments ServiceRequestAttachment[]
-  auditLogs                 AuditLog[]
-  providerProfile           ProviderProfile?
-  marketplaceRequests       MarketplaceRequest[]       @relation("RequestBuyer")
-  customerOrders            Order[]                    @relation("OrderBuyer")
-  constructionProjects      ConstructionProject[]
-  staffGrants               StaffGrant[]
-  notifications             Notification[]
-  submittedPayments         PaymentRecord[]            @relation("PaymentSubmitter")
-  reviewedOrders            Review[]                   @relation("ReviewAuthor")
-  collectedCommissions      CommissionRecord[]         @relation("CommissionCollector")
-  projectDocuments          ProjectDocument[]
-  projectPhotos             ProjectPhoto[]
-  projectExpenses           ProjectExpense[]
-  activityLogs              ActivityLog[]
+  id                               String                            @id
+  name                             String
+  email                            String
+  emailVerified                    Boolean                           @default(false)
+  image                            String?
+  createdAt                        DateTime                          @default(now())
+  updatedAt                        DateTime                          @updatedAt
+  phone                            String
+  role                             String                            @default("customer")
+  status                           String                            @default("active")
+  accountType                      String                            @default("customer") @map("account_type")
+  sessions                         Session[]
+  accounts                         Account[]
+  requests                         ServiceRequest[]
+  assignedServiceRequests          ServiceRequest[]                  @relation("ServiceRequestAssignee")
+  serviceRequestUpdates            ServiceRequestUpdate[]
+  serviceRequestAttachments        ServiceRequestAttachment[]
+  auditLogs                        AuditLog[]
+  providerProfile                  ProviderProfile?
+  marketplaceRequests              MarketplaceRequest[]              @relation("RequestBuyer")
+  customerOrders                   Order[]                           @relation("OrderBuyer")
+  constructionProjects             ConstructionProject[]
+  staffGrants                      StaffGrant[]
+  notifications                    Notification[]
+  submittedPayments                PaymentRecord[]                   @relation("PaymentSubmitter")
+  reviewedOrders                   Review[]                          @relation("ReviewAuthor")
+  collectedCommissions             CommissionRecord[]                @relation("CommissionCollector")
+  projectDocuments                 ProjectDocument[]
+  projectPhotos                    ProjectPhoto[]
+  projectExpenses                  ProjectExpense[]
+  activityLogs                     ActivityLog[]
+  verificationReviews              ProviderVerificationReview[]      @relation("VerificationReviewActor")
+  verificationApplicationsReviewed ProviderVerificationApplication[] @relation("VerificationApplicationReviewer")
+  verificationDocumentsReviewed    ProviderVerificationDocument[]    @relation("VerificationDocumentReviewer")
 
   @@unique([email])
   @@map("user")
@@ -132,6 +135,44 @@ enum ProviderStatus {
   APPROVED
   REJECTED
   SUSPENDED
+}
+
+enum ProviderVerificationType {
+  CONTRACTOR
+  SUPPLIER
+}
+
+enum ProviderApplicantType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+enum ProviderVerificationStatus {
+  SUBMITTED
+  IN_REVIEW
+  CHANGES_REQUESTED
+  APPROVED
+  REJECTED
+  EXPIRED
+  REVOKED
+}
+
+enum ProviderVerificationDocumentType {
+  BUSINESS_REGISTRATION
+  TRADE_LICENSE
+  TAX_DOCUMENT
+  PROFESSIONAL_CREDENTIAL
+  PORTFOLIO_OR_REFERENCE
+  SUPPLIER_AUTHORIZATION
+  PRODUCT_CERTIFICATE
+  WAREHOUSE_PROOF
+  OTHER
+}
+
+enum ProviderVerificationDocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum ListingModerationStatus {
@@ -387,25 +428,26 @@ model SectorTranslation {
 }
 
 model ProviderProfile {
-  id              String                       @id @default(cuid())
-  userId          String                       @unique @map("user_id")
-  district        String
-  upazila         String?
-  profileImageKey String?                      @map("profile_image_key")
-  coverImageKey   String?                      @map("cover_image_key")
-  status          ProviderStatus               @default(PENDING)
-  reviewedAt      DateTime?                    @map("reviewed_at")
-  reviewedById    String?                      @map("reviewed_by_id")
-  createdAt       DateTime                     @default(now()) @map("created_at")
-  updatedAt       DateTime                     @updatedAt @map("updated_at")
-  user            User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  capabilities    ProviderCapability[]
-  listings        MarketplaceListing[]
-  requests        MarketplaceRequest[]
-  orders          Order[]
-  reviews         Review[]
-  milestones      ProjectMilestone[]           @relation("MilestoneProvider")
-  translations    ProviderProfileTranslation[]
+  id                       String                            @id @default(cuid())
+  userId                   String                            @unique @map("user_id")
+  district                 String
+  upazila                  String?
+  profileImageKey          String?                           @map("profile_image_key")
+  coverImageKey            String?                           @map("cover_image_key")
+  status                   ProviderStatus                    @default(PENDING)
+  reviewedAt               DateTime?                         @map("reviewed_at")
+  reviewedById             String?                           @map("reviewed_by_id")
+  createdAt                DateTime                          @default(now()) @map("created_at")
+  updatedAt                DateTime                          @updatedAt @map("updated_at")
+  user                     User                              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capabilities             ProviderCapability[]
+  listings                 MarketplaceListing[]
+  requests                 MarketplaceRequest[]
+  orders                   Order[]
+  reviews                  Review[]
+  milestones               ProjectMilestone[]                @relation("MilestoneProvider")
+  translations             ProviderProfileTranslation[]
+  verificationApplications ProviderVerificationApplication[]
 
   @@index([status])
   @@index([district])
@@ -439,6 +481,106 @@ model ProviderCapability {
   @@unique([providerId, sectorSlug, kind])
   @@index([sectorSlug, status])
   @@map("provider_capabilities")
+}
+
+model ProviderVerificationApplication {
+  id                 String                                   @id @default(cuid())
+  providerId         String                                   @map("provider_id")
+  type               ProviderVerificationType
+  applicantType      ProviderApplicantType                    @map("applicant_type")
+  legalName          String                                   @map("legal_name")
+  businessName       String?                                  @map("business_name")
+  businessAddress    String                                   @map("business_address") @db.Text
+  registrationNumber String?                                  @map("registration_number")
+  tradeLicenseNumber String?                                  @map("trade_license_number")
+  taxIdentifier      String?                                  @map("tax_identifier")
+  yearsExperience    Int?                                     @map("years_experience")
+  teamSize           Int?                                     @map("team_size")
+  specializations    String[]                                 @default([])
+  materialCategories String[]                                 @default([]) @map("material_categories")
+  brands             String[]                                 @default([])
+  serviceAreas       String[]                                 @default([]) @map("service_areas")
+  status             ProviderVerificationStatus               @default(SUBMITTED)
+  version            Int                                      @default(1)
+  submittedAt        DateTime                                 @default(now()) @map("submitted_at")
+  reviewedAt         DateTime?                                @map("reviewed_at")
+  reviewedById       String?                                  @map("reviewed_by_id")
+  reviewNote         String?                                  @map("review_note") @db.Text
+  expiresAt          DateTime?                                @map("expires_at")
+  createdAt          DateTime                                 @default(now()) @map("created_at")
+  updatedAt          DateTime                                 @updatedAt @map("updated_at")
+  provider           ProviderProfile                          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  reviewedBy         User?                                    @relation("VerificationApplicationReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  documents          ProviderVerificationDocument[]
+  reviews            ProviderVerificationReview[]
+  versions           ProviderVerificationApplicationVersion[]
+
+  @@unique([providerId, type])
+  @@index([type, status, submittedAt])
+  @@index([providerId, status])
+  @@map("provider_verification_applications")
+}
+
+model ProviderVerificationApplicationVersion {
+  id                 String                          @id @default(cuid())
+  applicationId      String                          @map("application_id")
+  version            Int
+  applicantType      ProviderApplicantType           @map("applicant_type")
+  legalName          String                          @map("legal_name")
+  businessName       String?                         @map("business_name")
+  businessAddress    String                          @map("business_address") @db.Text
+  registrationNumber String?                         @map("registration_number")
+  tradeLicenseNumber String?                         @map("trade_license_number")
+  taxIdentifier      String?                         @map("tax_identifier")
+  yearsExperience    Int?                            @map("years_experience")
+  teamSize           Int?                            @map("team_size")
+  specializations    String[]                        @default([])
+  materialCategories String[]                        @default([]) @map("material_categories")
+  brands             String[]                        @default([])
+  serviceAreas       String[]                        @default([]) @map("service_areas")
+  submittedAt        DateTime                        @default(now()) @map("submitted_at")
+  application        ProviderVerificationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, version])
+  @@index([applicationId, submittedAt])
+  @@map("provider_verification_application_versions")
+}
+
+model ProviderVerificationDocument {
+  id            String                             @id @default(cuid())
+  applicationId String                             @map("application_id")
+  version       Int
+  documentType  ProviderVerificationDocumentType   @map("document_type")
+  filename      String
+  storageKey    String                             @unique @map("storage_key")
+  contentType   String                             @map("content_type")
+  sizeBytes     Int                                @map("size_bytes")
+  status        ProviderVerificationDocumentStatus @default(PENDING)
+  reviewNote    String?                            @map("review_note") @db.Text
+  reviewedAt    DateTime?                          @map("reviewed_at")
+  reviewedById  String?                            @map("reviewed_by_id")
+  createdAt     DateTime                           @default(now()) @map("created_at")
+  application   ProviderVerificationApplication    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  reviewedBy    User?                              @relation("VerificationDocumentReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([applicationId, version, createdAt])
+  @@map("provider_verification_documents")
+}
+
+model ProviderVerificationReview {
+  id                String                          @id @default(cuid())
+  applicationId     String                          @map("application_id")
+  actorId           String                          @map("actor_id")
+  version           Int
+  action            ProviderVerificationStatus
+  note              String?                         @db.Text
+  documentDecisions Json?                           @map("document_decisions") @db.JsonB
+  createdAt         DateTime                        @default(now()) @map("created_at")
+  application       ProviderVerificationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  actor             User                            @relation("VerificationReviewActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+  @@map("provider_verification_reviews")
 }
 
 model StaffGrant {

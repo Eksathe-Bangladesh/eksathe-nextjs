@@ -1,16 +1,18 @@
 "use client";
 
 import { cn } from "cn";
-import { ArrowLeftIcon, MapPinIcon, StarIcon } from "lucide-react";
+import { ArrowLeftIcon, BadgeCheckIcon, MapPinIcon, StarIcon } from "lucide-react";
 import { useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
 import { Link } from "@/i18n/navigation";
+import { verificationMessageKey } from "@/lib/construction/verification-labels";
 import type { PublicProvider } from "@/lib/listings";
 import type { SectorDefinition } from "@/lib/sectors";
 
@@ -84,9 +86,7 @@ export function ProviderProfile({
                 <span aria-hidden="true">👩‍🌾</span>
               )}
             </div>
-            <CardTitle className="text-3xl">
-              {provider.name}
-            </CardTitle>
+            <CardTitle className="text-3xl">{provider.name}</CardTitle>
           </div>
           <CardDescription className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-1">
@@ -97,9 +97,26 @@ export function ProviderProfile({
             {provider.averageRating !== null && (
               <span className="inline-flex items-center gap-1">
                 <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
-                {provider.averageRating.toFixed(1)} · {t("marketplace.labels.reviews", { count: provider.reviewCount })}
+                {provider.averageRating.toFixed(1)} ·{" "}
+                {t("marketplace.labels.reviews", { count: provider.reviewCount })}
               </span>
             )}
+            {provider.verifications.map((verification) => (
+              <Badge key={verification.type} variant="secondary" className="gap-1">
+                <BadgeCheckIcon aria-hidden="true" className="size-3.5" />
+                {verification.reviewedAt
+                  ? t("verification.public.verifiedOn", {
+                      type: t(`verification.types.${verificationMessageKey(verification.type)}`),
+                      date: formatter.dateTime(new Date(verification.reviewedAt), {
+                        dateStyle: "medium",
+                        timeZone: "Asia/Dhaka",
+                      }),
+                    })
+                  : t("verification.public.verified", {
+                      type: t(`verification.types.${verificationMessageKey(verification.type)}`),
+                    })}
+              </Badge>
+            ))}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -110,7 +127,9 @@ export function ProviderProfile({
       </Card>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("marketplace.providerProfile.servicesAndListings")}</h2>
+        <h2 className="text-xl font-bold">
+          {t("marketplace.providerProfile.servicesAndListings")}
+        </h2>
         {provider.listings.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("workflow.noRecords")}

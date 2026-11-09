@@ -56,7 +56,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "File storage is not configured." }, { status: 503 });
 
   let key: string;
-  if (parsed.data.purpose === "listing-image") {
+  if (parsed.data.purpose === "provider-verification-document") {
+    const capabilityKind =
+      parsed.data.verificationType === "CONTRACTOR"
+        ? "CONSTRUCTION_SERVICE"
+        : "CONSTRUCTION_MATERIAL";
+    const profile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+      select: {
+        id: true,
+        capabilities: {
+          where: { sectorSlug: "construction", kind: capabilityKind },
+          select: { id: true },
+        },
+      },
+    });
+    if (!profile || !profile.capabilities.length)
+      return NextResponse.json(
+        { error: "Apply for the matching construction capability before uploading evidence." },
+        { status: 403 },
+      );
+    key = `provider-verification/${profile.id}/${parsed.data.verificationType}/${user.id}/${crypto.randomUUID()}.${extensions[parsed.data.contentType]}`;
+  } else if (parsed.data.purpose === "listing-image") {
     const expectedSector = parsed.data.kind.startsWith("CONSTRUCTION_")
       ? "construction"
       : "agriculture-labor";

@@ -9,6 +9,20 @@ type StorefrontImageDetails = {
   purpose: "provider-storefront-image";
   imageType: "profile" | "cover";
 };
+type ProviderVerificationDetails = {
+  purpose: "provider-verification-document";
+  verificationType: "CONTRACTOR" | "SUPPLIER";
+  documentType:
+    | "BUSINESS_REGISTRATION"
+    | "TRADE_LICENSE"
+    | "TAX_DOCUMENT"
+    | "PROFESSIONAL_CREDENTIAL"
+    | "PORTFOLIO_OR_REFERENCE"
+    | "SUPPLIER_AUTHORIZATION"
+    | "PRODUCT_CERTIFICATE"
+    | "WAREHOUSE_PROOF"
+    | "OTHER";
+};
 
 export async function uploadPrivateFile(
   file: File,
@@ -18,7 +32,8 @@ export async function uploadPrivateFile(
     | ProjectPhotoDetails
     | PaymentReceiptDetails
     | CropDiseasePhotoDetails
-    | StorefrontImageDetails,
+    | StorefrontImageDetails
+    | ProviderVerificationDetails,
 ) {
   const contentType = file.type.toLowerCase();
   const allowed =
@@ -26,13 +41,16 @@ export async function uploadPrivateFile(
       ? ["image/jpeg", "image/png", "image/webp"].includes(contentType) && file.size <= 5_000_000
       : details.purpose === "project-document"
         ? contentType === "application/pdf" && file.size <= 10_000_000
-        : details.purpose === "project-photo" ||
-            details.purpose === "crop-disease-photo" ||
-            details.purpose === "provider-storefront-image"
-          ? ["image/jpeg", "image/png", "image/webp"].includes(contentType) &&
-            file.size <= 5_000_000
-          : ["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(contentType) &&
-            file.size <= 10_000_000;
+        : details.purpose === "provider-verification-document"
+          ? ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(contentType) &&
+            file.size <= 10_000_000
+          : details.purpose === "project-photo" ||
+              details.purpose === "crop-disease-photo" ||
+              details.purpose === "provider-storefront-image"
+            ? ["image/jpeg", "image/png", "image/webp"].includes(contentType) &&
+              file.size <= 5_000_000
+            : ["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(contentType) &&
+              file.size <= 10_000_000;
   if (!allowed) throw new Error("invalid-file");
 
   const response = await fetch("/api/uploads/presign", {

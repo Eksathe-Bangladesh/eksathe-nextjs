@@ -8,6 +8,7 @@ import { MilestoneList } from "@/components/projects/milestone-list";
 import { ListingEditForm } from "@/components/provider/listing-edit-form";
 import { ListingForm } from "@/components/provider/listing-form";
 import { ProviderApplicationForm } from "@/components/provider/provider-application-form";
+import { ProviderVerificationPanel } from "@/components/provider/provider-verification-form";
 import { QuoteForm } from "@/components/provider/quote-form";
 import { StorefrontForm } from "@/components/provider/storefront-form";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -62,8 +63,7 @@ export function ProviderWorkspace({
           <p className="text-primary text-sm">{t("provider.workspace.businessOperations")}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{t("nav.provider")}</h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            {workspace.profile.name} ·{" "}
-            {workspace.profile.district}
+            {workspace.profile.name} · {workspace.profile.district}
           </p>
         </div>
         <StatusBadge status={workspace.profile.status} />
@@ -80,14 +80,30 @@ export function ProviderWorkspace({
         </div>
       )}
 
+      <ProviderVerificationPanel
+        applications={workspace.verificationApplications}
+        capabilityTypes={Array.from(
+          new Set(
+            workspace.capabilities
+              .filter(
+                (capability) =>
+                  capability.sectorSlug === "construction" &&
+                  (capability.kind === "CONSTRUCTION_SERVICE" ||
+                    capability.kind === "CONSTRUCTION_MATERIAL"),
+              )
+              .map((capability) =>
+                capability.kind === "CONSTRUCTION_SERVICE" ? "CONTRACTOR" : "SUPPLIER",
+              ),
+          ),
+        )}
+      />
+
       {workspace.profile.status === "APPROVED" && capabilities.length > 0 && (
         <section id="listings" className="scroll-mt-24">
           <Card>
             <CardHeader>
               <CardTitle>{t("workflow.createListing")}</CardTitle>
-              <CardDescription>
-                {t("provider.workspace.moderationNotice")}
-              </CardDescription>
+              <CardDescription>{t("provider.workspace.moderationNotice")}</CardDescription>
             </CardHeader>
             <CardContent>
               <details>
@@ -119,9 +135,7 @@ export function ProviderWorkspace({
             <Card key={request.id}>
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">
-                    {request.listing.title}
-                  </CardTitle>
+                  <CardTitle className="text-lg">{request.listing.title}</CardTitle>
                   <CardDescription>
                     {request.buyerName} · {request.district} · {request.quantity}{" "}
                     {request.listing.unit}
@@ -200,8 +214,7 @@ export function ProviderWorkspace({
                 className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 text-sm"
               >
                 <span>
-                  {order.listing.title} ·{" "}
-                  {order.commission?.amount} BDT
+                  {order.listing.title} · {order.commission?.amount} BDT
                 </span>
                 <StatusBadge status={order.commission?.status ?? "DUE"} />
               </div>
@@ -214,9 +227,7 @@ export function ProviderWorkspace({
           <Card>
             <CardHeader>
               <CardTitle>{t("provider.workspace.yourStorefront")}</CardTitle>
-              <CardDescription>
-                {t("provider.storefront.description")}
-              </CardDescription>
+              <CardDescription>{t("provider.storefront.description")}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4 flex flex-wrap gap-3">
@@ -248,9 +259,7 @@ export function ProviderWorkspace({
       <Card id="application">
         <CardHeader>
           <CardTitle>{t("workflow.providerApplication")}</CardTitle>
-          <CardDescription>
-            {t("provider.capabilities.description")}
-          </CardDescription>
+          <CardDescription>{t("provider.capabilities.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <details>
@@ -282,12 +291,8 @@ export function ProviderWorkspace({
               key={notification.id}
               className="border-border/70 bg-card rounded-lg border px-4 py-3 text-sm"
             >
-              <p className="font-medium">
-                {notification.title}
-              </p>
-              <p className="text-muted-foreground mt-1">
-                {notification.message}
-              </p>
+              <p className="font-medium">{notification.title}</p>
+              <p className="text-muted-foreground mt-1">{notification.message}</p>
             </div>
           ))}
         </section>
@@ -296,11 +301,7 @@ export function ProviderWorkspace({
   );
 }
 
-function ListingStockCard({
-  listing,
-}: {
-  listing: ProviderWorkspaceData["listings"][number];
-}) {
+function ListingStockCard({ listing }: { listing: ProviderWorkspaceData["listings"][number] }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(updateListingStockAction, initialWorkflowState);
   const tracksStock = listing.kind === "PRODUCE" || listing.kind === "CONSTRUCTION_MATERIAL";

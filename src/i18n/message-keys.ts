@@ -29,6 +29,11 @@ const statusKeys = {
   REVIEW: "statuses.REVIEW",
   PLANNING: "statuses.PLANNING",
   ACTIVE: "statuses.ACTIVE",
+  SUBMITTED: "statuses.SUBMITTED",
+  IN_REVIEW: "statuses.IN_REVIEW",
+  CHANGES_REQUESTED: "statuses.CHANGES_REQUESTED",
+  EXPIRED: "statuses.EXPIRED",
+  REVOKED: "statuses.REVOKED",
 } as const satisfies { [Key in StatusMessageKey]: `statuses.${Key}` };
 
 export function statusMessageKey(status: string) {

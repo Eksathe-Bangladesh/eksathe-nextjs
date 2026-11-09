@@ -52,7 +52,8 @@
       "total": "Total",
       "confirmedByBothParties": "Confirmed by both parties",
       "awaitingConfirmation": "Awaiting confirmation",
-      "noAdditionalDetailsProvided": "No additional details provided."
+      "noAdditionalDetailsProvided": "No additional details provided.",
+      "notProvided": "Not provided"
     },
     "actions": {
       "update": "Update",
@@ -173,6 +174,8 @@
     "dispute": "Issue details",
     "refundRecorded": "The refund was recorded.",
     "providerApproved": "Provider application reviewed.",
+    "verificationSubmitted": "Your verification application was submitted.",
+    "verificationReviewed": "The provider verification review was recorded.",
     "listingApproved": "Listing moderation updated.",
     "disputeResolved": "The dispute resolution was recorded.",
     "commissionRateUpdated": "The sector commission rate was updated.",
@@ -844,6 +847,98 @@
     "capabilities": {
       "description": "Apply for additional sector capabilities from the same business profile."
     }
+  },
+  "verification": {
+    "provider": {
+      "title": "Construction provider verification",
+      "description": "Submit supporting business or professional evidence. Only authorized construction operations staff can review your private files.",
+      "typeDescription": {
+        "contractor": "For construction contractors, engineers, and other building professionals.",
+        "supplier": "For building-material suppliers and distributors."
+      },
+      "reviewNote": "Latest review note",
+      "validUntil": "Verification valid until {date}.",
+      "waitingForReview": "Your application is waiting for an administrator review.",
+      "documentPrivacy": "Documents are private and are only shown to you and authorized construction reviewers. Upload PDF, JPG, PNG, or WebP files up to 10 MB."
+    },
+    "admin": {
+      "title": "Construction verification",
+      "description": "Review contractor and supplier evidence. Approval applies only to its provider type and expires after one year.",
+      "documents": "Submitted evidence",
+      "fileDetails": "{size} KB · {type}",
+      "documentDecision": "Document decision",
+      "documentNote": "Document note (optional)",
+      "noDocuments": "No current-version evidence was submitted.",
+      "history": "Review history",
+      "reviewNote": "Decision reason or requested changes"
+    },
+    "public": {
+      "verified": "Verified {type}",
+      "verifiedOn": "Verified {type} · reviewed {date}"
+    },
+    "types": {
+      "contractor": "Contractor / engineer",
+      "supplier": "Material supplier"
+    },
+    "applicantTypes": {
+      "individual": "Individual",
+      "business": "Registered business"
+    },
+    "fields": {
+      "applicantType": "Applicant type",
+      "legalName": "Applicant's legal name",
+      "businessName": "Business name",
+      "businessAddress": "Business or operating address",
+      "registrationNumber": "Business registration number",
+      "tradeLicenseNumber": "Trade-license number",
+      "taxIdentifier": "Tax identifier (optional)",
+      "yearsExperience": "Years of experience",
+      "teamSize": "Team size",
+      "specializations": "Specializations (comma-separated)",
+      "materialCategories": "Material categories (comma-separated)",
+      "brands": "Brands supplied (comma-separated)",
+      "serviceAreas": "Service or delivery areas (comma-separated)",
+      "documents": "Supporting documents",
+      "documentType": "Document type",
+      "file": "File"
+    },
+    "documents": {
+      "businessRegistration": "Business registration",
+      "tradeLicense": "Trade license",
+      "taxDocument": "Tax document",
+      "professionalCredential": "Professional credential",
+      "portfolioOrReference": "Project portfolio or reference",
+      "supplierAuthorization": "Supplier or dealership authorization",
+      "productCertificate": "Product certificate",
+      "warehouseProof": "Warehouse or shop evidence",
+      "other": "Other supporting document"
+    },
+    "documentStatuses": {
+      "pending": "Not reviewed",
+      "approved": "Accepted",
+      "rejected": "Needs replacement"
+    },
+    "statuses": {
+      "submitted": "Submitted",
+      "inReview": "Under review",
+      "changesRequested": "Changes requested",
+      "approved": "Approved",
+      "rejected": "Declined",
+      "expired": "Expired",
+      "revoked": "Revoked"
+    },
+    "actions": {
+      "addDocument": "Add another document",
+      "remove": "Remove",
+      "submit": "Submit verification",
+      "inReview": "Start review",
+      "approved": "Approve verification",
+      "changesRequested": "Request changes",
+      "rejected": "Reject application",
+      "revoked": "Revoke verification"
+    },
+    "uploading": "Uploading…",
+    "uploadError": "The document could not be uploaded. Check the file and try again."
   },
   "sectors": {
     "family-household": "Family & Household",
@@ -1705,6 +1800,11 @@
     "WAIVED": "Waived",
     "REVIEW": "Waiting for approval",
     "PLANNING": "Planning",
-    "ACTIVE": "Active"
+    "ACTIVE": "Active",
+    "SUBMITTED": "Submitted",
+    "IN_REVIEW": "Under review",
+    "CHANGES_REQUESTED": "Changes requested",
+    "EXPIRED": "Expired",
+    "REVOKED": "Revoked"
   }
 }
