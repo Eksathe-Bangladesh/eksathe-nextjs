@@ -3,8 +3,12 @@
 import {
   BriefcaseBusinessIcon,
   ChevronDownIcon,
+  ClipboardListIcon,
+  FolderKanbanIcon,
   LogOutIcon,
+  LoaderCircleIcon,
   MenuIcon,
+  ShoppingBagIcon,
   ShieldCheckIcon,
   UserRoundIcon,
   UserRoundPlusIcon,
@@ -69,6 +73,7 @@ export function SiteHeaderUserMenu({
   };
   const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const displayName = userName?.trim().split(/\s+/).slice(0, 2).join(" ");
 
   useEffect(() => {
@@ -110,12 +115,24 @@ export function SiteHeaderUserMenu({
         type="button"
         aria-expanded={menuOpen}
         aria-haspopup="menu"
+        aria-label={signingOut ? t("nav.signingOut") : undefined}
+        aria-live="polite"
+        disabled={signingOut}
         onClick={() => setMenuOpen((open) => !open)}
-        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/20 px-3 text-sm font-semibold text-white hover:bg-white/10"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/20 px-3 text-sm font-semibold text-white hover:bg-white/10 disabled:cursor-wait disabled:opacity-80"
       >
-        <UserRoundIcon aria-hidden="true" className="size-4" />
-        <span className="max-w-32 truncate">{displayName ?? t("auth.signIn")}</span>
-        <ChevronDownIcon aria-hidden="true" className="size-4" />
+        {signingOut ? (
+          <>
+            <LoaderCircleIcon aria-hidden="true" className="size-4 animate-spin" />
+            <span>{t("nav.signingOut")}</span>
+          </>
+        ) : (
+          <>
+            <UserRoundIcon aria-hidden="true" className="size-4" />
+            <span className="max-w-32 truncate">{displayName ?? t("auth.signIn")}</span>
+            <ChevronDownIcon aria-hidden="true" className="size-4" />
+          </>
+        )}
       </button>
       {menuOpen && (
         <div
@@ -178,24 +195,27 @@ export function SiteHeaderUserMenu({
             role="menuitem"
             href="/account#requests"
             onClick={() => setMenuOpen(false)}
-            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
+            <ClipboardListIcon aria-hidden="true" className="size-4" />
             {t("header.myRequests")}
           </Link>
           <Link
             role="menuitem"
             href="/account#orders"
             onClick={() => setMenuOpen(false)}
-            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
+            <ShoppingBagIcon aria-hidden="true" className="size-4" />
             {t("header.myOrders")}
           </Link>
           <Link
             role="menuitem"
             href="/account#projects"
             onClick={() => setMenuOpen(false)}
-            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
+            <FolderKanbanIcon aria-hidden="true" className="size-4" />
             {t("header.myProjects")}
           </Link>
           {canProvider && (
@@ -231,14 +251,25 @@ export function SiteHeaderUserMenu({
               {isAgroAdmin ? t("workflow.agroAdmin") : t("nav.admin")}
             </Link>
           )}
-          <form action={signOutAction}>
+          <form
+            action={signOutAction}
+            onSubmit={() => {
+              setSigningOut(true);
+              setMenuOpen(false);
+            }}
+          >
             <button
               role="menuitem"
               type="submit"
-              className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-red-500/20"
+              disabled={signingOut}
+              className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-red-500/20 disabled:cursor-wait disabled:opacity-70"
             >
-              <LogOutIcon aria-hidden="true" className="size-4" />
-              {t("nav.signOut")}
+              {signingOut ? (
+                <LoaderCircleIcon aria-hidden="true" className="size-4 animate-spin" />
+              ) : (
+                <LogOutIcon aria-hidden="true" className="size-4" />
+              )}
+              {signingOut ? t("nav.signingOut") : t("nav.signOut")}
             </button>
           </form>
         </div>

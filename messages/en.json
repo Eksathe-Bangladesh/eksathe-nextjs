@@ -131,6 +131,7 @@
     "provider": "Provider workspace",
     "admin": "Administration",
     "signOut": "Sign out",
+    "signingOut": "Signing out…",
     "returnHome": "Return home",
     "comingSoon": "Services in this sector are coming soon.",
     "live": "Live",
