@@ -330,6 +330,8 @@
   },
   "header": {
     "services": "Services",
+    "primaryNavigation": "Primary navigation",
+    "shopping": "Marketplace",
     "login": "Log In",
     "register": "Register",
     "switchLanguage": "Switch Language",
@@ -341,9 +343,23 @@
     "supplierVerification": "Materials supplier verification",
     "staffAccess": "Staff access",
     "myRequests": "My requests",
-    "myOrders": "My orders",
+    "myOrders": "Service orders",
+    "myProductOrders": "Product orders",
     "myProjects": "My projects",
-    "becomeProvider": "Become a provider"
+    "becomeProvider": "Become a provider",
+    "becomeSeller": "Become a seller",
+    "sellerApplication": "Seller application",
+    "sellerWorkspace": "Seller workspace"
+  },
+  "commerceNavigation": {
+    "label": "Marketplace navigation",
+    "market": "Products",
+    "wholesale": "Wholesale",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "orders": "Product orders",
+    "messages": "Messages",
+    "seller": "Seller workspace"
   },
   "hero": {
     "badge": "🌱 Agriculture • Market • Labor",
@@ -451,6 +467,7 @@
     }
   },
   "admin": {
+    "commerceModeration": "E-Commerce & B2B moderation",
     "publishing": {
       "marketLabel": "Market",
       "agricultureOperations": "Agriculture operations",
@@ -573,6 +590,7 @@
     "tagline": "Farmer • Market • Labor • Service"
   },
   "dashboard": {
+    "marketplaceEntryDescription": "Shop retail products, explore wholesale offers, or start selling.",
     "tabDashboard": "Dashboard",
     "tabAdmin": "Admin Panel",
     "demoNotice": "This is a demo prototype; all data is sample.",
@@ -597,6 +615,19 @@
   "account": {
     "workspace": {
       "accountNavigation": "Account navigation",
+      "shopping": "Shopping",
+      "shoppingDescription": "Browse products and manage your marketplace purchases and seller activity.",
+      "serviceOrders": "Service orders and bookings",
+      "serviceOrdersDescription": "Orders and bookings for services are listed separately from product purchases.",
+      "shoppingLinks": {
+        "marketplace": "Browse marketplace",
+        "productOrders": "Product orders",
+        "cart": "Shopping cart",
+        "wishlist": "Wishlist",
+        "wholesale": "Wholesale requests",
+        "messages": "Marketplace messages",
+        "sellerWorkspace": "Seller workspace"
+      },
       "agricultureServiceRequests": "Agriculture service requests",
       "yourAccount": "Your account",
       "welcome": "Welcome, {name}",

@@ -7,6 +7,7 @@ import {
   MailIcon,
   PhoneIcon,
   ShoppingBagIcon,
+  StoreIcon,
   UserRoundIcon,
 } from "lucide-react";
 import { useTranslations, useFormatter } from "next-intl";
@@ -56,6 +57,7 @@ export function AccountWorkspace({
         },
         { id: "requests", label: t("common.labels.requests"), icon: ClipboardListIcon },
         { id: "orders", label: t("common.labels.orders"), icon: ShoppingBagIcon },
+        { id: "shopping", label: t("header.shopping"), icon: StoreIcon },
         {
           id: "projects",
           label: t("workflow.projectTitle"),
@@ -80,9 +82,7 @@ export function AccountWorkspace({
               <UserRoundIcon aria-hidden="true" className="text-primary size-5" />
               {t("dashboard.profile")}
             </CardTitle>
-            <CardDescription>
-              {t("account.profile.usageNotice")}
-            </CardDescription>
+            <CardDescription>{t("account.profile.usageNotice")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ProfileForm user={user} />
@@ -93,9 +93,7 @@ export function AccountWorkspace({
       <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
         <div>
           <h2 className="text-xl font-bold">{t("account.workspace.agricultureServiceRequests")}</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            {t("account.requests.description")}
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">{t("account.requests.description")}</p>
         </div>
         {workspace.agricultureRequests.length === 0 ? (
           <Empty text={t("workflow.noRecords")} />
@@ -104,9 +102,7 @@ export function AccountWorkspace({
             <Card key={request.id}>
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">
-                    {request.service.title}
-                  </CardTitle>
+                  <CardTitle className="text-lg">{request.service.title}</CardTitle>
                   <CardDescription>
                     {request.referenceCode ?? `AG-${request.id}`} · {request.district} ·{" "}
                     {request.createdAt
@@ -154,12 +150,10 @@ export function AccountWorkspace({
             <Card key={request.id}>
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">
-                    {request.listing.title}
-                  </CardTitle>
+                  <CardTitle className="text-lg">{request.listing.title}</CardTitle>
                   <CardDescription>
-                    {request.provider.name} ·{" "}
-                    {request.district} · {request.quantity} {request.listing.unit}
+                    {request.provider.name} · {request.district} · {request.quantity}{" "}
+                    {request.listing.unit}
                   </CardDescription>
                 </div>
                 <StatusBadge status={request.status} />
@@ -225,7 +219,12 @@ export function AccountWorkspace({
       </section>
 
       <section id="orders" className="flex scroll-mt-24 flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("common.labels.ordersAndBookings")}</h2>
+        <div>
+          <h2 className="text-xl font-bold">{t("account.workspace.serviceOrders")}</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {t("account.workspace.serviceOrdersDescription")}
+          </p>
+        </div>
         {workspace.orders.length === 0 ? (
           <Empty text={t("workflow.noRecords")} />
         ) : (
@@ -233,6 +232,55 @@ export function AccountWorkspace({
             <OrderCard key={order.id} order={order} actorId={user.id} perspective="buyer" />
           ))
         )}
+      </section>
+
+      <section id="shopping" className="flex scroll-mt-24 flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-bold">{t("account.workspace.shopping")}</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {t("account.workspace.shoppingDescription")}
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              href: "/dashboard/ecommerce-b2b",
+              label: t("account.workspace.shoppingLinks.marketplace"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/orders",
+              label: t("account.workspace.shoppingLinks.productOrders"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/cart",
+              label: t("account.workspace.shoppingLinks.cart"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/wishlist",
+              label: t("account.workspace.shoppingLinks.wishlist"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/wholesale",
+              label: t("account.workspace.shoppingLinks.wholesale"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/messages",
+              label: t("account.workspace.shoppingLinks.messages"),
+            },
+            {
+              href: "/dashboard/ecommerce-b2b/seller",
+              label: t("account.workspace.shoppingLinks.sellerWorkspace"),
+            },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={buttonVariants({ variant: "outline", className: "justify-start" })}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section id="projects" className="flex scroll-mt-24 flex-col gap-4">
@@ -313,12 +361,8 @@ export function AccountWorkspace({
               className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3"
             >
               <div>
-                <p className="font-medium">
-                  {notification.title}
-                </p>
-                <p className="text-muted-foreground mt-1 text-sm">
-                  {notification.message}
-                </p>
+                <p className="font-medium">{notification.title}</p>
+                <p className="text-muted-foreground mt-1 text-sm">{notification.message}</p>
               </div>
               {notification.href && (
                 <Link
@@ -395,9 +439,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
     <form action={action} className="mt-4 flex flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
-      <p className="text-muted-foreground text-xs">
-        {t("account.requests.acceptanceNotice")}
-      </p>
+      <p className="text-muted-foreground text-xs">{t("account.requests.acceptanceNotice")}</p>
       <Button type="submit" disabled={pending} className="w-fit">
         {pending ? t("common.loading") : t("workflow.acceptQuote")}
       </Button>

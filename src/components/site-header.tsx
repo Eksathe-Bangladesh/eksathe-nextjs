@@ -9,6 +9,7 @@ import {
   LoaderCircleIcon,
   MenuIcon,
   ShoppingBagIcon,
+  StoreIcon,
   ShieldCheckIcon,
   UserRoundIcon,
   UserRoundPlusIcon,
@@ -39,6 +40,7 @@ export type SiteHeaderUserProps = {
   providerSummary?: ProviderSummary | null;
   canAdmin?: boolean;
   isAgroAdmin?: boolean;
+  commerceSellerStatus?: string | null;
 };
 
 export function SiteHeaderUserMenu({
@@ -49,6 +51,7 @@ export function SiteHeaderUserMenu({
   providerSummary = null,
   canAdmin = false,
   isAgroAdmin = false,
+  commerceSellerStatus = null,
 }: SiteHeaderUserProps) {
   const t = useTranslations();
   const accountTypeLabels: Record<string, string> = {
@@ -148,6 +151,15 @@ export function SiteHeaderUserMenu({
             <UserRoundIcon aria-hidden="true" className="size-4" />
             {t("dashboard.profile")}
           </Link>
+          <Link
+            role="menuitem"
+            href="/dashboard/ecommerce-b2b"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+          >
+            <ShoppingBagIcon aria-hidden="true" className="size-4" />
+            {t("header.shopping")}
+          </Link>
           <div className="border-border/70 flex flex-col gap-1 border-y px-3 py-2 text-xs">
             <p className="font-semibold">{t("header.accountType")}</p>
             <p className="text-muted-foreground">
@@ -211,6 +223,15 @@ export function SiteHeaderUserMenu({
           </Link>
           <Link
             role="menuitem"
+            href="/dashboard/ecommerce-b2b/orders"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+          >
+            <ShoppingBagIcon aria-hidden="true" className="size-4" />
+            {t("header.myProductOrders")}
+          </Link>
+          <Link
+            role="menuitem"
             href="/account#projects"
             onClick={() => setMenuOpen(false)}
             className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
@@ -240,6 +261,19 @@ export function SiteHeaderUserMenu({
               {t("header.becomeProvider")}
             </Link>
           )}
+          <Link
+            role="menuitem"
+            href="/dashboard/ecommerce-b2b/seller"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+          >
+            <StoreIcon aria-hidden="true" className="size-4" />
+            {commerceSellerStatus === "APPROVED"
+              ? t("header.sellerWorkspace")
+              : commerceSellerStatus === "PENDING" || commerceSellerStatus === "REJECTED"
+                ? t("header.sellerApplication")
+                : t("header.becomeSeller")}
+          </Link>
           {canAdmin && (
             <Link
               role="menuitem"
@@ -287,6 +321,7 @@ export type SiteHeaderProps = {
   providerSummary?: ProviderSummary | null;
   canAdmin?: boolean;
   isAgroAdmin?: boolean;
+  commerceSellerStatus?: string | null;
 };
 
 function NavigationLinks({ pathname }: { pathname: string }) {
@@ -295,12 +330,17 @@ function NavigationLinks({ pathname }: { pathname: string }) {
     { href: "/dashboard", label: t("header.services") },
     { href: "/agriculture", label: t("home.agriculture") },
     { href: "/construction", label: t("home.construction") },
+    { href: "/dashboard/ecommerce-b2b", label: t("header.shopping") },
   ];
 
   return (
     <div className="flex min-w-0 flex-col gap-1 xl:flex-row xl:items-center xl:gap-2">
       {items.map(({ href, label }) => {
-        const active = pathname.startsWith(href);
+        const active =
+          href === "/dashboard"
+            ? pathname === href ||
+              (pathname.startsWith(`${href}/`) && !pathname.startsWith("/dashboard/ecommerce-b2b"))
+            : pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link
             key={href}
@@ -329,6 +369,7 @@ export function SiteHeader({
   providerSummary = null,
   canAdmin = false,
   isAgroAdmin = false,
+  commerceSellerStatus = null,
 }: SiteHeaderProps) {
   const t = useTranslations();
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -365,7 +406,7 @@ export function SiteHeader({
         <nav
           id="site-navigation"
           className={`${navigationOpen ? "flex" : "hidden"} absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] flex-col gap-4 overflow-y-auto border-b border-white/20 bg-[#0b5036] p-4 shadow-lg xl:contents`}
-          aria-label={t("header.services")}
+          aria-label={t("header.primaryNavigation")}
           onClick={(event) => {
             if ((event.target as HTMLElement).closest("a")) {
               setNavigationOpen(false);
@@ -392,6 +433,7 @@ export function SiteHeader({
                 providerSummary={providerSummary}
                 canAdmin={canAdmin}
                 isAgroAdmin={isAgroAdmin}
+                commerceSellerStatus={commerceSellerStatus}
               />
             )}
           </div>

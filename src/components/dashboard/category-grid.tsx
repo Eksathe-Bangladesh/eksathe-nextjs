@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, XIcon } from "lucide-react";
+import { ArrowUpRightIcon, SearchIcon, ShoppingBagIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
@@ -24,6 +24,23 @@ export function CategoryGrid() {
 
   return (
     <div className="flex flex-col gap-4">
+      <Link
+        href="/dashboard/ecommerce-b2b"
+        className="bg-primary/5 border-primary/20 hover:border-primary/40 flex items-center justify-between gap-4 rounded-2xl border p-4 transition-colors sm:p-5"
+      >
+        <span className="flex items-center gap-3">
+          <span className="bg-primary/10 text-primary grid size-11 place-items-center rounded-xl">
+            <ShoppingBagIcon aria-hidden="true" className="size-5" />
+          </span>
+          <span>
+            <span className="block font-semibold">{t("header.shopping")}</span>
+            <span className="text-muted-foreground mt-1 block text-sm">
+              {t("dashboard.marketplaceEntryDescription")}
+            </span>
+          </span>
+        </span>
+        <ArrowUpRightIcon aria-hidden="true" className="text-primary size-5 shrink-0" />
+      </Link>
       {/* Search Filter (subtle, aligned right/left) */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative w-full max-w-xs">

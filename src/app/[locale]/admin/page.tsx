@@ -1,7 +1,8 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import { AdminWorkspace } from "@/components/admin/admin-workspace";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
+import { Link } from "@/i18n/navigation";
 import { agricultureServiceRegistry } from "@/lib/agriculture/service-registry";
 import { requireAdmin } from "@/lib/dal";
 import { logError } from "@/lib/logging";
@@ -17,6 +18,7 @@ export default async function AdminPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { access } = await requireAdmin();
+  const t = await getTranslations();
   const params = await searchParams;
   const value = (key: string) => {
     const raw = params[key];
@@ -62,7 +64,7 @@ export default async function AdminPage({
           className="text-primary w-fit rounded-md border px-3 py-2 text-sm"
           href="/admin/ecommerce-b2b"
         >
-          E-Commerce & B2B moderation
+          {t("admin.commerceModeration")}
         </Link>
       )}
       <AdminWorkspace data={data} />
