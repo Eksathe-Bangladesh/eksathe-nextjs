@@ -2,8 +2,8 @@
 
 import { cn } from "cn";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
+import { Link, usePathname } from "@/i18n/navigation";
 
 export function DashboardTabs() {
   const t = useTranslations();

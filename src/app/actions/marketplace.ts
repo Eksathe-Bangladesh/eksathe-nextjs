@@ -1,8 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
+import { revalidateLocalizedPath } from "@/i18n/revalidate";
+import { cacheTags } from "@/lib/cache-tags";
 import { requireUser, safeNextPath } from "@/lib/dal";
 import {
   acceptQuote,
@@ -85,7 +87,9 @@ async function run(
 ): Promise<WorkflowState> {
   try {
     const result = await operation();
-    for (const path of refresh) revalidatePath(path);
+    for (const path of refresh) revalidateLocalizedPath(path);
+    revalidateTag(cacheTags.listings, "max");
+    revalidateTag(cacheTags.providers, "max");
     return { status: "success", messageKey, entityId: result?.id };
   } catch (error) {
     return failure(error);

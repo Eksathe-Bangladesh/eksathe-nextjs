@@ -3,6 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,

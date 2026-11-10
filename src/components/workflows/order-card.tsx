@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import {
   confirmPaymentAction,
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { uploadPrivateFile } from "@/lib/client-upload";
@@ -42,8 +43,8 @@ export type WorkspaceOrder = {
   subtotal: string;
   transportFee: string;
   commissionAmount: string;
-  listing: { titleBn: string; titleEn: string; kind: string; unit: string };
-  provider?: { nameBn: string; nameEn: string; userId: string };
+  listing: { title: string; kind: string; unit: string };
+  provider?: { name: string; userId: string };
   buyerName?: string;
   booking: { startsAt: string | null; endsAt: string | null } | null;
   cancellationReason: string | null;
@@ -96,7 +97,7 @@ export function OrderCard({
         timeZone: "Asia/Dhaka",
       })
     : null;
-  const title = locale === "bn" ? order.listing.titleBn : order.listing.titleEn;
+  const title = order.listing.title;
 
   return (
     <Card>
@@ -104,7 +105,7 @@ export function OrderCard({
         <div>
           <CardTitle className="text-lg">{title}</CardTitle>
           <CardDescription className="mt-1">
-            {t("inline.order_116i1m4")} · {order.id}
+            {t("marketplace.order.order")} · {order.id}
           </CardDescription>
         </div>
         <StatusBadge status={order.status} />
@@ -112,26 +113,26 @@ export function OrderCard({
       <CardContent className="flex flex-col gap-5">
         <div className="bg-muted/50 grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-2">
           <p>
-            {t("inline.quantity_fuyc1w")}:{" "}
+            {t("workflow.quantity")}:{" "}
             <strong>
               {order.quantity} {order.unit}
             </strong>
           </p>
           <p>
-            {t("inline.unit_price_1v7hlen")}:{" "}
+            {t("marketplace.order.unitPrice")}:{" "}
             <strong>
               {formatMoney(order.unitPrice)} / {order.unit}
             </strong>
           </p>
           {order.buyerName && (
             <p>
-              {t("inline.customer_126xmgu")}: <strong>{order.buyerName}</strong>
+              {t("workflow.customerAccount")}: <strong>{order.buyerName}</strong>
             </p>
           )}
           {order.provider && (
             <p>
-              {t("inline.provider_1jmkj9t")}:{" "}
-              <strong>{locale === "bn" ? order.provider.nameBn : order.provider.nameEn}</strong>
+              {t("common.labels.provider")}:{" "}
+              <strong>{order.provider.name}</strong>
             </p>
           )}
           {startsAt && (
@@ -143,7 +144,7 @@ export function OrderCard({
             </p>
           )}
           <p>
-            {t("inline.items_or_service_9cbaqx")}: <strong>{formatMoney(order.subtotal)}</strong>
+            {t("marketplace.order.itemsOrService")}: <strong>{formatMoney(order.subtotal)}</strong>
           </p>
           {Number(order.transportFee) > 0 && (
             <p>
@@ -151,13 +152,13 @@ export function OrderCard({
             </p>
           )}
           <p>
-            {t("inline.total_bldkfh")}: <strong>{formatMoney(total)}</strong>
+            {t("common.labels.total")}: <strong>{formatMoney(total)}</strong>
           </p>
           <p>
-            {t("inline.confirmed_paid_1skg95y")}: <strong>{formatMoney(confirmedPaid)}</strong>
+            {t("marketplace.order.confirmedPaid")}: <strong>{formatMoney(confirmedPaid)}</strong>
           </p>
           <p>
-            {t("inline.balance_due_tadetd")}: <strong>{formatMoney(due)}</strong>
+            {t("marketplace.order.balanceDue")}: <strong>{formatMoney(due)}</strong>
           </p>
         </div>
 
@@ -176,7 +177,7 @@ export function OrderCard({
         )}
         {order.payments.length > 0 && (
           <section className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold">{t("inline.payment_records_dd9a94")}</h3>
+            <h3 className="text-sm font-semibold">{t("marketplace.order.paymentRecords")}</h3>
             {order.payments.map((payment) => (
               <div
                 key={payment.id}
@@ -197,8 +198,8 @@ export function OrderCard({
                   )}
                   <span className="text-muted-foreground text-xs">
                     {payment.buyerConfirmedAt && payment.providerConfirmedAt
-                      ? t("inline.confirmed_by_both_parties_1xd4wdp")
-                      : t("inline.awaiting_confirmation_1m2idbp")}
+                      ? t("common.labels.confirmedByBothParties")
+                      : t("common.labels.awaitingConfirmation")}
                   </span>
                   {payment.submittedById !== actorId &&
                     ((perspective === "buyer" && !payment.buyerConfirmedAt) ||
@@ -214,7 +215,7 @@ export function OrderCard({
         {order.commission && (
           <div className="border-border/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm">
             <span>
-              {t("inline.platform_commission_1lexk9r")}: {formatMoney(order.commission.amount)}
+              {t("marketplace.order.platformCommission")}: {formatMoney(order.commission.amount)}
             </span>
             <StatusBadge status={order.commission.status} />
           </div>
@@ -288,7 +289,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareReceipt(event: FormEvent<HTMLFormElement>) {
+  async function prepareReceipt(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (!selectedFile || uploadedFile.current === selectedFile) return;
     event.preventDefault();
@@ -341,16 +342,20 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
         />
       </Field>
       <Field id={`payment-method-${orderId}`} label={t("workflow.paymentMethod")}>
-        <select
+        <NativeSelect
           id={`payment-method-${orderId}`}
           name="method"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="CASH">{t("inline.cash_1yvb5lv")}</option>
-          <option value="BANK_TRANSFER">{t("inline.bank_transfer_1wr4ny5")}</option>
-          <option value="MOBILE_WALLET">{t("inline.mobile_wallet_o4hwx8")}</option>
-          <option value="OTHER">{t("inline.other_meu6yg")}</option>
-        </select>
+          <NativeSelectOption value="CASH">{t("marketplace.order.cash")}</NativeSelectOption>
+          <NativeSelectOption value="BANK_TRANSFER">
+            {t("marketplace.order.bankTransfer")}
+          </NativeSelectOption>
+          <NativeSelectOption value="MOBILE_WALLET">
+            {t("marketplace.order.mobileWallet")}
+          </NativeSelectOption>
+          <NativeSelectOption value="OTHER">{t("common.other")}</NativeSelectOption>
+        </NativeSelect>
       </Field>
       <Field id={`payment-reference-${orderId}`} label={t("workflow.paymentReference")}>
         <Input id={`payment-reference-${orderId}`} name="reference" maxLength={120} />
@@ -377,7 +382,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
         <ActionFeedback state={state} />
         {uploadError && (
           <p role="alert" className="text-destructive text-sm">
-            {t(`workflow.${uploadError}` as never)}
+            {t(`workflow.${uploadError}`)}
           </p>
         )}
         <Button type="submit" disabled={pending || uploading}>
@@ -388,7 +393,7 @@ function PaymentForm({ orderId, due }: { orderId: string; due: number }) {
         {t("workflow.paymentReceiptHelp")}
       </p>
       <p className="text-muted-foreground text-xs sm:col-span-2">
-        {t("inline.pay_the_provider_directly_the_payment_is_n_4e9pq4")}
+        {t("marketplace.order.paymentNotice")}
       </p>
     </form>
   );
@@ -419,17 +424,17 @@ function ReviewForm({ orderId }: { orderId: string }) {
     >
       <input type="hidden" name="orderId" value={orderId} />
       <Field id={`review-rating-${orderId}`} label={t("workflow.reviewRating")}>
-        <select
+        <NativeSelect
           id={`review-rating-${orderId}`}
           name="rating"
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
           {[5, 4, 3, 2, 1].map((rating) => (
-            <option key={rating} value={rating}>
+            <NativeSelectOption key={rating} value={rating}>
               {rating} / 5
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
       </Field>
       <Field id={`review-comment-${orderId}`} label={t("workflow.reviewText")}>
         <Input id={`review-comment-${orderId}`} name="comment" maxLength={1200} />
@@ -441,7 +446,7 @@ function ReviewForm({ orderId }: { orderId: string }) {
         </Button>
       </div>
       <p className="text-muted-foreground text-xs sm:col-span-3">
-        {t("inline.you_can_leave_one_review_for_each_complete_1sswryh")}
+        {t("marketplace.order.reviewNotice")}
       </p>
     </form>
   );

@@ -1,8 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
+import { revalidateLocalizedPath } from "@/i18n/revalidate";
+import { cacheTags } from "@/lib/cache-tags";
 import { requireStaff, requireSuperAdmin } from "@/lib/dal";
 import {
   grantStaffAccess,
@@ -62,11 +64,15 @@ async function run(
 ): Promise<WorkflowState> {
   try {
     await operation();
-    revalidatePath("/admin");
-    revalidatePath("/provider");
-    revalidatePath("/account");
-    revalidatePath("/dashboard/agriculture-labor");
-    revalidatePath("/dashboard/construction");
+    revalidateLocalizedPath("/admin");
+    revalidateLocalizedPath("/provider");
+    revalidateLocalizedPath("/account");
+    revalidateLocalizedPath("/dashboard/agriculture-labor");
+    revalidateLocalizedPath("/dashboard/construction");
+    revalidateTag(cacheTags.listings, "max");
+    revalidateTag(cacheTags.providers, "max");
+    revalidateTag(cacheTags.agriculturePublic, "max");
+    revalidateTag(cacheTags.constructionPublic, "max");
     return { status: "success", messageKey };
   } catch (error) {
     return failure(error);

@@ -1,10 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import { z } from "zod";
 
 import { Prisma } from "@/generated/prisma/client";
+import { redirect } from "@/i18n/navigation";
+import { revalidateLocalizedPath } from "@/i18n/revalidate";
 import {
   calculateCouponDiscount,
   commerceAddressSchema,
@@ -23,13 +24,20 @@ function field(data: FormData, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+async function redirectCommerce(href: string): Promise<never> {
+  return redirect({ href, locale: await getLocale() });
+}
+
 function revalidateCommerce() {
-  revalidatePath("/dashboard/ecommerce-b2b");
-  revalidatePath("/dashboard/ecommerce-b2b/seller");
-  revalidatePath("/dashboard/ecommerce-b2b/cart");
-  revalidatePath("/dashboard/ecommerce-b2b/orders");
-  revalidatePath("/dashboard/ecommerce-b2b/wholesale");
-  revalidatePath("/admin/ecommerce-b2b");
+  for (const path of [
+    "/dashboard/ecommerce-b2b",
+    "/dashboard/ecommerce-b2b/seller",
+    "/dashboard/ecommerce-b2b/cart",
+    "/dashboard/ecommerce-b2b/orders",
+    "/dashboard/ecommerce-b2b/wholesale",
+    "/admin/ecommerce-b2b",
+  ])
+    revalidateLocalizedPath(path);
 }
 
 const tierPriceListSchema = z
@@ -70,10 +78,12 @@ async function notifyCommerce(userId: string, titleBn: string, titleEn: string, 
       userId,
       title: titleEn,
       message: titleEn,
-      titleBn,
-      titleEn,
-      messageBn: titleBn,
-      messageEn: titleEn,
+      translations: {
+        create: [
+          { locale: "bn", title: titleBn, message: titleBn },
+          { locale: "en", title: titleEn, message: titleEn },
+        ],
+      },
       href,
     },
   });
@@ -101,7 +111,7 @@ export async function applyAsCommerceSellerAction(data: FormData) {
     },
   });
   revalidateCommerce();
-  redirect("/dashboard/ecommerce-b2b/seller?notice=application");
+  await redirectCommerce("/dashboard/ecommerce-b2b/seller?notice=application");
 }
 
 export async function createCommerceProductAction(data: FormData) {
@@ -158,7 +168,7 @@ export async function createCommerceProductAction(data: FormData) {
     return newProduct;
   });
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/seller?product=${created.id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/seller?product=${created.id}`);
 }
 
 export async function updateCommerceInventoryAction(data: FormData) {
@@ -297,8 +307,8 @@ export async function toggleCommerceWishlistAction(data: FormData) {
   });
   if (existing) {
     await prisma.commerceWishlistItem.delete({ where: { id: existing.id } });
-    revalidatePath("/dashboard/ecommerce-b2b");
-    revalidatePath("/dashboard/ecommerce-b2b/wishlist");
+    revalidateLocalizedPath("/dashboard/ecommerce-b2b");
+    revalidateLocalizedPath("/dashboard/ecommerce-b2b/wishlist");
     return;
   }
   const product = await prisma.commerceProduct.findFirst({
@@ -307,7 +317,7 @@ export async function toggleCommerceWishlistAction(data: FormData) {
   });
   if (!product) throw new Error("পণ্য পাওয়া যায়নি");
   await prisma.commerceWishlistItem.create({ data: { userId: user.id, productId } });
-  revalidatePath("/dashboard/ecommerce-b2b");
+  revalidateLocalizedPath("/dashboard/ecommerce-b2b");
 }
 
 export async function saveCommerceAddressAction(data: FormData) {
@@ -333,7 +343,7 @@ export async function saveCommerceAddressAction(data: FormData) {
     });
   });
   revalidateCommerce();
-  redirect("/dashboard/ecommerce-b2b/cart?notice=address");
+  await redirectCommerce("/dashboard/ecommerce-b2b/cart?notice=address");
 }
 
 export async function checkoutCommerceCartAction(data: FormData) {
@@ -528,7 +538,7 @@ export async function checkoutCommerceCartAction(data: FormData) {
       );
   }
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/orders/${createdOrders[0].id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/orders/${createdOrders[0].id}`);
 }
 
 export async function createWholesaleRequestAction(data: FormData) {
@@ -546,14 +556,15 @@ export async function createWholesaleRequestAction(data: FormData) {
       seller: { status: "APPROVED" },
       minimumWholesale: { lte: request.quantity },
     },
-    select: { id: true },
+    select: { id: true, seller: { select: { userId: true } } },
   });
   if (!product) throw new Error("পণ্যটি বা সর্বনিম্ন পাইকারি পরিমাণ যাচাই করুন");
+  if (product.seller.userId === user.id) throw new Error("নিজের পণ্যের জন্য RFQ তৈরি করা যাবে না");
   const created = await prisma.commerceWholesaleRequest.create({
     data: { ...request, buyerId: user.id },
   });
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/wholesale?request=${created.id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/wholesale?request=${created.id}`);
 }
 
 export async function quoteWholesaleRequestAction(data: FormData) {
@@ -573,6 +584,7 @@ export async function quoteWholesaleRequestAction(data: FormData) {
     select: { id: true, buyerId: true },
   });
   if (!request) throw new Error("Այս RFQ-তে দর দেওয়ার অনুমতি নেই");
+  if (request.buyerId === user.id) throw new Error("নিজের RFQ-তে দর দেওয়া যাবে না");
   await prisma.$transaction(async (tx) => {
     const savedQuote = await tx.commerceWholesaleQuote.upsert({
       where: { requestId_sellerId: { requestId: request.id, sellerId: seller.id } },
@@ -599,7 +611,7 @@ export async function quoteWholesaleRequestAction(data: FormData) {
     "/dashboard/ecommerce-b2b/wholesale",
   );
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/wholesale?request=${request.id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/wholesale?request=${request.id}`);
 }
 
 export async function acceptWholesaleQuoteAction(data: FormData) {
@@ -680,7 +692,7 @@ export async function acceptWholesaleQuoteAction(data: FormData) {
     `/dashboard/ecommerce-b2b/orders/${order.id}`,
   );
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/orders/${order.id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/orders/${order.id}`);
 }
 
 export async function startCommerceConversationAction(data: FormData) {
@@ -705,7 +717,7 @@ export async function startCommerceConversationAction(data: FormData) {
     select: { id: true },
   });
   revalidateCommerce();
-  redirect(`/dashboard/ecommerce-b2b/messages/${thread.id}`);
+  await redirectCommerce(`/dashboard/ecommerce-b2b/messages/${thread.id}`);
 }
 
 export async function sendCommerceMessageAction(data: FormData) {
@@ -747,7 +759,7 @@ export async function markCommerceNotificationReadAction(data: FormData) {
     where: { id: notificationId, userId: user.id, readAt: null },
     data: { readAt: new Date() },
   });
-  revalidatePath("/dashboard/ecommerce-b2b/notifications");
+  revalidateLocalizedPath("/dashboard/ecommerce-b2b/notifications");
 }
 
 export async function setCommerceOrderStatusAction(data: FormData) {

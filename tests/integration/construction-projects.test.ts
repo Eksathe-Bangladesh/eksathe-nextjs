@@ -8,7 +8,13 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
 
 const [{ prisma }, marketplace, projects, { getProjectWorkspace }] = await Promise.all([
   import("@/lib/prisma"),
@@ -49,10 +55,12 @@ async function createListing(
       providerId,
       sectorSlug: "construction",
       kind,
-      titleBn: "পরীক্ষার নির্মাণ সেবা",
-      titleEn: title,
-      descriptionBn: "",
-      descriptionEn: "Integration test listing",
+      translations: {
+        create: [
+          { locale: "bn", title: "পরীক্ষার নির্মাণ সেবা", description: "" },
+          { locale: "en", title, description: "Integration test listing" },
+        ],
+      },
       category: kind === "CONSTRUCTION_SERVICE" ? "Contractors" : "Cement",
       district: "Dhaka",
       unit: kind === "CONSTRUCTION_SERVICE" ? "day" : "bag",
@@ -108,8 +116,6 @@ describe("PostgreSQL construction project workflows", () => {
       create: {
         slug: "construction",
         position: 5,
-        titleBn: "নির্মাণ",
-        titleEn: "Construction",
         icon: "🏗️",
         status: "LIVE",
         commissionRate: new Prisma.Decimal("10.00"),
@@ -130,30 +136,42 @@ describe("PostgreSQL construction project workflows", () => {
       prisma.providerProfile.create({
         data: {
           userId: serviceOneUserId,
-          nameBn: "সেবা এক",
-          nameEn: "Service One",
           district: "Dhaka",
           status: "APPROVED",
+          translations: {
+            create: [
+              { locale: "bn", name: "সেবা এক", bio: "" },
+              { locale: "en", name: "Service One", bio: "" },
+            ],
+          },
         },
         select: { id: true },
       }),
       prisma.providerProfile.create({
         data: {
           userId: serviceTwoUserId,
-          nameBn: "সেবা দুই",
-          nameEn: "Service Two",
           district: "Dhaka",
           status: "APPROVED",
+          translations: {
+            create: [
+              { locale: "bn", name: "সেবা দুই", bio: "" },
+              { locale: "en", name: "Service Two", bio: "" },
+            ],
+          },
         },
         select: { id: true },
       }),
       prisma.providerProfile.create({
         data: {
           userId: materialUserId,
-          nameBn: "সামগ্রী",
-          nameEn: "Materials",
           district: "Dhaka",
           status: "APPROVED",
+          translations: {
+            create: [
+              { locale: "bn", name: "সামগ্রী", bio: "" },
+              { locale: "en", name: "Materials", bio: "" },
+            ],
+          },
         },
         select: { id: true },
       }),
@@ -181,6 +199,45 @@ describe("PostgreSQL construction project workflows", () => {
           sectorSlug: "construction",
           kind: "CONSTRUCTION_MATERIAL",
           status: "APPROVED",
+        },
+      ],
+    });
+    const expiresAt = new Date();
+    expiresAt.setUTCFullYear(expiresAt.getUTCFullYear() + 1);
+    await prisma.providerVerificationApplication.createMany({
+      data: [
+        {
+          providerId: serviceOne.id,
+          type: "CONTRACTOR",
+          applicantType: "BUSINESS",
+          legalName: "Service One",
+          businessName: "Service One Builders",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
+        },
+        {
+          providerId: serviceTwo.id,
+          type: "CONTRACTOR",
+          applicantType: "BUSINESS",
+          legalName: "Service Two",
+          businessName: "Service Two Builders",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
+        },
+        {
+          providerId: material.id,
+          type: "SUPPLIER",
+          applicantType: "BUSINESS",
+          legalName: "Materials Supplier",
+          businessName: "Materials Supply",
+          businessAddress: "Dhaka",
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          expiresAt,
         },
       ],
     });
@@ -232,7 +289,7 @@ describe("PostgreSQL construction project workflows", () => {
       invite(materialListing, materialPackage.id, materialUserId, false),
     ]);
 
-    await expect(
+    expect(
       marketplace.createMarketplaceRequest(ownerId, {
         listingId: materialListing,
         quantity: "1",
@@ -303,10 +360,10 @@ describe("PostgreSQL construction project workflows", () => {
     const unassignedProviderUserId =
       assignedProviderUserId === serviceOneUserId ? serviceTwoUserId : serviceOneUserId;
 
-    await expect(
+    expect(
       projects.updateProjectMilestone(unassignedProviderUserId, milestone.id, "submit"),
     ).rejects.toMatchObject({ code: "notAllowed" });
-    await expect(projects.confirmProjectHandover(ownerId, projectId)).rejects.toMatchObject({
+    expect(projects.confirmProjectHandover(ownerId, projectId)).rejects.toMatchObject({
       code: "invalidState",
     });
     await projects.updateProjectMilestone(assignedProviderUserId, milestone.id, "submit");

@@ -4,7 +4,6 @@ import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { useActionState } from "react";
 
 import { acceptQuoteAction } from "@/app/actions/marketplace";
@@ -21,6 +20,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
+import { Link } from "@/i18n/navigation";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import type { PublicListing } from "@/lib/listings";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -59,10 +59,7 @@ export function ProjectDetail({
     ...new Map(
       project.orders
         .filter((order) => order.kind === "CONSTRUCTION_SERVICE" && order.status !== "CANCELLED")
-        .map((order) => [
-          order.providerId,
-          { id: order.providerId, nameBn: order.providerNameBn, nameEn: order.providerNameEn },
-        ]),
+        .map((order) => [order.providerId, { id: order.providerId, name: order.providerName }]),
     ).values(),
   ];
   const canUploadProjectPhotos =
@@ -78,7 +75,7 @@ export function ProjectDetail({
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.my_projects_1y5pp50")}
+        {t("projects.labels.myProjects")}
       </Link>
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
@@ -99,7 +96,7 @@ export function ProjectDetail({
             <p>
               {t("workflow.budget")}:{" "}
               <strong>
-                {project.budget ? formatMoney(project.budget) : t("inline.not_specified_1i7krq7")}
+                {project.budget ? formatMoney(project.budget) : t("projects.detail.notSpecified")}
               </strong>
             </p>
             <p>
@@ -115,9 +112,9 @@ export function ProjectDetail({
       {project.isOwner && project.status !== "COMPLETED" && project.status !== "CANCELLED" && (
         <section className="flex flex-col gap-3">
           <div>
-            <h2 className="text-xl font-bold">{t("inline.work_packages_9k9nnr")}</h2>
+            <h2 className="text-xl font-bold">{t("projects.detail.workPackages")}</h2>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("inline.compare_several_quotes_per_package_create__fpfw5a")}
+              {t("projects.packages.description")}
             </p>
           </div>
           <CreateProjectPackageForm projectId={project.id} />
@@ -126,13 +123,11 @@ export function ProjectDetail({
 
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-xl font-bold">{t("inline.quotes_and_work_packages_15oqs9u")}</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.compare_scope_quantity_transport_price_and_9wp0fg")}
-          </p>
+          <h2 className="text-xl font-bold">{t("projects.detail.quotesAndWorkPackages")}</h2>
+          <p className="text-muted-foreground mt-1 text-sm">{t("projects.quotes.description")}</p>
         </div>
         {project.packages.length === 0 ? (
-          <Empty text={t("inline.create_a_work_package_before_inviting_prov_qs0v6e")} />
+          <Empty text={t("projects.packages.requiredNotice")} />
         ) : (
           project.packages.map((workPackage) => {
             const requests = project.requests.filter(
@@ -157,21 +152,30 @@ export function ProjectDetail({
             const serviceMatches = service
               ? sameKindListings.filter((listing) => {
                   const text =
-                    `${listing.category} ${listing.titleBn} ${listing.titleEn} ${listing.descriptionBn} ${listing.descriptionEn}`.toLocaleLowerCase();
+                    `${listing.category} ${listing.title} ${listing.description}`.toLocaleLowerCase();
                   return service.searchTerms.some((term) =>
                     text.includes(term.toLocaleLowerCase()),
                   );
                 })
               : [];
+            const broaderMatches = service
+              ? sameKindListings.filter(
+                  (listing) => !serviceMatches.some((match) => match.id === listing.id),
+                )
+              : [];
             const candidates = [
-              ...(serviceMatches.length > 0 ? serviceMatches : sameKindListings),
+              ...(service && serviceMatches.length > 0
+                ? serviceMatches
+                : broaderMatches.length > 0
+                  ? broaderMatches
+                  : sameKindListings),
             ].sort(
               (left, right) =>
                 Number(right.id === workPackage.preferredListingId) -
                 Number(left.id === workPackage.preferredListingId),
             );
             const localizedPackageLabel = service
-              ? t(`marketplaceServices.${service.slug}` as never)
+              ? t(`constructionServices.${service.slug}.title`)
               : workPackage.label;
             return (
               <section
@@ -188,31 +192,29 @@ export function ProjectDetail({
                     )}
                     <p className="text-muted-foreground mt-1 text-xs">
                       {workPackage.kind === "CONSTRUCTION_MATERIAL"
-                        ? t("inline.building_materials_j98vuw")
+                        ? t("constructionServices.building-materials.title")
                         : workPackage.kind === "CONSTRUCTION_SERVICE"
-                          ? t("inline.construction_service_gx1wej")
-                          : t("inline.defined_work_fcku54")}
+                          ? t("construction.serviceDetail.label")
+                          : t("projects.detail.definedWork")}
                     </p>
                   </div>
                   {acceptedOrder && <StatusBadge status={acceptedOrder.status} />}
                 </div>
                 {requests.length === 0 ? (
-                  <Empty text={t("inline.no_provider_invitations_have_been_sent_for_1h88727")} />
+                  <Empty text={t("projects.packages.noInvitations")} />
                 ) : (
                   <div className="grid gap-3 xl:grid-cols-2">
                     {requests.map((request) => (
                       <Card key={request.id}>
                         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                           <div>
-                            <CardTitle className="text-lg">
-                              {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
-                            </CardTitle>
+                            <CardTitle className="text-lg">{request.listing.title}</CardTitle>
                             <CardDescription>
                               <Link
                                 href={`/construction/providers/${request.providerId}`}
                                 className="hover:underline"
                               >
-                                {locale === "bn" ? request.providerNameBn : request.providerNameEn}
+                                {request.providerName}
                               </Link>{" "}
                               · {request.listing.kind}
                             </CardDescription>
@@ -221,7 +223,7 @@ export function ProjectDetail({
                         </CardHeader>
                         <CardContent className="flex flex-col gap-3">
                           <p className="text-muted-foreground text-sm">
-                            {request.details || t("inline.no_additional_scope_details_gxl1ia")}
+                            {request.details || t("projects.detail.noAdditionalScopeDetails")}
                           </p>
                           {(request.requestedStart || request.requestedEnd) && (
                             <p className="text-sm">
@@ -257,7 +259,7 @@ export function ProjectDetail({
                               </div>
                               <div>
                                 <p className="text-muted-foreground text-xs">
-                                  {t("inline.total_bldkfh")}
+                                  {t("common.labels.total")}
                                 </p>
                                 <p className="mt-1 font-semibold">
                                   {formatMoney(
@@ -273,7 +275,7 @@ export function ProjectDetail({
                                 </p>
                                 {request.quote.expiresAt && (
                                   <p className="text-muted-foreground mt-1 text-xs">
-                                    {t("inline.expires_w9jxxl")}:{" "}
+                                    {t("common.labels.expires")}:{" "}
                                     {request.quote.expiresAt.slice(0, 10)}
                                   </p>
                                 )}
@@ -286,7 +288,7 @@ export function ProjectDetail({
                             </div>
                           ) : (
                             <p className="text-muted-foreground text-sm">
-                              {t("inline.waiting_for_a_provider_quote_1bh4h77")}
+                              {t("projects.detail.waitingForAProviderQuote")}
                             </p>
                           )}
                         </CardContent>
@@ -296,7 +298,7 @@ export function ProjectDetail({
                 )}
                 {project.isOwner && !acceptedOrder && (
                   <div className="border-border/70 flex flex-col gap-3 border-t pt-4">
-                    <h4 className="font-semibold">{t("inline.invite_more_providers_6k9q6")}</h4>
+                    <h4 className="font-semibold">{t("projects.detail.inviteMoreProviders")}</h4>
                     {listingsUnavailable ? (
                       <p
                         role="alert"
@@ -307,37 +309,41 @@ export function ProjectDetail({
                     ) : candidates.length === 0 ? (
                       <Empty text={t("workflow.noRecords")} />
                     ) : (
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {candidates.map((listing) => (
-                          <div
-                            key={listing.id}
-                            className="border-border/70 bg-card flex items-center justify-between gap-3 rounded-xl border p-4"
-                          >
-                            <div>
-                              <p className="font-semibold">
-                                {locale === "bn" ? listing.titleBn : listing.titleEn}
-                              </p>
-                              <p className="text-muted-foreground mt-1 text-xs">
-                                {locale === "bn" ? listing.providerNameBn : listing.providerNameEn}{" "}
-                                · {listing.district}
-                              </p>
-                              <p className="text-primary mt-1 text-sm">
-                                {formatMoney(listing.unitPrice)} / {listing.unit}
-                              </p>
-                            </div>
-                            <Link
-                              className={cn(
-                                buttonVariants({ variant: "outline", size: "sm" }),
-                                "shrink-0 gap-1",
-                              )}
-                              href={`/construction/listings/${listing.id}?${new URLSearchParams({ projectId: project.id, packageId: workPackage.id }).toString()}`}
+                      <>
+                        {service && serviceMatches.length === 0 && (
+                          <p className="text-muted-foreground text-sm">
+                            {t("projects.packages.broaderMatchesNotice")}
+                          </p>
+                        )}
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {candidates.map((listing) => (
+                            <div
+                              key={listing.id}
+                              className="border-border/70 bg-card flex items-center justify-between gap-3 rounded-xl border p-4"
                             >
-                              {t("inline.invite_1vsiiih")}
-                              <ArrowRightIcon aria-hidden="true" className="size-4" />
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
+                              <div>
+                                <p className="font-semibold">{listing.title}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">
+                                  {listing.providerName} · {listing.district}
+                                </p>
+                                <p className="text-primary mt-1 text-sm">
+                                  {formatMoney(listing.unitPrice)} / {listing.unit}
+                                </p>
+                              </div>
+                              <Link
+                                className={cn(
+                                  buttonVariants({ variant: "outline", size: "sm" }),
+                                  "shrink-0 gap-1",
+                                )}
+                                href={`/construction/listings/${listing.id}?${new URLSearchParams({ projectId: project.id, packageId: workPackage.id }).toString()}`}
+                              >
+                                {t("projects.detail.invite")}
+                                <ArrowRightIcon aria-hidden="true" className="size-4" />
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      </>
                     )}
                   </div>
                 )}
@@ -351,7 +357,7 @@ export function ProjectDetail({
         <div>
           <h2 className="text-xl font-bold">{t("workflow.milestones")}</h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.providers_submit_progress_for_your_approva_ac16we")}
+            {t("projects.milestones.approvalNotice")}
           </p>
         </div>
         {project.milestones.length > 0 ? (
@@ -368,13 +374,13 @@ export function ProjectDetail({
             <AddMilestoneForm projectId={project.id} providers={milestoneProviders} />
           ) : (
             <p className="border-border text-muted-foreground rounded-xl border border-dashed p-4 text-sm">
-              {t("inline.accept_a_construction_service_provider_s_q_1s1mhp0")}
+              {t("projects.milestones.quoteRequired")}
             </p>
           ))}
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.engaged_providers_and_materials_1dmhtj6")}</h2>
+        <h2 className="text-xl font-bold">{t("projects.detail.engagedProvidersAndMaterials")}</h2>
         {project.orders.length === 0 ? (
           <Empty text={t("workflow.noRecords")} />
         ) : (
@@ -383,10 +389,10 @@ export function ProjectDetail({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? order.titleBn : order.titleEn}
+                    {{ en: order.title, bn: order.title }[locale]}
                   </CardTitle>
                   <CardDescription>
-                    {locale === "bn" ? order.providerNameBn : order.providerNameEn} ·{" "}
+                    {{ en: order.providerName, bn: order.providerName }[locale]} ·{" "}
                     {formatMoney(order.subtotal)}
                     {Number(order.transportFee) > 0
                       ? ` + ${formatMoney(order.transportFee)} ${t("workflow.transportFee")}`
@@ -411,10 +417,10 @@ export function ProjectDetail({
                         </p>
                         <p className="text-muted-foreground text-xs">
                           {payment.confirmed
-                            ? t("inline.confirmed_by_both_parties_1xd4wdp")
-                            : t("inline.awaiting_confirmation_1m2idbp")}
+                            ? t("common.labels.confirmedByBothParties")
+                            : t("common.labels.awaitingConfirmation")}
                           {payment.refundAmount
-                            ? ` · ${t("inline.refunded_61yfyo")}: ${formatMoney(payment.refundAmount)}`
+                            ? ` · ${t("projects.detail.refunded")}: ${formatMoney(payment.refundAmount)}`
                             : ""}
                         </p>
                       </div>
@@ -453,12 +459,12 @@ export function ProjectDetail({
           <div>
             <h2 className="text-xl font-bold">{t("workflow.expenses")}</h2>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("inline.these_records_are_visible_only_to_the_proj_3oruu6")}
+              {t("projects.expenses.visibilityNotice")}
             </p>
           </div>
           <div className="bg-muted/50 rounded-xl p-4 text-sm">
             <p>
-              {t("inline.recorded_project_expenses_gx0grz")}:{" "}
+              {t("projects.detail.recordedProjectExpenses")}:{" "}
               <strong>
                 {formatMoney(
                   project.expenses.reduce((sum, expense) => sum + Number(expense.amount), 0),
@@ -491,7 +497,7 @@ export function ProjectDetail({
           <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectDocumentsHelp")}</p>
         </div>
         {project.documents.length === 0 ? (
-          <Empty text={t("inline.no_project_files_have_been_added_yet_10su81e")} />
+          <Empty text={t("projects.files.empty")} />
         ) : (
           project.documents.map((document) => (
             <a
@@ -512,7 +518,7 @@ export function ProjectDetail({
           <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectPhotosHelp")}</p>
         </div>
         {project.photos.length === 0 ? (
-          <Empty text={t("inline.no_project_photos_have_been_added_yet_615c8n")} />
+          <Empty text={t("projects.photos.empty")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {project.photos.map((photo) => (
@@ -571,9 +577,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
-      <p className="text-muted-foreground text-xs">
-        {t("inline.only_one_quote_can_be_accepted_for_this_wo_1yxvd9d")}
-      </p>
+      <p className="text-muted-foreground text-xs">{t("projects.packages.acceptanceNotice")}</p>
       <Button type="submit" size="sm" disabled={pending}>
         {pending ? t("common.loading") : t("workflow.acceptQuote")}
       </Button>

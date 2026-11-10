@@ -19,5 +19,24 @@ services:
       retries: 10
       start_period: 10s
 
+  db-test:
+    image: postgres:17-alpine
+    profiles: [test]
+    environment:
+      POSTGRES_USER: eksathe_test
+      POSTGRES_PASSWORD: eksathe_test_password
+      POSTGRES_DB: eksathe_test
+      TZ: Asia/Dhaka
+    ports:
+      - "127.0.0.1:5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eksathe_test -d eksathe_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
 volumes:
   eksathe_pgdata:

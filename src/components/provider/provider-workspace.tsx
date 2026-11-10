@@ -1,7 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
 import { archiveListingAction, updateListingStockAction } from "@/app/actions/marketplace";
@@ -9,6 +8,7 @@ import { MilestoneList } from "@/components/projects/milestone-list";
 import { ListingEditForm } from "@/components/provider/listing-edit-form";
 import { ListingForm } from "@/components/provider/listing-form";
 import { ProviderApplicationForm } from "@/components/provider/provider-application-form";
+import { ProviderVerificationPanel } from "@/components/provider/provider-verification-form";
 import { QuoteForm } from "@/components/provider/quote-form";
 import { StorefrontForm } from "@/components/provider/storefront-form";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { OrderCard } from "@/components/workflows/order-card";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
+import { Link } from "@/i18n/navigation";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { ProviderWorkspace as ProviderWorkspaceData } from "@/lib/workspaces";
 
@@ -30,37 +31,39 @@ export function ProviderWorkspace({
   actorId: string;
 }) {
   const t = useTranslations();
-  const locale = useLocale();
   const capabilities = workspace.capabilities.filter(
     (capability) => capability.status === "APPROVED",
   );
 
   return (
     <WorkspaceNavigation
-      label={t("inline.provider_navigation_18f19xw")}
+      label={t("provider.workspace.providerNavigation")}
       items={[
         ...(workspace.profile.status === "APPROVED" && capabilities.length > 0
-          ? [{ id: "listings", label: t("inline.listings_dq3ohu") }]
+          ? [{ id: "listings", label: t("common.labels.listings") }]
           : []),
-        ...(workspace.profile.status === "APPROVED"
-          ? [{ id: "storefront", label: t("inline.storefront_9cgq9q") }]
-          : []),
-        { id: "requests", label: t("inline.requests_1muw0v3") },
-        { id: "orders", label: t("inline.orders_v5igup") },
+        { id: "requests", label: t("common.labels.requests") },
+        { id: "orders", label: t("common.labels.orders") },
         ...(workspace.projectMilestones.length > 0
           ? [{ id: "project-milestones", label: t("workflow.milestones") }]
           : []),
-        { id: "commissions", label: t("inline.commissions_82zxsv") },
-        { id: "application", label: t("workflow.providerApplication") },
+        { id: "commissions", label: t("common.labels.commissions") },
+        ...(workspace.profile.status === "APPROVED"
+          ? [{ id: "storefront", label: t("provider.workspace.storefront") }]
+          : []),
+        {
+          id: "application",
+          label: t("workflow.providerApplication"),
+          navLabel: t("workflow.providerApplication"),
+        },
       ]}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-primary text-sm">{t("inline.business_operations_m1nxyg")}</p>
+          <p className="text-primary text-sm">{t("provider.workspace.businessOperations")}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">{t("nav.provider")}</h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            {locale === "bn" ? workspace.profile.nameBn : workspace.profile.nameEn} ·{" "}
-            {workspace.profile.district}
+            {workspace.profile.name} · {workspace.profile.district}
           </p>
         </div>
         <StatusBadge status={workspace.profile.status} />
@@ -73,23 +76,39 @@ export function ProviderWorkspace({
       )}
       {workspace.profile.status === "SUSPENDED" && (
         <div className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm">
-          {t("inline.this_provider_profile_is_suspended_it_cann_1mz4cnr")}
+          {t("provider.workspace.suspendedNotice")}
         </div>
       )}
+
+      <ProviderVerificationPanel
+        applications={workspace.verificationApplications}
+        capabilityTypes={Array.from(
+          new Set(
+            workspace.capabilities
+              .filter(
+                (capability) =>
+                  capability.sectorSlug === "construction" &&
+                  (capability.kind === "CONSTRUCTION_SERVICE" ||
+                    capability.kind === "CONSTRUCTION_MATERIAL"),
+              )
+              .map((capability) =>
+                capability.kind === "CONSTRUCTION_SERVICE" ? "CONTRACTOR" : "SUPPLIER",
+              ),
+          ),
+        )}
+      />
 
       {workspace.profile.status === "APPROVED" && capabilities.length > 0 && (
         <section id="listings" className="scroll-mt-24">
           <Card>
             <CardHeader>
               <CardTitle>{t("workflow.createListing")}</CardTitle>
-              <CardDescription>
-                {t("inline.new_listings_are_reviewed_by_the_operation_18phcom")}
-              </CardDescription>
+              <CardDescription>{t("provider.workspace.moderationNotice")}</CardDescription>
             </CardHeader>
             <CardContent>
               <details>
                 <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
-                  {t("inline.add_a_listing_11diban")}
+                  {t("provider.workspace.addAListing")}
                 </summary>
                 <ListingForm capabilities={capabilities} />
               </details>
@@ -98,7 +117,7 @@ export function ProviderWorkspace({
                   <p className="text-muted-foreground text-sm">{t("workflow.noRecords")}</p>
                 ) : (
                   workspace.listings.map((listing) => (
-                    <ListingStockCard key={listing.id} listing={listing} locale={locale} />
+                    <ListingStockCard key={listing.id} listing={listing} />
                   ))
                 )}
               </div>
@@ -116,9 +135,7 @@ export function ProviderWorkspace({
             <Card key={request.id}>
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">
-                    {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
-                  </CardTitle>
+                  <CardTitle className="text-lg">{request.listing.title}</CardTitle>
                   <CardDescription>
                     {request.buyerName} · {request.district} · {request.quantity}{" "}
                     {request.listing.unit}
@@ -128,7 +145,7 @@ export function ProviderWorkspace({
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-sm whitespace-pre-line">
-                  {request.details || t("inline.no_additional_details_provided_owxgv9")}
+                  {request.details || t("common.labels.noAdditionalDetailsProvided")}
                 </p>
                 {(request.requestedStart || request.requestedEnd) && (
                   <p className="mt-2 text-sm">
@@ -145,9 +162,9 @@ export function ProviderWorkspace({
 
       <section id="orders" className="flex scroll-mt-24 flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-xl font-bold">{t("inline.orders_and_bookings_13untom")}</h2>
+          <h2 className="text-xl font-bold">{t("common.labels.ordersAndBookings")}</h2>
           <Link className={buttonVariants({ variant: "outline", size: "sm" })} href="/account">
-            {t("inline.customer_workspace_94hmml")}
+            {t("provider.workspace.customerWorkspace")}
           </Link>
         </div>
         {workspace.orders.length === 0 ? (
@@ -185,7 +202,7 @@ export function ProviderWorkspace({
       )}
 
       <section id="commissions" className="flex scroll-mt-24 flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.commission_records_1p1a99s")}</h2>
+        <h2 className="text-xl font-bold">{t("provider.workspace.commissionRecords")}</h2>
         {workspace.orders.filter((order) => order.commission).length === 0 ? (
           <EmptyState text={t("workflow.noRecords")} />
         ) : (
@@ -197,8 +214,7 @@ export function ProviderWorkspace({
                 className="border-border/70 bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 text-sm"
               >
                 <span>
-                  {locale === "bn" ? order.listing.titleBn : order.listing.titleEn} ·{" "}
-                  {order.commission?.amount} BDT
+                  {order.listing.title} · {order.commission?.amount} BDT
                 </span>
                 <StatusBadge status={order.commission?.status ?? "DUE"} />
               </div>
@@ -210,10 +226,8 @@ export function ProviderWorkspace({
         <section id="storefront" className="scroll-mt-24">
           <Card>
             <CardHeader>
-              <CardTitle>{t("inline.your_storefront_1fsw8dn")}</CardTitle>
-              <CardDescription>
-                {t("inline.customers_see_these_details_your_profile_p_y6dyfa")}
-              </CardDescription>
+              <CardTitle>{t("provider.workspace.yourStorefront")}</CardTitle>
+              <CardDescription>{t("provider.storefront.description")}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4 flex flex-wrap gap-3">
@@ -224,7 +238,7 @@ export function ProviderWorkspace({
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                     href={`/agriculture/providers/${workspace.profile.id}`}
                   >
-                    {t("inline.preview_agriculture_storefront_1k5ul3a")}
+                    {t("provider.workspace.previewAgricultureStorefront")}
                   </Link>
                 )}
                 {capabilities.some((capability) => capability.sectorSlug === "construction") && (
@@ -232,7 +246,7 @@ export function ProviderWorkspace({
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                     href={`/dashboard/construction/providers/${workspace.profile.id}`}
                   >
-                    {t("inline.preview_construction_profile_7ox8rd")}
+                    {t("provider.workspace.previewConstructionProfile")}
                   </Link>
                 )}
               </div>
@@ -245,18 +259,20 @@ export function ProviderWorkspace({
       <Card id="application">
         <CardHeader>
           <CardTitle>{t("workflow.providerApplication")}</CardTitle>
-          <CardDescription>
-            {t("inline.apply_for_additional_sector_capabilities_f_157khdt")}
-          </CardDescription>
+          <CardDescription>{t("provider.capabilities.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <details>
             <summary className="text-primary mb-4 cursor-pointer text-sm font-semibold">
-              {t("inline.update_profile_or_request_capabilities_18ihx2")}
+              {t("provider.workspace.updateProfileOrRequestCapabilities")}
             </summary>
             <ProviderApplicationForm
               initial={{
-                ...workspace.profile,
+                nameBn: workspace.profile.name ?? "",
+                nameEn: workspace.profile.name ?? "",
+                bioBn: workspace.profile.bio ?? "",
+                bioEn: workspace.profile.bio ?? "",
+                district: workspace.profile.district,
                 upazila: workspace.profile.upazila ?? "",
                 capabilities: workspace.capabilities.map(
                   (capability) => `${capability.sectorSlug}:${capability.kind}`,
@@ -269,18 +285,14 @@ export function ProviderWorkspace({
 
       {workspace.notifications.length > 0 && (
         <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-bold">{t("inline.notifications_oco8br")}</h2>
+          <h2 className="text-xl font-bold">{t("dashboard.notifications")}</h2>
           {workspace.notifications.slice(0, 5).map((notification) => (
             <div
               key={notification.id}
               className="border-border/70 bg-card rounded-lg border px-4 py-3 text-sm"
             >
-              <p className="font-medium">
-                {locale === "bn" ? notification.titleBn : notification.titleEn}
-              </p>
-              <p className="text-muted-foreground mt-1">
-                {locale === "bn" ? notification.messageBn : notification.messageEn}
-              </p>
+              <p className="font-medium">{notification.title}</p>
+              <p className="text-muted-foreground mt-1">{notification.message}</p>
             </div>
           ))}
         </section>
@@ -289,13 +301,7 @@ export function ProviderWorkspace({
   );
 }
 
-function ListingStockCard({
-  listing,
-  locale,
-}: {
-  listing: ProviderWorkspaceData["listings"][number];
-  locale: "bn" | "en";
-}) {
+function ListingStockCard({ listing }: { listing: ProviderWorkspaceData["listings"][number] }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(updateListingStockAction, initialWorkflowState);
   const tracksStock = listing.kind === "PRODUCE" || listing.kind === "CONSTRUCTION_MATERIAL";
@@ -303,11 +309,11 @@ function ListingStockCard({
     <div className="border-border/70 rounded-xl border p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-semibold">{locale === "bn" ? listing.titleBn : listing.titleEn}</p>
+          <p className="font-semibold">{listing.title}</p>
           <p className="text-muted-foreground mt-1 text-xs">
             {tracksStock
               ? `${listing.stock} ${listing.unit}`
-              : t("inline.availability_is_checked_against_booking_da_1r4mqhw")}{" "}
+              : t("provider.listings.availabilityNotice")}{" "}
             · {listing.unitPrice} BDT/{listing.unit}
           </p>
         </div>
@@ -315,7 +321,7 @@ function ListingStockCard({
       </div>
       {listing.archivedAt ? (
         <p className="text-muted-foreground mt-3 text-sm">
-          {t("inline.this_listing_is_archived_7cpate")}
+          {t("provider.listings.archivedNotice")}
         </p>
       ) : (
         <>
@@ -335,13 +341,13 @@ function ListingStockCard({
                 />
               </div>
               <Button size="sm" variant="outline" type="submit" disabled={pending}>
-                {pending ? t("common.loading") : t("inline.save_quantity_i1qav1")}
+                {pending ? t("common.loading") : t("provider.workspace.saveQuantity")}
               </Button>
             </form>
           )}
           <details className="mt-4">
             <summary className="text-primary cursor-pointer text-sm font-semibold">
-              {t("inline.edit_listing_ynvy0s")}
+              {t("provider.workspace.editListing")}
             </summary>
             <div className="mt-3">
               <ListingEditForm listing={listing} />
@@ -363,7 +369,7 @@ function ListingArchiveControl({ listingId }: { listingId: string }) {
       <form action={action}>
         <input type="hidden" name="listingId" value={listingId} />
         <Button size="sm" variant="ghost" type="submit" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.archive_listing_1avn3y5")}
+          {pending ? t("common.loading") : t("provider.workspace.archiveListing")}
         </Button>
       </form>
       <ActionFeedback state={state} />

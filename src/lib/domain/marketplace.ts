@@ -1,5 +1,6 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
+import { isConstructionProviderVerified } from "@/lib/construction/verification-policy";
 import {
   calculateCommission,
   calculateCommissionReduction,
@@ -191,11 +192,13 @@ async function notify(tx: Tx, userId: string, type: NotificationType, href: stri
       userId,
       title: copy.titleEn,
       message: copy.messageEn,
-      titleBn: copy.titleBn,
-      titleEn: copy.titleEn,
-      messageBn: copy.messageBn,
-      messageEn: copy.messageEn,
       href,
+      translations: {
+        create: [
+          { locale: "en", title: copy.titleEn, message: copy.messageEn },
+          { locale: "bn", title: copy.titleBn, message: copy.messageBn },
+        ],
+      },
     },
   });
 }
@@ -227,6 +230,17 @@ async function assertApprovedCapability(
   if (!capability) fail("notAllowed");
 }
 
+async function assertConstructionVerification(
+  tx: Tx,
+  providerId: string,
+  sectorSlug: string,
+  kind: ListingKind,
+) {
+  if (sectorSlug !== "construction") return;
+  if (kind !== "CONSTRUCTION_SERVICE" && kind !== "CONSTRUCTION_MATERIAL") fail("notAllowed");
+  if (!(await isConstructionProviderVerified(tx, providerId, kind))) fail("notAllowed");
+}
+
 async function requireLiveSector(tx: Tx, sectorSlug: string) {
   const sector = await tx.sector.findUnique({ where: { slug: sectorSlug } });
   if (!sector || sector.status !== "LIVE") fail("unavailable");
@@ -238,24 +252,26 @@ export async function applyForProvider(actorId: string, input: ProviderApplicati
     const profile = await tx.providerProfile.upsert({
       where: { userId: actorId },
       update: {
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
       },
       create: {
         userId: actorId,
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
       },
       select: { id: true },
     });
+    for (const translation of [
+      { locale: "en", name: input.nameEn, bio: input.bioEn },
+      { locale: "bn", name: input.nameBn, bio: input.bioBn },
+    ]) {
+      await tx.providerProfileTranslation.upsert({
+        where: { providerId_locale: { providerId: profile.id, locale: translation.locale } },
+        update: translation,
+        create: { providerId: profile.id, ...translation },
+      });
+    }
 
     for (const capabilityValue of new Set(input.capabilities)) {
       const [sectorSlug, kind] = capabilityValue.split(":") as [string, ListingKind];
@@ -299,16 +315,22 @@ export async function updateProviderStorefront(actorId: string, input: Storefron
     await tx.providerProfile.update({
       where: { id: profile.id },
       data: {
-        nameBn: input.nameBn,
-        nameEn: input.nameEn,
-        bioBn: input.bioBn,
-        bioEn: input.bioEn,
         district: input.district,
         upazila: input.upazila || null,
         ...(input.profileImageKey ? { profileImageKey: input.profileImageKey } : {}),
         ...(input.coverImageKey ? { coverImageKey: input.coverImageKey } : {}),
       },
     });
+    for (const translation of [
+      { locale: "en", name: input.nameEn, bio: input.bioEn },
+      { locale: "bn", name: input.nameBn, bio: input.bioBn },
+    ]) {
+      await tx.providerProfileTranslation.upsert({
+        where: { providerId_locale: { providerId: profile.id, locale: translation.locale } },
+        update: translation,
+        create: { providerId: profile.id, ...translation },
+      });
+    }
     await logActivity(tx, actorId, "provider.storefront_updated", "provider", profile.id);
   });
 }
@@ -346,16 +368,13 @@ export async function createProviderListing(actorId: string, input: CreateListin
     });
     if (!profile || profile.status !== "APPROVED") fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, input.sectorSlug, input.kind);
+    await assertConstructionVerification(tx, profile.id, input.sectorSlug, input.kind);
 
     const listing = await tx.marketplaceListing.create({
       data: {
         providerId: profile.id,
         sectorSlug: input.sectorSlug,
         kind: input.kind,
-        titleBn: input.titleBn,
-        titleEn: input.titleEn,
-        descriptionBn: input.descriptionBn,
-        descriptionEn: input.descriptionEn,
         category: input.category,
         district: input.district,
         unit: input.unit,
@@ -365,6 +384,22 @@ export async function createProviderListing(actorId: string, input: CreateListin
         imageKey: input.imageKey ?? null,
       },
       select: { id: true, sectorSlug: true },
+    });
+    await tx.marketplaceListingTranslation.createMany({
+      data: [
+        {
+          listingId: listing.id,
+          locale: "en",
+          title: input.titleEn,
+          description: input.descriptionEn,
+        },
+        {
+          listingId: listing.id,
+          locale: "bn",
+          title: input.titleBn,
+          description: input.descriptionBn,
+        },
+      ],
     });
     await logActivity(tx, actorId, "listing.submitted", "listing", listing.id);
     return listing;
@@ -399,13 +434,10 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
     if (!listing) fail("notFound");
     if (listing.sectorSlug !== input.sectorSlug || listing.kind !== input.kind) fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, listing.sectorSlug, listing.kind);
+    await assertConstructionVerification(tx, profile.id, listing.sectorSlug, listing.kind);
     const updated = await tx.marketplaceListing.update({
       where: { id: listing.id },
       data: {
-        titleBn: input.titleBn,
-        titleEn: input.titleEn,
-        descriptionBn: input.descriptionBn,
-        descriptionEn: input.descriptionEn,
         category: input.category,
         district: input.district,
         unit: input.unit,
@@ -418,6 +450,16 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
       },
       select: { id: true, sectorSlug: true },
     });
+    for (const translation of [
+      { locale: "en", title: input.titleEn, description: input.descriptionEn },
+      { locale: "bn", title: input.titleBn, description: input.descriptionBn },
+    ]) {
+      await tx.marketplaceListingTranslation.upsert({
+        where: { listingId_locale: { listingId: updated.id, locale: translation.locale } },
+        update: translation,
+        create: { listingId: updated.id, ...translation },
+      });
+    }
     await logActivity(tx, actorId, "listing.edited_for_review", "listing", updated.id);
     return updated;
   });
@@ -462,6 +504,7 @@ export async function updateProviderListingStock(
     if (!listing) fail("notFound");
     if (!isFiniteStock(listing.kind)) fail("invalidState");
     await assertApprovedCapability(tx, profile.id, listing.sectorSlug, listing.kind);
+    await assertConstructionVerification(tx, profile.id, listing.sectorSlug, listing.kind);
     await tx.marketplaceListing.update({
       where: { id: listing.id },
       data: { stock: new Prisma.Decimal(stock) },
@@ -513,6 +556,7 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
       fail("notAllowed");
     }
     await requireLiveSector(tx, listing.sectorSlug);
+    await assertConstructionVerification(tx, listing.providerId, listing.sectorSlug, listing.kind);
 
     let requestedQuantity = new Prisma.Decimal(input.quantity);
     if (isScheduled(listing.kind)) {
@@ -611,6 +655,7 @@ export async function submitQuote(actorId: string, input: CreateQuoteInput) {
     if (!profile || profile.id !== request.providerId || profile.status !== "APPROVED")
       fail("notAllowed");
     await assertApprovedCapability(tx, profile.id, request.sectorSlug, request.listing.kind);
+    await assertConstructionVerification(tx, profile.id, request.sectorSlug, request.listing.kind);
     if (request.status !== "OPEN" && request.status !== "QUOTED") fail("invalidState");
     if (request.quote && request.quote.status !== "PENDING") fail("invalidState");
 
@@ -674,6 +719,12 @@ export async function acceptQuote(actorId: string, requestId: string) {
           if (accepted) fail("invalidState");
         }
         await assertApprovedCapability(
+          tx,
+          request.providerId,
+          request.sectorSlug,
+          request.listing.kind,
+        );
+        await assertConstructionVerification(
           tx,
           request.providerId,
           request.sectorSlug,
@@ -1386,7 +1437,7 @@ export async function resolveDispute(
 export async function grantStaffAccess(
   actorId: string,
   email: string,
-  permission: "OPERATIONS" | "FINANCE",
+  permission: "OPERATIONS" | "FINANCE" | "USERS" | "PANELS" | "REPORTS",
   scope: string,
 ) {
   return prisma.$transaction(async (tx) => {

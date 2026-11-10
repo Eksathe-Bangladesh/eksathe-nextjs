@@ -3,7 +3,71 @@
     "brandName": "EKsathe Bangladesh",
     "brandSlogan": "কৃষক • বাজার • শ্রম • সেবা",
     "loading": "লোড হচ্ছে...",
-    "currency": "৳"
+    "other": "অন্যান্য",
+    "commissionCalculator": {
+      "tag": "স্বচ্ছ হিসাব",
+      "title": "১০% কমিশন ক্যালকুলেটর",
+      "description": "নিচের হিসাবটি উদাহরণমাত্র। চূড়ান্ত কমিশন নীতিমালা ও অনুমোদিত লেনদেন অনুযায়ী নির্ধারিত হবে।",
+      "amountLabel": "লেনদেনের মোট পরিমাণ (৳)",
+      "platformShare": "প্ল্যাটফর্ম কমিশন (১০%)",
+      "providerShare": "সেবাদাতার অংশ (৯০%)",
+      "providerAmount": "পরিবহনসহ সেবাদাতার সম্ভাব্য প্রাপ্য"
+    },
+    "emergency": {
+      "buttonLabel": "জরুরি সহায়তা 100",
+      "modalTitle": "জরুরি সহায়তা",
+      "modalSubtitle": "এই বাটনটি স্বয়ংক্রিয়ভাবে কল করে না।",
+      "modalDescription": "জরুরি সহায়তার জন্য আপনার এলাকার যাচাইকৃত সরকারি জরুরি নম্বরে সরাসরি যোগাযোগ করুন।"
+    },
+    "labels": {
+      "requests": "অনুরোধ",
+      "orders": "অর্ডার",
+      "expires": "মেয়াদ শেষ",
+      "ordersAndBookings": "অর্ডার ও বুকিং",
+      "budget": "বাজেট",
+      "privateAttachments": "ব্যক্তিগত সংযুক্তি",
+      "updates": "আপডেট",
+      "listings": "তালিকা",
+      "commissions": "কমিশন",
+      "source": "তথ্যসূত্র",
+      "published": "প্রকাশিত",
+      "type": "ধরন",
+      "allServices": "সব সেবা",
+      "estimate": "আনুমানিক",
+      "separateTransportChargeBdt": "আলাদা পরিবহন খরচ (টাকা)",
+      "estimatedPlatformCommission": "সম্ভাব্য প্ল্যাটফর্ম কমিশন",
+      "allCategories": "সব ক্যাটাগরি",
+      "commissionCalculator": "কমিশন ক্যালকুলেটর",
+      "estimateThePlatformFee": "প্ল্যাটফর্ম ফি সম্পর্কে ধারণা নিন",
+      "minimumPrice": "সর্বনিম্ন দাম",
+      "maximumPrice": "সর্বোচ্চ দাম",
+      "priceLowToHigh": "দাম: কম থেকে বেশি",
+      "priceHighToLow": "দাম: বেশি থেকে কম",
+      "seller": "বিক্রেতা",
+      "pagination": "পৃষ্ঠা নেভিগেশন",
+      "previous": "আগের",
+      "next": "পরের",
+      "newest": "সর্বশেষ",
+      "provider": "সেবাদাতা",
+      "total": "মোট",
+      "confirmedByBothParties": "উভয় পক্ষ নিশ্চিত করেছে",
+      "awaitingConfirmation": "নিশ্চিতকরণ বাকি",
+      "noAdditionalDetailsProvided": "কোনো অতিরিক্ত তথ্য নেই।",
+      "notProvided": "দেওয়া হয়নি"
+    },
+    "actions": {
+      "update": "হালনাগাদ",
+      "clear": "মুছুন",
+      "search": "খুঁজুন",
+      "view": "দেখুন"
+    },
+    "states": {
+      "saving": "সংরক্ষণ হচ্ছে…"
+    },
+    "fields": {
+      "nameBangla": "নাম (বাংলা)",
+      "nameEnglish": "নাম (ইংরেজি)"
+    }
   },
   "home": {
     "eyebrow": "বাংলাদেশের ডিজিটাল সেবা ও বাজার",
@@ -13,10 +77,32 @@
     "agriculture": "কৃষি ও শ্রমিক",
     "construction": "নির্মাণ",
     "agricultureDescription": "কৃষিপণ্য, কৃষিশ্রমিক ও যন্ত্র ভাড়ার সেবা দেখুন।",
+    "agricultureServicesCount": "কৃষি সেবা",
     "constructionDescription": "নির্মাণসামগ্রী, দক্ষ পেশাজীবী ও প্রকল্প পরিচালনা করুন।",
     "comingSoon": "শিগগিরই আসছে",
     "hubTitle": "১৩টি সেবা বিভাগ",
-    "hubDescription": "একসাথে বাংলাদেশে নতুন সেবা খুঁজুন এবং আপনার প্রয়োজনের সঙ্গে মিলিয়ে নিন।"
+    "hubDescription": "একসাথে বাংলাদেশে নতুন সেবা খুঁজুন এবং আপনার প্রয়োজনের সঙ্গে মিলিয়ে নিন।",
+    "marketUpdates": {
+      "eyebrow": "বাজার আপডেট",
+      "title": "নিউজ ও বাজার ফিড",
+      "sampleBadge": "নমুনা ফিড",
+      "sampleTitle": "স্থানীয় বাজারদর যাচাই করে প্রকাশ করুন",
+      "sampleDescription": "লাইভ বাজারদর বা সংবাদ এখানে স্বয়ংক্রিয়ভাবে যুক্ত নয়। অ্যাডমিন যাচাই ও প্রকাশের মডিউল সংযুক্ত করতে হবে।",
+      "warningBadge": "সতর্কতা",
+      "warningTitle": "কৃষি পণ্য কেনাবেচার আগে যাচাই করুন",
+      "warningDescription": "পণ্যের মান, ওজন, মূল্য, পরিবহন ও পেমেন্ট শর্ত লিখিতভাবে নিশ্চিত করুন।"
+    },
+    "policy": {
+      "eyebrow": "নীতি ও নিরাপত্তা",
+      "title": "ব্যবহার নীতিমালা",
+      "items": [
+        "কৃষি ঋণ, বীমা বা সরকারি সুবিধা অনুমোদনের নিশ্চয়তা দেওয়া হয় না।",
+        "কোনো চিকিৎসা, আইনগত বা সরকারি সিদ্ধান্তের বিকল্প হিসেবে প্ল্যাটফর্ম ব্যবহার করা যাবে না।",
+        "বাজারদর প্রকাশের আগে এলাকা, তারিখ, একক ও উৎস যাচাই করতে হবে।",
+        "ভুয়া তালিকা, প্রতারণা, ওজন/মানের ভুল তথ্য বা অননুমোদিত ফি নিষিদ্ধ।",
+        "ব্যক্তিগত তথ্য শুধু সেবা পরিচালনার প্রয়োজন অনুযায়ী ব্যবহার করতে হবে।"
+      ]
+    }
   },
   "auth": {
     "signIn": "সাইন ইন",
@@ -36,7 +122,7 @@
     "existingAccount": "আগে থেকেই অ্যাকাউন্ট আছে?",
     "checkEmail": "আপনার ইমেইল দেখুন। পরবর্তী ধাপের লিংক পাঠানো হয়েছে।",
     "genericError": "অনুরোধ সম্পন্ন হয়নি। আবার চেষ্টা করুন।",
-    "termsNote": "আপনার যোগাযোগের নম্বর লেনদেন ও বুকিংয়ের জন্য ব্যবহৃত হবে।",
+    "termsNote": "আপনার মোবাইল নম্বর লেনদেন ও বুকিংয়ে ব্যবহৃত হবে। সেবা দিতে চাইলে আগে নিবন্ধন করুন, তারপর সেবাদাতা প্যানেল থেকে আবেদন করুন।",
     "passwordMin": "পাসওয়ার্ড কমপক্ষে ১০ অক্ষরের হতে হবে।",
     "nameError": "আপনার নাম লিখুন।",
     "phoneError": "সঠিক মোবাইল নম্বর লিখুন।"
@@ -45,12 +131,15 @@
     "provider": "সেবাদাতা প্যানেল",
     "admin": "প্রশাসন",
     "signOut": "সাইন আউট",
+    "signingOut": "সাইন আউট হচ্ছে…",
     "returnHome": "হোমে ফিরুন",
     "comingSoon": "এই বিভাগে সেবা শিগগিরই চালু হবে।",
     "live": "চালু",
     "browse": "বিভাগ দেখুন",
     "search": "বিভাগ খুঁজুন",
-    "noResults": "কোনো বিভাগ পাওয়া যায়নি।"
+    "noResults": "কোনো বিভাগ পাওয়া যায়নি।",
+    "openMenu": "মেনু খুলুন",
+    "closeMenu": "মেনু বন্ধ করুন"
   },
   "workflow": {
     "quantity": "পরিমাণ",
@@ -59,6 +148,12 @@
     "startDate": "শুরুর তারিখ",
     "endDate": "শেষের তারিখ",
     "requestService": "অনুরোধ পাঠান",
+    "availableQuantity": "উপলভ্য: {quantity} {unit}",
+    "sectorsSummary": "আপনার বিভাগ: {sectors}",
+    "platformWide": "সমগ্র প্ল্যাটফর্ম",
+    "confirmationSummary": "ক্রেতা নিশ্চিত: {buyer} · সেবাদাতা নিশ্চিত: {provider}",
+    "yes": "হ্যাঁ",
+    "no": "না",
     "requestSent": "অনুরোধ পাঠানো হয়েছে।",
     "requestFailed": "অনুরোধ পাঠানো যায়নি।",
     "validationError": "তথ্য যাচাই করে আবার চেষ্টা করুন।",
@@ -80,6 +175,8 @@
     "dispute": "সমস্যার বিবরণ",
     "refundRecorded": "ফেরতের তথ্য নথিভুক্ত হয়েছে।",
     "providerApproved": "সেবাদাতার আবেদন পর্যালোচনা করা হয়েছে।",
+    "verificationSubmitted": "যাচাইকরণের আবেদন জমা হয়েছে।",
+    "verificationReviewed": "সেবাদাতার যাচাইকরণের পর্যালোচনা নথিভুক্ত হয়েছে।",
     "listingApproved": "তালিকার পর্যালোচনা হালনাগাদ হয়েছে।",
     "disputeResolved": "বিরোধের সিদ্ধান্ত নথিভুক্ত হয়েছে।",
     "commissionRateUpdated": "বিভাগের কমিশন হার হালনাগাদ হয়েছে।",
@@ -90,6 +187,49 @@
     "staffEmail": "কর্মীর অ্যাকাউন্ট ইমেইল",
     "staffPermission": "অনুমতি",
     "staffScope": "কাজের পরিধি",
+    "permissionUsers": "সাধারণ ব্যবহারকারী ব্যবস্থাপনা",
+    "permissionPanels": "সেবা প্যানেল ব্যবস্থাপনা",
+    "permissionReports": "সমষ্টিগত প্রতিবেদন",
+    "agricultureAccountUpdated": "কৃষি অ্যাকাউন্ট হালনাগাদ হয়েছে।",
+    "agricultureAccountCreated": "যাচাইকরণ ইমেইল পাঠানো হয়েছে। যাচাইয়ের পর ব্যবহারকারী পাসওয়ার্ড ভুলে যাওয়ার লিংক দিয়ে পাসওয়ার্ড সেট করতে পারবেন; অ্যাকাউন্টটি সক্রিয় করার আগ পর্যন্ত অপেক্ষমাণ থাকবে।",
+    "agricultureAccountDeleted": "কৃষি অ্যাকাউন্ট সরানো হয়েছে।",
+    "agricultureAccountExists": "এই ইমেইল ঠিকানায় আগে থেকেই একটি অ্যাকাউন্ট আছে।",
+    "agriculturePanelUpdated": "সেবা প্যানেল হালনাগাদ হয়েছে।",
+    "agricultureAccountHasData": "বাজার বা সেবা-সংক্রান্ত ইতিহাস থাকা অ্যাকাউন্ট মুছে ফেলা যাবে না।",
+    "agricultureAccountMissing": "সাধারণ অ্যাকাউন্টটি পাওয়া যায়নি।",
+    "agriculturePanelMissing": "কৃষি সেবা প্যানেলটি পাওয়া যায়নি।",
+    "agricultureUserManagement": "কৃষি অ্যাডমিন · ব্যবহারকারী অ্যাকাউন্ট",
+    "agricultureManagement": "কৃষি সেবা পরিচালনা",
+    "agriculturePanelManagement": "কৃষি অ্যাডমিন · সেবা প্যানেল",
+    "agricultureReports": "কৃষি অ্যাডমিন · সমষ্টিগত প্রতিবেদন",
+    "agroAdmin": "কৃষি অ্যাডমিন",
+    "agricultureAccessDescription": "কৃষি বিভাগের অ্যাক্সেস সুপার অ্যাডমিন নির্ধারণ করেন। এই প্যানেলে অ্যাডমিন অ্যাকাউন্ট বা অন্য বিভাগের অনুমতি পরিবর্তন করা যায় না।",
+    "accountType": "অ্যাকাউন্টের ধরন",
+    "accountStatus": "অ্যাকাউন্টের অবস্থা",
+    "customerAccount": "গ্রাহক",
+    "farmerAccount": "কৃষক",
+    "agroLaborerAccount": "কৃষিশ্রমিক",
+    "agronomistAccount": "কৃষিবিদ",
+    "veterinarianAccount": "পশুচিকিৎসক",
+    "agroSellerAccount": "কৃষিপণ্য বিক্রেতা",
+    "agricultureProfessionalAccount": "কৃষি পেশাজীবী",
+    "activeAccount": "সক্রিয়",
+    "pendingAccount": "অপেক্ষমাণ",
+    "suspendedAccount": "স্থগিত",
+    "deleteAccount": "অ্যাকাউন্ট মুছুন",
+    "confirmAccountDelete": "এই অ্যাকাউন্ট স্থায়ীভাবে মুছবেন?",
+    "createStandardAccount": "সাধারণ অ্যাকাউন্ট তৈরি করুন",
+    "accountName": "পুরো নাম",
+    "accountEmail": "ইমেইল",
+    "accountPhone": "মোবাইল নম্বর",
+    "createAccount": "অ্যাকাউন্ট তৈরি করুন",
+    "noManagedAccounts": "পরিচালনার জন্য কোনো সাধারণ অ্যাকাউন্ট নেই।",
+    "noServicePanels": "কোনো সেবা প্যানেল পাওয়া যায়নি।",
+    "activePanel": "সক্রিয়",
+    "inactivePanel": "নিষ্ক্রিয়",
+    "totalRequests": "মোট সেবা অনুরোধ",
+    "totalCommissions": "নথিভুক্ত মোট কমিশন",
+    "requestStatus": "অনুরোধের অবস্থা",
     "signInToRequest": "অনুরোধ পাঠাতে সাইন ইন করুন।",
     "listingMissing": "তালিকাটি আর উপলভ্য নেই।",
     "applyProvider": "সেবাদাতা হিসেবে আবেদন করুন",
@@ -191,11 +331,20 @@
   "header": {
     "dashboard": "ড্যাশবোর্ড",
     "services": "সেবাসমূহ",
-    "howItWorks": "কীভাবে কাজ করে",
-    "commissionCalculator": "কমিশন ক্যালকুলেটর",
     "login": "লগইন",
     "register": "অ্যাকাউন্ট খুলুন",
-    "switchLanguage": "ভাষা পরিবর্তন করুন"
+    "switchLanguage": "ভাষা পরিবর্তন করুন",
+    "accountType": "অ্যাকাউন্টের ধরন",
+    "standardAccount": "সাধারণ অ্যাকাউন্ট",
+    "providerAccess": "সেবাদাতা অ্যাক্সেস",
+    "providerProfile": "সেবাদাতা প্রোফাইল",
+    "contractorVerification": "নির্মাণসেবা যাচাইকরণ",
+    "supplierVerification": "নির্মাণসামগ্রী সরবরাহকারী যাচাইকরণ",
+    "staffAccess": "কর্মী অ্যাক্সেস",
+    "myRequests": "আমার অনুরোধ",
+    "myOrders": "আমার অর্ডার",
+    "myProjects": "আমার প্রকল্প",
+    "becomeProvider": "সেবাদাতা হিসেবে যোগ দিন"
   },
   "hero": {
     "badge": "🌱 কৃষি • বাজার • শ্রম",
@@ -204,7 +353,6 @@
     "description": "কৃষিপণ্য, বাজারদর, কৃষিশ্রমিক, পরিবহন ও কৃষি-সেবার অনুরোধ একটি প্ল্যাটফর্মে পরিচালনা করুন।",
     "browseServices": "সেবা খুঁজুন",
     "howItWorks": "কীভাবে কাজ করে",
-    "emergencyAssistance": "জরুরি সহায়তা 100",
     "emergencyNotice": "জরুরি 100 বাটনটি এখন তথ্য-বার্তা দেখায়; এটি স্বয়ংক্রিয়ভাবে কল করে না।",
     "categoriesCountLabel": "সেবা ক্যাটাগরি",
     "serviceRequestsLabel": "সার্ভিস রিকোয়েস্ট",
@@ -212,44 +360,189 @@
     "commissionLabel": "কমিশন ক্যালকুলেটর",
     "commissionValue": "১০%"
   },
-  "panels": {
-    "sectionTag": "সেবা ডিরেক্টরি",
-    "sectionTitle": "কৃষি, বাজার ও শ্রম প্যানেল",
-    "sectionSubtitle": "কার্ডে ক্লিক করে বিস্তারিত দেখুন অথবা অনুরোধ জমা দিন।",
-    "searchPlaceholder": "সেবা খুঁজুন...",
-    "searchAriaLabel": "সেবা খুঁজুন",
-    "categoryAriaLabel": "ক্যাটাগরি ফিল্টার",
-    "allCategories": "সব ক্যাটাগরি",
-    "noPanelsFound": "কোনো সেবা পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।",
-    "viewDetailsAndRequest": "বিস্তারিত ও অনুরোধ →",
-    "submitRequestTitle": "সেবা অনুরোধ জমা দিন",
-    "paymentNotice": "অনুরোধ জমা দিলেই কোনো পেমেন্ট সম্পন্ন হয় না।",
-    "categories": {
-      "agriculture": "কৃষি",
-      "labor": "শ্রম",
-      "market": "বাজার",
-      "finance": "অর্থায়ন",
-      "information": "তথ্য",
-      "community": "কমিউনিটি"
+  "agriculture": {
+    "services": {
+      "searchLabel": "সেবা খুঁজুন",
+      "categoryLabel": "ক্যাটাগরি ফিল্টার",
+      "all": "সব কৃষিসেবা",
+      "description": "সেবার বিবরণ ও অনুরোধের ফর্ম দেখতে একটি সেবা বেছে নিন। কৃষি পরিচালনা দল অনুরোধ যাচাই ও সমন্বয় করবে।",
+      "title": "কোন সেবাটি আপনার প্রয়োজন?",
+      "empty": "আপনার অনুসন্ধানে কোনো সেবা পাওয়া যায়নি।"
+    },
+    "requestForm": {
+      "fullName": "আপনার নাম *",
+      "phone": "মোবাইল নম্বর *",
+      "district": "জেলা/এলাকা *",
+      "districtPlaceholder": "যেমন: বগুড়া, রংপুর",
+      "budget": "সম্ভাব্য বাজেট (৳)",
+      "budgetPlaceholder": "ঐচ্ছিক",
+      "details": "আপনার প্রয়োজন বিস্তারিত লিখুন *",
+      "detailsPlaceholder": "কাজের বিবরণ, পরিমাণ বা অন্যান্য তথ্য লিখুন...",
+      "submit": "অনুরোধ জমা দিন",
+      "submitting": "জমা হচ্ছে...",
+      "signInNotice": "নিচে অনুরোধের তথ্যগুলো দেখুন। অনুরোধ পাঠাতে লগইন করে ইমেইল যাচাই করুন।",
+      "verifyEmail": "ইমেইল যাচাই করুন",
+      "photoHelp": "ঐচ্ছিক · ৫ এমবির মধ্যে JPEG, PNG বা WebP",
+      "photoUploading": "ব্যক্তিগত ছবি আপলোড হচ্ছে…",
+      "photoReady": "ছবি প্রস্তুত",
+      "optionPlaceholder": "একটি নির্বাচন করুন",
+      "coordinationNotice": "সমন্বয়ের অনুরোধে অর্ডার বা সেবাদাতা নিশ্চিত হয় না, অর্থায়ন বা বীমা অনুমোদিত হয় না এবং কোনো পেমেন্ট হয় না।",
+      "requestReference": "অনুরোধের রেফারেন্স",
+      "trackRequest": "অনুরোধের অবস্থা দেখুন"
+    },
+    "information": {
+      "marketPrices": "বাজারদর",
+      "news": "খবর",
+      "advice": "পরামর্শ",
+      "weatherAlert": "আবহাওয়া সতর্কতা",
+      "emptyPrices": "এখনো কোনো বাজারদর প্রকাশিত হয়নি।",
+      "backToAllAgricultureServices": "← সব কৃষিসেবা",
+      "eyebrow": "যাচাইকৃত কৃষি তথ্য",
+      "updatesTitle": "খবর, পরামর্শ ও সতর্কতা",
+      "description": "পরিচালনা দল কর্তৃক প্রকাশিত কৃষি খবর, পরামর্শ ও চলমান আবহাওয়া সতর্কতা।",
+      "unavailable": "এই তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না। পরে আবার চেষ্টা করুন।",
+      "observed": "পর্যবেক্ষণ",
+      "noCurrentUpdatesOrAlerts": "বর্তমানে কোনো আপডেট বা সতর্কতা নেই।"
+    },
+    "commissionCalculator": {
+      "estimateTheSplit": "সম্ভাব্য হিসাব",
+      "goodsOrServiceAmountBdt": "পণ্য বা সেবার মূল্য (টাকা)",
+      "transportNotice": "কমিশনের হিসাবে পরিবহন খরচ ধরা হয়নি। প্রকৃত খরচ ও সম্মত শর্ত ভিন্ন হতে পারে।",
+      "rateUnavailable": "এখন কৃষি কমিশনের হার পাওয়া যাচ্ছে না।"
+    },
+    "home": {
+      "eyebrow": "সারা বাংলাদেশের কৃষিসেবা",
+      "title": "একসাথে এগিয়ে যাক কৃষি, সহায়তা ও বাজার সংযোগ।",
+      "description": "কৃষিপণ্য, শ্রমিক, যন্ত্রপাতি, পরামর্শ ও সহায়তা এক জায়গায় খুঁজুন। সবাই সেবা দেখতে পারবেন; যাচাইকৃত অ্যাকাউন্ট থেকে অনুরোধ পাঠালে পরিচালনা দল তা পর্যালোচনা করবে।",
+      "exploreMarketplace": "বাজার দেখুন",
+      "farmServices": "কৃষিসেবা",
+      "marketplace": "কৃষিপণ্যের বাজার",
+      "findProductsAndProviders": "পণ্য ও সেবাদাতা খুঁজুন",
+      "viewMarketplace": "সব তালিকা দেখুন",
+      "emptyListings": "এখনো কোনো প্রকাশিত তালিকা নেই। পরে আবার দেখুন।",
+      "serviceDetails": "টি বিস্তারিত তথ্য",
+      "commissionNotice": "এই হিসাবে কৃষির বর্তমান কমিশন হার ব্যবহার করা হয়। আলাদাভাবে নির্ধারিত পরিবহন খরচ এতে অন্তর্ভুক্ত নয়।",
+      "publicationsEyebrow": "কৃষি পরিচালনা দলের যাচাইকৃত তথ্য",
+      "publicationsTitle": "বাজারদর ও কৃষি আপডেট",
+      "publicationsDescription": "বাজারদর, খবর, পরামর্শ ও আবহাওয়া সতর্কতা পরিচালনা দলের মাধ্যমে উৎস ও তারিখসহ প্রকাশ করা হয়।",
+      "publicationsUnavailable": "প্রকাশিত তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না।",
+      "latestMarketPrices": "সর্বশেষ বাজারদর",
+      "recentUpdates": "সাম্প্রতিক আপডেট",
+      "noCurrentAgricultureUpdates": "বর্তমানে কোনো কৃষি আপডেট নেই।"
+    },
+    "market": {
+      "name": "কৃষি মার্কেটপ্লেস",
+      "backToAgriculture": "কৃষি সেবায় ফিরুন",
+      "findFarmProducts": "কৃষিপণ্য খুঁজুন",
+      "description": "বিক্রেতা, বিভাগ, জেলা ও দামের ভিত্তিতে তালিকা খুঁজুন। অনুরোধ পাঠানোর আগে সরবরাহকারীর সঙ্গে শর্ত মিলিয়ে নিন।",
+      "searchProductsOrSellers": "পণ্য বা বিক্রেতা খুঁজুন",
+      "minBdt": "সর্বনিম্ন ৳",
+      "maxBdt": "সর্বোচ্চ ৳",
+      "sort": "সাজান",
+      "empty": "এই খোঁজে কোনো প্রকাশিত পণ্য নেই। ফিল্টার বদলে আবার চেষ্টা করুন।",
+      "page": "পৃষ্ঠা"
+    },
+    "support": {
+      "title": "কৃষি সহায়তা",
+      "loadError": "সহায়তার তথ্য লোড করা যায়নি।",
+      "notConfigured": "সহায়তার যোগাযোগের তথ্য এখনো নির্ধারণ করা হয়নি।"
+    },
+    "serviceDetail": {
+      "coordinationNotice": "কৃষি পরিচালনা দল সেবার অনুরোধ যাচাই ও সমন্বয় করবে। অনুরোধ জমা দিলে অর্ডার বা পেমেন্ট তৈরি হয় না।"
     }
   },
-  "requestForm": {
-    "fullName": "আপনার নাম *",
-    "fullNamePlaceholder": "আপনার পুরো নাম লিখুন",
-    "phone": "মোবাইল নম্বর *",
-    "phonePlaceholder": "01XXXXXXXXX",
-    "district": "জেলা/এলাকা *",
-    "districtPlaceholder": "যেমন: বগুড়া, রংপুর",
-    "budget": "সম্ভাব্য বাজেট (৳)",
-    "budgetPlaceholder": "ঐচ্ছিক",
-    "details": "আপনার প্রয়োজন বিস্তারিত লিখুন *",
-    "detailsPlaceholder": "কাজের বিবরণ, পরিমাণ বা অন্যান্য তথ্য লিখুন...",
-    "submit": "অনুরোধ জমা দিন",
-    "submitting": "জমা হচ্ছে...",
-    "disclaimer": "অনুরোধ জমা দিলেই কোনো পেমেন্ট সম্পন্ন হয় না।",
-    "successTitle": "অনুরোধ জমা হয়েছে",
-    "successReference": "আপনার রেফারেন্স নম্বর:",
-    "successNotice": "এটি কেবল অনুরোধ গ্রহণের নিশ্চিতকরণ; সেবা বা পেমেন্ট নিশ্চিত হওয়ার অর্থ নয়।"
+  "admin": {
+    "publishing": {
+      "marketLabel": "বাজার",
+      "agricultureOperations": "কৃষি পরিচালনা",
+      "publishPricesAndUpdates": "বাজারদর ও আপডেট প্রকাশ",
+      "description": "জমা দেওয়া তথ্য যাচাই করে উৎস ও পর্যবেক্ষণের তারিখ যোগ করে গ্রাহকদের জন্য প্রকাশ করুন।",
+      "backToAdministration": "প্রশাসনে ফিরে যান",
+      "priceSubmissionsAwaitingReview": "পর্যালোচনার অপেক্ষায় থাকা বাজারদরের অনুরোধ",
+      "submittedPriceInformation": "জমা দেওয়া বাজারদরের তথ্য",
+      "newsAdviceAndWeatherAlerts": "খবর, পরামর্শ ও আবহাওয়া সতর্কতা",
+      "weatherAlertsRequireAnExpiryDate": "আবহাওয়া সতর্কতার মেয়াদ শেষের তারিখ দিতে হবে।",
+      "noLinkedRequest": "কোনো অনুরোধ নয়",
+      "linkedRequest": "যুক্ত অনুরোধ",
+      "addMarketPrice": "নতুন বাজারদর যোগ করুন",
+      "productNameBangla": "পণ্যের নাম (বাংলা)",
+      "productNameEnglish": "পণ্যের নাম (ইংরেজি)",
+      "unitPlaceholder": "একক (যেমন কেজি)",
+      "priceBdt": "দাম (টাকা)",
+      "observedOn": "পর্যবেক্ষণের তারিখ",
+      "publicationStatus": "প্রকাশনার অবস্থা",
+      "draft": "খসড়া",
+      "linkAPriceSubmission": "বাজারদরের অনুরোধ যুক্ত করুন",
+      "saveMarketPrice": "বাজারদর সংরক্ষণ",
+      "addAnUpdate": "নতুন আপডেট যোগ করুন",
+      "publicationDate": "প্রকাশের তারিখ",
+      "weatherExpiryLabel": "মেয়াদ শেষের তারিখ (আবহাওয়া সতর্কতার জন্য প্রয়োজন)",
+      "contentBangla": "বিস্তারিত (বাংলা)",
+      "contentEnglish": "বিস্তারিত (ইংরেজি)",
+      "saveUpdate": "আপডেট সংরক্ষণ",
+      "agricultureSupportContact": "কৃষি সহায়তার যোগাযোগ",
+      "phone": "ফোন",
+      "email": "ইমেইল",
+      "supportMessageBangla": "সহায়তার বার্তা (বাংলা)",
+      "supportMessageEnglish": "সহায়তার বার্তা (ইংরেজি)",
+      "saveSupportDetails": "সহায়তার তথ্য সংরক্ষণ",
+      "saveError": "সংরক্ষণ করা যায়নি। তথ্য যাচাই করে আবার চেষ্টা করুন।",
+      "saved": "সংরক্ষিত হয়েছে।"
+    },
+    "workspace": {
+      "financeLabel": "অর্থায়ন",
+      "administrationNavigation": "প্রশাসন নেভিগেশন",
+      "disputes": "বিরোধ",
+      "agricultureIntake": "কৃষি অনুরোধ",
+      "payments": "পেমেন্ট যাচাই",
+      "rates": "কমিশন হার",
+      "platformOperations": "প্ল্যাটফর্ম পরিচালনা",
+      "publishAgriculturePricesAndUpdates": "কৃষি বাজারদর ও আপডেট প্রকাশ",
+      "listingModeration": "তালিকা পর্যালোচনা",
+      "starts": "শুরু",
+      "ends": "শেষ",
+      "quote": "দরপ্রস্তাব",
+      "transport": "পরিবহন",
+      "viewProviderProfile": "সেবাদাতার প্রোফাইল",
+      "paymentConfirmations": "পেমেন্ট মিল যাচাই",
+      "sectorCommissionSettings": "বিভাগভিত্তিক কমিশন",
+      "resolution": "সিদ্ধান্ত",
+      "markCompleted": "সম্পন্ন হিসেবে চিহ্নিত",
+      "cancelAndReleaseStock": "বাতিল ও মজুত ফেরত",
+      "recordDecision": "সিদ্ধান্ত সংরক্ষণ",
+      "recordARefund": "ফেরত নথিভুক্ত করুন",
+      "recordRefund": "ফেরত সংরক্ষণ",
+      "commissionRate": "কমিশন হার (%)",
+      "operations": "পরিচালনা",
+      "platformWide": "সমগ্র প্ল্যাটফর্ম",
+      "grantAccess": "প্রবেশাধিকার দিন",
+      "revoke": "সরান"
+    },
+    "support": {
+      "visibilityNotice": "এই তথ্য কৃষি পাতায় প্রকাশ্যে দেখা যাবে। যোগাযোগের কোনো মাধ্যম সরাতে ফাঁকা রাখুন।"
+    },
+    "agricultureRequests": {
+      "agricultureServiceIntake": "কৃষি সেবা অনুরোধ",
+      "description": "অনুরোধ যাচাই, সমন্বয় এবং ব্যক্তিগত অভ্যন্তরীণ নোট সংরক্ষণ করুন।",
+      "service": "সেবা",
+      "status": "অবস্থা",
+      "allStatuses": "সব অবস্থা",
+      "assignee": "দায়িত্বপ্রাপ্ত",
+      "anyone": "সব কর্মী",
+      "fromDate": "শুরুর তারিখ",
+      "toDate": "শেষ তারিখ",
+      "filterRequests": "অনুরোধ ফিল্টার করুন",
+      "empty": "এই ফিল্টারে কোনো কৃষি অনুরোধ পাওয়া যায়নি।",
+      "notAssigned": "দায়িত্ব দেওয়া হয়নি",
+      "marketplaceMatch": "মার্কেটপ্লেস সংযোগ",
+      "internalNote": "অভ্যন্তরীণ নোট",
+      "customerUpdate": "গ্রাহক আপডেট",
+      "assignToStaff": "কর্মীকে দায়িত্ব দিন",
+      "marketplaceRequestLabel": "মিল থাকা মার্কেটপ্লেস অনুরোধ আইডি (ঐচ্ছিক)",
+      "customerVisibleUpdate": "গ্রাহকের জন্য আপডেট",
+      "privateStaffNote": "অভ্যন্তরীণ কর্মী নোট",
+      "saveReview": "পর্যালোচনা সংরক্ষণ"
+    }
   },
   "howItWorks": {
     "tag": "সহজ কার্যপ্রবাহ",
@@ -277,467 +570,395 @@
       }
     ]
   },
-  "commission": {
-    "tag": "স্বচ্ছ হিসাব",
-    "title": "১০% কমিশন ক্যালকুলেটর",
-    "description": "নিচের হিসাবটি উদাহরণমাত্র। চূড়ান্ত কমিশন নীতিমালা ও অনুমোদিত লেনদেন অনুযায়ী নির্ধারিত হবে।",
-    "amountLabel": "লেনদেনের মোট পরিমাণ (৳)",
-    "platformShare": "প্ল্যাটফর্ম কমিশন (১০%)",
-    "providerShare": "সেবাদাতার অংশ (৯০%)"
-  },
-  "marketAndPolicy": {
-    "marketTag": "বাজার আপডেট",
-    "marketTitle": "নিউজ ও বাজার ফিড",
-    "feedSampleBadge": "নমুনা ফিড",
-    "feedSampleTitle": "স্থানীয় বাজারদর যাচাই করে প্রকাশ করুন",
-    "feedSampleDescription": "লাইভ বাজারদর বা সংবাদ এখানে স্বয়ংক্রিয়ভাবে যুক্ত নয়। অ্যাডমিন যাচাই ও প্রকাশের মডিউল সংযুক্ত করতে হবে।",
-    "feedWarningBadge": "সতর্কতা",
-    "feedWarningTitle": "কৃষি পণ্য কেনাবেচার আগে যাচাই করুন",
-    "feedWarningDescription": "পণ্যের মান, ওজন, মূল্য, পরিবহন ও পেমেন্ট শর্ত লিখিতভাবে নিশ্চিত করুন।",
-    "policyTag": "নীতি ও নিরাপত্তা",
-    "policyTitle": "ব্যবহার নীতিমালা",
-    "policies": [
-      "কৃষি ঋণ, বীমা বা সরকারি সুবিধা অনুমোদনের নিশ্চয়তা দেওয়া হয় না।",
-      "কোনো চিকিৎসা, আইনগত বা সরকারি সিদ্ধান্তের বিকল্প হিসেবে প্ল্যাটফর্ম ব্যবহার করা যাবে না।",
-      "বাজারদর প্রকাশের আগে এলাকা, তারিখ, একক ও উৎস যাচাই করতে হবে।",
-      "ভুয়া তালিকা, প্রতারণা, ওজন/মানের ভুল তথ্য বা অননুমোদিত ফি নিষিদ্ধ।",
-      "ব্যক্তিগত তথ্য শুধু সেবা পরিচালনার প্রয়োজন অনুযায়ী ব্যবহার করতে হবে।"
-    ]
-  },
-  "emergency": {
-    "buttonLabel": "জরুরি সহায়তা 100",
-    "modalTitle": "জরুরি সহায়তা",
-    "modalSubtitle": "এই বাটনটি স্বয়ংক্রিয়ভাবে কল করে না।",
-    "modalDescription": "জরুরি সহায়তার জন্য আপনার এলাকার যাচাইকৃত সরকারি জরুরি নম্বরে সরাসরি যোগাযোগ করুন।"
-  },
   "footer": {
-    "tagline": "কৃষক • বাজার • শ্রম • সেবা",
-    "copyright": "EKsathe Bangladesh"
+    "tagline": "কৃষক • বাজার • শ্রম • সেবা"
   },
   "dashboard": {
     "tabDashboard": "ড্যাশবোর্ড",
     "tabAdmin": "অ্যাডমিন প্যানেল",
     "demoNotice": "এটি একটি ডেমো প্রোটোটাইপ; সব ডেটা নমুনা।",
-    "searchPlaceholder": "ক্যাটাগরি খুঁজুন...",
-    "noResults": "কোনো ক্যাটাগরি পাওয়া যায়নি।",
     "newsFeed": "নিউজ ফিড",
     "notifications": "নোটিফিকেশন",
     "profile": "প্রোফাইল",
     "emergencyCall": "জরুরি কল",
     "adminRole": "অ্যাডমিন",
-    "guestRole": "গেস্ট"
+    "guestRole": "গেস্ট",
+    "actions": {
+      "back": "সেবাসমূহে ফিরুন"
+    },
+    "sector": {
+      "availableListings": "{count, plural, other {#টি সেবা তালিকা}}",
+      "empty": "এখনো কোনো অনুমোদিত তালিকা নেই। সেবাদাতা হিসেবে যোগ দিন।",
+      "applyToProvide": "সেবাদাতা হিসেবে যোগ দিন"
+    },
+    "categoryGrid": {
+      "resultCount": "{count, plural, one {#টি বিভাগ} other {#টি বিভাগ}}"
+    }
   },
-  "locale": {
-    "changeFailed": "ভাষা পরিবর্তন করা যায়নি। আবার চেষ্টা করুন।"
+  "account": {
+    "workspace": {
+      "accountNavigation": "অ্যাকাউন্ট নেভিগেশন",
+      "agricultureServiceRequests": "কৃষি সেবা অনুরোধ",
+      "yourAccount": "আপনার একাউন্ট",
+      "welcome": "স্বাগতম, {name}",
+      "viewRequest": "অনুরোধ দেখুন",
+      "requestsAndQuotes": "অনুরোধ ও দরপ্রস্তাব",
+      "providerQuote": "সেবাদাতার দরপ্রস্তাব",
+      "quotedTotal": "মোট প্রস্তাব",
+      "acceptedQuoteOrders": "{count, plural, other {#টি অর্ডার/দরপ্রস্তাব গ্রহণ}}",
+      "openProject": "প্রকল্প খুলুন",
+      "open": "দেখুন",
+      "markRead": "পড়া হয়েছে"
+    },
+    "profile": {
+      "usageNotice": "এই তথ্য আপনার অনুরোধ ও বুকিংয়ে ব্যবহৃত হবে।"
+    },
+    "requests": {
+      "description": "সেবার অবস্থা, আপনার জমা দেওয়া তথ্য ও পরিচালনা দলের আপডেট দেখুন।",
+      "acceptanceNotice": "গ্রহণ করলে মূল্য, পরিমাণ ও বুকিংয়ের শর্ত নিশ্চিত হবে।"
+    },
+    "projects": {
+      "description": "নির্মাণকাজ, দরপ্রস্তাব, ধাপ ও ব্যয় একসাথে দেখুন।"
+    },
+    "labels": {
+      "withdrawRequest": "অনুরোধ প্রত্যাহার করুন"
+    },
+    "agricultureRequest": {
+      "backToAccount": "অ্যাকাউন্টে ফিরে যান",
+      "contact": "যোগাযোগ",
+      "requirement": "প্রয়োজন",
+      "submittedServiceDetails": "জমা দেওয়া সেবার তথ্য",
+      "noUpdatesYet": "এখনো কোনো আপডেট নেই।"
+    }
   },
-  "inline": {
-    "account_navigation_1vkrrr0": "অ্যাকাউন্ট নেভিগেশন",
-    "requests_1muw0v3": "অনুরোধ",
-    "agriculture_service_requests_zyhcii": "কৃষি সেবা অনুরোধ",
-    "orders_v5igup": "অর্ডার",
-    "your_account_1fpb5vs": "আপনার একাউন্ট",
-    "these_details_are_used_for_requests_and_bo_1kkltya": "এই তথ্য আপনার অনুরোধ ও বুকিংয়ে ব্যবহৃত হবে।",
-    "track_request_status_submitted_details_and_12mh9sv": "সেবার অবস্থা, আপনার জমা দেওয়া তথ্য ও পরিচালনা দলের আপডেট দেখুন।",
-    "view_request_t2wjgb": "অনুরোধ দেখুন",
-    "requests_and_quotes_1tbsj16": "অনুরোধ ও দরপ্রস্তাব",
-    "no_additional_details_provided_gccbx2": "অতিরিক্ত তথ্য নেই।",
-    "provider_quote_nzyvip": "সেবাদাতার দরপ্রস্তাব",
-    "quoted_total_1h15mur": "মোট প্রস্তাব",
-    "expires_w9jxxl": "মেয়াদ শেষ",
-    "orders_and_bookings_13untom": "অর্ডার ও বুকিং",
-    "track_construction_scope_quotes_milestones_hkmiut": "নির্মাণকাজ, দরপ্রস্তাব, ধাপ ও ব্যয় একসাথে দেখুন।",
-    "accepted_quote_orders_1hoh8n": "টি অর্ডার/দরপ্রস্তাব গ্রহণ",
-    "open_project_sc36kf": "প্রকল্প খুলুন",
-    "open_3w3yc3": "দেখুন",
-    "accepting_confirms_the_quoted_price_quanti_14khsnk": "গ্রহণ করলে মূল্য, পরিমাণ ও বুকিংয়ের শর্ত নিশ্চিত হবে।",
-    "withdraw_request_16j3pnu": "অনুরোধ প্রত্যাহার করুন",
-    "mark_read_1dcjkuu": "পড়া হয়েছে",
-    "back_to_account_k3epiu": "অ্যাকাউন্টে ফিরে যান",
-    "contact_kqf8cd": "যোগাযোগ",
-    "budget_1cc4s4c": "বাজেট",
-    "requirement_14zq66t": "প্রয়োজন",
-    "submitted_service_details_1wb3h0i": "জমা দেওয়া সেবার তথ্য",
-    "private_attachments_fpiomb": "ব্যক্তিগত সংযুক্তি",
-    "updates_12jzrl0": "আপডেট",
-    "no_updates_yet_105bcq2": "এখনো কোনো আপডেট নেই।",
-    "all_agriculture_services_170e4nu": "সব কৃষিসেবা",
-    "administration_navigation_13nz74t": "প্রশাসন নেভিগেশন",
-    "listings_dq3ohu": "তালিকা",
-    "disputes_r4wset": "বিরোধ",
-    "agriculture_intake_11g2kyy": "কৃষি অনুরোধ",
-    "payments_10ntxis": "পেমেন্ট যাচাই",
-    "commissions_82zxsv": "কমিশন",
-    "rates_1hw0rt3": "কমিশন হার",
-    "platform_operations_ddluvn": "প্ল্যাটফর্ম পরিচালনা",
-    "publish_agriculture_prices_and_updates_1mknp4k": "কৃষি বাজারদর ও আপডেট প্রকাশ",
-    "listing_moderation_24fime": "তালিকা পর্যালোচনা",
-    "starts_y2biwy": "শুরু",
-    "ends_lldl3n": "শেষ",
-    "quote_1x6t7ux": "দরপ্রস্তাব",
-    "transport_1fsvvgu": "পরিবহন",
-    "view_provider_profile_j41e4t": "সেবাদাতার প্রোফাইল",
-    "disputes_1tdlnrq": "বিরোধ নিষ্পত্তি",
-    "payment_confirmations_mgyaiy": "পেমেন্ট মিল যাচাই",
-    "sector_commission_settings_1p0mg0p": "বিভাগভিত্তিক কমিশন",
-    "resolution_m1aqc1": "সিদ্ধান্ত",
-    "mark_completed_1cdw36l": "সম্পন্ন হিসেবে চিহ্নিত",
-    "cancel_and_release_stock_omouxg": "বাতিল ও মজুত ফেরত",
-    "record_decision_uudhyi": "সিদ্ধান্ত সংরক্ষণ",
-    "record_a_refund_nfyy7b": "ফেরত নথিভুক্ত করুন",
-    "record_refund_lpvpcy": "ফেরত সংরক্ষণ",
-    "commission_rate_12xdjj1": "কমিশন হার (%)",
-    "update_1raohb6": "হালনাগাদ",
-    "operations_1t8z18": "পরিচালনা",
-    "finance_1rfbk3d": "অর্থনীতি",
-    "platform_wide_10jjm12": "সমগ্র প্ল্যাটফর্ম",
-    "agriculture_labor_r0zc6k": "কৃষি ও শ্রমিক",
-    "construction_1bp2bxr": "নির্মাণ",
-    "grant_access_l6z9yb": "প্রবেশাধিকার দিন",
-    "revoke_1pjpchz": "সরান",
-    "agriculture_operations_171enbn": "কৃষি পরিচালনা",
-    "publish_prices_and_updates_1h3g253": "বাজারদর ও আপডেট প্রকাশ",
-    "review_submitted_information_add_a_source__1o8xi6a": "জমা দেওয়া তথ্য যাচাই করে উৎস ও পর্যবেক্ষণের তারিখ যোগ করে গ্রাহকদের জন্য প্রকাশ করুন।",
-    "back_to_administration_1395jov": "প্রশাসনে ফিরে যান",
-    "market_prices_1ahmufv": "বাজারদর",
-    "price_submissions_awaiting_review_9p0z43": "পর্যালোচনার অপেক্ষায় থাকা বাজারদরের অনুরোধ",
-    "submitted_price_information_1vv4930": "জমা দেওয়া বাজারদরের তথ্য",
-    "news_advice_and_weather_alerts_vzz9rb": "খবর, পরামর্শ ও আবহাওয়া সতর্কতা",
-    "weather_alerts_require_an_expiry_date_13z2wta": "আবহাওয়া সতর্কতার মেয়াদ শেষের তারিখ দিতে হবে।",
-    "no_linked_request_1s729f4": "কোনো অনুরোধ নয়",
-    "linked_request_1rose97": "যুক্ত অনুরোধ",
-    "add_market_price_aj2t35": "নতুন বাজারদর যোগ করুন",
-    "product_name_bangla_1ldtlug": "পণ্যের নাম (বাংলা)",
-    "product_name_english_upxxr0": "পণ্যের নাম (ইংরেজি)",
-    "market_hegs9l": "বাজার",
-    "district_135um58": "জেলা",
-    "unit_e_g_kg_im8c5r": "একক (যেমন কেজি)",
-    "price_bdt_swlqge": "দাম (টাকা)",
-    "observed_on_19fm3vl": "পর্যবেক্ষণের তারিখ",
-    "source_1d36x5a": "তথ্যসূত্র",
-    "publication_status_1xsrx62": "প্রকাশনার অবস্থা",
-    "draft_1sgfgqc": "খসড়া",
-    "published_1fgctfu": "প্রকাশিত",
-    "link_a_price_submission_1ux67p8": "বাজারদরের অনুরোধ যুক্ত করুন",
-    "saving_4kkf1l": "সংরক্ষণ হচ্ছে…",
-    "save_market_price_71w75p": "বাজারদর সংরক্ষণ",
-    "add_an_update_1b5oi8t": "নতুন আপডেট যোগ করুন",
-    "type_nja194": "ধরন",
-    "news_330zsg": "খবর",
-    "advice_1ln74x8": "পরামর্শ",
-    "weather_alert_j66p6a": "আবহাওয়া সতর্কতা",
-    "title_bangla_iq0ud6": "শিরোনাম (বাংলা)",
-    "title_english_o28u0g": "শিরোনাম (ইংরেজি)",
-    "publication_date_e9a51j": "প্রকাশের তারিখ",
-    "expiry_date_required_for_weather_alerts_104m02b": "মেয়াদ শেষের তারিখ (আবহাওয়া সতর্কতার জন্য প্রয়োজন)",
-    "content_bangla_12pipiu": "বিস্তারিত (বাংলা)",
-    "content_english_1hmolki": "বিস্তারিত (ইংরেজি)",
-    "save_update_kjovpe": "আপডেট সংরক্ষণ",
-    "agriculture_support_contact_1q8h10x": "কৃষি সহায়তার যোগাযোগ",
-    "these_details_appear_publicly_on_the_agric_1h7pwqe": "এই তথ্য কৃষি পাতায় প্রকাশ্যে দেখা যাবে। যোগাযোগের কোনো মাধ্যম সরাতে ফাঁকা রাখুন।",
-    "phone_huhfp5": "ফোন",
-    "email_1e0eytg": "ইমেইল",
-    "support_message_bangla_1oh3kqd": "সহায়তার বার্তা (বাংলা)",
-    "support_message_english_1uayqe7": "সহায়তার বার্তা (ইংরেজি)",
-    "save_support_details_fn4rh4": "সহায়তার তথ্য সংরক্ষণ",
-    "could_not_save_check_the_fields_and_try_ag_1qzk9yl": "সংরক্ষণ করা যায়নি। তথ্য যাচাই করে আবার চেষ্টা করুন।",
-    "saved_19x43w9": "সংরক্ষিত হয়েছে।",
-    "agriculture_service_intake_13v216g": "কৃষি সেবা অনুরোধ",
-    "review_requests_coordinate_follow_up_and_k_id40eo": "অনুরোধ যাচাই, সমন্বয় এবং ব্যক্তিগত অভ্যন্তরীণ নোট সংরক্ষণ করুন।",
-    "service_1m16zkb": "সেবা",
-    "all_services_1pdbxg7": "সব সেবা",
-    "status_qhepgk": "অবস্থা",
-    "all_statuses_153nc2f": "সব অবস্থা",
-    "assignee_1g6jeev": "দায়িত্বপ্রাপ্ত",
-    "anyone_itav5z": "সব কর্মী",
-    "from_date_172hp5u": "শুরুর তারিখ",
-    "to_date_8xio37": "শেষ তারিখ",
-    "filter_requests_12do0dv": "অনুরোধ ফিল্টার করুন",
-    "clear_193qb1d": "মুছুন",
-    "no_agriculture_requests_match_these_filter_1wybrur": "এই ফিল্টারে কোনো কৃষি অনুরোধ পাওয়া যায়নি।",
-    "not_assigned_jyfmtj": "দায়িত্ব দেওয়া হয়নি",
-    "marketplace_match_mo0a3k": "মার্কেটপ্লেস সংযোগ",
-    "internal_note_na2msi": "অভ্যন্তরীণ নোট",
-    "customer_update_1i5e277": "গ্রাহক আপডেট",
-    "assign_to_staff_od32ej": "কর্মীকে দায়িত্ব দিন",
-    "matched_marketplace_request_id_optional_ek7ufe": "মিল থাকা মার্কেটপ্লেস অনুরোধ আইডি (ঐচ্ছিক)",
-    "customer_visible_update_1ix5pp7": "গ্রাহকের জন্য আপডেট",
-    "private_staff_note_84za12": "অভ্যন্তরীণ কর্মী নোট",
-    "save_review_2j822r": "পর্যালোচনা সংরক্ষণ",
-    "estimate_the_split_1fdkp00": "সম্ভাব্য হিসাব",
-    "estimate_30h8pe": "আনুমানিক",
-    "goods_or_service_amount_bdt_12cxtwr": "পণ্য বা সেবার মূল্য (টাকা)",
-    "separate_transport_charge_bdt_wgejjp": "আলাদা পরিবহন খরচ (টাকা)",
-    "transport_is_excluded_from_the_commission__xx0z4l": "কমিশনের হিসাবে পরিবহন খরচ ধরা হয়নি। প্রকৃত খরচ ও সম্মত শর্ত ভিন্ন হতে পারে।",
-    "the_agriculture_commission_rate_is_not_ava_w8ww1j": "এখন কৃষি কমিশনের হার পাওয়া যাচ্ছে না।",
-    "estimated_platform_commission_70e81d": "সম্ভাব্য প্ল্যাটফর্ম কমিশন",
-    "estimated_provider_amount_including_transp_cv34i9": "পরিবহনসহ সেবাদাতার সম্ভাব্য প্রাপ্য",
-    "back_to_dashboard_2v17ca": "ড্যাশবোর্ডে ফিরে যান",
-    "agriculture_services_across_bangladesh_g8at01": "সারা বাংলাদেশের কৃষিসেবা",
-    "grow_find_support_and_reach_markets_togeth_1er5pts": "একসাথে এগিয়ে যাক কৃষি, সহায়তা ও বাজার সংযোগ।",
-    "find_farm_products_workers_machinery_advic_uc8tlf": "কৃষিপণ্য, শ্রমিক, যন্ত্রপাতি, পরামর্শ ও সহায়তা এক জায়গায় খুঁজুন। সবাই সেবা দেখতে পারবেন; যাচাইকৃত অ্যাকাউন্ট থেকে অনুরোধ পাঠালে পরিচালনা দল তা পর্যালোচনা করবে।",
-    "explore_marketplace_fbjfqd": "বাজার দেখুন",
-    "browse_all_30_services_1bctdan": "৩০টি সেবা দেখুন",
-    "farm_services_1x1k32o": "কৃষিসেবা",
-    "marketplace_rtfmqm": "কৃষিপণ্যের বাজার",
-    "find_products_and_providers_1rc7kvb": "পণ্য ও সেবাদাতা খুঁজুন",
-    "agriculture_marketplace_1ufcijx": "কৃষি মার্কেটপ্লেস",
-    "view_marketplace_11lxz73": "সব তালিকা দেখুন",
-    "marketplace_listings_could_not_be_loaded_p_97902w": "মার্কেটপ্লেসের তালিকা লোড করা যায়নি। পরে আবার চেষ্টা করুন।",
-    "no_published_listings_yet_please_check_bac_11mj298": "এখনো কোনো প্রকাশিত তালিকা নেই। পরে আবার দেখুন।",
-    "30_agriculture_services_dczxdz": "৩০টি কৃষিসেবা",
-    "what_do_you_need_help_with_1h91swe": "কোন সেবাটি আপনার প্রয়োজন?",
-    "choose_a_service_to_see_its_details_and_re_8bsvex": "সেবার বিবরণ ও অনুরোধের ফর্ম দেখতে একটি সেবা বেছে নিন। কৃষি পরিচালনা দল অনুরোধ যাচাই ও সমন্বয় করবে।",
-    "search_services_8c7uub": "সেবা খুঁজুন",
-    "filter_by_category_r4wwg6": "ক্যাটাগরি অনুযায়ী দেখুন",
-    "all_categories_qpnbu": "সব ক্যাটাগরি",
-    "no_services_match_your_search_gb0nca": "আপনার অনুসন্ধানে কোনো সেবা পাওয়া যায়নি।",
-    "service_details_1a6x8nu": "টি বিস্তারিত তথ্য",
-    "commission_calculator_1rnx2pf": "কমিশন ক্যালকুলেটর",
-    "estimate_the_platform_fee_uiwzmc": "প্ল্যাটফর্ম ফি সম্পর্কে ধারণা নিন",
-    "this_estimate_uses_the_current_agriculture_burysh": "এই হিসাবে কৃষির বর্তমান কমিশন হার ব্যবহার করা হয়। আলাদাভাবে নির্ধারিত পরিবহন খরচ এতে অন্তর্ভুক্ত নয়।",
-    "reviewed_by_the_agriculture_team_6bga3j": "কৃষি পরিচালনা দলের যাচাইকৃত তথ্য",
-    "market_prices_and_agriculture_updates_ndthf": "বাজারদর ও কৃষি আপডেট",
-    "market_prices_news_advice_and_weather_aler_sgubuu": "বাজারদর, খবর, পরামর্শ ও আবহাওয়া সতর্কতা পরিচালনা দলের মাধ্যমে উৎস ও তারিখসহ প্রকাশ করা হয়।",
-    "published_information_is_temporarily_unava_crkzxm": "প্রকাশিত তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না।",
-    "latest_market_prices_1nl26wh": "সর্বশেষ বাজারদর",
-    "no_published_market_prices_yet_9l0zbp": "এখনো কোনো বাজারদর প্রকাশিত হয়নি।",
-    "recent_updates_1jqm1ir": "সাম্প্রতিক আপডেট",
-    "no_current_agriculture_updates_1q8ia7k": "বর্তমানে কোনো কৃষি আপডেট নেই।",
-    "agriculture_support_1yks74p": "কৃষি সহায়তা",
-    "support_information_could_not_be_loaded_17qaam5": "সহায়তার তথ্য লোড করা যায়নি।",
-    "support_contact_details_have_not_been_conf_1i3gxk5": "সহায়তার যোগাযোগের তথ্য এখনো নির্ধারণ করা হয়নি।",
-    "back_to_agriculture_qogfrr": "কৃষি সেবায় ফিরুন",
-    "find_farm_products_1659zjw": "কৃষিপণ্য খুঁজুন",
-    "search_listings_by_seller_category_distric_tle0d8": "বিক্রেতা, বিভাগ, জেলা ও দামের ভিত্তিতে তালিকা খুঁজুন। অনুরোধ পাঠানোর আগে সরবরাহকারীর সঙ্গে শর্ত মিলিয়ে নিন।",
-    "search_products_or_sellers_xino0q": "পণ্য বা বিক্রেতা খুঁজুন",
-    "category_s1i10e": "বিভাগ",
-    "all_categories_1fiilwv": "সব বিভাগ",
-    "minimum_price_m3t2c3": "সর্বনিম্ন দাম",
-    "min_bdt_1qs33m3": "সর্বনিম্ন ৳",
-    "maximum_price_x46h1l": "সর্বোচ্চ দাম",
-    "max_bdt_1kgb5of": "সর্বোচ্চ ৳",
-    "sort_dj8kwt": "সাজান",
-    "newest_1g4bhr8": "নতুন আগে",
-    "price_low_to_high_186nc0k": "দাম: কম থেকে বেশি",
-    "price_high_to_low_1lcdsbe": "দাম: বেশি থেকে কম",
-    "search_1n7yeyu": "খুঁজুন",
-    "listings_17wuylw": "টি তালিকা",
-    "no_published_products_match_these_filters__12lylnw": "এই খোঁজে কোনো প্রকাশিত পণ্য নেই। ফিল্টার বদলে আবার চেষ্টা করুন।",
-    "details_ccvazu": "বিস্তারিত",
-    "seller_qlcxju": "বিক্রেতা",
-    "pagination_q63cg7": "পৃষ্ঠা নেভিগেশন",
-    "previous_1rllagw": "আগের",
-    "page_17ze4or": "পৃষ্ঠা",
-    "next_1vj0vil": "পরের",
-    "all_agriculture_services_up64mi": "← সব কৃষিসেবা",
-    "verified_agriculture_information_5k421l": "যাচাইকৃত কৃষি তথ্য",
-    "news_advice_and_alerts_1ideanw": "খবর, পরামর্শ ও সতর্কতা",
-    "agriculture_news_practical_advice_and_curr_1dsf3hb": "পরিচালনা দল কর্তৃক প্রকাশিত কৃষি খবর, পরামর্শ ও চলমান আবহাওয়া সতর্কতা।",
-    "this_information_is_temporarily_unavailabl_y1xjun": "এই তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না। পরে আবার চেষ্টা করুন।",
-    "observed_zu104w": "পর্যবেক্ষণ",
-    "no_current_updates_or_alerts_ey138t": "বর্তমানে কোনো আপডেট বা সতর্কতা নেই।",
-    "expires_3qln0j": "মেয়াদ শেষ",
-    "service_requests_are_reviewed_and_coordina_cb1lo1": "কৃষি পরিচালনা দল সেবার অনুরোধ যাচাই ও সমন্বয় করবে। অনুরোধ জমা দিলে অর্ডার বা পেমেন্ট তৈরি হয় না।",
-    "browse_marketplace_1v4g2rg": "মার্কেটপ্লেস দেখুন",
-    "preview_the_fields_below_sign_in_and_verif_ttja": "নিচে অনুরোধের তথ্যগুলো দেখুন। অনুরোধ পাঠাতে লগইন করে ইমেইল যাচাই করুন।",
-    "verify_email_lecgan": "ইমেইল যাচাই করুন",
-    "sign_in_hu4rdx": "লগইন",
-    "create_account_1b7e6x3": "অ্যাকাউন্ট খুলুন",
-    "optional_jpeg_png_or_webp_up_to_5_mb_mh8jo9": "ঐচ্ছিক · ৫ এমবির মধ্যে JPEG, PNG বা WebP",
-    "uploading_private_photo_1pwwdgh": "ব্যক্তিগত ছবি আপলোড হচ্ছে…",
-    "photo_ready_7n37mt": "ছবি প্রস্তুত",
-    "choose_an_option_5bc3rc": "একটি নির্বাচন করুন",
-    "requesting_coordination_does_not_create_an_1lp8p66": "সমন্বয়ের অনুরোধে অর্ডার বা সেবাদাতা নিশ্চিত হয় না, অর্থায়ন বা বীমা অনুমোদিত হয় না এবং কোনো পেমেন্ট হয় না।",
-    "request_reference_15i948e": "অনুরোধের রেফারেন্স",
-    "track_request_1fx82cp": "অনুরোধের অবস্থা দেখুন",
-    "estimate_a_project_transaction_46xmln": "প্রকল্পের লেনদেনের আনুমানিক হিসাব",
-    "work_or_material_amount_bdt_zxk6k3": "কাজ বা সামগ্রীর মূল্য (টাকা)",
-    "transport_is_excluded_from_the_commission__el9w8u": "কমিশনের হিসাবে পরিবহন খরচ ধরা হয়নি। চূড়ান্ত অর্থ সম্মত শর্ত অনুযায়ী নির্ধারিত হবে।",
-    "estimated_platform_commission_kq60y6": "প্ল্যাটফর্ম কমিশনের অনুমান",
-    "estimated_provider_amount_including_transp_mxn5v4": "পরিবহনসহ সেবাদাতার আনুমানিক প্রাপ্য",
-    "the_construction_commission_rate_is_not_av_1sfmign": "নির্মাণ খাতের কমিশনের হার এখন পাওয়া যাচ্ছে না।",
-    "construction_services_across_bangladesh_sgrzhm": "সারা বাংলাদেশের নির্মাণসেবা",
-    "plan_your_build_and_find_the_right_people_1u905pu": "পরিকল্পনা করুন, সঠিক নির্মাণসেবা খুঁজে নিন।",
-    "find_approved_professionals_and_material_s_1of70ek": "অনুমোদিত পেশাজীবী ও সামগ্রী সরবরাহকারী খুঁজুন, প্রকল্পের দরপ্রস্তাব তুলনা করুন এবং কাজ, মাইলফলক ও পেমেন্টের তথ্য একসাথে রাখুন।",
-    "explore_construction_marketplace_1210lvr": "নির্মাণ মার্কেটপ্লেস দেখুন",
-    "start_a_project_1tk0yro": "প্রকল্প শুরু করুন",
-    "construction_service_areas_1fwvn52": "নির্মাণ সেবার ধরন",
-    "published_offers_181lve9": "প্রকাশিত তালিকা",
-    "professionals_and_materials_1d2igvn": "পেশাজীবী ও নির্মাণসামগ্রী",
-    "construction_marketplace_1d9og8y": "নির্মাণ মার্কেটপ্লেস",
-    "view_all_offers_jpb7ai": "সব তালিকা দেখুন",
-    "no_approved_construction_listings_yet_plea_eqf7os": "এখনো কোনো অনুমোদিত নির্মাণ তালিকা নেই। পরে আবার দেখুন।",
-    "8_construction_service_areas_1jvofqa": "৮টি নির্মাণ সেবার ধরন",
-    "what_do_you_need_for_your_project_1u3al0": "আপনার প্রকল্পে কী ধরনের সহায়তা প্রয়োজন?",
-    "browse_an_approved_provider_or_create_a_pr_kxlufj": "অনুমোদিত সেবাদাতা দেখুন অথবা প্রকল্প তৈরি করে একাধিক পেশাজীবীকে দরপ্রস্তাবের জন্য আমন্ত্রণ জানান।",
-    "search_construction_services_1cd8gib": "নির্মাণসেবা খুঁজুন",
-    "filter_by_service_area_17ejr7w": "সেবার ধরন অনুযায়ী দেখুন",
-    "all_service_areas_1x8orpz": "সব সেবার ধরন",
-    "no_service_areas_match_your_search_1n05vd6": "আপনার অনুসন্ধানে কোনো সেবার ধরন পাওয়া যায়নি।",
-    "materials_1i2zdwy": "নির্মাণসামগ্রী",
-    "find_professionals_1svymkf": "পেশাজীবী দেখুন",
-    "a_clear_way_to_organize_your_build_11mvr7p": "নির্মাণকাজ গুছিয়ে এগিয়ে নিন",
-    "how_construction_projects_work_pdcpmd": "নির্মাণ প্রকল্প যেভাবে এগোয়",
-    "the_estimate_uses_the_current_construction_1fxpsqc": "এই হিসাবে নির্মাণ খাতের বর্তমান কমিশন হার ব্যবহার হয় এবং আলাদা পরিবহন খরচ অন্তর্ভুক্ত নয়।",
-    "keep_your_project_in_one_place_r8vy6r": "প্রকল্পের তথ্য এক জায়গায় রাখুন",
-    "track_providers_material_orders_project_mi_fmixtg": "আপনার অ্যাকাউন্ট থেকে সেবাদাতা, সামগ্রীর অর্ডার, প্রকল্পের মাইলফলক, ব্যক্তিগত নথি, খরচ ও পেমেন্ট নিশ্চিতকরণ দেখুন।",
-    "create_a_project_dhtxqj": "প্রকল্প তৈরি করুন",
-    "back_to_construction_services_12dfzks": "নির্মাণ সেবায় ফিরুন",
-    "approved_professionals_and_suppliers_ufbjni": "অনুমোদিত পেশাজীবী ও সরবরাহকারী",
-    "find_construction_services_and_materials_1xpkogy": "নির্মাণ সেবা ও সামগ্রী খুঁজুন",
-    "browse_by_work_type_location_and_price_cre_1oeikx0": "কাজের ধরন, অবস্থান ও মূল্য অনুযায়ী তালিকা দেখুন। প্রকল্প তৈরি করে একাধিক সেবাদাতার দরপ্রস্তাবও তুলনা করতে পারেন।",
-    "search_services_materials_or_providers_1wdv6r7": "সেবা, সামগ্রী বা সেবাদাতা খুঁজুন",
-    "e_g_bricks_engineer_dhaka_1mej99m": "যেমন: ইট, প্রকৌশলী, ঢাকা",
-    "all_construction_listings_12pacdx": "সব নির্মাণ তালিকা",
-    "professionals_services_bc0tiy": "পেশাজীবী ও সেবা",
-    "building_materials_j98vuw": "নির্মাণসামগ্রী",
-    "category_nstxaj": "ক্যাটাগরি",
-    "all_districts_1tgqg9q": "সব জেলা",
-    "minimum_price_m0j9b": "সর্বনিম্ন মূল্য",
-    "maximum_price_1emjoux": "সর্বোচ্চ মূল্য",
-    "sort_by_18j78x6": "সাজান",
-    "newest_j0ladc": "সর্বশেষ",
-    "price_low_to_high_katpc0": "মূল্য: কম থেকে বেশি",
-    "price_high_to_low_arcd6i": "মূল্য: বেশি থেকে কম",
-    "clear_filters_uzkp5g": "ফিল্টার মুছুন",
-    "listings_are_temporarily_unavailable_m2brmt": "তালিকা এখন পাওয়া যাচ্ছে না",
-    "create_a_project_to_request_quotes_uk9x33": "প্রকল্প তৈরি করে দরপ্রস্তাব নিন",
-    "no_approved_listings_match_these_filters_a_m7cahq": "এই ফিল্টারে কোনো অনুমোদিত তালিকা নেই। ফিল্টার বদলে আবার চেষ্টা করুন।",
-    "provider_1jmkj9t": "সেবাদাতা",
-    "all_construction_services_dtmafp": "সব নির্মাণসেবা",
-    "construction_service_199i3gz": "নির্মাণ সেবা",
-    "create_a_project_for_this_service_1oz0kdq": "এই সেবার প্রকল্প তৈরি করুন",
-    "approved_construction_listings_vb7f0k": "অনুমোদিত নির্মাণসেবা",
-    "view_all_results_h55f6r": "সব ফলাফল",
-    "there_are_no_approved_listings_for_this_se_1ouvm32": "এই সেবার কোনো অনুমোদিত তালিকা এখনো নেই। প্রকল্প তৈরি করে আপনার কাজের জন্য সেবাদাতাদের আমন্ত্রণ জানান।",
-    "reviews_19obigh": "টি পর্যালোচনা",
-    "booking_availability_1hl9oqa": "বুকিংয়ের উপলভ্যতা",
-    "from_1vw3av5": "শুরু",
-    "checked_for_requested_dates_1b2yoj9": "তারিখ অনুযায়ী যাচাই হবে",
-    "provider_profile_8eqhmv": "সেবাদাতার পরিচিতি",
-    "create_a_project_with_this_listing_t0qko3": "এই সেবা দিয়ে প্রকল্প তৈরি করুন",
-    "visit_storefront_1vy0izi": "দোকান দেখুন",
-    "more_from_this_seller_b6lkj7": "এই বিক্রেতার আরও পণ্য",
-    "customer_reviews_yvgqrk": "ক্রেতার পর্যালোচনা",
-    "all_sectors_14ogqu": "সব বিভাগ",
-    "send_a_request_ijms93": "অনুরোধ পাঠান",
-    "the_provider_will_send_terms_for_you_to_re_oagz0m": "সেবাদাতা মূল্য ও শর্ত পাঠালে আপনি সিদ্ধান্ত নিতে পারবেন।",
-    "try_again_o85pno": "আবার চেষ্টা করুন",
-    "reviews_265xd0": "টি রিভিউ",
-    "services_and_listings_f1v32t": "সেবা ও তালিকা",
-    "customer_reviews_1gf1uai": "গ্রাহক মতামত",
-    "reviews_from_completed_orders_will_appear__1g9e5me": "সম্পন্ন অর্ডারে রিভিউ এলে এখানে দেখা যাবে।",
-    "available_listings_yzc9nu": "টি সেবা তালিকা",
-    "no_approved_listings_yet_apply_to_become_a_o0ezrc": "এখনো কোনো অনুমোদিত তালিকা নেই। সেবাদাতা হিসেবে যোগ দিন।",
-    "apply_to_provide_13ovigs": "সেবাদাতা হিসেবে যোগ দিন",
-    "view_1ngfptr": "বিস্তারিত",
-    "my_projects_1y5pp50": "আমার প্রকল্প",
-    "describe_the_work_you_can_invite_construct_uh0wsm": "কাজের বিবরণ যোগ করুন। পরে নির্মাণ পেশাজীবীদের দরপ্রস্তাবের জন্য আমন্ত্রণ জানাতে পারবেন।",
-    "selected_service_sg3nvd": "নির্বাচিত সেবা",
-    "due_1yneuku": "শেষ তারিখ",
-    "not_specified_1i7krq7": "উল্লেখ নেই",
-    "work_packages_9k9nnr": "কাজের প্যাকেজ",
-    "compare_several_quotes_per_package_create__fpfw5a": "প্রতিটি প্যাকেজের জন্য একাধিক দর তুলনা করুন। একটি দর গ্রহণের পর অতিরিক্ত কাজের জন্য নতুন প্যাকেজ তৈরি করুন।",
-    "quotes_and_work_packages_15oqs9u": "দরপ্রস্তাব ও কাজের প্যাকেজ",
-    "compare_scope_quantity_transport_price_and_9wp0fg": "প্যাকেজের পরিধি, পরিমাণ, পরিবহন, মূল্য ও সময়সীমা তুলনা করুন।",
-    "create_a_work_package_before_inviting_prov_qs0v6e": "দর চাওয়ার আগে একটি কাজের প্যাকেজ তৈরি করুন।",
-    "construction_service_gx1wej": "নির্মাণসেবা",
-    "defined_work_fcku54": "নির্ধারিত কাজ",
-    "no_provider_invitations_have_been_sent_for_1h88727": "এখনো কোনো দরপ্রস্তাবের আমন্ত্রণ পাঠানো হয়নি।",
-    "no_additional_scope_details_gxl1ia": "অতিরিক্ত কাজের বিবরণ নেই।",
-    "total_bldkfh": "মোট",
-    "waiting_for_a_provider_quote_1bh4h77": "সেবাদাতার দরপ্রস্তাবের অপেক্ষায়।",
-    "invite_more_providers_6k9q6": "আরও সেবাদাতাকে আমন্ত্রণ জানান",
-    "invite_1vsiiih": "আমন্ত্রণ",
-    "providers_submit_progress_for_your_approva_ac16we": "সেবাদাতা অগ্রগতি পাঠালে আপনি ধাপ অনুমোদন করতে পারবেন।",
-    "accept_a_construction_service_provider_s_q_1s1mhp0": "প্রকল্পের ধাপ যোগ করতে আগে একজন নির্মাণসেবা পেশাজীবীর দর গ্রহণ করুন।",
-    "engaged_providers_and_materials_1dmhtj6": "নথিভুক্ত অর্ডার",
-    "confirmed_by_both_parties_1xd4wdp": "উভয় পক্ষ নিশ্চিত করেছে",
-    "awaiting_confirmation_1m2idbp": "নিশ্চিতকরণ বাকি",
-    "refunded_61yfyo": "ফেরত",
-    "these_records_are_visible_only_to_the_proj_3oruu6": "এই তালিকা শুধু প্রকল্পের মালিক দেখতে পারবেন।",
-    "recorded_project_expenses_gx0grz": "নথিভুক্ত মোট খরচ",
-    "no_project_files_have_been_added_yet_10su81e": "এখনো কোনো প্রকল্প নথি যোগ হয়নি।",
-    "no_project_photos_have_been_added_yet_615c8n": "এখনো কোনো প্রকল্পের ছবি যোগ হয়নি।",
-    "only_one_quote_can_be_accepted_for_this_wo_1yxvd9d": "প্রকল্পের অনুরোধে একটি দরপ্রস্তাব গ্রহণ করা যাবে।",
-    "house_shop_renovation_s3o7z0": "বাড়ি, দোকান, সংস্কার",
-    "package_type_1ql3wh2": "কাজের ধরন",
-    "professional_service_c7s4sh": "পেশাজীবী ও নির্মাণসেবা",
-    "add_work_package_1q2zkvw": "কাজের প্যাকেজ যোগ করুন",
-    "choose_a_provider_1my4w7f": "সেবাদাতা বেছে নিন",
-    "due_date_1yoc6no": "শেষ তারিখ",
-    "name_bangla_1lm9czd": "নাম (বাংলা)",
-    "name_english_1odtjyj": "নাম (ইংরেজি)",
-    "unit_x8dt8s": "একক",
-    "price_per_unit_bdt_y28nlq": "একক মূল্য (টাকা)",
-    "available_quantity_qdx72n": "উপলভ্য পরিমাণ",
-    "available_from_optional_dlhs2f": "শুরুর তারিখ (ঐচ্ছিক)",
-    "description_bangla_q8mmem": "বিবরণ (বাংলা)",
-    "description_english_kxac9w": "বিবরণ (ইংরেজি)",
-    "replace_photo_optional_nnrkdd": "ছবি বদলান (ঐচ্ছিক)",
-    "content_and_photo_edits_unpublish_the_list_o1vsj9": "বিষয়বস্তু বা ছবি বদলালে তালিকাটি পর্যালোচনা না হওয়া পর্যন্ত প্রকাশিত থাকবে না।",
-    "the_current_photo_stays_if_you_do_not_choo_1inaw9o": "বর্তমান ছবিটি রাখা হবে যদি নতুন ছবি না দেন।",
-    "the_image_could_not_be_uploaded_please_try_bnuvif": "ছবি আপলোড করা যায়নি। আবার চেষ্টা করুন।",
-    "saving_1s7ccbq": "অপেক্ষা করুন…",
-    "save_for_review_mqzadk": "পর্যালোচনার জন্য সংরক্ষণ",
-    "service_sector_1l9k566": "সেবা বিভাগ",
-    "e_g_vegetables_bricks_masonry_zjz3sh": "যেমন: সবজি, ইট, রাজমিস্ত্রি",
-    "kg_day_bag_2nppii": "কেজি, দিন, বস্তা",
-    "available_from_optional_c5ahok": "উপলভ্যতার তারিখ",
-    "goods_need_stock_to_sell_worker_and_machin_j3xozu": "পণ্য বিক্রির জন্য মজুত দিন। শ্রমিক ও যন্ত্রপাতির তালিকায় মজুত ০ হতে পারে; বুকিংয়ের তারিখ অনুযায়ী উপলভ্যতা যাচাই হয়।",
-    "apply_once_to_serve_customers_in_agricultu_7jcpxz": "একটি ব্যবসায়িক প্রোফাইল থেকে কৃষি বা নির্মাণ বিভাগে সেবা দেওয়ার জন্য আবেদন করুন। প্রশাসনিক দল আপনার সেবার সক্ষমতা পর্যালোচনা করবে।",
-    "upazila_optional_1sd5g73": "উপজেলা (ঐচ্ছিক)",
-    "introduction_bangla_1chcalt": "পরিচিতি (বাংলা)",
-    "introduction_english_1b79c5l": "পরিচিতি (ইংরেজি)",
-    "provider_navigation_18f19xw": "সেবাদাতা নেভিগেশন",
-    "storefront_9cgq9q": "স্টোরফ্রন্ট",
-    "business_operations_m1nxyg": "ব্যবসা পরিচালনা",
-    "this_provider_profile_is_suspended_it_cann_1mz4cnr": "এই প্রোফাইল থেকে নতুন অনুরোধ নেওয়া বা তালিকা প্রকাশ করা স্থগিত আছে। প্রশাসনিক দলের সঙ্গে যোগাযোগ করুন।",
-    "new_listings_are_reviewed_by_the_operation_18phcom": "তালিকা প্রকাশের আগে প্রশাসনিক পর্যালোচনা হবে।",
-    "add_a_listing_11diban": "নতুন তালিকা যোগ করুন",
-    "no_additional_details_provided_owxgv9": "কোনো অতিরিক্ত তথ্য নেই।",
-    "customer_workspace_94hmml": "গ্রাহক প্যানেল",
-    "commission_records_1p1a99s": "কমিশন",
-    "your_storefront_1fsw8dn": "আপনার স্টোরফ্রন্ট",
-    "customers_see_these_details_your_profile_p_y6dyfa": "গ্রাহকরা এই নাম, পরিচিতি ও ছবিগুলো পাবেন।",
-    "preview_agriculture_storefront_1k5ul3a": "সর্বজনীন কৃষি স্টোরফ্রন্ট দেখুন",
-    "preview_construction_profile_7ox8rd": "সর্বজনীন নির্মাণ প্রোফাইল দেখুন",
-    "apply_for_additional_sector_capabilities_f_157khdt": "আরও সেবা বিভাগে কাজ করতে অতিরিক্ত সক্ষমতার জন্য আবেদন করুন।",
-    "update_profile_or_request_capabilities_18ihx2": "প্রোফাইল বা সক্ষমতা হালনাগাদ করুন",
-    "notifications_oco8br": "বিজ্ঞপ্তি",
-    "availability_is_checked_against_booking_da_1r4mqhw": "তারিখ অনুযায়ী বুকিং উপলভ্যতা যাচাই হবে",
-    "this_listing_is_archived_7cpate": "এই তালিকা সংরক্ষণাগারে রাখা হয়েছে।",
-    "save_quantity_i1qav1": "পরিমাণ সংরক্ষণ",
-    "edit_listing_ynvy0s": "তালিকা সম্পাদনা",
-    "archive_listing_1avn3y5": "তালিকা আর্কাইভ করুন",
-    "store_name_bangla_1iauw33": "দোকানের নাম (বাংলা)",
-    "store_name_english_xbvqo3": "দোকানের নাম (ইংরেজি)",
-    "upazila_1am4ti5": "উপজেলা",
-    "about_the_store_bangla_yoi7rq": "পরিচিতি (বাংলা)",
-    "about_the_store_english_1sljttu": "পরিচিতি (ইংরেজি)",
-    "profile_photo_1exrcqq": "প্রোফাইল ছবি",
-    "cover_photo_hatt38": "কভার ছবি",
-    "jpg_png_or_webp_up_to_5_mb_leave_blank_to__yke761": "JPG, PNG বা WebP, সর্বোচ্চ ৫ এমবি। ফাঁকা রাখলে বর্তমান ছবি থাকবে।",
-    "profile_photo_set_1kznhvi": "প্রোফাইল ছবি আছে",
-    "no_profile_photo_1qv9bkr": "প্রোফাইল ছবি নেই",
-    "save_storefront_1k0d8u9": "স্টোরফ্রন্ট সংরক্ষণ",
-    "daily_rates_are_calculated_for_the_selecte_1ulrn0s": "দৈনিক ভাড়ার পরিমাণ তারিখের ব্যবধান অনুযায়ী হিসাব হবে।",
-    "add_requirements_collection_or_transport_d_1cb1842": "প্রয়োজনীয় শর্ত, সংগ্রহ বা পরিবহনের তথ্য লিখুন",
-    "order_116i1m4": "অর্ডার",
-    "quantity_fuyc1w": "পরিমাণ",
-    "unit_price_1v7hlen": "একক মূল্য",
-    "customer_126xmgu": "ক্রেতা",
-    "items_or_service_9cbaqx": "সেবা/পণ্যের মূল্য",
-    "confirmed_paid_1skg95y": "পরিশোধিত",
-    "balance_due_tadetd": "বাকি",
-    "payment_records_dd9a94": "পেমেন্টের নথি",
-    "platform_commission_1lexk9r": "প্ল্যাটফর্ম কমিশন",
-    "cash_1yvb5lv": "নগদ",
-    "bank_transfer_1wr4ny5": "ব্যাংক ট্রান্সফার",
-    "mobile_wallet_o4hwx8": "মোবাইল ওয়ালেট",
-    "other_meu6yg": "অন্যান্য",
-    "pay_the_provider_directly_the_payment_is_n_4e9pq4": "পেমেন্ট সরাসরি সেবাদাতাকে দিন। উভয় পক্ষ নিশ্চিত না করা পর্যন্ত এটি পরিশোধিত হিসেবে গণ্য হবে না।",
-    "you_can_leave_one_review_for_each_complete_1sswryh": "প্রতি সম্পন্ন অর্ডারে একটি রিভিউ দেওয়া যাবে।"
+  "marketplace": {
+    "listings": {
+      "loadError": "মার্কেটপ্লেসের তালিকা লোড করা যায়নি। পরে আবার চেষ্টা করুন।"
+    },
+    "listingCount": "{count, plural, other {#টি তালিকা}}",
+    "actions": {
+      "browse": "মার্কেটপ্লেস দেখুন"
+    },
+    "listingDetail": {
+      "bookingAvailability": "বুকিংয়ের উপলভ্যতা",
+      "from": "শুরু",
+      "checkedForRequestedDates": "তারিখ অনুযায়ী যাচাই হবে",
+      "createAProjectWithThisListing": "এই সেবা দিয়ে প্রকল্প তৈরি করুন",
+      "visitStorefront": "দোকান দেখুন",
+      "moreFromThisSeller": "এই বিক্রেতার আরও পণ্য",
+      "allSectors": "সব বিভাগ",
+      "sendARequest": "অনুরোধ পাঠান",
+      "requestNotice": "সেবাদাতা মূল্য ও শর্ত পাঠালে আপনি সিদ্ধান্ত নিতে পারবেন।",
+      "tryAgain": "আবার চেষ্টা করুন"
+    },
+    "labels": {
+      "reviews": "{count, plural, other {#টি রিভিউ}}",
+      "customerReviews": "গ্রাহক মতামত"
+    },
+    "providerProfile": {
+      "servicesAndListings": "সেবা ও তালিকা",
+      "emptyReviews": "সম্পন্ন অর্ডারে রিভিউ এলে এখানে দেখা যাবে।"
+    },
+    "requestForm": {
+      "dailyRateNotice": "দৈনিক ভাড়ার পরিমাণ তারিখের ব্যবধান অনুযায়ী হিসাব হবে।",
+      "requirementsPlaceholder": "প্রয়োজনীয় শর্ত, সংগ্রহ বা পরিবহনের তথ্য লিখুন"
+    },
+    "order": {
+      "order": "অর্ডার",
+      "unitPrice": "একক মূল্য",
+      "itemsOrService": "সেবা/পণ্যের মূল্য",
+      "confirmedPaid": "পরিশোধিত",
+      "balanceDue": "বাকি",
+      "paymentRecords": "পেমেন্টের নথি",
+      "platformCommission": "প্ল্যাটফর্ম কমিশন",
+      "cash": "নগদ",
+      "bankTransfer": "ব্যাংক ট্রান্সফার",
+      "mobileWallet": "মোবাইল ওয়ালেট",
+      "paymentNotice": "পেমেন্ট সরাসরি সেবাদাতাকে দিন। উভয় পক্ষ নিশ্চিত না করা পর্যন্ত এটি পরিশোধিত হিসেবে গণ্য হবে না।",
+      "reviewNotice": "প্রতি সম্পন্ন অর্ডারে একটি রিভিউ দেওয়া যাবে।"
+    }
+  },
+  "construction": {
+    "commissionCalculator": {
+      "estimateAProjectTransaction": "প্রকল্পের লেনদেনের আনুমানিক হিসাব",
+      "workOrMaterialAmountBdt": "কাজ বা সামগ্রীর মূল্য (টাকা)",
+      "transportNotice": "কমিশনের হিসাবে পরিবহন খরচ ধরা হয়নি। চূড়ান্ত অর্থ সম্মত শর্ত অনুযায়ী নির্ধারিত হবে।",
+      "rateUnavailable": "নির্মাণ খাতের কমিশনের হার এখন পাওয়া যাচ্ছে না।"
+    },
+    "home": {
+      "eyebrow": "সারা বাংলাদেশের নির্মাণসেবা",
+      "title": "পরিকল্পনা করুন, সঠিক নির্মাণসেবা খুঁজে নিন।",
+      "description": "অনুমোদিত পেশাজীবী ও সামগ্রী সরবরাহকারী খুঁজুন, প্রকল্পের দরপ্রস্তাব তুলনা করুন এবং কাজ, মাইলফলক ও পেমেন্টের তথ্য একসাথে রাখুন।",
+      "exploreConstructionMarketplace": "নির্মাণ মার্কেটপ্লেস দেখুন",
+      "startAProject": "প্রকল্প শুরু করুন",
+      "becomeAProvider": "নির্মাণসেবা দিন",
+      "constructionServiceAreas": "নির্মাণ সেবার ধরন",
+      "publishedOffers": "প্রকাশিত তালিকা",
+      "professionalsAndMaterials": "পেশাজীবী ও নির্মাণসামগ্রী",
+      "constructionMarketplace": "নির্মাণ মার্কেটপ্লেস",
+      "viewAllOffers": "সব তালিকা দেখুন",
+      "emptyListings": "এখনো কোনো অনুমোদিত নির্মাণ তালিকা নেই। পরে আবার দেখুন।",
+      "serviceAreaCount": "{count, plural, other {#টি নির্মাণ সেবার ধরন}}",
+      "searchConstructionServices": "নির্মাণসেবা খুঁজুন",
+      "filterByServiceArea": "সেবার ধরন অনুযায়ী দেখুন",
+      "allServiceAreas": "সব সেবার ধরন",
+      "findProfessionals": "পেশাজীবী দেখুন",
+      "workspaceNavigation": "নির্মাণ কর্মক্ষেত্র",
+      "findProfessionalsHelp": "অনুমোদিত কারিগর ও সেবাদাতা খুঁজুন।",
+      "buyMaterials": "নির্মাণসামগ্রী কিনুন",
+      "buyMaterialsHelp": "সরবরাহকারী, মূল্য ও পণ্যের প্রাপ্যতা তুলনা করুন।",
+      "manageProjectsHelp": "প্রকল্প, দরপ্রস্তাব ও কাজের অগ্রগতি দেখুন।",
+      "workflowEyebrow": "নির্মাণকাজ গুছিয়ে এগিয়ে নিন",
+      "workflowTitle": "নির্মাণ প্রকল্প যেভাবে এগোয়",
+      "commissionNotice": "এই হিসাবে নির্মাণ খাতের বর্তমান কমিশন হার ব্যবহার হয় এবং আলাদা পরিবহন খরচ অন্তর্ভুক্ত নয়।",
+      "projectTitle": "প্রকল্পের তথ্য এক জায়গায় রাখুন",
+      "projectDescription": "আপনার অ্যাকাউন্ট থেকে সেবাদাতা, সামগ্রীর অর্ডার, প্রকল্পের মাইলফলক, ব্যক্তিগত নথি, খরচ ও পেমেন্ট নিশ্চিতকরণ দেখুন।"
+    },
+    "services": {
+      "title": "আপনার প্রকল্পে কী ধরনের সহায়তা প্রয়োজন?",
+      "empty": "আপনার অনুসন্ধানে কোনো সেবার ধরন পাওয়া যায়নি।",
+      "description": "অনুমোদিত সেবাদাতা দেখুন অথবা প্রকল্প তৈরি করে একাধিক পেশাজীবীকে দরপ্রস্তাবের জন্য আমন্ত্রণ জানান।"
+    },
+    "market": {
+      "backToConstructionServices": "নির্মাণ সেবায় ফিরুন",
+      "approvedProfessionalsAndSuppliers": "অনুমোদিত পেশাজীবী ও সরবরাহকারী",
+      "title": "নির্মাণ সেবা ও সামগ্রী খুঁজুন",
+      "description": "কাজের ধরন, অবস্থান ও মূল্য অনুযায়ী তালিকা দেখুন। প্রকল্প তৈরি করে একাধিক সেবাদাতার দরপ্রস্তাবও তুলনা করতে পারেন।",
+      "searchServicesMaterialsOrProviders": "সেবা, সামগ্রী বা সেবাদাতা খুঁজুন",
+      "searchPlaceholder": "যেমন: ইট, প্রকৌশলী, ঢাকা",
+      "allConstructionListings": "সব নির্মাণ তালিকা",
+      "professionalsServices": "পেশাজীবী ও সেবা",
+      "sortBy": "সাজান",
+      "clearFilters": "ফিল্টার মুছুন",
+      "unavailable": "তালিকা এখন পাওয়া যাচ্ছে না",
+      "emptyAction": "প্রকল্প তৈরি করে দরপ্রস্তাব নিন",
+      "empty": "এই ফিল্টারে কোনো অনুমোদিত তালিকা নেই। ফিল্টার বদলে আবার চেষ্টা করুন।"
+    },
+    "serviceDetail": {
+      "allConstructionServices": "সব নির্মাণসেবা",
+      "label": "নির্মাণ সেবা",
+      "createAProjectForThisService": "এই সেবার প্রকল্প তৈরি করুন",
+      "approvedConstructionListings": "অনুমোদিত নির্মাণসেবা",
+      "viewAllResults": "সব ফলাফল",
+      "empty": "এই সেবার কোনো অনুমোদিত তালিকা এখনো নেই। প্রকল্প তৈরি করে আপনার কাজের জন্য সেবাদাতাদের আমন্ত্রণ জানান।",
+      "listingsFor": "{service}-এর তালিকা"
+    }
+  },
+  "projects": {
+    "actions": {
+      "create": "প্রকল্প তৈরি করুন"
+    },
+    "labels": {
+      "myProjects": "আমার প্রকল্প"
+    },
+    "create": {
+      "description": "কাজের বিবরণ যোগ করুন। পরে নির্মাণ পেশাজীবীদের দরপ্রস্তাবের জন্য আমন্ত্রণ জানাতে পারবেন।",
+      "selectedService": "নির্বাচিত সেবা"
+    },
+    "milestones": {
+      "count": "{count, plural, other {#টি মাইলফলক}}",
+      "due": "শেষ তারিখ",
+      "approvalNotice": "সেবাদাতা অগ্রগতি পাঠালে আপনি ধাপ অনুমোদন করতে পারবেন।",
+      "quoteRequired": "প্রকল্পের ধাপ যোগ করতে আগে একজন নির্মাণসেবা পেশাজীবীর দর গ্রহণ করুন।"
+    },
+    "detail": {
+      "notSpecified": "উল্লেখ নেই",
+      "workPackages": "কাজের প্যাকেজ",
+      "quotesAndWorkPackages": "দরপ্রস্তাব ও কাজের প্যাকেজ",
+      "definedWork": "নির্ধারিত কাজ",
+      "noAdditionalScopeDetails": "অতিরিক্ত কাজের বিবরণ নেই।",
+      "waitingForAProviderQuote": "সেবাদাতার দরপ্রস্তাবের অপেক্ষায়।",
+      "inviteMoreProviders": "আরও সেবাদাতাকে আমন্ত্রণ জানান",
+      "invite": "আমন্ত্রণ",
+      "engagedProvidersAndMaterials": "নথিভুক্ত অর্ডার",
+      "refunded": "ফেরত",
+      "recordedProjectExpenses": "নথিভুক্ত মোট খরচ"
+    },
+    "packages": {
+      "description": "প্রতিটি প্যাকেজের জন্য একাধিক দর তুলনা করুন। একটি দর গ্রহণের পর অতিরিক্ত কাজের জন্য নতুন প্যাকেজ তৈরি করুন।",
+      "requiredNotice": "দর চাওয়ার আগে একটি কাজের প্যাকেজ তৈরি করুন।",
+      "broaderMatchesNotice": "এই সেবার নির্দিষ্ট মিল পাওয়া যায়নি। অন্য অনুমোদিত সেবাদাতারাও প্রাসঙ্গিক হতে পারেন।",
+      "noInvitations": "এখনো কোনো দরপ্রস্তাবের আমন্ত্রণ পাঠানো হয়নি।",
+      "acceptanceNotice": "প্রকল্পের অনুরোধে একটি দরপ্রস্তাব গ্রহণ করা যাবে।"
+    },
+    "quotes": {
+      "description": "প্যাকেজের পরিধি, পরিমাণ, পরিবহন, মূল্য ও সময়সীমা তুলনা করুন।"
+    },
+    "expenses": {
+      "visibilityNotice": "এই তালিকা শুধু প্রকল্পের মালিক দেখতে পারবেন।"
+    },
+    "files": {
+      "empty": "এখনো কোনো প্রকল্প নথি যোগ হয়নি।"
+    },
+    "photos": {
+      "empty": "এখনো কোনো প্রকল্পের ছবি যোগ হয়নি।"
+    },
+    "forms": {
+      "projectTypePlaceholder": "বাড়ি, দোকান, সংস্কার",
+      "packageType": "কাজের ধরন",
+      "chooseWorkType": "কাজের ধরন বেছে নিন",
+      "professionalService": "পেশাজীবী ও নির্মাণসেবা",
+      "addWorkPackage": "কাজের প্যাকেজ যোগ করুন",
+      "chooseAProvider": "সেবাদাতা বেছে নিন",
+      "dueDate": "শেষ তারিখ"
+    }
+  },
+  "provider": {
+    "listingEdit": {
+      "pricePerUnitBdt": "একক মূল্য (টাকা)",
+      "replacePhotoOptional": "ছবি বদলান (ঐচ্ছিক)",
+      "moderationNotice": "বিষয়বস্তু বা ছবি বদলালে তালিকাটি পর্যালোচনা না হওয়া পর্যন্ত প্রকাশিত থাকবে না।",
+      "photoNotice": "বর্তমান ছবিটি রাখা হবে যদি নতুন ছবি না দেন।",
+      "saveForReview": "পর্যালোচনার জন্য সংরক্ষণ"
+    },
+    "labels": {
+      "availableFromOptional": "শুরুর তারিখ (ঐচ্ছিক)"
+    },
+    "upload": {
+      "error": "ছবি আপলোড করা যায়নি। আবার চেষ্টা করুন।"
+    },
+    "listingForm": {
+      "serviceSector": "সেবা বিভাগ",
+      "categoryPlaceholder": "যেমন: সবজি, ইট, রাজমিস্ত্রি",
+      "unitPlaceholder": "কেজি, দিন, বস্তা",
+      "stockHelp": "পণ্য বিক্রির জন্য মজুত দিন। শ্রমিক ও যন্ত্রপাতির তালিকায় মজুত ০ হতে পারে; বুকিংয়ের তারিখ অনুযায়ী উপলভ্যতা যাচাই হয়।"
+    },
+    "application": {
+      "description": "একটি ব্যবসায়িক প্রোফাইল থেকে কৃষি বা নির্মাণ বিভাগে সেবা দেওয়ার জন্য আবেদন করুন। প্রশাসনিক দল আপনার সেবার সক্ষমতা পর্যালোচনা করবে।",
+      "upazilaOptional": "উপজেলা (ঐচ্ছিক)",
+      "introductionBangla": "পরিচিতি (বাংলা)",
+      "introductionEnglish": "পরিচিতি (ইংরেজি)"
+    },
+    "workspace": {
+      "providerNavigation": "সেবাদাতা নেভিগেশন",
+      "storefront": "স্টোরফ্রন্ট",
+      "businessOperations": "ব্যবসা পরিচালনা",
+      "suspendedNotice": "এই প্রোফাইল থেকে নতুন অনুরোধ নেওয়া বা তালিকা প্রকাশ করা স্থগিত আছে। প্রশাসনিক দলের সঙ্গে যোগাযোগ করুন।",
+      "moderationNotice": "তালিকা প্রকাশের আগে প্রশাসনিক পর্যালোচনা হবে।",
+      "addAListing": "নতুন তালিকা যোগ করুন",
+      "customerWorkspace": "গ্রাহক প্যানেল",
+      "commissionRecords": "কমিশন",
+      "yourStorefront": "আপনার স্টোরফ্রন্ট",
+      "previewAgricultureStorefront": "সর্বজনীন কৃষি স্টোরফ্রন্ট দেখুন",
+      "previewConstructionProfile": "সর্বজনীন নির্মাণ প্রোফাইল দেখুন",
+      "updateProfileOrRequestCapabilities": "প্রোফাইল বা সক্ষমতা হালনাগাদ করুন",
+      "saveQuantity": "পরিমাণ সংরক্ষণ",
+      "editListing": "তালিকা সম্পাদনা",
+      "archiveListing": "তালিকা আর্কাইভ করুন"
+    },
+    "listings": {
+      "archivedNotice": "এই তালিকা সংরক্ষণাগারে রাখা হয়েছে।",
+      "availabilityNotice": "তারিখ অনুযায়ী বুকিং উপলভ্যতা যাচাই হবে"
+    },
+    "storefront": {
+      "description": "গ্রাহকরা এই নাম, পরিচিতি ও ছবিগুলো পাবেন।",
+      "storeNameBangla": "দোকানের নাম (বাংলা)",
+      "storeNameEnglish": "দোকানের নাম (ইংরেজি)",
+      "upazila": "উপজেলা",
+      "aboutTheStoreBangla": "পরিচিতি (বাংলা)",
+      "aboutTheStoreEnglish": "পরিচিতি (ইংরেজি)",
+      "profilePhoto": "প্রোফাইল ছবি",
+      "coverPhoto": "কভার ছবি",
+      "photoHelp": "JPG, PNG বা WebP, সর্বোচ্চ ৫ এমবি। ফাঁকা রাখলে বর্তমান ছবি থাকবে।",
+      "profilePhotoSet": "প্রোফাইল ছবি আছে",
+      "noProfilePhoto": "প্রোফাইল ছবি নেই",
+      "saveStorefront": "স্টোরফ্রন্ট সংরক্ষণ"
+    },
+    "capabilities": {
+      "description": "আরও সেবা বিভাগে কাজ করতে অতিরিক্ত সক্ষমতার জন্য আবেদন করুন।"
+    }
+  },
+  "verification": {
+    "provider": {
+      "title": "নির্মাণসেবা প্রদানকারীর যাচাইকরণ",
+      "description": "ব্যবসায়িক বা পেশাগত প্রমাণপত্র জমা দিন। কেবল অনুমোদিত নির্মাণ অপারেশনস কর্মীরা আপনার ব্যক্তিগত নথি দেখতে পারবেন।",
+      "typeDescription": {
+        "contractor": "নির্মাণ ঠিকাদার, প্রকৌশলী এবং ভবন নির্মাণ পেশাজীবীদের জন্য।",
+        "supplier": "নির্মাণসামগ্রী সরবরাহকারী ও পরিবেশকদের জন্য।"
+      },
+      "reviewNote": "সর্বশেষ পর্যালোচনার মন্তব্য",
+      "validUntil": "যাচাইকরণের মেয়াদ {date} পর্যন্ত।",
+      "waitingForReview": "আপনার আবেদন প্রশাসকের পর্যালোচনার অপেক্ষায় আছে।",
+      "documentPrivacy": "নথিগুলো ব্যক্তিগত থাকবে এবং শুধু আপনি ও অনুমোদিত নির্মাণ পর্যালোচক দেখতে পারবেন। সর্বোচ্চ ১০ এমবি PDF, JPG, PNG বা WebP ফাইল দিন।"
+    },
+    "admin": {
+      "title": "নির্মাণসেবা যাচাইকরণ",
+      "description": "ঠিকাদার ও সরবরাহকারীর প্রমাণপত্র পর্যালোচনা করুন। অনুমোদন শুধু সংশ্লিষ্ট ধরনের জন্য প্রযোজ্য এবং এক বছর পর মেয়াদোত্তীর্ণ হবে।",
+      "documents": "জমা দেওয়া প্রমাণপত্র",
+      "fileDetails": "{size} কেবি · {type}",
+      "documentDecision": "নথির সিদ্ধান্ত",
+      "documentNote": "নথির মন্তব্য (ঐচ্ছিক)",
+      "noDocuments": "বর্তমান সংস্করণে কোনো প্রমাণপত্র জমা পড়েনি।",
+      "history": "পর্যালোচনার ইতিহাস",
+      "reviewNote": "সিদ্ধান্তের কারণ বা প্রয়োজনীয় সংশোধন"
+    },
+    "public": {
+      "verified": "যাচাইকৃত {type}",
+      "verifiedOn": "যাচাইকৃত {type} · পর্যালোচনা {date}"
+    },
+    "types": {
+      "contractor": "ঠিকাদার / প্রকৌশলী",
+      "supplier": "নির্মাণসামগ্রী সরবরাহকারী"
+    },
+    "applicantTypes": {
+      "individual": "ব্যক্তি",
+      "business": "নিবন্ধিত প্রতিষ্ঠান"
+    },
+    "fields": {
+      "applicantType": "আবেদনকারীর ধরন",
+      "legalName": "আবেদনকারীর আইনগত নাম",
+      "businessName": "প্রতিষ্ঠানের নাম",
+      "businessAddress": "প্রতিষ্ঠান বা কার্যক্রমের ঠিকানা",
+      "registrationNumber": "প্রতিষ্ঠান নিবন্ধন নম্বর",
+      "tradeLicenseNumber": "ট্রেড লাইসেন্স নম্বর",
+      "taxIdentifier": "কর শনাক্তকরণ নম্বর (ঐচ্ছিক)",
+      "yearsExperience": "অভিজ্ঞতার বছর",
+      "teamSize": "দলের সদস্যসংখ্যা",
+      "specializations": "বিশেষায়িত কাজ (কমা দিয়ে আলাদা করুন)",
+      "materialCategories": "সামগ্রীর ধরন (কমা দিয়ে আলাদা করুন)",
+      "brands": "সরবরাহ করা ব্র্যান্ড (কমা দিয়ে আলাদা করুন)",
+      "serviceAreas": "সেবা বা সরবরাহের এলাকা (কমা দিয়ে আলাদা করুন)",
+      "documents": "সহায়ক নথি",
+      "documentType": "নথির ধরন",
+      "file": "ফাইল"
+    },
+    "documents": {
+      "businessRegistration": "প্রতিষ্ঠান নিবন্ধন",
+      "tradeLicense": "ট্রেড লাইসেন্স",
+      "taxDocument": "কর-সংক্রান্ত নথি",
+      "professionalCredential": "পেশাগত যোগ্যতার প্রমাণ",
+      "portfolioOrReference": "কাজের নমুনা বা রেফারেন্স",
+      "supplierAuthorization": "সরবরাহকারী বা ডিলার অনুমোদন",
+      "productCertificate": "পণ্যের সনদ",
+      "warehouseProof": "গুদাম বা দোকানের প্রমাণ",
+      "other": "অন্যান্য সহায়ক নথি"
+    },
+    "documentStatuses": {
+      "pending": "পর্যালোচনা হয়নি",
+      "approved": "গৃহীত",
+      "rejected": "পরিবর্তিত নথি প্রয়োজন"
+    },
+    "statuses": {
+      "submitted": "জমা হয়েছে",
+      "inReview": "পর্যালোচনাধীন",
+      "changesRequested": "সংশোধন চাওয়া হয়েছে",
+      "approved": "অনুমোদিত",
+      "rejected": "প্রত্যাখ্যাত",
+      "expired": "মেয়াদ শেষ",
+      "revoked": "বাতিল"
+    },
+    "actions": {
+      "addDocument": "আরেকটি নথি যোগ করুন",
+      "remove": "সরান",
+      "submit": "যাচাইকরণের আবেদন জমা দিন",
+      "inReview": "পর্যালোচনা শুরু করুন",
+      "approved": "যাচাইকরণ অনুমোদন করুন",
+      "changesRequested": "সংশোধন চান",
+      "rejected": "আবেদন প্রত্যাখ্যান করুন",
+      "revoked": "যাচাইকরণ বাতিল করুন"
+    },
+    "uploading": "আপলোড হচ্ছে…",
+    "uploadError": "নথিটি আপলোড করা যায়নি। ফাইলটি পরীক্ষা করে আবার চেষ্টা করুন।"
   },
   "sectors": {
     "family-household": "পরিবার ও গৃহস্থালি",
@@ -754,50 +975,46 @@
     "social-feed": "সামাজিক ফিড",
     "payment-compliance": "পেমেন্ট ও কমপ্লায়েন্স"
   },
-  "categoryGrid": {
-    "resultCount": "{count, plural, one {#টি বিভাগ} other {#টি বিভাগ}}"
-  },
   "metadata": {
     "home": {
-      "title": "ইকসাথে বাংলাদেশ | দৈনন্দিন সেবার এক ঠিকানা",
+      "title": "একসাথে বাংলাদেশ | দৈনন্দিন সেবার এক ঠিকানা",
       "description": "একটি প্ল্যাটফর্মে সেবা, কৃষিপণ্য, কৃষিশ্রমিক, যন্ত্রপাতি, নির্মাণসেবাদাতা ও নির্মাণসামগ্রী খুঁজুন।"
     },
     "dashboard": {
-      "title": "ড্যাশবোর্ড | ইকসাথে বাংলাদেশ",
-      "description": "ইকসাথে বাংলাদেশের সেবা ও কার্যক্রমের বহুখাতভিত্তিক বিভাগসমূহ।"
+      "title": "ড্যাশবোর্ড | একসাথে বাংলাদেশ",
+      "description": "একসাথে বাংলাদেশের সেবা ও কার্যক্রমের বহুখাতভিত্তিক বিভাগসমূহ।"
     },
     "agriculture": {
-      "title": "কৃষি | ইকসাথে বাংলাদেশ",
+      "title": "কৃষি | একসাথে বাংলাদেশ",
       "description": "বাংলাদেশজুড়ে কৃষিসেবা, বাজারের তালিকা ও সহায়তা খুঁজুন।"
     },
     "agricultureMarket": {
-      "title": "কৃষি বাজার | ইকসাথে বাংলাদেশ",
+      "title": "কৃষি বাজার | একসাথে বাংলাদেশ",
       "description": "বাংলাদেশজুড়ে কৃষিপণ্যের তালিকা দেখুন।"
     },
     "agricultureUpdates": {
-      "title": "কৃষি আপডেট | ইকসাথে বাংলাদেশ",
+      "title": "কৃষি আপডেট | একসাথে বাংলাদেশ",
       "description": "বাংলাদেশের কৃষিবিষয়ক খবর, পরামর্শ ও আপডেট।"
     },
     "agriculturePrices": {
-      "title": "কৃষি বাজারদর | ইকসাথে বাংলাদেশ",
+      "title": "কৃষি বাজারদর | একসাথে বাংলাদেশ",
       "description": "বাংলাদেশের কৃষিপণ্যের বর্তমান বাজারদর দেখুন।"
     },
     "construction": {
-      "title": "নির্মাণ | ইকসাথে বাংলাদেশ",
+      "title": "নির্মাণ | একসাথে বাংলাদেশ",
       "description": "অনুমোদিত নির্মাণ পেশাজীবী ও সামগ্রী খুঁজুন, প্রকল্পের দরপ্রস্তাব তুলনা করুন এবং কাজের অগ্রগতি দেখুন।"
     },
     "constructionMarket": {
-      "title": "নির্মাণ বাজার | ইকসাথে বাংলাদেশ",
+      "title": "নির্মাণ বাজার | একসাথে বাংলাদেশ",
       "description": "বাংলাদেশজুড়ে নির্মাণসেবা ও সামগ্রীর তালিকা দেখুন।"
     },
-    "sectorTitle": "{sector} | ইকসাথে বাংলাদেশ",
-    "sectorDescription": "ইকসাথে বাংলাদেশে {sector} সেবা ও সেবাদাতা খুঁজুন।"
+    "sectorTitle": "{sector} | একসাথে বাংলাদেশ",
+    "sectorDescription": "একসাথে বাংলাদেশে {sector} সেবা ও সেবাদাতা খুঁজুন।"
   },
   "agricultureServices": {
     "crop-farming": {
       "title": "ফসল উৎপাদন ও চাষাবাদ",
       "description": "ফসলের নাম, জমির পরিমাণ, চাষের পর্যায় ও মৌসুম জানিয়ে চাষ পরিকল্পনা বা মাঠপর্যায়ের কৃষি পরামর্শ চান।",
-      "section": "চাষাবাদ-সংক্রান্ত তথ্য",
       "fields": {
         "crop_name": {
           "label": "ফসলের নাম"
@@ -816,24 +1033,14 @@
     "seeds-seedlings": {
       "title": "বীজ ও চারা",
       "description": "বীজ বা চারার ধরন, জাত, পরিমাণ ও প্রয়োজনের সময় জানিয়ে উপযুক্ত উৎস বা সরবরাহকারী খুঁজুন।",
-      "section": "বীজ ও চারা-সংক্রান্ত তথ্য",
       "fields": {
         "seed_kind": {
           "label": "যা প্রয়োজন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বীজ"
-            },
-            {
-              "id": "option_1",
-              "label": "চারা"
-            },
-            {
-              "id": "option_2",
-              "label": "বীজ ও চারা"
-            }
-          ]
+          "options": {
+            "seeds": "বীজ",
+            "seedlings": "চারা",
+            "seedsAndSeedlings": "বীজ ও চারা"
+          }
         },
         "seed_variety": {
           "label": "ফসল/জাতের নাম"
@@ -849,7 +1056,6 @@
     "fertilizer-soil": {
       "title": "সার ও মাটি পরীক্ষা",
       "description": "ফসল, জমির পরিমাণ ও মাটির পরীক্ষার অবস্থা জানিয়ে সার ব্যবস্থাপনা বা মাটি পরীক্ষা-সংক্রান্ত পরামর্শ চান।",
-      "section": "সার ও মাটি পরীক্ষা-সংক্রান্ত তথ্য",
       "fields": {
         "soil_crop": {
           "label": "ফসলের নাম"
@@ -859,20 +1065,11 @@
         },
         "soil_test_status": {
           "label": "মাটি পরীক্ষা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "এখনও করাইনি"
-            },
-            {
-              "id": "option_1",
-              "label": "পরীক্ষা করিয়েছি"
-            },
-            {
-              "id": "option_2",
-              "label": "পরীক্ষা করাতে চাই"
-            }
-          ]
+          "options": {
+            "notTested": "এখনও করাইনি",
+            "tested": "পরীক্ষা করিয়েছি",
+            "testRequested": "পরীক্ষা করাতে চাই"
+          }
         },
         "soil_need": {
           "label": "কী ধরনের সহায়তা প্রয়োজন"
@@ -882,7 +1079,6 @@
     "pest-control": {
       "title": "বালাই ও রোগ ব্যবস্থাপনা",
       "description": "ফসলের লক্ষণ, আক্রান্ত এলাকা ও সমস্যার সময়কাল জানিয়ে রোগবালাই শনাক্তকরণ ও নিরাপদ ব্যবস্থাপনা পরামর্শ চান।",
-      "section": "রোগবালাই-সংক্রান্ত তথ্য",
       "fields": {
         "affected_crop": {
           "label": "আক্রান্ত ফসল"
@@ -904,7 +1100,6 @@
     "irrigation": {
       "title": "সেচ ও পানি ব্যবস্থাপনা",
       "description": "ফসল, জমির পরিমাণ, পানির উৎস ও সেচের সময় জানিয়ে সেচযন্ত্র বা পানি ব্যবস্থাপনার সহায়তা চান।",
-      "section": "সেচ-সংক্রান্ত তথ্য",
       "fields": {
         "irrigation_crop": {
           "label": "ফসলের নাম"
@@ -914,24 +1109,12 @@
         },
         "water_source": {
           "label": "পানির উৎস",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "নলকূপ"
-            },
-            {
-              "id": "option_1",
-              "label": "পুকুর/খাল"
-            },
-            {
-              "id": "option_2",
-              "label": "নদী"
-            },
-            {
-              "id": "option_3",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "tubeWell": "নলকূপ",
+            "pondOrCanal": "পুকুর/খাল",
+            "river": "নদী",
+            "other": "অন্যান্য"
+          }
         },
         "irrigation_time": {
           "label": "কখন সেচ প্রয়োজন"
@@ -941,49 +1124,24 @@
     "farm-machinery": {
       "title": "কৃষিযন্ত্র ভাড়া ও মেরামত",
       "description": "প্রয়োজনীয় যন্ত্র, কাজের ধরন, জমির পরিমাণ ও সময় জানিয়ে কৃষিযন্ত্র ভাড়া বা মেরামতের অনুরোধ দিন।",
-      "section": "কৃষিযন্ত্র-সংক্রান্ত তথ্য",
       "fields": {
         "machine_type": {
           "label": "প্রয়োজনীয় যন্ত্র",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "ট্রাক্টর"
-            },
-            {
-              "id": "option_1",
-              "label": "পাওয়ার টিলার"
-            },
-            {
-              "id": "option_2",
-              "label": "হারভেস্টার"
-            },
-            {
-              "id": "option_3",
-              "label": "স্প্রেয়ার"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "tractor": "ট্রাক্টর",
+            "powerTiller": "পাওয়ার টিলার",
+            "harvester": "হারভেস্টার",
+            "sprayer": "স্প্রেয়ার",
+            "other": "অন্যান্য"
+          }
         },
         "machine_service": {
           "label": "কাজের ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "ভাড়া"
-            },
-            {
-              "id": "option_1",
-              "label": "মেরামত"
-            },
-            {
-              "id": "option_2",
-              "label": "অন্য সেবা"
-            }
-          ]
+          "options": {
+            "rental": "ভাড়া",
+            "repair": "মেরামত",
+            "otherService": "অন্য সেবা"
+          }
         },
         "machine_area": {
           "label": "কাজের এলাকা/জমির পরিমাণ"
@@ -996,32 +1154,16 @@
     "farm-labour": {
       "title": "কৃষিশ্রমিক বুকিং",
       "description": "কাজের ধরন, শ্রমিকের সংখ্যা, কাজের সময়কাল ও তারিখ জানিয়ে কৃষিশ্রমিক বুকিংয়ের অনুরোধ দিন।",
-      "section": "কৃষিশ্রমিক বুকিং-সংক্রান্ত তথ্য",
       "fields": {
         "labour_task": {
           "label": "কাজের ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "রোপণ"
-            },
-            {
-              "id": "option_1",
-              "label": "আগাছা পরিষ্কার"
-            },
-            {
-              "id": "option_2",
-              "label": "ফসল কাটা"
-            },
-            {
-              "id": "option_3",
-              "label": "মাড়াই"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "planting": "রোপণ",
+            "weeding": "আগাছা পরিষ্কার",
+            "harvesting": "ফসল কাটা",
+            "threshing": "মাড়াই",
+            "other": "অন্যান্য"
+          }
         },
         "labour_count": {
           "label": "শ্রমিকের সংখ্যা"
@@ -1037,7 +1179,6 @@
     "livestock": {
       "title": "গবাদিপশু পালন",
       "description": "পশুর ধরন, সংখ্যা ও প্রয়োজনীয় সেবা জানিয়ে পালন, খাদ্য, খামার ব্যবস্থাপনা বা পশুস্বাস্থ্য-সংক্রান্ত সহায়তা চান।",
-      "section": "গবাদিপশু-সংক্রান্ত তথ্য",
       "fields": {
         "livestock_type": {
           "label": "পশুর ধরন"
@@ -1047,24 +1188,12 @@
         },
         "livestock_need": {
           "label": "সহায়তার ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "পালন/খামার ব্যবস্থাপনা"
-            },
-            {
-              "id": "option_1",
-              "label": "খাদ্য"
-            },
-            {
-              "id": "option_2",
-              "label": "পশুস্বাস্থ্য পরামর্শ"
-            },
-            {
-              "id": "option_3",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "farmManagement": "পালন/খামার ব্যবস্থাপনা",
+            "feed": "খাদ্য",
+            "animalHealthAdvice": "পশুস্বাস্থ্য পরামর্শ",
+            "other": "অন্যান্য"
+          }
         },
         "livestock_issue": {
           "label": "সমস্যা বা প্রয়োজনের বিবরণ"
@@ -1074,7 +1203,6 @@
     "poultry": {
       "title": "পোল্ট্রি ও হাঁস-মুরগি",
       "description": "পাখির ধরন, আনুমানিক সংখ্যা ও খামারের প্রয়োজন জানিয়ে পোল্ট্রি পালন, খাদ্য বা সেবা খুঁজুন।",
-      "section": "পোল্ট্রি-সংক্রান্ত তথ্য",
       "fields": {
         "poultry_type": {
           "label": "পাখির ধরন"
@@ -1084,28 +1212,13 @@
         },
         "poultry_need": {
           "label": "সহায়তার ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "খাদ্য"
-            },
-            {
-              "id": "option_1",
-              "label": "খামার ব্যবস্থাপনা"
-            },
-            {
-              "id": "option_2",
-              "label": "পাখির স্বাস্থ্য পরামর্শ"
-            },
-            {
-              "id": "option_3",
-              "label": "সরঞ্জাম"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "feed": "খাদ্য",
+            "farmManagement": "খামার ব্যবস্থাপনা",
+            "poultryHealthAdvice": "পাখির স্বাস্থ্য পরামর্শ",
+            "equipment": "সরঞ্জাম",
+            "other": "অন্যান্য"
+          }
         },
         "poultry_issue": {
           "label": "সমস্যা বা প্রয়োজন"
@@ -1115,7 +1228,6 @@
     "fisheries": {
       "title": "মৎস্য ও জলজ চাষ",
       "description": "মাছের ধরন, পুকুরের পরিমাণ, চাষের পর্যায় ও প্রয়োজন জানিয়ে মৎস্যচাষ-সংক্রান্ত সেবা খুঁজুন।",
-      "section": "মৎস্যচাষ-সংক্রান্ত তথ্য",
       "fields": {
         "fish_type": {
           "label": "মাছের ধরন"
@@ -1125,76 +1237,39 @@
         },
         "fish_stage": {
           "label": "চাষের পর্যায়",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "পুকুর প্রস্তুতি"
-            },
-            {
-              "id": "option_1",
-              "label": "পোনা ছাড়ব"
-            },
-            {
-              "id": "option_2",
-              "label": "চলমান চাষ"
-            },
-            {
-              "id": "option_3",
-              "label": "মাছ বিক্রি"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "pondPreparation": "পুকুর প্রস্তুতি",
+            "stockFingerlings": "পোনা ছাড়ব",
+            "ongoingCultivation": "চলমান চাষ",
+            "sellFish": "মাছ বিক্রি",
+            "other": "অন্যান্য"
+          }
         },
         "fish_need": {
           "label": "সহায়তার ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "পোনা"
-            },
-            {
-              "id": "option_1",
-              "label": "খাদ্য"
-            },
-            {
-              "id": "option_2",
-              "label": "পুকুর ব্যবস্থাপনা"
-            },
-            {
-              "id": "option_3",
-              "label": "বাজার/বিক্রি"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "fingerlings": "পোনা",
+            "feed": "খাদ্য",
+            "pondManagement": "পুকুর ব্যবস্থাপনা",
+            "marketAndSales": "বাজার/বিক্রি",
+            "other": "অন্যান্য"
+          }
         }
       }
     },
     "farm-inputs": {
       "title": "কৃষি উপকরণ বাজার",
       "description": "কৃষি উপকরণের নাম, পরিমাণ ও কেনা/বেচার প্রয়োজন জানিয়ে উপযুক্ত বিক্রেতা বা পণ্য খুঁজুন।",
-      "section": "কৃষি উপকরণ-সংক্রান্ত তথ্য",
       "fields": {
         "input_product": {
           "label": "উপকরণের নাম"
         },
         "input_trade": {
           "label": "আপনার প্রয়োজন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "কিনতে চাই"
-            },
-            {
-              "id": "option_1",
-              "label": "বিক্রি করতে চাই"
-            }
-          ]
+          "options": {
+            "buy": "কিনতে চাই",
+            "sell": "বিক্রি করতে চাই"
+          }
         },
         "input_quantity": {
           "label": "পরিমাণ ও একক"
@@ -1207,23 +1282,16 @@
     "produce-market": {
       "title": "কৃষিপণ্য কেনাবেচা",
       "description": "কৃষিপণ্যের নাম, পরিমাণ, মান ও প্রস্তুতির সময় জানিয়ে ক্রেতা বা বিক্রেতার সঙ্গে সংযোগের অনুরোধ দিন।",
-      "section": "কৃষিপণ্য কেনাবেচা-সংক্রান্ত তথ্য",
       "fields": {
         "produce_name": {
           "label": "পণ্যের নাম"
         },
         "produce_trade": {
           "label": "আপনার ভূমিকা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বিক্রেতা/কৃষক"
-            },
-            {
-              "id": "option_1",
-              "label": "ক্রেতা"
-            }
-          ]
+          "options": {
+            "sellerOrFarmer": "বিক্রেতা/কৃষক",
+            "buyer": "ক্রেতা"
+          }
         },
         "produce_quantity": {
           "label": "পরিমাণ ও একক"
@@ -1239,7 +1307,6 @@
     "wholesale-buyers": {
       "title": "পাইকারি ক্রেতা ও আড়তদার",
       "description": "পণ্য, পাইকারি পরিমাণ, বাজার/গন্তব্য ও সরবরাহের সময় জানিয়ে আড়তদার বা বাল্ক ক্রেতার সঙ্গে সংযোগ চান।",
-      "section": "পাইকারি সংযোগ-সংক্রান্ত তথ্য",
       "fields": {
         "wholesale_product": {
           "label": "পণ্যের নাম"
@@ -1249,20 +1316,11 @@
         },
         "wholesale_role": {
           "label": "আপনার ভূমিকা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বিক্রেতা/কৃষক"
-            },
-            {
-              "id": "option_1",
-              "label": "পাইকারি ক্রেতা"
-            },
-            {
-              "id": "option_2",
-              "label": "আড়তদার"
-            }
-          ]
+          "options": {
+            "sellerOrFarmer": "বিক্রেতা/কৃষক",
+            "wholesaleBuyer": "পাইকারি ক্রেতা",
+            "wholesaler": "আড়তদার"
+          }
         },
         "wholesale_timing": {
           "label": "সরবরাহ/ক্রয়ের সময়"
@@ -1272,7 +1330,6 @@
     "daily-market-price": {
       "title": "দৈনিক বাজারদর",
       "description": "পণ্যের নাম, বাজার, দর ও এককসহ তথ্য দিন; প্রকাশের আগে জমা দেওয়া বাজারদর যাচাই করা হবে।",
-      "section": "বাজারদর-সংক্রান্ত তথ্য",
       "fields": {
         "price_product": {
           "label": "পণ্যের নাম"
@@ -1294,7 +1351,6 @@
     "storage-warehouse": {
       "title": "গুদাম ও সংরক্ষণ",
       "description": "কোন পণ্য, কত পরিমাণ, কী ধরনের সংরক্ষণ ও কত সময়ের জন্য দরকার তা জানিয়ে গুদাম খুঁজুন।",
-      "section": "সংরক্ষণ-সংক্রান্ত তথ্য",
       "fields": {
         "storage_product": {
           "label": "সংরক্ষণের পণ্য"
@@ -1304,24 +1360,12 @@
         },
         "storage_type": {
           "label": "সংরক্ষণের ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "সাধারণ গুদাম"
-            },
-            {
-              "id": "option_1",
-              "label": "শীতল সংরক্ষণ"
-            },
-            {
-              "id": "option_2",
-              "label": "শুকনো সংরক্ষণ"
-            },
-            {
-              "id": "option_3",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "generalWarehouse": "সাধারণ গুদাম",
+            "coldStorage": "শীতল সংরক্ষণ",
+            "dryStorage": "শুকনো সংরক্ষণ",
+            "other": "অন্যান্য"
+          }
         },
         "storage_duration": {
           "label": "কতদিনের জন্য"
@@ -1331,7 +1375,6 @@
     "transport-logistics": {
       "title": "পরিবহন ও লজিস্টিকস",
       "description": "কী পণ্য, কত পরিমাণ, কোথা থেকে কোথায় এবং কখন নিতে হবে তা জানিয়ে পরিবহনের অনুরোধ দিন।",
-      "section": "পরিবহন-সংক্রান্ত তথ্য",
       "fields": {
         "transport_product": {
           "label": "পণ্য/মালামালের নাম"
@@ -1353,7 +1396,6 @@
     "food-processing": {
       "title": "প্রক্রিয়াজাতকরণ ও প্যাকেজিং",
       "description": "কৃষিপণ্যের নাম, পরিমাণ ও প্রয়োজনীয় প্রক্রিয়াজাতকরণ/প্যাকেজিং জানিয়ে উপযুক্ত সেবা খুঁজুন।",
-      "section": "প্রক্রিয়াজাতকরণ-সংক্রান্ত তথ্য",
       "fields": {
         "processing_product": {
           "label": "পণ্যের নাম"
@@ -1363,28 +1405,13 @@
         },
         "processing_type": {
           "label": "প্রয়োজনীয় কাজ",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "পরিষ্কার/বাছাই"
-            },
-            {
-              "id": "option_1",
-              "label": "গ্রেডিং"
-            },
-            {
-              "id": "option_2",
-              "label": "প্রক্রিয়াজাতকরণ"
-            },
-            {
-              "id": "option_3",
-              "label": "প্যাকেজিং"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "cleaningAndSorting": "পরিষ্কার/বাছাই",
+            "grading": "গ্রেডিং",
+            "processing": "প্রক্রিয়াজাতকরণ",
+            "packaging": "প্যাকেজিং",
+            "other": "অন্যান্য"
+          }
         },
         "processing_package": {
           "label": "প্যাকেজিং/মানের শর্ত"
@@ -1394,7 +1421,6 @@
     "export-support": {
       "title": "রপ্তানি সহায়তা",
       "description": "রপ্তানির সম্ভাব্য পণ্য, পরিমাণ, গন্তব্য ও মান/প্যাকেজিং-সংক্রান্ত প্রয়োজন জানিয়ে সহায়তা চান।",
-      "section": "রপ্তানি-সংক্রান্ত তথ্য",
       "fields": {
         "export_product": {
           "label": "পণ্যের নাম"
@@ -1413,48 +1439,26 @@
     "land-equipment": {
       "title": "কৃষিজমি ও যন্ত্রপাতি",
       "description": "কৃষিজমি বা যন্ত্রপাতির ধরন, এলাকা/সক্ষমতা এবং ভাড়া/কেনাবেচার প্রয়োজন জানিয়ে অনুসন্ধান করুন।",
-      "section": "জমি ও যন্ত্রপাতি-সংক্রান্ত তথ্য",
       "fields": {
         "asset_type": {
           "label": "যা খুঁজছেন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "কৃষিজমি"
-            },
-            {
-              "id": "option_1",
-              "label": "কৃষিযন্ত্র"
-            },
-            {
-              "id": "option_2",
-              "label": "অন্যান্য কৃষি সম্পদ"
-            }
-          ]
+          "options": {
+            "farmLand": "কৃষিজমি",
+            "farmMachinery": "কৃষিযন্ত্র",
+            "otherFarmAsset": "অন্যান্য কৃষি সম্পদ"
+          }
         },
         "asset_size": {
           "label": "পরিমাণ/সক্ষমতা"
         },
         "asset_transaction": {
           "label": "প্রয়োজনের ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "ভাড়া নিতে চাই"
-            },
-            {
-              "id": "option_1",
-              "label": "ভাড়া দিতে চাই"
-            },
-            {
-              "id": "option_2",
-              "label": "কিনতে চাই"
-            },
-            {
-              "id": "option_3",
-              "label": "বিক্রি করতে চাই"
-            }
-          ]
+          "options": {
+            "rent": "ভাড়া নিতে চাই",
+            "offerForRent": "ভাড়া দিতে চাই",
+            "buy": "কিনতে চাই",
+            "sell": "বিক্রি করতে চাই"
+          }
         },
         "asset_timing": {
           "label": "কখন প্রয়োজন"
@@ -1464,7 +1468,6 @@
     "training-advice": {
       "title": "কৃষি প্রশিক্ষণ ও পরামর্শ",
       "description": "কোন বিষয়ে, কীভাবে ও কখন প্রশিক্ষণ বা বিশেষজ্ঞ পরামর্শ চান তা জানিয়ে অনুরোধ দিন।",
-      "section": "প্রশিক্ষণ ও পরামর্শ-সংক্রান্ত তথ্য",
       "fields": {
         "training_topic": {
           "label": "প্রশিক্ষণ/পরামর্শের বিষয়"
@@ -1474,20 +1477,11 @@
         },
         "training_format": {
           "label": "পছন্দের মাধ্যম",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "সশরীরে"
-            },
-            {
-              "id": "option_1",
-              "label": "অনলাইন"
-            },
-            {
-              "id": "option_2",
-              "label": "যেকোনো"
-            }
-          ]
+          "options": {
+            "inPerson": "সশরীরে",
+            "online": "অনলাইন",
+            "either": "যেকোনো"
+          }
         },
         "training_date": {
           "label": "পছন্দের তারিখ"
@@ -1497,7 +1491,6 @@
     "organic-farming": {
       "title": "জৈব কৃষি",
       "description": "ফসল, জমি ও বর্তমান পদ্ধতি জানিয়ে জৈব উৎপাদন, কম্পোস্ট বা টেকসই চাষে সহায়তা চান।",
-      "section": "জৈব কৃষি-সংক্রান্ত তথ্য",
       "fields": {
         "organic_crop": {
           "label": "ফসল/পণ্যের নাম"
@@ -1510,35 +1503,19 @@
         },
         "organic_need": {
           "label": "কী বিষয়ে সহায়তা চান",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "কম্পোস্ট"
-            },
-            {
-              "id": "option_1",
-              "label": "জৈব বালাই ব্যবস্থাপনা"
-            },
-            {
-              "id": "option_2",
-              "label": "উৎপাদন পদ্ধতি"
-            },
-            {
-              "id": "option_3",
-              "label": "সনদ/মান"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "compost": "কম্পোস্ট",
+            "organicPestManagement": "জৈব বালাই ব্যবস্থাপনা",
+            "productionMethods": "উৎপাদন পদ্ধতি",
+            "certificationAndStandards": "সনদ/মান",
+            "other": "অন্যান্য"
+          }
         }
       }
     },
     "contract-farming": {
       "title": "চুক্তিভিত্তিক চাষ",
       "description": "ফসল, উৎপাদনের পরিমাণ, মৌসুম ও সম্ভাব্য ক্রয়-বিক্রয় শর্ত জানিয়ে চাষি-ক্রেতা সংযোগ চান।",
-      "section": "চুক্তিভিত্তিক চাষ-সংক্রান্ত তথ্য",
       "fields": {
         "contract_crop": {
           "label": "ফসল/পণ্যের নাম"
@@ -1548,16 +1525,10 @@
         },
         "contract_role": {
           "label": "আপনার ভূমিকা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "চাষি/উৎপাদক"
-            },
-            {
-              "id": "option_1",
-              "label": "ক্রেতা"
-            }
-          ]
+          "options": {
+            "farmerOrProducer": "চাষি/উৎপাদক",
+            "buyer": "ক্রেতা"
+          }
         },
         "contract_terms": {
           "label": "মৌসুম/সম্ভাব্য শর্ত"
@@ -1567,32 +1538,16 @@
     "farm-finance": {
       "title": "কৃষি অর্থায়ন তথ্য",
       "description": "কৃষি অর্থায়ন পণ্য ও যোগ্যতার তথ্য জানতে আপনার কৃষি উদ্যোগ ও অর্থায়নের উদ্দেশ্য জানান। ঋণ অনুমোদনের নিশ্চয়তা নেই।",
-      "section": "কৃষি অর্থায়ন-সংক্রান্ত তথ্য",
       "fields": {
         "finance_purpose": {
           "label": "অর্থায়নের উদ্দেশ্য",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "ফসল উৎপাদন"
-            },
-            {
-              "id": "option_1",
-              "label": "কৃষি উপকরণ"
-            },
-            {
-              "id": "option_2",
-              "label": "যন্ত্রপাতি"
-            },
-            {
-              "id": "option_3",
-              "label": "খামার/ব্যবসা সম্প্রসারণ"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "cropProduction": "ফসল উৎপাদন",
+            "farmInputs": "কৃষি উপকরণ",
+            "equipment": "যন্ত্রপাতি",
+            "businessExpansion": "খামার/ব্যবসা সম্প্রসারণ",
+            "other": "অন্যান্য"
+          }
         },
         "finance_enterprise": {
           "label": "ফসল/কৃষি উদ্যোগ"
@@ -1608,62 +1563,36 @@
     "insurance-claims": {
       "title": "ফসল বীমা ও ক্ষতিপূরণ তথ্য",
       "description": "ফসল/বীমা, ক্ষতির কারণ ও ঘটনার তারিখ জানিয়ে বীমা পণ্য বা দাবি প্রক্রিয়া সম্পর্কে তথ্য চান।",
-      "section": "ফসল বীমা-সংক্রান্ত তথ্য",
       "fields": {
         "insurance_crop": {
           "label": "ফসল/বীমার ধরন"
         },
         "insurance_event": {
           "label": "ক্ষতির কারণ",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বন্যা"
-            },
-            {
-              "id": "option_1",
-              "label": "খরা"
-            },
-            {
-              "id": "option_2",
-              "label": "ঝড়/প্রাকৃতিক দুর্যোগ"
-            },
-            {
-              "id": "option_3",
-              "label": "রোগবালাই"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "flood": "বন্যা",
+            "drought": "খরা",
+            "stormOrNaturalDisaster": "ঝড়/প্রাকৃতিক দুর্যোগ",
+            "pestOrDisease": "রোগবালাই",
+            "other": "অন্যান্য"
+          }
         },
         "insurance_event_date": {
           "label": "ঘটনার তারিখ"
         },
         "insurance_status": {
           "label": "পলিসি/দাবির অবস্থা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "তথ্য জানতে চাই"
-            },
-            {
-              "id": "option_1",
-              "label": "বীমা করা আছে"
-            },
-            {
-              "id": "option_2",
-              "label": "দাবি জমা দিয়েছি"
-            }
-          ]
+          "options": {
+            "requestInformation": "তথ্য জানতে চাই",
+            "insured": "বীমা করা আছে",
+            "claimSubmitted": "দাবি জমা দিয়েছি"
+          }
         }
       }
     },
     "weather-alerts": {
       "title": "আবহাওয়া ও সতর্কতা",
       "description": "কোন এলাকার, কোন ফসলের জন্য এবং কী ধরনের আবহাওয়া তথ্য বা সতর্কতা প্রয়োজন তা জানান।",
-      "section": "আবহাওয়া-সংক্রান্ত তথ্য",
       "fields": {
         "weather_area": {
           "label": "এলাকা/ইউনিয়ন"
@@ -1673,28 +1602,13 @@
         },
         "weather_alert_type": {
           "label": "তথ্য/সতর্কতার ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বৃষ্টি/বন্যা"
-            },
-            {
-              "id": "option_1",
-              "label": "ঝড়/বজ্রপাত"
-            },
-            {
-              "id": "option_2",
-              "label": "তাপপ্রবাহ"
-            },
-            {
-              "id": "option_3",
-              "label": "ঠান্ডা/কুয়াশা"
-            },
-            {
-              "id": "option_4",
-              "label": "সাধারণ পূর্বাভাস"
-            }
-          ]
+          "options": {
+            "rainOrFlood": "বৃষ্টি/বন্যা",
+            "stormOrLightning": "ঝড়/বজ্রপাত",
+            "heatwave": "তাপপ্রবাহ",
+            "coldOrFog": "ঠান্ডা/কুয়াশা",
+            "generalForecast": "সাধারণ পূর্বাভাস"
+          }
         },
         "weather_period": {
           "label": "কোন সময়ের জন্য"
@@ -1704,32 +1618,16 @@
     "disaster-support": {
       "title": "দুর্যোগে কৃষি সহায়তা",
       "description": "দুর্যোগের ধরন, ক্ষতিগ্রস্ত এলাকা ও কৃষির ক্ষতির বিবরণ জানিয়ে সহায়তা সমন্বয়ের অনুরোধ দিন।",
-      "section": "দুর্যোগ-সহায়তা-সংক্রান্ত তথ্য",
       "fields": {
         "disaster_type": {
           "label": "দুর্যোগের ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বন্যা"
-            },
-            {
-              "id": "option_1",
-              "label": "খরা"
-            },
-            {
-              "id": "option_2",
-              "label": "ঘূর্ণিঝড়/ঝড়"
-            },
-            {
-              "id": "option_3",
-              "label": "জলাবদ্ধতা"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "flood": "বন্যা",
+            "drought": "খরা",
+            "cycloneOrStorm": "ঘূর্ণিঝড়/ঝড়",
+            "waterlogging": "জলাবদ্ধতা",
+            "other": "অন্যান্য"
+          }
         },
         "disaster_area": {
           "label": "ক্ষতিগ্রস্ত এলাকা"
@@ -1745,111 +1643,58 @@
     "women-farmers": {
       "title": "নারী কৃষক ও উদ্যোক্তা",
       "description": "আপনার কৃষি উদ্যোগ, পণ্য ও বাজার/সেবা-সংক্রান্ত প্রয়োজন জানিয়ে উপযুক্ত সংযোগ চান।",
-      "section": "নারী কৃষক/উদ্যোক্তা-সংক্রান্ত তথ্য",
       "fields": {
         "women_enterprise": {
           "label": "কৃষি উদ্যোগ/পণ্যের নাম"
         },
         "women_role": {
           "label": "আপনার ভূমিকা",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "কৃষক/উৎপাদক"
-            },
-            {
-              "id": "option_1",
-              "label": "উদ্যোক্তা"
-            },
-            {
-              "id": "option_2",
-              "label": "প্রক্রিয়াজাতকারী"
-            },
-            {
-              "id": "option_3",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "farmerOrProducer": "কৃষক/উৎপাদক",
+            "entrepreneur": "উদ্যোক্তা",
+            "processor": "প্রক্রিয়াজাতকারী",
+            "other": "অন্যান্য"
+          }
         },
         "women_capacity": {
           "label": "উৎপাদন/সরবরাহের পরিমাণ"
         },
         "women_support": {
           "label": "কী ধরনের সংযোগ প্রয়োজন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "বাজার/ক্রেতা"
-            },
-            {
-              "id": "option_1",
-              "label": "প্রশিক্ষণ"
-            },
-            {
-              "id": "option_2",
-              "label": "উপকরণ/সেবা"
-            },
-            {
-              "id": "option_3",
-              "label": "অর্থায়ন তথ্য"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "marketOrBuyer": "বাজার/ক্রেতা",
+            "training": "প্রশিক্ষণ",
+            "inputsAndServices": "উপকরণ/সেবা",
+            "financeInformation": "অর্থায়ন তথ্য",
+            "other": "অন্যান্য"
+          }
         }
       }
     },
     "youth-agripreneurs": {
       "title": "যুব কৃষি উদ্যোক্তা",
       "description": "কৃষি উদ্যোগের ধারণা/পর্যায় ও কী ধরনের প্রশিক্ষণ, বাজার বা অংশীদারিত্ব চান তা জানান।",
-      "section": "যুব কৃষি উদ্যোগ-সংক্রান্ত তথ্য",
       "fields": {
         "youth_idea": {
           "label": "উদ্যোগের ধারণা/ক্ষেত্র"
         },
         "youth_stage": {
           "label": "উদ্যোগের বর্তমান পর্যায়",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "পরিকল্পনা করছি"
-            },
-            {
-              "id": "option_1",
-              "label": "শুরু করেছি"
-            },
-            {
-              "id": "option_2",
-              "label": "চলমান উদ্যোগ"
-            }
-          ]
+          "options": {
+            "planning": "পরিকল্পনা করছি",
+            "started": "শুরু করেছি",
+            "ongoingBusiness": "চলমান উদ্যোগ"
+          }
         },
         "youth_support": {
           "label": "কী ধরনের সহায়তা চান",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "প্রশিক্ষণ/পরামর্শ"
-            },
-            {
-              "id": "option_1",
-              "label": "বাজার/ক্রেতা"
-            },
-            {
-              "id": "option_2",
-              "label": "অংশীদার"
-            },
-            {
-              "id": "option_3",
-              "label": "অর্থায়ন তথ্য"
-            },
-            {
-              "id": "option_4",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "trainingAndAdvice": "প্রশিক্ষণ/পরামর্শ",
+            "marketOrBuyer": "বাজার/ক্রেতা",
+            "partner": "অংশীদার",
+            "financeInformation": "অর্থায়ন তথ্য",
+            "other": "অন্যান্য"
+          }
         },
         "youth_capacity": {
           "label": "উৎপাদন/পরিকল্পনার পরিমাণ"
@@ -1859,7 +1704,6 @@
     "worker-marketplace": {
       "title": "শ্রম ও দক্ষ কর্মী মার্কেটপ্লেস",
       "description": "কাজের ধরন, প্রয়োজনীয় দক্ষতা, কর্মীর সংখ্যা ও সময় জানিয়ে কৃষি/বাজারকাজের কর্মী খুঁজুন।",
-      "section": "কর্মী-সংক্রান্ত তথ্য",
       "fields": {
         "worker_task": {
           "label": "কাজের ধরন"
@@ -1878,28 +1722,15 @@
     "community-reports": {
       "title": "কৃষি সমস্যা ও কমিউনিটি রিপোর্ট",
       "description": "স্থানীয় কৃষি, বাজার বা সেবার সমস্যা, কোথায়/কখন ঘটেছে এবং কী পদক্ষেপ চান তা জানান।",
-      "section": "কমিউনিটি রিপোর্ট-সংক্রান্ত তথ্য",
       "fields": {
         "report_type": {
           "label": "সমস্যার ধরন",
-          "options": [
-            {
-              "id": "option_0",
-              "label": "কৃষি সমস্যা"
-            },
-            {
-              "id": "option_1",
-              "label": "বাজার অনিয়ম"
-            },
-            {
-              "id": "option_2",
-              "label": "সেবা-সংক্রান্ত সমস্যা"
-            },
-            {
-              "id": "option_3",
-              "label": "অন্যান্য"
-            }
-          ]
+          "options": {
+            "agricultureIssue": "কৃষি সমস্যা",
+            "marketIrregularity": "বাজার অনিয়ম",
+            "serviceIssue": "সেবা-সংক্রান্ত সমস্যা",
+            "other": "অন্যান্য"
+          }
         },
         "report_location": {
           "label": "ঘটনার স্থান"
@@ -1953,8 +1784,7 @@
     "building-materials": {
       "title": "নির্মাণসামগ্রী",
       "description": "অনুমোদিত নির্মাণসামগ্রী সরবরাহকারী দেখুন এবং প্রকল্পের প্রয়োজন অনুযায়ী দরপ্রস্তাব নিন।"
-    },
-    "listingsFor": "{service}-এর তালিকা"
+    }
   },
   "constructionCategories": {
     "professionals": "পরিকল্পনা ও পেশাজীবী",
@@ -1990,6 +1820,11 @@
     "WAIVED": "মওকুফ",
     "REVIEW": "অনুমোদনের অপেক্ষায়",
     "PLANNING": "পরিকল্পনায়",
-    "ACTIVE": "চলমান"
+    "ACTIVE": "চলমান",
+    "SUBMITTED": "জমা হয়েছে",
+    "IN_REVIEW": "পর্যালোচনাধীন",
+    "CHANGES_REQUESTED": "সংশোধন চাওয়া হয়েছে",
+    "EXPIRED": "মেয়াদ শেষ",
+    "REVOKED": "বাতিল"
   }
 }

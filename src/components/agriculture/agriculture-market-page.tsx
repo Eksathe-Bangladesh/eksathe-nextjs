@@ -1,6 +1,5 @@
-import { connection } from "next/server";
-
 import { AgricultureMarket } from "@/components/agriculture/agriculture-market";
+import { getLocaleOrDefault } from "@/i18n/locales";
 import {
   getAgricultureMarketListings,
   type AgricultureMarketFilters,
@@ -28,14 +27,16 @@ function validPrice(value: string | undefined) {
 }
 
 export async function AgricultureMarketPage({
+  params,
   routeBase,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   routeBase: string;
   searchParams: Promise<SearchParams>;
 }) {
-  await connection();
-  const query = await searchParams;
+  const [{ locale: routeLocale }, query] = await Promise.all([params, searchParams]);
+  const locale = getLocaleOrDefault(routeLocale);
   const rawCategory = first(query.category);
   const rawSort = first(query.sort);
   const rawPage = first(query.page);
@@ -52,6 +53,6 @@ export async function AgricultureMarketPage({
     ...(rawSort && sorts.has(rawSort) ? { sort: rawSort as AgricultureMarketFilters["sort"] } : {}),
     ...(rawPage && /^\d{1,6}$/.test(rawPage) ? { page: Math.max(1, Number(rawPage)) } : {}),
   };
-  const result = await getAgricultureMarketListings(filters);
+  const result = await getAgricultureMarketListings(filters, locale);
   return <AgricultureMarket routeBase={routeBase} filters={filters} result={result} />;
 }

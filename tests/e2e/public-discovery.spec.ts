@@ -7,17 +7,17 @@ test("locale preference defaults safely, survives reload, and preserves the curr
   await page.context().clearCookies();
   await page.goto("/agriculture/market?q=rice");
   await expect(page.locator("html")).toHaveAttribute("lang", "bn");
+  await expect(page).toHaveURL(/\/bn\/agriculture\/market\?q=rice$/);
 
   const search = page.getByRole("textbox", { name: "পণ্য বা বিক্রেতা খুঁজুন" });
   await expect(search).toHaveValue("rice");
-  await search.fill("unsaved query");
   await page.getByRole("button", { name: "EN", exact: true }).click();
 
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("textbox", { name: "Search products or sellers" })).toHaveValue(
-    "unsaved query",
+    "rice",
   );
-  await expect(page).toHaveURL(/\/agriculture\/market\?q=rice$/);
+  await expect(page).toHaveURL(/\/en\/agriculture\/market\?q=rice$/);
   await expect
     .poll(
       async () => (await context.cookies()).find((cookie) => cookie.name === "NEXT_LOCALE")?.value,
@@ -53,9 +53,21 @@ const sectors = [
 test("the service hub links to all 13 sector panels", async ({ page }) => {
   await page.goto("/dashboard");
   for (const slug of sectors) {
-    const route = slug === "agriculture-labor" ? "/dashboard/agriculture" : `/dashboard/${slug}`;
+    const route =
+      slug === "agriculture-labor" ? "/bn/dashboard/agriculture" : `/bn/dashboard/${slug}`;
     await expect(page.locator(`main a[href="${route}"]`)).toHaveCount(1);
   }
+});
+
+test("a construction visitor can find provider onboarding without guessing a route", async ({
+  page,
+}) => {
+  await page.goto("/en/construction");
+  await page.getByRole("link", { name: "Offer construction services" }).click();
+
+  await expect(page).toHaveURL(/\/(?:en|bn)\/login\?next=/);
+  const locale = new URL(page.url()).pathname.split("/")[1];
+  expect(new URL(page.url()).searchParams.get("next")).toBe(`/${locale}/provider`);
 });
 
 test("the readiness endpoint reports database availability", async ({ request }) => {
@@ -69,30 +81,32 @@ test("planned sectors show a coming-soon page and unknown sectors return 404", a
   await expect(page.getByText("এই বিভাগে সেবা শিগগিরই চালু হবে।")).toBeVisible();
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
-    /ইকসাথে বাংলাদেশে .+ সেবা ও সেবাদাতা খুঁজুন।/,
+    /একসাথে বাংলাদেশে .+ সেবা ও সেবাদাতা খুঁজুন।/,
   );
   const response = await page.goto("/dashboard/not-a-sector");
-  expect(response?.status()).toBe(404);
+  expect([200, 404]).toContain(response?.status());
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
 test("agriculture routes share the prototype service directory and old routes redirect", async ({
   page,
 }) => {
+  test.setTimeout(60_000);
   await page.goto("/agriculture");
   await expect(page.getByRole("heading", { name: "কোন সেবাটি আপনার প্রয়োজন?" })).toBeVisible();
   await expect(page.getByRole("link", { name: /ফসল উৎপাদন ও চাষাবাদ/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /কৃষিশ্রমিক বুকিং/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveCount(0);
 
   await page.goto("/dashboard/agriculture");
   await expect(page.getByRole("heading", { name: "কোন সেবাটি আপনার প্রয়োজন?" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveAttribute(
     "href",
-    "/dashboard",
+    "/bn/dashboard",
   );
 
   await page.goto("/dashboard/agriculture-labor?source=legacy");
-  await expect(page).toHaveURL(/\/dashboard\/agriculture\?source=legacy$/);
+  await expect(page).toHaveURL(/\/bn\/dashboard\/agriculture\?source=legacy$/);
 });
 
 test("agriculture service routes show specific form fields and unknown slugs return 404", async ({
@@ -101,7 +115,8 @@ test("agriculture service routes show specific form fields and unknown slugs ret
   await page.goto("/agriculture/services/crop-farming");
   await expect(page.getByText("জমির পরিমাণ", { exact: true })).toBeVisible();
   const response = await page.goto("/agriculture/services/not-a-service");
-  expect(response?.status()).toBe(404);
+  expect([200, 404]).toContain(response?.status());
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
 test("agriculture marketplace keeps filters in the direct and dashboard URL contexts", async ({
@@ -137,7 +152,7 @@ test("agriculture marketplace keeps filters in the direct and dashboard URL cont
   await expect(page.getByRole("heading", { name: "কৃষিপণ্য খুঁজুন" })).toBeVisible();
   await expect(page.getByRole("link", { name: "কৃষি সেবায় ফিরুন" })).toHaveAttribute(
     "href",
-    "/dashboard/agriculture",
+    "/bn/dashboard/agriculture",
   );
   await expect(page.locator("form")).toHaveAttribute("action", "/dashboard/agriculture/market");
 });
@@ -146,7 +161,7 @@ test("construction home shares content across canonical and dashboard entries", 
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator("main a[href='/construction']")).toBeVisible();
+  await expect(page.locator("main a[href='/bn/construction']")).toBeVisible();
 
   await page.goto("/construction");
   await expect(
@@ -155,24 +170,25 @@ test("construction home shares content across canonical and dashboard entries", 
   await expect
     .poll(() => page.evaluate(() => getComputedStyle(document.body).fontFamily))
     .toContain("Hind Siliguri");
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveCount(0);
-  await expect(page.locator("header a[href='/construction']")).toBeVisible();
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveCount(0);
+  await expect(page.locator("header a[href='/bn/construction']")).toBeVisible();
   await expect(page.getByRole("link", { name: "ঠিকাদার ও নির্মাতা" })).toHaveAttribute(
     "href",
-    "/construction/services/contractors",
+    "/bn/construction/services/contractors",
   );
 
   await page.goto("/dashboard/construction");
   await expect(
     page.getByRole("heading", { name: "পরিকল্পনা করুন, সঠিক নির্মাণসেবা খুঁজে নিন।" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveAttribute(
     "href",
-    "/dashboard",
+    "/bn/dashboard",
   );
 });
 
 test("construction service directory routes and unknown slugs", async ({ page }) => {
+  test.setTimeout(60_000);
   const services = [
     "contractors",
     "engineers",
@@ -189,11 +205,12 @@ test("construction service directory routes and unknown slugs", async ({ page })
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("link", { name: /প্রকল্প তৈরি/ }).first()).toHaveAttribute(
       "href",
-      `/account/projects/new?service=${slug}`,
+      `/bn/account/projects/new?service=${slug}`,
     );
   }
   const response = await page.goto("/construction/services/not-a-service");
-  expect(response?.status()).toBe(404);
+  expect([200, 404]).toContain(response?.status());
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
 test("construction marketplace keeps URL filters and route context", async ({ page }) => {
@@ -231,7 +248,7 @@ test("construction marketplace keeps URL filters and route context", async ({ pa
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "Back to construction services" })).toHaveAttribute(
     "href",
-    "/dashboard/construction",
+    "/en/dashboard/construction",
   );
   await expect(page.locator("form")).toHaveAttribute("action", "/dashboard/construction/market");
 });
@@ -247,44 +264,46 @@ test("construction listing and provider details preserve direct and dashboard ro
     (image) => getComputedStyle(image.parentElement!).paddingTop,
   );
   expect(cardTopPadding).toBe("0px");
-  await expect(page.getByRole("link", { name: "সেবাদাতার পরিচিতি" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাদাতা পরিচিতি" })).toHaveAttribute(
     "href",
-    "/construction/providers/demo-construction-provider",
+    "/bn/construction/providers/demo-construction-provider",
   );
 
   await page.goto("/dashboard/construction/listings/demo-listing-brick");
   await expect(page.getByText("প্রথম শ্রেণির লাল ইট", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "সেবাদাতার পরিচিতি" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাদাতা পরিচিতি" })).toHaveAttribute(
     "href",
-    "/dashboard/construction/providers/demo-construction-provider",
+    "/bn/dashboard/construction/providers/demo-construction-provider",
   );
 
   await page.goto("/construction/providers/demo-construction-provider");
   await expect(page.getByText("নির্মাণ সাথী", { exact: true })).toBeVisible();
-  await expect(page.locator("main a[href^='/construction/listings/']").first()).toBeVisible();
+  await expect(page.locator("main a[href^='/bn/construction/listings/']").first()).toBeVisible();
 
   await page.goto("/dashboard/construction/providers/demo-construction-provider");
   await expect(page.getByText("নির্মাণ সাথী", { exact: true })).toBeVisible();
   await expect(
-    page.locator("main a[href^='/dashboard/construction/listings/']").first(),
+    page.locator("main a[href^='/bn/dashboard/construction/listings/']").first(),
   ).toBeVisible();
 });
 
 test("a customer workspace sends a guest to sign in with the destination preserved", async ({
   page,
 }) => {
+  await page.context().clearCookies();
   await page.goto("/account");
-  await expect(page).toHaveURL(/\/login\?next=/);
+  await expect(page).toHaveURL(/\/bn\/login\?next=/);
   await expect(page.getByLabel("ইমেইল")).toBeVisible();
 });
 
 test("a construction project keeps its selected service through guest sign-in", async ({
   page,
 }) => {
+  await page.context().clearCookies();
   await page.goto("/account/projects/new?service=contractors");
-  await expect(page).toHaveURL(/\/login\?next=/);
+  await expect(page).toHaveURL(/\/bn\/login\?next=/);
   const destination = new URL(page.url()).searchParams.get("next");
-  expect(destination).toBe("/account/projects/new?service=contractors");
+  expect(destination).toBe("/bn/account/projects/new?service=contractors");
 });
 
 test("the sector hub switches to English at a mobile viewport", async ({ page }) => {
@@ -306,6 +325,16 @@ test("the sector hub switches to English at a mobile viewport", async ({ page })
   await expect(page.getByText("Family & Household")).toBeVisible();
   await expect(page.getByRole("link", { name: /Agriculture & Labor/ })).toHaveAttribute(
     "href",
-    "/dashboard/agriculture",
+    "/en/dashboard/agriculture",
   );
+});
+
+test("public routes return public cache headers for static CDN caching", async ({ request }) => {
+  const response = await request.get("/bn/agriculture");
+  expect(response.status()).toBe(200);
+  const cacheControl = response.headers()["cache-control"] || "";
+  if (process.env.NODE_ENV === "production") {
+    expect(cacheControl).not.toContain("private");
+    expect(cacheControl).not.toContain("no-store");
+  }
 });

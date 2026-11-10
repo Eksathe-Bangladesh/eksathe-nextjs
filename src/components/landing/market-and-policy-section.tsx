@@ -12,39 +12,35 @@ export function MarketAndPolicySection() {
       <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-[1.2fr_1fr]">
         <div>
           <p className="text-primary text-sm font-bold tracking-wide">
-            {t("marketAndPolicy.marketTag")}
+            {t("home.marketUpdates.eyebrow")}
           </p>
           <h2 className="text-3xl font-extrabold tracking-tight">
-            {t("marketAndPolicy.marketTitle")}
+            {t("home.marketUpdates.title")}
           </h2>
 
           <div className="bg-card mt-6 rounded-2xl border p-6 shadow-sm">
-            <Badge variant="secondary">{t("marketAndPolicy.feedSampleBadge")}</Badge>
-            <h3 className="mt-3 text-lg font-semibold">{t("marketAndPolicy.feedSampleTitle")}</h3>
+            <Badge variant="secondary">{t("home.marketUpdates.sampleBadge")}</Badge>
+            <h3 className="mt-3 text-lg font-semibold">{t("home.marketUpdates.sampleTitle")}</h3>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("marketAndPolicy.feedSampleDescription")}
+              {t("home.marketUpdates.sampleDescription")}
             </p>
           </div>
 
           <div className="bg-card mt-4 rounded-2xl border p-6 shadow-sm">
-            <Badge variant="outline">{t("marketAndPolicy.feedWarningBadge")}</Badge>
-            <h3 className="mt-3 text-lg font-semibold">{t("marketAndPolicy.feedWarningTitle")}</h3>
+            <Badge variant="outline">{t("home.marketUpdates.warningBadge")}</Badge>
+            <h3 className="mt-3 text-lg font-semibold">{t("home.marketUpdates.warningTitle")}</h3>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("marketAndPolicy.feedWarningDescription")}
+              {t("home.marketUpdates.warningDescription")}
             </p>
           </div>
         </div>
 
         <div>
-          <p className="text-primary text-sm font-bold tracking-wide">
-            {t("marketAndPolicy.policyTag")}
-          </p>
-          <h2 className="text-3xl font-extrabold tracking-tight">
-            {t("marketAndPolicy.policyTitle")}
-          </h2>
+          <p className="text-primary text-sm font-bold tracking-wide">{t("home.policy.eyebrow")}</p>
+          <h2 className="text-3xl font-extrabold tracking-tight">{t("home.policy.title")}</h2>
 
           <ul className="text-muted-foreground mt-6 space-y-3 text-sm">
-            {(t.raw("marketAndPolicy.policies") as string[]).map((policy) => (
+            {(t.raw("home.policy.items") as string[]).map((policy) => (
               <li key={policy} className="flex gap-2">
                 <span className="bg-primary mt-2 size-1.5 shrink-0 rounded-full" />
                 <span>{policy}</span>

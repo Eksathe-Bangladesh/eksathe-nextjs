@@ -1,34 +1,37 @@
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
+import { resolveCatalogPair } from "@/i18n/catalog";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import { getCurrentUser } from "@/lib/dal";
+import type { Locale } from "@/i18n/locales";
 import { getPublicListing, getPublicProviderProfile } from "@/lib/listings";
 import { getSector } from "@/lib/sectors";
 import { getProjectPackageContext } from "@/lib/workspaces";
 
 export async function ConstructionListingPage({
+  locale,
   listingId,
   routeBase,
   searchParams,
 }: {
+  locale: Locale;
   listingId: string;
   routeBase: string;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await connection();
-  const locale = (await cookies()).get("NEXT_LOCALE")?.value === "en" ? "en" : "bn";
   const query = await searchParams;
   const sector = getSector("construction");
   if (!sector || sector.status !== "live") notFound();
-  const [result, user] = await Promise.all([getPublicListing(listingId), getCurrentUser()]);
+  const [result, user] = await Promise.all([
+    getPublicListing(listingId, locale),
+    getCurrentUser(),
+  ]);
   if (result.listing && result.listing.sectorSlug !== "construction") notFound();
   if (!result.listing && !result.unavailable) notFound();
   const providerResult = result.listing
-    ? await getPublicProviderProfile("construction", result.listing.providerId)
+    ? await getPublicProviderProfile("construction", result.listing.providerId, locale)
     : null;
   const projectId =
     typeof query?.projectId === "string" && query.projectId.length <= 64
@@ -49,6 +52,9 @@ export async function ConstructionListingPage({
   const contextService = compatiblePackage?.serviceSlug
     ? getConstructionService(compatiblePackage.serviceSlug)
     : undefined;
+  const localizedServiceTitle = contextService
+    ? resolveCatalogPair(`constructionServices.${contextService.slug}.title`)[locale]
+    : undefined;
 
   return (
     <ListingDetail
@@ -60,28 +66,23 @@ export async function ConstructionListingPage({
       signedIn={Boolean(user && user.status === "active")}
       projectId={compatiblePackage ? projectId : undefined}
       packageId={compatiblePackage?.id}
-      packageLabel={
-        contextService
-          ? locale === "bn"
-            ? contextService.titleBn
-            : contextService.titleEn
-          : compatiblePackage?.label
-      }
+      packageLabel={localizedServiceTitle ?? compatiblePackage?.label}
     />
   );
 }
 
 export async function ConstructionProviderPage({
+  locale,
   providerId,
   routeBase,
 }: {
+  locale: Locale;
   providerId: string;
   routeBase: string;
 }) {
-  await connection();
   const sector = getSector("construction");
   if (!sector || sector.status !== "live") notFound();
-  const result = await getPublicProviderProfile("construction", providerId);
+  const result = await getPublicProviderProfile("construction", providerId, locale);
   if (!result.provider && !result.unavailable) notFound();
   return (
     <ProviderProfile

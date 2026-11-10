@@ -56,7 +56,7 @@ export function ListingImage({
         <div
           role="img"
           aria-label={alt}
-          className="from-primary/5 to-primary/15 flex size-full items-center justify-center bg-gradient-to-br"
+          className="from-primary/5 to-primary/15 flex size-full items-center justify-center bg-linear-to-br"
         >
           <span aria-hidden="true" className="text-7xl select-none">
             {listingEmoji(listing)}

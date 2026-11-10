@@ -1,12 +1,14 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 import { createListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { agricultureListings, constructionListings } from "@/lib/sectors";
@@ -45,19 +47,20 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareListingImage(event: FormEvent<HTMLFormElement>) {
+  async function prepareListingImage(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (!selectedFile || uploadedFile.current === selectedFile) return;
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const kind = formData.get("kind");
     setUploading(true);
     setUploadError(null);
     try {
       const result = await uploadPrivateFile(selectedFile, {
         purpose: "listing-image",
         sectorSlug,
-        kind: String(formData.get("kind") ?? ""),
+        kind: typeof kind === "string" ? kind : "",
       });
       const keyField = form.elements.namedItem("imageKey");
       const typeField = form.elements.namedItem("imageContentType");
@@ -86,8 +89,8 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
       className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="listing-sector" label={t("inline.service_sector_1l9k566")}>
-          <select
+        <Field id="listing-sector" label={t("provider.listingForm.serviceSector")}>
+          <NativeSelect
             id="listing-sector"
             name="sectorSlug"
             value={sectorSlug}
@@ -95,30 +98,30 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {sectorOptions.map((sector) => (
-              <option key={sector} value={sector}>
+              <NativeSelectOption key={sector} value={sector}>
                 {sector === "construction" ? t("home.construction") : t("home.agriculture")}
-              </option>
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
         <Field id="listing-kind" label={t("workflow.category")}>
-          <select
+          <NativeSelect
             id="listing-kind"
             name="kind"
             required
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {serviceOptions.map((service) => (
-              <option key={service.kind} value={service.kind}>
-                {t(`marketplaceServices.${service.slug}` as never)}
-              </option>
+              <NativeSelectOption key={service.kind} value={service.kind}>
+                {t(`marketplaceServices.${service.slug}`)}
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </Field>
-        <Field id="listing-title-bn" label={t("workflow.titleBn")}>
+        <Field id="listing-title-bn" label={t("common.fields.nameBangla")}>
           <Input id="listing-title-bn" name="titleBn" required maxLength={120} />
         </Field>
-        <Field id="listing-title-en" label={t("workflow.titleEn")}>
+        <Field id="listing-title-en" label={t("common.fields.nameEnglish")}>
           <Input id="listing-title-en" name="titleEn" required maxLength={120} />
         </Field>
         <Field id="listing-category" label={t("workflow.category")}>
@@ -128,7 +131,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             list="agriculture-category-options"
             required
             maxLength={80}
-            placeholder={t("inline.e_g_vegetables_bricks_masonry_zjz3sh")}
+            placeholder={t("provider.listingForm.categoryPlaceholder")}
           />
           <datalist id="agriculture-category-options">
             <option value="Grains / শস্য" />
@@ -149,7 +152,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             name="unit"
             required
             maxLength={30}
-            placeholder={t("inline.kg_day_bag_2nppii")}
+            placeholder={t("provider.listingForm.unitPlaceholder")}
           />
         </Field>
         <Field id="listing-unit-price" label={t("workflow.price")}>
@@ -173,8 +176,8 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             required
           />
         </Field>
-        <Field id="listing-available-from" label={t("inline.available_from_optional_c5ahok")}>
-          <Input id="listing-available-from" name="availableFrom" type="date" />
+        <Field id="listing-available-from" label={t("provider.labels.availableFromOptional")}>
+          <DatePicker id="listing-available-from" name="availableFrom" />
         </Field>
       </div>
       <Field id="listing-description-bn" label={t("workflow.descriptionBn")}>
@@ -214,15 +217,13 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         />
       </Field>
       <p className="text-muted-foreground text-xs">{t("workflow.listingImageHelp")}</p>
-      <p className="text-muted-foreground text-xs">
-        {t("inline.goods_need_stock_to_sell_worker_and_machin_j3xozu")}
-      </p>
+      <p className="text-muted-foreground text-xs">{t("provider.listingForm.stockHelp")}</p>
       <input type="hidden" name="imageKey" defaultValue="" />
       <input type="hidden" name="imageContentType" defaultValue="" />
       <input type="hidden" name="imageSizeBytes" defaultValue="" />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t(`workflow.${uploadError}` as never)}
+          {t(`workflow.${uploadError}`)}
         </p>
       )}
       <p className="text-muted-foreground text-xs">{t("workflow.pendingApproval")}</p>

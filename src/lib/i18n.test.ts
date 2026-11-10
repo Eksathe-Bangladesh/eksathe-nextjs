@@ -14,6 +14,7 @@ import {
 
 import bn from "../../messages/bn.json";
 import en from "../../messages/en.json";
+import { resolveTranslation, translationLocalesFor } from "../i18n/content";
 import { getLocaleOrDefault, isLocale } from "../i18n/locales";
 
 function flattenMessages(value: unknown, prefix = "", output = new Map<string, string>()) {
@@ -50,6 +51,17 @@ function argumentNames(elements: MessageFormatElement[], output = new Set<string
 }
 
 describe("locale configuration", () => {
+  test("database translations fall back safely when Bangla is missing", () => {
+    const english = { locale: "en", title: "English only" };
+    const bangla = { locale: "bn", title: "বাংলা" };
+    expect(resolveTranslation([english, bangla], "en", "bn")).toBe(english);
+    expect(resolveTranslation([english, bangla], "fr", "bn")).toBe(bangla);
+    expect(resolveTranslation([english], "bn", "bn")).toBe(english);
+    expect(resolveTranslation([], "bn", "bn")).toBeUndefined();
+    expect(translationLocalesFor("bn")).toEqual(["bn", "en"]);
+    expect(translationLocalesFor("en")).toEqual(["en", "bn"]);
+  });
+
   test("accepts only supported locales and defaults missing or invalid values to Bangla", () => {
     expect(isLocale("en")).toBe(true);
     expect(isLocale("bn")).toBe(true);

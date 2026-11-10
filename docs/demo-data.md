@@ -1,9 +1,11 @@
 # Local demo data
 
 Use the demo seed to explore the implemented agriculture and construction
-workflows with customer and provider accounts. It is separate from the regular
-sector seed and uses repeatable upserts, so running it again does not reset
-requests, quotes, orders, payments, notifications or project progress.
+workflows with customer, provider, and scoped operations/finance accounts. It is
+separate from the regular sector seed and uses repeatable upserts, so running it
+again does not reset requests, quotes, orders, payments, notifications, provider
+reviews, or project progress. It ensures the demo staff account retains its
+construction grants.
 
 ## Load the records
 
@@ -34,18 +36,27 @@ preserved on later runs.
 
 ## Demo accounts
 
-All three accounts use the local-only password `Demo-only-123!`.
+All four accounts use the local-only password `Demo-only-123!`.
 
-| Workspace             | Email                      |
-| --------------------- | -------------------------- |
-| Customer              | `demo.buyer@example.com`   |
-| Agriculture provider  | `demo.farmer@example.com`  |
-| Construction provider | `demo.builder@example.com` |
+| Workspace                                    | Email                               |
+| -------------------------------------------- | ----------------------------------- |
+| Customer                                     | `demo.buyer@example.com`            |
+| Agriculture provider                         | `demo.farmer@example.com`           |
+| Construction provider                        | `demo.builder@example.com`          |
+| Construction operations and finance (scoped) | `demo.construction.ops@example.com` |
 
 The seed creates produce, worker, machinery, material and construction service
-listings. The customer workspace includes an active produce order with a
-recorded payment, an agriculture quote awaiting acceptance, and a construction
-project with a confirmed consultation, a material quote and sample milestones.
+listings, separate contractor and supplier verification approvals, and a
+construction staff account with only `OPERATIONS` and `FINANCE` access to the
+construction sector. The customer workspace includes an active produce order,
+an agriculture quote awaiting acceptance, and a construction project with a
+completed consultation, a material quote, and sample milestones. The
+construction provider workspace shows the recorded consultation payment awaiting
+provider confirmation; the finance queue shows its BDT 1,500 commission due.
+
+The seed includes verification metadata but no private document files. Configure
+the application's object storage to exercise private verification-document and
+project-file downloads.
 
 These credentials and records are for local development only. Do not use the
 demo password or demo accounts in a deployed environment.

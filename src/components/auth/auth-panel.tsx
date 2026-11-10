@@ -1,30 +1,45 @@
 "use client";
 
 import { ArrowLeftIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { cloneElement, useId, useState, type FormEvent, type ReactElement } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { cloneElement, useId, useState, type SubmitEvent, type ReactElement } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Link, useRouter } from "@/i18n/navigation";
+import { localizedPath } from "@/i18n/paths";
+import { agricultureAccountTypes } from "@/lib/agriculture/account-types";
 import { authClient } from "@/lib/auth-client";
 
 export type AuthMode = "login" | "register" | "forgot" | "reset" | "verify";
 
-export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string; token?: string }) {
+export function AuthPanel({
+  mode,
+  next = "/account",
+  token,
+}: {
+  mode: AuthMode;
+  next?: string;
+  token?: string;
+}) {
   const t = useTranslations();
+  const locale = useLocale();
   const router = useRouter();
+  const callbackURL = localizedPath(locale, next);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [accountType, setAccountType] =
+    useState<(typeof agricultureAccountTypes)[number]>("customer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+
   const title =
     mode === "login"
       ? t("auth.signIn")
@@ -36,7 +51,7 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
             ? t("auth.resetPassword")
             : t("auth.verifyTitle");
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError("");
@@ -52,7 +67,8 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
           email: email.trim().toLowerCase(),
           password,
           phone: phone.trim(),
-          callbackURL: next,
+          accountType,
+          callbackURL,
         });
         if (authError) throw new Error(authError.message);
         setNotice(t("auth.checkEmail"));
@@ -60,7 +76,7 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
         const { error: authError } = await authClient.signIn.email({
           email: email.trim().toLowerCase(),
           password,
-          callbackURL: next,
+          callbackURL,
         });
         if (authError) throw new Error(authError.message);
         router.replace(next);
@@ -68,7 +84,7 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
       } else if (mode === "forgot") {
         const { error: authError } = await authClient.requestPasswordReset({
           email: email.trim().toLowerCase(),
-          redirectTo: "/reset-password",
+          redirectTo: localizedPath(locale, "/reset-password"),
         });
         if (authError) throw new Error(authError.message);
         setNotice(t("auth.checkEmail"));
@@ -85,7 +101,7 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
       } else {
         const { error: authError } = await authClient.sendVerificationEmail({
           email: email.trim().toLowerCase(),
-          callbackURL: next,
+          callbackURL,
         });
         if (authError) throw new Error(authError.message);
         setNotice(t("auth.checkEmail"));
@@ -99,7 +115,7 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
 
   return (
     <Card className="w-full max-w-lg">
-      <CardHeader>
+      <CardHeader className="flex flex-col items-center">
         <BrandLogo className="mb-2 size-24" />
         <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>
@@ -145,6 +161,44 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
               />
+            </Field>
+          )}
+          {mode === "register" && (
+            <Field label={t("workflow.accountType")}>
+              <NativeSelect
+                autoComplete="off"
+                required
+                value={accountType}
+                onChange={(event) =>
+                  setAccountType(
+                    agricultureAccountTypes.find((value) => value === event.target.value) ??
+                      "customer",
+                  )
+                }
+                className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
+              >
+                <NativeSelectOption value="customer">
+                  {t("workflow.customerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="farmer">
+                  {t("workflow.farmerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agro_laborer">
+                  {t("workflow.agroLaborerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agronomist">
+                  {t("workflow.agronomistAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="veterinarian">
+                  {t("workflow.veterinarianAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agro_seller">
+                  {t("workflow.agroSellerAccount")}
+                </NativeSelectOption>
+                <NativeSelectOption value="agriculture_professional">
+                  {t("workflow.agricultureProfessionalAccount")}
+                </NativeSelectOption>
+              </NativeSelect>
             </Field>
           )}
           {(mode === "register" || mode === "login" || mode === "reset") && (
@@ -198,10 +252,15 @@ export function AuthPanel({ mode, next, token }: { mode: AuthMode; next: string;
           {(mode === "login" || mode === "register") && (
             <Link
               className="text-primary hover:underline"
+              prefetch={true}
               href={
                 mode === "login"
-                  ? `/register?next=${encodeURIComponent(next)}`
-                  : `/login?next=${encodeURIComponent(next)}`
+                  ? next && next !== "/account"
+                    ? `/register?next=${encodeURIComponent(next)}`
+                    : "/register"
+                  : next && next !== "/account"
+                    ? `/login?next=${encodeURIComponent(next)}`
+                    : "/login"
               }
             >
               {mode === "login" ? t("auth.createAccount") : t("auth.existingAccount")}

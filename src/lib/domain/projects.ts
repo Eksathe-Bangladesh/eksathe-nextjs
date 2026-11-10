@@ -1,5 +1,6 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
+import { resolveCatalogPair } from "@/i18n/catalog";
 import { getConstructionService } from "@/lib/construction/service-registry";
 import { WorkflowError } from "@/lib/domain/marketplace";
 import { prisma } from "@/lib/prisma";
@@ -12,6 +13,36 @@ import type {
 
 function dateAtUtcStart(date: string) {
   return new Date(`${date}T00:00:00.000Z`);
+}
+
+// Strip path separators and control characters from user-supplied filenames.
+function sanitizeFilename(filename: string) {
+  return filename
+    .replace(/[\\/\p{Cc}]/gu, "_")
+    .trim()
+    .slice(0, 120);
+}
+
+function notificationData(input: {
+  userId: string;
+  titleEn: string;
+  titleBn: string;
+  messageEn: string;
+  messageBn: string;
+  href: string;
+}) {
+  return {
+    userId: input.userId,
+    title: input.titleEn,
+    message: input.messageEn,
+    href: input.href,
+    translations: {
+      create: [
+        { locale: "en", title: input.titleEn, message: input.messageEn },
+        { locale: "bn", title: input.titleBn, message: input.messageBn },
+      ],
+    },
+  };
 }
 
 export async function attachProjectDocument(
@@ -31,10 +62,7 @@ export async function attachProjectDocument(
     Number(input.sizeBytes),
   );
 
-  const filename = input.filename
-    .replace(/[\\/\0-\x1f\x7f]/g, "_")
-    .trim()
-    .slice(0, 120);
+  const filename = sanitizeFilename(input.filename);
   if (!filename) throw new WorkflowError("invalidState");
   const document = await prisma.projectDocument.create({
     data: {
@@ -102,10 +130,7 @@ export async function attachProjectPhoto(
     Number(input.sizeBytes),
   );
 
-  const filename = input.filename
-    .replace(/[\\/\0-\x1f\x7f]/g, "_")
-    .trim()
-    .slice(0, 120);
+  const filename = sanitizeFilename(input.filename);
   if (!filename) throw new WorkflowError("invalidState");
   const photo = await prisma.projectPhoto.create({
     data: {
@@ -128,16 +153,14 @@ export async function attachProjectPhoto(
   });
   if (project.ownerId !== actorId) {
     await prisma.notification.create({
-      data: {
+      data: notificationData({
         userId: project.ownerId,
-        title: "Project photo added",
-        message: "A construction provider added a progress photo.",
-        titleBn: "প্রকল্পে ছবি যোগ হয়েছে",
         titleEn: "Project photo added",
+        titleBn: "প্রকল্পে ছবি যোগ হয়েছে",
         messageBn: "একজন নির্মাণসেবাদাতা কাজের অগ্রগতির ছবি যোগ করেছেন।",
         messageEn: "A construction provider added a progress photo.",
         href: `/account/projects/${project.id}`,
-      },
+      }),
     });
   }
   return photo;
@@ -182,7 +205,10 @@ export async function createConstructionProject(actorId: string, input: CreatePr
           ? {
               packages: {
                 create: {
-                  label: service?.titleEn ?? listing!.titleEn,
+                  label:
+                    (service
+                      ? resolveCatalogPair(`constructionServices.${service.slug}.title`).en
+                      : undefined) ?? listing!.titleEn,
                   description: input.description,
                   kind: service?.kind ?? listing!.kind,
                   serviceSlug: service?.slug,
@@ -207,6 +233,8 @@ export async function createConstructionProject(actorId: string, input: CreatePr
 }
 
 export async function createProjectPackage(actorId: string, input: CreateProjectPackageInput) {
+  const service = input.serviceSlug ? getConstructionService(input.serviceSlug) : undefined;
+  if (input.serviceSlug && !service) throw new WorkflowError("invalidState");
   try {
     return await prisma.$transaction(async (tx) => {
       const project = await tx.constructionProject.findUnique({
@@ -222,7 +250,8 @@ export async function createProjectPackage(actorId: string, input: CreateProject
           projectId: project.id,
           label: input.label,
           description: input.description,
-          kind: input.kind,
+          kind: service?.kind ?? input.kind ?? "CONSTRUCTION_SERVICE",
+          serviceSlug: service?.slug,
         },
         select: { id: true },
       });
@@ -319,16 +348,14 @@ export async function addProjectMilestone(actorId: string, input: MilestoneInput
       },
     });
     await tx.notification.create({
-      data: {
+      data: notificationData({
         userId: assignedOrder.provider.userId,
-        title: "Project milestone assigned",
-        message: "You are responsible for progress on a project milestone.",
-        titleBn: "প্রকল্পের ধাপের দায়িত্ব দেওয়া হয়েছে",
         titleEn: "Project milestone assigned",
-        messageBn: "প্রকল্পের একটি ধাপের অগ্রগতির দায়িত্ব আপনাকে দেওয়া হয়েছে।",
+        titleBn: "প্রকল্পের ধাপের দায়িত্ব দেওয়া হয়েছে",
         messageEn: "You are responsible for progress on a project milestone.",
+        messageBn: "প্রকল্পের একটি ধাপের অগ্রগতির দায়িত্ব আপনাকে দেওয়া হয়েছে।",
         href: `/account/projects/${project.id}`,
-      },
+      }),
     });
     return milestone;
   });
@@ -377,16 +404,14 @@ export async function updateProjectMilestone(
       if (!activeEngagement) throw new WorkflowError("notAllowed");
       await tx.projectMilestone.update({ where: { id: milestone.id }, data: { status: "REVIEW" } });
       await tx.notification.create({
-        data: {
+        data: notificationData({
           userId: milestone.project.ownerId,
-          title: "Milestone ready for review",
-          message: "A provider submitted a project milestone for approval.",
-          titleBn: "প্রকল্পের ধাপ পর্যালোচনার জন্য প্রস্তুত",
           titleEn: "Milestone ready for review",
-          messageBn: "একজন সেবাদাতা প্রকল্পের একটি ধাপ অনুমোদনের জন্য পাঠিয়েছেন।",
+          titleBn: "প্রকল্পের ধাপ পর্যালোচনার জন্য প্রস্তুত",
           messageEn: "A provider submitted a project milestone for approval.",
+          messageBn: "একজন সেবাদাতা প্রকল্পের একটি ধাপ অনুমোদনের জন্য পাঠিয়েছেন।",
           href: `/account/projects/${milestone.project.id}`,
-        },
+        }),
       });
     } else {
       if (!isOwner || milestone.status !== "REVIEW") throw new WorkflowError("notAllowed");
@@ -397,16 +422,14 @@ export async function updateProjectMilestone(
       const provider = milestone.assignedProvider;
       if (provider) {
         await tx.notification.create({
-          data: {
+          data: notificationData({
             userId: provider.userId,
-            title: "Milestone approved",
-            message: "The customer approved a project milestone.",
-            titleBn: "প্রকল্পের ধাপ অনুমোদিত",
             titleEn: "Milestone approved",
-            messageBn: "গ্রাহক প্রকল্পের একটি ধাপ অনুমোদন করেছেন।",
+            titleBn: "প্রকল্পের ধাপ অনুমোদিত",
             messageEn: "The customer approved a project milestone.",
+            messageBn: "গ্রাহক প্রকল্পের একটি ধাপ অনুমোদন করেছেন।",
             href: "/provider#orders",
-          },
+          }),
         });
       }
     }
@@ -461,16 +484,14 @@ export async function confirmProjectHandover(actorId: string, projectId: string)
     });
     for (const userId of new Set(project.orders.map((order) => order.provider.userId))) {
       await tx.notification.create({
-        data: {
+        data: notificationData({
           userId,
-          title: "Project handover confirmed",
-          message: "The customer confirmed final handover of this project.",
-          titleBn: "প্রকল্পের চূড়ান্ত হস্তান্তর নিশ্চিত",
           titleEn: "Project handover confirmed",
-          messageBn: "গ্রাহক প্রকল্পের চূড়ান্ত হস্তান্তর নিশ্চিত করেছেন।",
+          titleBn: "প্রকল্পের চূড়ান্ত হস্তান্তর নিশ্চিত",
           messageEn: "The customer confirmed final handover of this project.",
+          messageBn: "গ্রাহক প্রকল্পের চূড়ান্ত হস্তান্তর নিশ্চিত করেছেন।",
           href: `/account/projects/${project.id}`,
-        },
+        }),
       });
     }
     return { id: project.id };

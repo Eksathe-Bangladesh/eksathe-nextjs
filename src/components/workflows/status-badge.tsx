@@ -3,11 +3,12 @@
 import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
+import { statusMessageKey } from "@/i18n/message-keys";
 
 export function StatusBadge({ status }: { status: string }) {
   const t = useTranslations();
-  const key = `statuses.${status}` as never;
-  const label = t.has(key) ? t(key) : status.replaceAll("_", " ").toLowerCase();
+  const key = statusMessageKey(status);
+  const label = key ? t(key) : status.replaceAll("_", " ").toLowerCase();
   return (
     <Badge
       variant={

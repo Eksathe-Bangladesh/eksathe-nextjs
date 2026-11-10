@@ -1,9 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { usePathname } from "@/i18n/navigation";
 
 export function FooterContent({ year }: { year: number }) {
   const t = useTranslations();

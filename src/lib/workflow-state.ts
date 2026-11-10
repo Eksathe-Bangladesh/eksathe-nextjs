@@ -1,6 +1,6 @@
-import messages from "../../messages/en.json";
+import type { Messages } from "@/i18n/message-keys";
 
-export type WorkflowMessageKey = keyof typeof messages.workflow;
+export type WorkflowMessageKey = keyof Messages["workflow"];
 export type WorkflowState = {
   status: "idle" | "success" | "error";
   messageKey?: WorkflowMessageKey;

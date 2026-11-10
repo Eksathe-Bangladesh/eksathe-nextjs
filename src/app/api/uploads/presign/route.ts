@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/dal";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
 import { enforceRateLimit } from "@/lib/rate-limit";
-import { createUploadUrl, isObjectStorageConfigured } from "@/lib/storage/s3";
+import { createUploadUrl } from "@/lib/storage/s3";
 import { uploadPresignSchema } from "@/lib/validations/workflows";
 
 const extensions: Record<string, string> = {
@@ -52,11 +52,30 @@ export async function POST(request: Request) {
   const parsed = uploadPresignSchema.safeParse(body);
   if (!parsed.success)
     return NextResponse.json({ error: "The file details are invalid." }, { status: 400 });
-  if (!isObjectStorageConfigured())
-    return NextResponse.json({ error: "File storage is not configured." }, { status: 503 });
 
   let key: string;
-  if (parsed.data.purpose === "listing-image") {
+  if (parsed.data.purpose === "provider-verification-document") {
+    const capabilityKind =
+      parsed.data.verificationType === "CONTRACTOR"
+        ? "CONSTRUCTION_SERVICE"
+        : "CONSTRUCTION_MATERIAL";
+    const profile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+      select: {
+        id: true,
+        capabilities: {
+          where: { sectorSlug: "construction", kind: capabilityKind },
+          select: { id: true },
+        },
+      },
+    });
+    if (!profile || !profile.capabilities.length)
+      return NextResponse.json(
+        { error: "Apply for the matching construction capability before uploading evidence." },
+        { status: 403 },
+      );
+    key = `provider-verification/${profile.id}/${parsed.data.verificationType}/${user.id}/${crypto.randomUUID()}.${extensions[parsed.data.contentType]}`;
+  } else if (parsed.data.purpose === "listing-image") {
     const expectedSector = parsed.data.kind.startsWith("CONSTRUCTION_")
       ? "construction"
       : "agriculture-labor";

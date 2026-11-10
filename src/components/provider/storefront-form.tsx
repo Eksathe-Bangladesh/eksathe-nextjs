@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import { updateProviderStorefrontAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,8 @@ import { initialWorkflowState } from "@/lib/workflow-state";
 
 export type StorefrontValues = {
   id: string;
-  nameBn: string;
-  nameEn: string;
-  bioBn: string;
-  bioEn: string;
+  name: string;
+  bio: string;
   district: string;
   upazila: string | null;
   hasProfileImage: boolean;
@@ -46,7 +44,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
     }
   }, [state.status]);
 
-  async function prepareUpload(event: FormEvent<HTMLFormElement>) {
+  async function prepareUpload(event: SubmitEvent<HTMLFormElement>) {
     const form = event.currentTarget;
     const files = [
       {
@@ -105,25 +103,25 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
       className="border-border/70 flex flex-col gap-4 rounded-xl border p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="storefront-name-bn" label={t("inline.store_name_bangla_1iauw33")}>
+        <Field id="storefront-name-bn" label={t("provider.storefront.storeNameBangla")}>
           <Input
             id="storefront-name-bn"
             name="nameBn"
-            defaultValue={profile.nameBn}
+            defaultValue={profile.name}
             required
             maxLength={100}
           />
         </Field>
-        <Field id="storefront-name-en" label={t("inline.store_name_english_xbvqo3")}>
+        <Field id="storefront-name-en" label={t("provider.storefront.storeNameEnglish")}>
           <Input
             id="storefront-name-en"
             name="nameEn"
-            defaultValue={profile.nameEn}
+            defaultValue={profile.name}
             required
             maxLength={100}
           />
         </Field>
-        <Field id="storefront-district" label={t("inline.district_135um58")}>
+        <Field id="storefront-district" label={t("workflow.district")}>
           <Input
             id="storefront-district"
             name="district"
@@ -132,7 +130,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
             maxLength={80}
           />
         </Field>
-        <Field id="storefront-upazila" label={t("inline.upazila_1am4ti5")}>
+        <Field id="storefront-upazila" label={t("provider.storefront.upazila")}>
           <Input
             id="storefront-upazila"
             name="upazila"
@@ -141,28 +139,28 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
           />
         </Field>
       </div>
-      <Field id="storefront-bio-bn" label={t("inline.about_the_store_bangla_yoi7rq")}>
+      <Field id="storefront-bio-bn" label={t("provider.storefront.aboutTheStoreBangla")}>
         <textarea
           id="storefront-bio-bn"
           name="bioBn"
           rows={3}
           maxLength={1200}
-          defaultValue={profile.bioBn}
+          defaultValue={profile.bio}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
-      <Field id="storefront-bio-en" label={t("inline.about_the_store_english_1sljttu")}>
+      <Field id="storefront-bio-en" label={t("provider.storefront.aboutTheStoreEnglish")}>
         <textarea
           id="storefront-bio-en"
           name="bioEn"
           rows={3}
           maxLength={1200}
-          defaultValue={profile.bioEn}
+          defaultValue={profile.bio}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="storefront-profile-image" label={t("inline.profile_photo_1exrcqq")}>
+        <Field id="storefront-profile-image" label={t("provider.storefront.profilePhoto")}>
           <Input
             ref={profileFile}
             id="storefront-profile-image"
@@ -171,7 +169,7 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
             disabled={uploading || pending}
           />
         </Field>
-        <Field id="storefront-cover-image" label={t("inline.cover_photo_hatt38")}>
+        <Field id="storefront-cover-image" label={t("provider.storefront.coverPhoto")}>
           <Input
             ref={coverFile}
             id="storefront-cover-image"
@@ -182,10 +180,10 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         </Field>
       </div>
       <p className="text-muted-foreground text-xs">
-        {t("inline.jpg_png_or_webp_up_to_5_mb_leave_blank_to__yke761")} ·{" "}
+        {t("provider.storefront.photoHelp")} ·{" "}
         {profile.hasProfileImage
-          ? t("inline.profile_photo_set_1kznhvi")
-          : t("inline.no_profile_photo_1qv9bkr")}
+          ? t("provider.storefront.profilePhotoSet")
+          : t("provider.storefront.noProfilePhoto")}
       </p>
       {(
         [
@@ -201,12 +199,12 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
       ))}
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t("inline.the_image_could_not_be_uploaded_please_try_bnuvif")}
+          {t("provider.upload.error")}
         </p>
       )}
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending || uploading}>
-        {uploading || pending ? t("inline.saving_1s7ccbq") : t("inline.save_storefront_1k0d8u9")}
+        {uploading || pending ? t("common.states.saving") : t("provider.storefront.saveStorefront")}
       </Button>
     </form>
   );

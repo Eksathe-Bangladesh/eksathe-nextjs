@@ -13,36 +13,40 @@ datasource db {
 }
 
 model User {
-  id                        String                     @id
-  name                      String
-  email                     String
-  emailVerified             Boolean                    @default(false)
-  image                     String?
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  phone                     String
-  role                      String                     @default("customer")
-  status                    String                     @default("active")
-  sessions                  Session[]
-  accounts                  Account[]
-  requests                  ServiceRequest[]
-  assignedServiceRequests   ServiceRequest[]           @relation("ServiceRequestAssignee")
-  serviceRequestUpdates     ServiceRequestUpdate[]
-  serviceRequestAttachments ServiceRequestAttachment[]
-  auditLogs                 AuditLog[]
-  providerProfile           ProviderProfile?
-  marketplaceRequests       MarketplaceRequest[]       @relation("RequestBuyer")
-  customerOrders            Order[]                    @relation("OrderBuyer")
-  constructionProjects      ConstructionProject[]
-  staffGrants               StaffGrant[]
-  notifications             Notification[]
-  submittedPayments         PaymentRecord[]            @relation("PaymentSubmitter")
-  reviewedOrders            Review[]                   @relation("ReviewAuthor")
-  collectedCommissions      CommissionRecord[]         @relation("CommissionCollector")
-  projectDocuments          ProjectDocument[]
-  projectPhotos             ProjectPhoto[]
-  projectExpenses           ProjectExpense[]
-  activityLogs              ActivityLog[]
+  id                               String                            @id
+  name                             String
+  email                            String
+  emailVerified                    Boolean                           @default(false)
+  image                            String?
+  createdAt                        DateTime                          @default(now())
+  updatedAt                        DateTime                          @updatedAt
+  phone                            String
+  role                             String                            @default("customer")
+  status                           String                            @default("active")
+  accountType                      String                            @default("customer") @map("account_type")
+  sessions                         Session[]
+  accounts                         Account[]
+  requests                         ServiceRequest[]
+  assignedServiceRequests          ServiceRequest[]                  @relation("ServiceRequestAssignee")
+  serviceRequestUpdates            ServiceRequestUpdate[]
+  serviceRequestAttachments        ServiceRequestAttachment[]
+  auditLogs                        AuditLog[]
+  providerProfile                  ProviderProfile?
+  marketplaceRequests              MarketplaceRequest[]              @relation("RequestBuyer")
+  customerOrders                   Order[]                           @relation("OrderBuyer")
+  constructionProjects             ConstructionProject[]
+  staffGrants                      StaffGrant[]
+  notifications                    Notification[]
+  submittedPayments                PaymentRecord[]                   @relation("PaymentSubmitter")
+  reviewedOrders                   Review[]                          @relation("ReviewAuthor")
+  collectedCommissions             CommissionRecord[]                @relation("CommissionCollector")
+  projectDocuments                 ProjectDocument[]
+  projectPhotos                    ProjectPhoto[]
+  projectExpenses                  ProjectExpense[]
+  activityLogs                     ActivityLog[]
+  verificationReviews              ProviderVerificationReview[]      @relation("VerificationReviewActor")
+  verificationApplicationsReviewed ProviderVerificationApplication[] @relation("VerificationApplicationReviewer")
+  verificationDocumentsReviewed    ProviderVerificationDocument[]    @relation("VerificationDocumentReviewer")
   commerceSeller            CommerceSeller?
   commerceAddresses         CommerceAddress[]
   commerceCartItems         CommerceCartItem[]
@@ -143,6 +147,44 @@ enum ProviderStatus {
   SUSPENDED
 }
 
+enum ProviderVerificationType {
+  CONTRACTOR
+  SUPPLIER
+}
+
+enum ProviderApplicantType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+enum ProviderVerificationStatus {
+  SUBMITTED
+  IN_REVIEW
+  CHANGES_REQUESTED
+  APPROVED
+  REJECTED
+  EXPIRED
+  REVOKED
+}
+
+enum ProviderVerificationDocumentType {
+  BUSINESS_REGISTRATION
+  TRADE_LICENSE
+  TAX_DOCUMENT
+  PROFESSIONAL_CREDENTIAL
+  PORTFOLIO_OR_REFERENCE
+  SUPPLIER_AUTHORIZATION
+  PRODUCT_CERTIFICATE
+  WAREHOUSE_PROOF
+  OTHER
+}
+
+enum ProviderVerificationDocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum ListingModerationStatus {
   PENDING
   APPROVED
@@ -210,25 +252,37 @@ enum MilestoneStatus {
 enum StaffPermission {
   OPERATIONS
   FINANCE
+  USERS
+  PANELS
+  REPORTS
 }
 
 model ServiceDefinition {
-  id            Int              @id @default(autoincrement())
-  slug          String           @unique
-  titleBn       String           @map("title_bn")
-  titleEn       String           @map("title_en")
+  id            Int                            @id @default(autoincrement())
+  slug          String                         @unique
   category      String
-  descriptionBn String           @map("description_bn")
-  descriptionEn String           @map("description_en")
-  icon          String           @default("🌱")
-  isActive      Boolean          @default(true) @map("is_active")
-  formVersion   Int              @default(1) @map("form_version")
-  sectorSlug    String           @default("agriculture-labor") @map("sector_slug")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  sector        Sector           @relation(fields: [sectorSlug], references: [slug])
+  icon          String                         @default("🌱")
+  isActive      Boolean                        @default(true) @map("is_active")
+  formVersion   Int                            @default(1) @map("form_version")
+  sectorSlug    String                         @default("agriculture-labor") @map("sector_slug")
+  createdAt     DateTime                       @default(now()) @map("created_at")
+  sector        Sector                         @relation(fields: [sectorSlug], references: [slug])
   requests      ServiceRequest[]
+  translations  ServiceDefinitionTranslation[]
 
   @@map("panels")
+}
+
+model ServiceDefinitionTranslation {
+  serviceDefinitionId Int               @map("service_definition_id")
+  locale              String
+  title               String
+  description         String
+  serviceDefinition   ServiceDefinition @relation(fields: [serviceDefinitionId], references: [id], onDelete: Cascade)
+
+  @@id([serviceDefinitionId, locale])
+  @@index([locale])
+  @@map("panel_translations")
 }
 
 model ServiceRequest {
@@ -268,18 +322,28 @@ model ServiceRequest {
 }
 
 model ServiceRequestUpdate {
-  id         String                         @id @default(cuid())
-  requestId  Int                            @map("request_id")
-  authorId   String?                        @map("author_id")
-  visibility ServiceRequestUpdateVisibility @default(CUSTOMER)
-  messageBn  String?                        @map("message_bn")
-  messageEn  String?                        @map("message_en")
-  createdAt  DateTime                       @default(now()) @map("created_at")
-  request    ServiceRequest                 @relation(fields: [requestId], references: [id], onDelete: Cascade)
-  author     User?                          @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  id           String                            @id @default(cuid())
+  requestId    Int                               @map("request_id")
+  authorId     String?                           @map("author_id")
+  visibility   ServiceRequestUpdateVisibility    @default(CUSTOMER)
+  createdAt    DateTime                          @default(now()) @map("created_at")
+  request      ServiceRequest                    @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  author       User?                             @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  translations ServiceRequestUpdateTranslation[]
 
   @@index([requestId, visibility, createdAt])
   @@map("service_request_updates")
+}
+
+model ServiceRequestUpdateTranslation {
+  requestUpdateId String               @map("request_update_id")
+  locale          String
+  message         String
+  requestUpdate   ServiceRequestUpdate @relation(fields: [requestUpdateId], references: [id], onDelete: Cascade)
+
+  @@id([requestUpdateId, locale])
+  @@index([locale])
+  @@map("service_request_update_translations")
 }
 
 model ServiceRequestAttachment {
@@ -349,8 +413,6 @@ model ActivityLog {
 model Sector {
   slug                 String                @id
   position             Int                   @unique
-  titleBn              String                @map("title_bn")
-  titleEn              String                @map("title_en")
   icon                 String
   status               SectorStatus          @default(COMING_SOON)
   commissionRate       Decimal               @default(10.00) @map("commission_rate") @db.Decimal(5, 2)
@@ -360,37 +422,59 @@ model Sector {
   requests             MarketplaceRequest[]
   projects             ConstructionProject[]
   staffGrants          StaffGrant[]
+  translations         SectorTranslation[]
 
   @@map("sectors")
 }
 
+model SectorTranslation {
+  sectorSlug String @map("sector_slug")
+  locale     String
+  title      String
+  sector     Sector @relation(fields: [sectorSlug], references: [slug], onDelete: Cascade)
+
+  @@id([sectorSlug, locale])
+  @@index([locale])
+  @@map("sector_translations")
+}
+
 model ProviderProfile {
-  id              String               @id @default(cuid())
-  userId          String               @unique @map("user_id")
-  nameBn          String               @map("name_bn")
-  nameEn          String               @map("name_en")
-  bioBn           String               @default("") @map("bio_bn")
-  bioEn           String               @default("") @map("bio_en")
-  district        String
-  upazila         String?
-  profileImageKey String?              @map("profile_image_key")
-  coverImageKey   String?              @map("cover_image_key")
-  status          ProviderStatus       @default(PENDING)
-  reviewedAt      DateTime?            @map("reviewed_at")
-  reviewedById    String?              @map("reviewed_by_id")
-  createdAt       DateTime             @default(now()) @map("created_at")
-  updatedAt       DateTime             @updatedAt @map("updated_at")
-  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  capabilities    ProviderCapability[]
-  listings        MarketplaceListing[]
-  requests        MarketplaceRequest[]
-  orders          Order[]
-  reviews         Review[]
-  milestones      ProjectMilestone[]   @relation("MilestoneProvider")
+  id                       String                            @id @default(cuid())
+  userId                   String                            @unique @map("user_id")
+  district                 String
+  upazila                  String?
+  profileImageKey          String?                           @map("profile_image_key")
+  coverImageKey            String?                           @map("cover_image_key")
+  status                   ProviderStatus                    @default(PENDING)
+  reviewedAt               DateTime?                         @map("reviewed_at")
+  reviewedById             String?                           @map("reviewed_by_id")
+  createdAt                DateTime                          @default(now()) @map("created_at")
+  updatedAt                DateTime                          @updatedAt @map("updated_at")
+  user                     User                              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capabilities             ProviderCapability[]
+  listings                 MarketplaceListing[]
+  requests                 MarketplaceRequest[]
+  orders                   Order[]
+  reviews                  Review[]
+  milestones               ProjectMilestone[]                @relation("MilestoneProvider")
+  translations             ProviderProfileTranslation[]
+  verificationApplications ProviderVerificationApplication[]
 
   @@index([status])
   @@index([district])
   @@map("provider_profiles")
+}
+
+model ProviderProfileTranslation {
+  providerId String          @map("provider_id")
+  locale     String
+  name       String
+  bio        String
+  provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@id([providerId, locale])
+  @@index([locale])
+  @@map("provider_profile_translations")
 }
 
 model ProviderCapability {
@@ -410,6 +494,106 @@ model ProviderCapability {
   @@map("provider_capabilities")
 }
 
+model ProviderVerificationApplication {
+  id                 String                                   @id @default(cuid())
+  providerId         String                                   @map("provider_id")
+  type               ProviderVerificationType
+  applicantType      ProviderApplicantType                    @map("applicant_type")
+  legalName          String                                   @map("legal_name")
+  businessName       String?                                  @map("business_name")
+  businessAddress    String                                   @map("business_address") @db.Text
+  registrationNumber String?                                  @map("registration_number")
+  tradeLicenseNumber String?                                  @map("trade_license_number")
+  taxIdentifier      String?                                  @map("tax_identifier")
+  yearsExperience    Int?                                     @map("years_experience")
+  teamSize           Int?                                     @map("team_size")
+  specializations    String[]                                 @default([])
+  materialCategories String[]                                 @default([]) @map("material_categories")
+  brands             String[]                                 @default([])
+  serviceAreas       String[]                                 @default([]) @map("service_areas")
+  status             ProviderVerificationStatus               @default(SUBMITTED)
+  version            Int                                      @default(1)
+  submittedAt        DateTime                                 @default(now()) @map("submitted_at")
+  reviewedAt         DateTime?                                @map("reviewed_at")
+  reviewedById       String?                                  @map("reviewed_by_id")
+  reviewNote         String?                                  @map("review_note") @db.Text
+  expiresAt          DateTime?                                @map("expires_at")
+  createdAt          DateTime                                 @default(now()) @map("created_at")
+  updatedAt          DateTime                                 @updatedAt @map("updated_at")
+  provider           ProviderProfile                          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  reviewedBy         User?                                    @relation("VerificationApplicationReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  documents          ProviderVerificationDocument[]
+  reviews            ProviderVerificationReview[]
+  versions           ProviderVerificationApplicationVersion[]
+
+  @@unique([providerId, type])
+  @@index([type, status, submittedAt])
+  @@index([providerId, status])
+  @@map("provider_verification_applications")
+}
+
+model ProviderVerificationApplicationVersion {
+  id                 String                          @id @default(cuid())
+  applicationId      String                          @map("application_id")
+  version            Int
+  applicantType      ProviderApplicantType           @map("applicant_type")
+  legalName          String                          @map("legal_name")
+  businessName       String?                         @map("business_name")
+  businessAddress    String                          @map("business_address") @db.Text
+  registrationNumber String?                         @map("registration_number")
+  tradeLicenseNumber String?                         @map("trade_license_number")
+  taxIdentifier      String?                         @map("tax_identifier")
+  yearsExperience    Int?                            @map("years_experience")
+  teamSize           Int?                            @map("team_size")
+  specializations    String[]                        @default([])
+  materialCategories String[]                        @default([]) @map("material_categories")
+  brands             String[]                        @default([])
+  serviceAreas       String[]                        @default([]) @map("service_areas")
+  submittedAt        DateTime                        @default(now()) @map("submitted_at")
+  application        ProviderVerificationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, version])
+  @@index([applicationId, submittedAt])
+  @@map("provider_verification_application_versions")
+}
+
+model ProviderVerificationDocument {
+  id            String                             @id @default(cuid())
+  applicationId String                             @map("application_id")
+  version       Int
+  documentType  ProviderVerificationDocumentType   @map("document_type")
+  filename      String
+  storageKey    String                             @unique @map("storage_key")
+  contentType   String                             @map("content_type")
+  sizeBytes     Int                                @map("size_bytes")
+  status        ProviderVerificationDocumentStatus @default(PENDING)
+  reviewNote    String?                            @map("review_note") @db.Text
+  reviewedAt    DateTime?                          @map("reviewed_at")
+  reviewedById  String?                            @map("reviewed_by_id")
+  createdAt     DateTime                           @default(now()) @map("created_at")
+  application   ProviderVerificationApplication    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  reviewedBy    User?                              @relation("VerificationDocumentReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([applicationId, version, createdAt])
+  @@map("provider_verification_documents")
+}
+
+model ProviderVerificationReview {
+  id                String                          @id @default(cuid())
+  applicationId     String                          @map("application_id")
+  actorId           String                          @map("actor_id")
+  version           Int
+  action            ProviderVerificationStatus
+  note              String?                         @db.Text
+  documentDecisions Json?                           @map("document_decisions") @db.JsonB
+  createdAt         DateTime                        @default(now()) @map("created_at")
+  application       ProviderVerificationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  actor             User                            @relation("VerificationReviewActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+  @@map("provider_verification_reviews")
+}
+
 model StaffGrant {
   id         Int             @id @default(autoincrement())
   userId     String          @map("user_id")
@@ -426,36 +610,45 @@ model StaffGrant {
 }
 
 model MarketplaceListing {
-  id                       String                  @id @default(cuid())
-  providerId               String                  @map("provider_id")
-  sectorSlug               String                  @map("sector_slug")
+  id                       String                          @id @default(cuid())
+  providerId               String                          @map("provider_id")
+  sectorSlug               String                          @map("sector_slug")
   kind                     ListingKind
-  titleBn                  String                  @map("title_bn")
-  titleEn                  String                  @map("title_en")
-  descriptionBn            String                  @default("") @map("description_bn")
-  descriptionEn            String                  @default("") @map("description_en")
   category                 String
   district                 String
   unit                     String
-  unitPrice                Decimal                 @map("unit_price") @db.Decimal(12, 2)
-  stock                    Decimal                 @default(0) @db.Decimal(12, 3)
-  availableFrom            DateTime?               @map("available_from")
-  imageKey                 String?                 @map("image_key")
-  archivedAt               DateTime?               @map("archived_at")
-  moderationStatus         ListingModerationStatus @default(PENDING) @map("moderation_status")
-  isPublished              Boolean                 @default(false) @map("is_published")
-  createdAt                DateTime                @default(now()) @map("created_at")
-  updatedAt                DateTime                @updatedAt @map("updated_at")
-  provider                 ProviderProfile         @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  sector                   Sector                  @relation(fields: [sectorSlug], references: [slug])
+  unitPrice                Decimal                         @map("unit_price") @db.Decimal(12, 2)
+  stock                    Decimal                         @default(0) @db.Decimal(12, 3)
+  availableFrom            DateTime?                       @map("available_from")
+  imageKey                 String?                         @map("image_key")
+  archivedAt               DateTime?                       @map("archived_at")
+  moderationStatus         ListingModerationStatus         @default(PENDING) @map("moderation_status")
+  isPublished              Boolean                         @default(false) @map("is_published")
+  createdAt                DateTime                        @default(now()) @map("created_at")
+  updatedAt                DateTime                        @updatedAt @map("updated_at")
+  provider                 ProviderProfile                 @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  sector                   Sector                          @relation(fields: [sectorSlug], references: [slug])
   requests                 MarketplaceRequest[]
   orders                   Order[]
-  preferredProjectPackages ProjectPackage[]        @relation("PreferredProjectListing")
+  preferredProjectPackages ProjectPackage[]                @relation("PreferredProjectListing")
+  translations             MarketplaceListingTranslation[]
 
   @@index([sectorSlug, kind, isPublished, archivedAt])
   @@index([district, isPublished])
   @@index([category, isPublished])
   @@map("marketplace_listings")
+}
+
+model MarketplaceListingTranslation {
+  listingId   String             @map("listing_id")
+  locale      String
+  title       String
+  description String
+  listing     MarketplaceListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, locale])
+  @@index([locale])
+  @@map("marketplace_listing_translations")
 }
 
 model MarketplaceRequest {
@@ -732,21 +925,30 @@ model ProjectExpense {
 }
 
 model Notification {
-  id        String    @id @default(cuid())
-  userId    String    @map("user_id")
-  title     String
-  message   String
-  titleBn   String?   @map("title_bn")
-  titleEn   String?   @map("title_en")
-  messageBn String?   @map("message_bn")
-  messageEn String?   @map("message_en")
-  href      String?
-  readAt    DateTime? @map("read_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String                    @id @default(cuid())
+  userId       String                    @map("user_id")
+  title        String
+  message      String
+  href         String?
+  readAt       DateTime?                 @map("read_at")
+  createdAt    DateTime                  @default(now()) @map("created_at")
+  user         User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  translations NotificationTranslation[]
 
   @@index([userId, readAt, createdAt])
   @@map("notifications")
+}
+
+model NotificationTranslation {
+  notificationId String       @map("notification_id")
+  locale         String
+  title          String?
+  message        String?
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@id([notificationId, locale])
+  @@index([locale])
+  @@map("notification_translations")
 }
 
 enum AgriculturePublicationStatus {
@@ -761,41 +963,60 @@ enum AgricultureUpdateKind {
 }
 
 model AgricultureMarketPrice {
-  id              String                       @id @default(cuid())
-  productBn       String                       @map("product_bn")
-  productEn       String                       @map("product_en")
+  id              String                              @id @default(cuid())
   market          String
   district        String
   unit            String
-  price           Decimal                      @db.Decimal(12, 2)
-  observedAt      DateTime                     @map("observed_at")
+  price           Decimal                             @db.Decimal(12, 2)
+  observedAt      DateTime                            @map("observed_at")
   source          String
-  status          AgriculturePublicationStatus @default(DRAFT)
-  sourceRequestId Int?                         @unique @map("source_request_id")
-  sourceRequest   ServiceRequest?              @relation(fields: [sourceRequestId], references: [id], onDelete: SetNull)
-  createdAt       DateTime                     @default(now()) @map("created_at")
-  updatedAt       DateTime                     @updatedAt @map("updated_at")
+  status          AgriculturePublicationStatus        @default(DRAFT)
+  sourceRequestId Int?                                @unique @map("source_request_id")
+  sourceRequest   ServiceRequest?                     @relation(fields: [sourceRequestId], references: [id], onDelete: SetNull)
+  createdAt       DateTime                            @default(now()) @map("created_at")
+  updatedAt       DateTime                            @updatedAt @map("updated_at")
+  translations    AgricultureMarketPriceTranslation[]
 
   @@index([status, observedAt])
   @@map("agriculture_market_prices")
 }
 
+model AgricultureMarketPriceTranslation {
+  marketPriceId String                 @map("market_price_id")
+  locale        String
+  product       String
+  marketPrice   AgricultureMarketPrice @relation(fields: [marketPriceId], references: [id], onDelete: Cascade)
+
+  @@id([marketPriceId, locale])
+  @@index([locale])
+  @@map("agriculture_market_price_translations")
+}
+
 model AgricultureUpdate {
-  id          String                       @id @default(cuid())
-  kind        AgricultureUpdateKind
-  titleBn     String                       @map("title_bn")
-  titleEn     String                       @map("title_en")
-  bodyBn      String                       @map("body_bn")
-  bodyEn      String                       @map("body_en")
-  source      String
-  status      AgriculturePublicationStatus @default(DRAFT)
-  publishedAt DateTime                     @map("published_at")
-  expiresAt   DateTime?                    @map("expires_at")
-  createdAt   DateTime                     @default(now()) @map("created_at")
-  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  id           String                         @id @default(cuid())
+  kind         AgricultureUpdateKind
+  source       String
+  status       AgriculturePublicationStatus   @default(DRAFT)
+  publishedAt  DateTime                       @map("published_at")
+  expiresAt    DateTime?                      @map("expires_at")
+  createdAt    DateTime                       @default(now()) @map("created_at")
+  updatedAt    DateTime                       @updatedAt @map("updated_at")
+  translations AgricultureUpdateTranslation[]
 
   @@index([status, publishedAt, expiresAt])
   @@map("agriculture_updates")
+}
+
+model AgricultureUpdateTranslation {
+  updateId String            @map("update_id")
+  locale   String
+  title    String
+  body     String
+  update   AgricultureUpdate @relation(fields: [updateId], references: [id], onDelete: Cascade)
+
+  @@id([updateId, locale])
+  @@index([locale])
+  @@map("agriculture_update_translations")
 }
 
 model PlatformSetting {

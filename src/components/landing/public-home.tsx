@@ -3,18 +3,18 @@
 import { cn } from "cn";
 import { ArrowRightIcon, Building2Icon, SproutIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 
 import { CategoryGrid } from "@/components/dashboard/category-grid";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 
 export function PublicHome() {
   const t = useTranslations();
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-12 px-4 py-10 sm:px-6 sm:py-14">
-      <section className="border-primary/10 from-secondary/80 via-card to-card grid gap-8 rounded-[2rem] border bg-gradient-to-br p-6 sm:p-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-12 px-4 py-10 sm:px-6 sm:py-14">
+      <section className="border-primary/10 from-secondary/80 via-card to-card grid gap-8 rounded-[2rem] border bg-linear-to-br p-6 sm:p-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
           <p className="text-primary text-sm font-semibold tracking-wide uppercase">
             {t("home.eyebrow")}

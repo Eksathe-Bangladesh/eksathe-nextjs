@@ -2,10 +2,10 @@
 
 import { cn } from "cn";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 
-import { setLocaleAction } from "@/app/actions/locale";
+import { locales } from "@/i18n/locales";
+import { useRouter } from "@/i18n/navigation";
 
 interface LanguageToggleProps {
   /** "header" = white text on dark bg (landing header)
@@ -13,28 +13,34 @@ interface LanguageToggleProps {
   variant?: "header" | "muted";
 }
 
+function getCleanPathname(): string {
+  if (typeof window === "undefined") return "/";
+  const path = window.location.pathname;
+  for (const loc of locales) {
+    if (path === `/${loc}`) return "/";
+    if (path.startsWith(`/${loc}/`)) return path.slice(loc.length + 1);
+  }
+  return path || "/";
+}
+
 export function LanguageToggle({ variant = "header" }: LanguageToggleProps) {
   const locale = useLocale();
   const t = useTranslations();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [failed, setFailed] = useState(false);
   const isHeader = variant === "header";
 
   function selectLocale(value: "en" | "bn") {
     if (pending || value === locale) return;
-    setFailed(false);
-    startTransition(async () => {
-      try {
-        const result = await setLocaleAction(value);
-        if (!result.ok) {
-          setFailed(true);
-          return;
-        }
-        router.refresh();
-      } catch {
-        setFailed(true);
-      }
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = value;
+      document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    const pathname = getCleanPathname();
+    const queryStr = typeof window !== "undefined" ? window.location.search : "";
+    const href = queryStr ? `${pathname}${queryStr}` : pathname;
+    startTransition(() => {
+      router.replace(href, { locale: value });
     });
   }
 
@@ -88,11 +94,6 @@ export function LanguageToggle({ variant = "header" }: LanguageToggleProps) {
           বাং
         </button>
       </div>
-      {failed && (
-        <span role="alert" className={cn("text-xs", isHeader ? "text-white" : "text-destructive")}>
-          {t("locale.changeFailed")}
-        </span>
-      )}
     </div>
   );
 }

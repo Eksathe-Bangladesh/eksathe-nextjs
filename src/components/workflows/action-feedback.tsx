@@ -16,7 +16,7 @@ export function ActionFeedback({ state }: { state: WorkflowState }) {
           : "bg-secondary text-secondary-foreground rounded-lg px-3 py-2 text-sm"
       }
     >
-      {t(`workflow.${state.messageKey}` as never)}
+      {t(`workflow.${state.messageKey}`)}
     </p>
   );
 }

@@ -48,11 +48,11 @@ export async function createUploadUrl(key: string, contentType: string, contentL
   return { url, expiresIn: 300 };
 }
 
-export async function createDownloadUrl(key: string) {
+export async function createDownloadUrl(key: string, expiresIn = 60) {
   const storage = storageConfiguration();
   if (!storage) return null;
   return getSignedUrl(storage.client, new GetObjectCommand({ Bucket: storage.bucket, Key: key }), {
-    expiresIn: 60,
+    expiresIn,
   });
 }
 

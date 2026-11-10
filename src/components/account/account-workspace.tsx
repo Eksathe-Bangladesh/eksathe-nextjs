@@ -9,8 +9,7 @@ import {
   ShoppingBagIcon,
   UserRoundIcon,
 } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
-import Link from "next/link";
+import { useTranslations, useFormatter } from "next-intl";
 import { useActionState } from "react";
 
 import { markNotificationReadAction, updateProfileAction } from "@/app/actions/account";
@@ -24,6 +23,7 @@ import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { OrderCard } from "@/components/workflows/order-card";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
+import { Link } from "@/i18n/navigation";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { CustomerWorkspace } from "@/lib/workspaces";
 
@@ -36,7 +36,6 @@ export function AccountWorkspace({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   const formatMoney = (value: string | number) =>
     formatter.number(Number(value), {
       style: "currency",
@@ -46,24 +45,30 @@ export function AccountWorkspace({
 
   return (
     <WorkspaceNavigation
-      label={t("inline.account_navigation_1vkrrr0")}
+      label={t("account.workspace.accountNavigation")}
       items={[
         { id: "profile", label: t("dashboard.profile"), icon: UserRoundIcon },
-        { id: "requests", label: t("inline.requests_1muw0v3"), icon: ClipboardListIcon },
         {
           id: "agriculture-requests",
-          label: t("inline.agriculture_service_requests_zyhcii"),
+          label: t("account.workspace.agricultureServiceRequests"),
+          navLabel: t("account.workspace.agricultureServiceRequests"),
           icon: ClipboardListIcon,
         },
-        { id: "orders", label: t("inline.orders_v5igup"), icon: ShoppingBagIcon },
-        { id: "projects", label: t("workflow.projectTitle"), icon: HardHatIcon },
+        { id: "requests", label: t("common.labels.requests"), icon: ClipboardListIcon },
+        { id: "orders", label: t("common.labels.orders"), icon: ShoppingBagIcon },
+        {
+          id: "projects",
+          label: t("workflow.projectTitle"),
+          navLabel: t("workflow.projectTitle"),
+          icon: HardHatIcon,
+        },
         { id: "notifications", label: t("dashboard.notifications"), icon: BellIcon },
       ]}
     >
       <div>
-        <p className="text-primary text-sm">{t("inline.your_account_1fpb5vs")}</p>
+        <p className="text-primary text-sm">{t("account.workspace.yourAccount")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
-          {locale === "bn" ? `স্বাগতম, ${user.name}` : `Welcome, ${user.name}`}
+          {t("account.workspace.welcome", { name: user.name })}
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">{user.email}</p>
       </div>
@@ -76,7 +81,7 @@ export function AccountWorkspace({
               {t("dashboard.profile")}
             </CardTitle>
             <CardDescription>
-              {t("inline.these_details_are_used_for_requests_and_bo_1kkltya")}
+              {t("account.profile.usageNotice")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -87,9 +92,9 @@ export function AccountWorkspace({
 
       <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
         <div>
-          <h2 className="text-xl font-bold">{t("inline.agriculture_service_requests_zyhcii")}</h2>
+          <h2 className="text-xl font-bold">{t("account.workspace.agricultureServiceRequests")}</h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.track_request_status_submitted_details_and_12mh9sv")}
+            {t("account.requests.description")}
           </p>
         </div>
         {workspace.agricultureRequests.length === 0 ? (
@@ -100,7 +105,7 @@ export function AccountWorkspace({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? request.service.titleBn : request.service.titleEn}
+                    {request.service.title}
                   </CardTitle>
                   <CardDescription>
                     {request.referenceCode ?? `AG-${request.id}`} · {request.district} ·{" "}
@@ -121,13 +126,11 @@ export function AccountWorkspace({
                     href={`/account/agriculture-requests/${request.id}`}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                   >
-                    {t("inline.view_request_t2wjgb")}
+                    {t("account.workspace.viewRequest")}
                   </Link>
                   {request.updates[0] && (
                     <span className="text-muted-foreground self-center text-xs">
-                      {locale === "bn"
-                        ? (request.updates[0].messageBn ?? request.updates[0].messageEn)
-                        : (request.updates[0].messageEn ?? request.updates[0].messageBn)}
+                      {request.updates[0].message}
                     </span>
                   )}
                 </div>
@@ -139,7 +142,7 @@ export function AccountWorkspace({
 
       <section id="requests" className="flex scroll-mt-24 flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-xl font-bold">{t("inline.requests_and_quotes_1tbsj16")}</h2>
+          <h2 className="text-xl font-bold">{t("account.workspace.requestsAndQuotes")}</h2>
           <Link href="/dashboard" className={buttonVariants({ variant: "outline", size: "sm" })}>
             {t("nav.browse")}
           </Link>
@@ -152,10 +155,10 @@ export function AccountWorkspace({
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg">
-                    {locale === "bn" ? request.listing.titleBn : request.listing.titleEn}
+                    {request.listing.title}
                   </CardTitle>
                   <CardDescription>
-                    {locale === "bn" ? request.provider.nameBn : request.provider.nameEn} ·{" "}
+                    {request.provider.name} ·{" "}
                     {request.district} · {request.quantity} {request.listing.unit}
                   </CardDescription>
                 </div>
@@ -163,7 +166,7 @@ export function AccountWorkspace({
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
                 <p className="text-muted-foreground text-sm">
-                  {request.details || t("inline.no_additional_details_provided_gccbx2")}
+                  {request.details || t("common.labels.noAdditionalDetailsProvided")}
                 </p>
                 {request.requestedStart && request.requestedEnd && (
                   <p className="text-sm">
@@ -174,7 +177,7 @@ export function AccountWorkspace({
                 {request.quote && (
                   <div className="border-primary/20 bg-primary/5 rounded-xl border p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="font-semibold">{t("inline.provider_quote_nzyvip")}</h3>
+                      <h3 className="font-semibold">{t("account.workspace.providerQuote")}</h3>
                       <StatusBadge status={request.quote.status} />
                     </div>
                     <p className="mt-2 text-sm">
@@ -187,7 +190,7 @@ export function AccountWorkspace({
                       </p>
                     )}
                     <p className="mt-1 text-sm">
-                      {t("inline.quoted_total_1h15mur")}:{" "}
+                      {t("account.workspace.quotedTotal")}:{" "}
                       <strong>
                         {formatMoney(
                           Number(request.quote.quantity) * Number(request.quote.unitPrice) +
@@ -202,7 +205,7 @@ export function AccountWorkspace({
                     )}
                     {request.quote.expiresAt && (
                       <p className="text-muted-foreground mt-2 text-xs">
-                        {t("inline.expires_w9jxxl")}:{" "}
+                        {t("common.labels.expires")}:{" "}
                         {formatter.dateTime(new Date(request.quote.expiresAt), {
                           dateStyle: "medium",
                           timeZone: "Asia/Dhaka",
@@ -222,7 +225,7 @@ export function AccountWorkspace({
       </section>
 
       <section id="orders" className="flex scroll-mt-24 flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.orders_and_bookings_13untom")}</h2>
+        <h2 className="text-xl font-bold">{t("common.labels.ordersAndBookings")}</h2>
         {workspace.orders.length === 0 ? (
           <Empty text={t("workflow.noRecords")} />
         ) : (
@@ -237,7 +240,7 @@ export function AccountWorkspace({
           <div>
             <h2 className="text-xl font-bold">{t("workflow.projectTitle")}</h2>
             <p className="text-muted-foreground mt-1 text-sm">
-              {t("inline.track_construction_scope_quotes_milestones_hkmiut")}
+              {t("account.projects.description")}
             </p>
           </div>
           <Link href="/account/projects/new" className={buttonVariants({ size: "sm" })}>
@@ -270,14 +273,14 @@ export function AccountWorkspace({
                 )}
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-sm">
-                    {project.orders.length} {t("inline.accepted_quote_orders_1hoh8n")} ·{" "}
-                    {project.milestones.length} {t("workflow.milestones")}
+                    {t("account.workspace.acceptedQuoteOrders", { count: project.orders.length })} ·{" "}
+                    {t("projects.milestones.count", { count: project.milestones.length })}
                   </p>
                   <Link
                     href={`/account/projects/${project.id}`}
                     className={buttonVariants({ variant: "outline", size: "sm" })}
                   >
-                    {t("inline.open_project_sc36kf")}
+                    {t("account.workspace.openProject")}
                   </Link>
                 </div>
                 {project.milestones.length > 0 && (
@@ -311,10 +314,10 @@ export function AccountWorkspace({
             >
               <div>
                 <p className="font-medium">
-                  {locale === "bn" ? notification.titleBn : notification.titleEn}
+                  {notification.title}
                 </p>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  {locale === "bn" ? notification.messageBn : notification.messageEn}
+                  {notification.message}
                 </p>
               </div>
               {notification.href && (
@@ -322,7 +325,7 @@ export function AccountWorkspace({
                   href={notification.href}
                   className="text-primary text-sm font-medium hover:underline"
                 >
-                  {t("inline.open_3w3yc3")}
+                  {t("account.workspace.open")}
                 </Link>
               )}
               {!notification.readAt && <MarkReadForm notificationId={notification.id} />}
@@ -393,7 +396,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
       <p className="text-muted-foreground text-xs">
-        {t("inline.accepting_confirms_the_quoted_price_quanti_14khsnk")}
+        {t("account.requests.acceptanceNotice")}
       </p>
       <Button type="submit" disabled={pending} className="w-fit">
         {pending ? t("common.loading") : t("workflow.acceptQuote")}
@@ -419,7 +422,7 @@ function CancelRequestForm({ requestId }: { requestId: string }) {
         disabled={pending}
         className="text-muted-foreground w-fit"
       >
-        {t("inline.withdraw_request_16j3pnu")}
+        {t("account.labels.withdrawRequest")}
       </Button>
     </form>
   );
@@ -432,7 +435,7 @@ function MarkReadForm({ notificationId }: { notificationId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="notificationId" value={notificationId} />
       <Button type="submit" variant="ghost" size="sm" disabled={pending}>
-        {t("inline.mark_read_1dcjkuu")}
+        {t("account.workspace.markRead")}
       </Button>
       <ActionFeedback state={state} />
     </form>

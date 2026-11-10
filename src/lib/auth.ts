@@ -1,7 +1,9 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { z } from "zod";
 
+import { agricultureAccountTypes } from "@/lib/agriculture/account-types";
 import { sendAuthEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { authSecondaryStorage } from "@/lib/rate-limit";
@@ -57,6 +59,12 @@ export const auth = betterAuth({
         type: "string",
         defaultValue: "active",
         input: false,
+      },
+      accountType: {
+        type: "string",
+        defaultValue: "customer",
+        input: true,
+        validator: { input: z.enum(agricultureAccountTypes) },
       },
     },
   },

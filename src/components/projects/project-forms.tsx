@@ -1,8 +1,7 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import {
   addMilestoneAction,
@@ -14,10 +13,14 @@ import {
   updateMilestoneAction,
 } from "@/app/actions/projects";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { useRouter } from "@/i18n/navigation";
 import { uploadPrivateFile } from "@/lib/client-upload";
+import { constructionServiceRegistry } from "@/lib/construction/service-registry";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
 export function CreateProjectForm({
@@ -48,7 +51,7 @@ export function CreateProjectForm({
         <Input
           id="project-type"
           name="projectType"
-          placeholder={t("inline.house_shop_renovation_s3o7z0")}
+          placeholder={t("projects.forms.projectTypePlaceholder")}
           maxLength={80}
           required
         />
@@ -63,10 +66,10 @@ export function CreateProjectForm({
         <Input id="project-budget" name="budget" type="number" min="0" step="0.01" />
       </Field>
       <Field id="project-start" label={t("workflow.startDate")}>
-        <Input id="project-start" name="startsAt" type="date" />
+        <DatePicker id="project-start" name="startsAt" />
       </Field>
       <Field id="project-end" label={t("workflow.endDate")}>
-        <Input id="project-end" name="targetEndsAt" type="date" />
+        <DatePicker id="project-end" name="targetEndsAt" />
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor="project-description">{t("workflow.projectDescription")}</Label>
@@ -101,16 +104,26 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <Field id={`package-label-${projectId}`} label={t("workflow.workPackage")}>
         <Input id={`package-label-${projectId}`} name="label" maxLength={120} required />
       </Field>
-      <Field id={`package-kind-${projectId}`} label={t("inline.package_type_1ql3wh2")}>
-        <select
+      <Field id={`package-kind-${projectId}`} label={t("projects.forms.packageType")}>
+        <NativeSelect
           id={`package-kind-${projectId}`}
-          name="kind"
-          defaultValue="CONSTRUCTION_SERVICE"
+          name="serviceSlug"
+          defaultValue=""
+          required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="CONSTRUCTION_SERVICE">{t("inline.professional_service_c7s4sh")}</option>
-          <option value="CONSTRUCTION_MATERIAL">{t("inline.building_materials_j98vuw")}</option>
-        </select>
+          <NativeSelectOption value="" disabled>
+            {t("projects.forms.chooseWorkType")}
+          </NativeSelectOption>
+          {constructionServiceRegistry.map((service) => (
+            <NativeSelectOption key={service.slug} value={service.slug}>
+              {t(`constructionServices.${service.slug}.title`)} ·{" "}
+              {service.kind === "CONSTRUCTION_MATERIAL"
+                ? t("constructionCategories.materials")
+                : t("projects.forms.professionalService")}
+            </NativeSelectOption>
+          ))}
+        </NativeSelect>
       </Field>
       <Field id={`package-description-${projectId}`} label={t("workflow.projectDescription")}>
         <Input id={`package-description-${projectId}`} name="description" maxLength={1200} />
@@ -118,7 +131,7 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <div className="flex flex-col gap-2 sm:col-span-2">
         <ActionFeedback state={state} />
         <Button type="submit" variant="outline" disabled={pending}>
-          {pending ? t("common.loading") : t("inline.add_work_package_1q2zkvw")}
+          {pending ? t("common.loading") : t("projects.forms.addWorkPackage")}
         </Button>
       </div>
     </form>
@@ -130,11 +143,10 @@ export function AddMilestoneForm({
   providers,
 }: {
   projectId: string;
-  providers: Array<{ id: string; nameBn: string; nameEn: string }>;
+  providers: Array<{ id: string; name: string }>;
 }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(addMilestoneAction, initialWorkflowState);
-  const locale = useLocale();
   return (
     <form
       action={action}
@@ -142,19 +154,19 @@ export function AddMilestoneForm({
     >
       <input type="hidden" name="projectId" value={projectId} />
       <Field id={`milestone-provider-${projectId}`} label={t("workflow.assignedProvider")}>
-        <select
+        <NativeSelect
           id={`milestone-provider-${projectId}`}
           name="assignedProviderId"
           required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("inline.choose_a_provider_1my4w7f")}</option>
+          <NativeSelectOption value="">{t("projects.forms.chooseAProvider")}</NativeSelectOption>
           {providers.map((provider) => (
-            <option key={provider.id} value={provider.id}>
-              {locale === "bn" ? provider.nameBn : provider.nameEn}
-            </option>
+            <NativeSelectOption key={provider.id} value={provider.id}>
+              {provider.name}
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
       </Field>
       <Field id={`milestone-title-${projectId}`} label={t("workflow.milestoneTitle")}>
         <Input id={`milestone-title-${projectId}`} name="title" required maxLength={120} />
@@ -168,8 +180,8 @@ export function AddMilestoneForm({
           step="0.01"
         />
       </Field>
-      <Field id={`milestone-due-${projectId}`} label={t("inline.due_date_1yoc6no")}>
-        <Input id={`milestone-due-${projectId}`} name="dueAt" type="date" />
+      <Field id={`milestone-due-${projectId}`} label={t("projects.forms.dueDate")}>
+        <DatePicker id={`milestone-due-${projectId}`} name="dueAt" />
       </Field>
       <Field id={`milestone-description-${projectId}`} label={t("workflow.milestoneDescription")}>
         <Input id={`milestone-description-${projectId}`} name="description" maxLength={1200} />
@@ -212,7 +224,7 @@ export function ProjectExpenseForm({ projectId }: { projectId: string }) {
         />
       </Field>
       <Field id={`expense-date-${projectId}`} label={t("workflow.startDate")}>
-        <Input id={`expense-date-${projectId}`} name="occurredAt" type="date" />
+        <DatePicker id={`expense-date-${projectId}`} name="occurredAt" />
       </Field>
       <div className="flex flex-col justify-end gap-2">
         <ActionFeedback state={state} />
@@ -267,7 +279,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function prepareDocument(event: FormEvent<HTMLFormElement>) {
+  async function prepareDocument(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (selectedFile && uploadedFile.current === selectedFile) return;
     event.preventDefault();
@@ -331,7 +343,7 @@ export function ProjectDocumentUploadForm({ projectId }: { projectId: string }) 
       />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t(`workflow.${uploadError}` as never)}
+          {t(`workflow.${uploadError}`)}
         </p>
       )}
       <ActionFeedback state={state} />
@@ -357,7 +369,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
     uploadedFile.current = null;
   }, [state.status]);
 
-  async function preparePhoto(event: FormEvent<HTMLFormElement>) {
+  async function preparePhoto(event: SubmitEvent<HTMLFormElement>) {
     const selectedFile = fileInput.current?.files?.[0] ?? null;
     if (selectedFile && uploadedFile.current === selectedFile) return;
     event.preventDefault();
@@ -423,7 +435,7 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
       />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t(`workflow.${uploadError}` as never)}
+          {t(`workflow.${uploadError}`)}
         </p>
       )}
       <ActionFeedback state={state} />

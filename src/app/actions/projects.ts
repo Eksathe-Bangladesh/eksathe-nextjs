@@ -1,8 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
+import { revalidateLocalizedPath } from "@/i18n/revalidate";
 import { requireUser } from "@/lib/dal";
 import { WorkflowError } from "@/lib/domain/marketplace";
 import {
@@ -63,7 +63,7 @@ async function run<T extends { id: string }>(
 ): Promise<WorkflowState> {
   try {
     const result = await operation();
-    refresh.forEach((path) => revalidatePath(path));
+    refresh.forEach((path) => revalidateLocalizedPath(path));
     return { status: "success", messageKey: key, entityId: result.id };
   } catch (error) {
     return fail(error);
@@ -137,6 +137,7 @@ export async function createProjectPackageAction(
     label: value(formData, "label"),
     description: value(formData, "description"),
     kind: value(formData, "kind"),
+    serviceSlug: value(formData, "serviceSlug"),
   });
   if (!parsed.success) return fail(parsed.error);
   return run(() => createProjectPackage(user.id, parsed.data), "packageCreated", [
@@ -156,7 +157,7 @@ export async function confirmProjectHandoverAction(
   try {
     const result = await confirmProjectHandover(user.id, parsed.data.projectId);
     for (const path of ["/account", `/account/projects/${projectId}`, "/provider"])
-      revalidatePath(path);
+      revalidateLocalizedPath(path);
     return { status: "success", messageKey: "handoverConfirmed", entityId: result.id };
   } catch (error) {
     if (error instanceof WorkflowError && error.code === "invalidState")

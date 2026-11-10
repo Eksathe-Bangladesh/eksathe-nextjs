@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 import { agricultureListings, constructionListings } from "@/lib/sectors";
+import {
+  providerVerificationDocumentTypes,
+  providerVerificationTypes,
+} from "@/lib/validations/provider-verification";
 
 const text = (max: number) => z.string().trim().max(max);
 const requiredText = (max: number) => z.string().trim().min(1).max(max);
@@ -172,6 +176,13 @@ export const createRequestSchema = z
 
 export const uploadPresignSchema = z.discriminatedUnion("purpose", [
   z.strictObject({
+    purpose: z.literal("provider-verification-document"),
+    verificationType: z.enum(providerVerificationTypes),
+    documentType: z.enum(providerVerificationDocumentTypes),
+    contentType: z.enum(["application/pdf", "image/jpeg", "image/png", "image/webp"]),
+    sizeBytes: z.number().int().positive().max(10_000_000),
+  }),
+  z.strictObject({
     purpose: z.literal("listing-image"),
     sectorSlug: z.enum(["agriculture-labor", "construction"]),
     kind: z.enum([
@@ -278,7 +289,8 @@ export const createProjectPackageSchema = z.strictObject({
   projectId: requiredText(64),
   label: requiredText(120),
   description: text(1200),
-  kind: z.enum(["CONSTRUCTION_SERVICE", "CONSTRUCTION_MATERIAL"]),
+  kind: z.enum(["CONSTRUCTION_SERVICE", "CONSTRUCTION_MATERIAL"]).optional(),
+  serviceSlug: text(80).optional(),
 });
 
 export const projectHandoverSchema = z.strictObject({ projectId: requiredText(64) });
@@ -383,7 +395,7 @@ export const staffGrantSchema = z.strictObject({
     .trim()
     .pipe(z.email())
     .transform((email) => email.toLowerCase()),
-  permission: z.enum(["OPERATIONS", "FINANCE"]),
+  permission: z.enum(["OPERATIONS", "FINANCE", "USERS", "PANELS", "REPORTS"]),
   scope: z
     .string()
     .refine(

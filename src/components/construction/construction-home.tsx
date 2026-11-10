@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "cn";
-import { ArrowRightIcon, Building2Icon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, Building2Icon, SearchIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
@@ -12,6 +11,8 @@ import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Link } from "@/i18n/navigation";
 import {
   constructionServiceCategories,
   constructionServiceRegistry,
@@ -36,19 +37,21 @@ export function ConstructionHome({
   const locale = useLocale();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const english = locale === "en";
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const services = useMemo(
     () =>
       constructionServiceRegistry.filter((service) => {
-        const content =
-          `${service.titleEn} ${service.titleBn} ${service.descriptionEn} ${service.descriptionBn} ${service.slug}`.toLocaleLowerCase();
+        const title = t(`constructionServices.${service.slug}.title`);
+        const description = t(`constructionServices.${service.slug}.description`);
+        const content = [title, description, service.slug, ...service.searchTerms]
+          .join(" ")
+          .toLocaleLowerCase();
         return (
           (!normalizedQuery || content.includes(normalizedQuery)) &&
           (category === "all" || service.group === category)
         );
       }),
-    [normalizedQuery, category],
+    [normalizedQuery, category, t],
   );
   const formatMoney = (amount: string) =>
     formatter.number(Number(amount), {
@@ -58,45 +61,85 @@ export function ConstructionHome({
     });
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-14 px-4 py-8 sm:px-6 sm:py-12">
       {showDashboardBackLink && (
         <Link
           href="/dashboard"
-          className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm font-medium"
+          className="text-muted-foreground hover:text-foreground -mb-3 inline-flex w-fit items-center gap-2 px-2 text-sm font-medium"
         >
-          ← {t("inline.back_to_dashboard_2v17ca")}
+          <ArrowLeftIcon aria-hidden="true" className="size-4" />
+          {t("dashboard.actions.back")}
         </Link>
       )}
 
-      <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-8 overflow-hidden rounded-[2rem] border bg-gradient-to-br p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section className="border-primary/15 from-secondary/80 via-card to-card grid gap-8 overflow-hidden rounded-[2rem] border bg-linear-to-br p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <div className="mb-5">
             <BrandLogo />
           </div>
           <p className="text-primary text-sm font-semibold tracking-wide uppercase">
-            {t("inline.construction_services_across_bangladesh_sgrzhm")}
+            {t("construction.home.eyebrow")}
           </p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-            {t("inline.plan_your_build_and_find_the_right_people_1u905pu")}
+            {t("construction.home.title")}
           </h1>
           <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            {t("inline.find_approved_professionals_and_material_s_1of70ek")}
+            {t("construction.home.description")}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href={`${routeBase}/market`}
               className={cn(buttonVariants({ size: "lg" }), "gap-2")}
             >
-              {t("inline.explore_construction_marketplace_1210lvr")}
+              {t("construction.home.exploreConstructionMarketplace")}
               <ArrowRightIcon data-icon="inline-end" />
             </Link>
             <Link
-              href="/account/projects/new?service=contractors"
+              href="/account/projects/new"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
-              {t("inline.start_a_project_1tk0yro")}
+              {t("construction.home.startAProject")}
             </Link>
+            {!showDashboardBackLink && (
+              <Link href="/provider" className={buttonVariants({ variant: "ghost", size: "lg" })}>
+                {t("construction.home.becomeAProvider")}
+              </Link>
+            )}
           </div>
+          {showDashboardBackLink && (
+            <nav
+              aria-label={t("construction.home.workspaceNavigation")}
+              className="mt-8 grid gap-3 sm:grid-cols-3"
+            >
+              <Link
+                href={`${routeBase}/market?type=CONSTRUCTION_SERVICE`}
+                className="border-border/70 bg-card hover:border-primary/40 rounded-xl border p-4 transition-colors"
+              >
+                <span className="font-semibold">{t("construction.home.findProfessionals")}</span>
+                <span className="text-muted-foreground mt-1 block text-sm">
+                  {t("construction.home.findProfessionalsHelp")}
+                </span>
+              </Link>
+              <Link
+                href={`${routeBase}/market?type=CONSTRUCTION_MATERIAL`}
+                className="border-border/70 bg-card hover:border-primary/40 rounded-xl border p-4 transition-colors"
+              >
+                <span className="font-semibold">{t("construction.home.buyMaterials")}</span>
+                <span className="text-muted-foreground mt-1 block text-sm">
+                  {t("construction.home.buyMaterialsHelp")}
+                </span>
+              </Link>
+              <Link
+                href="/account#projects"
+                className="border-border/70 bg-card hover:border-primary/40 rounded-xl border p-4 transition-colors"
+              >
+                <span className="font-semibold">{t("projects.labels.myProjects")}</span>
+                <span className="text-muted-foreground mt-1 block text-sm">
+                  {t("construction.home.manageProjectsHelp")}
+                </span>
+              </Link>
+            </nav>
+          )}
         </div>
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <Card className="min-h-36">
@@ -109,7 +152,7 @@ export function ConstructionHome({
                   {formatter.number(constructionServiceRegistry.length)}
                 </p>
                 <p className="text-muted-foreground text-sm">
-                  {t("inline.construction_service_areas_1fwvn52")}
+                  {t("construction.home.constructionServiceAreas")}
                 </p>
               </div>
             </CardContent>
@@ -122,7 +165,7 @@ export function ConstructionHome({
               <div>
                 <p className="text-2xl font-bold">{formatter.number(listings.length)}</p>
                 <p className="text-muted-foreground text-sm">
-                  {t("inline.published_offers_181lve9")}
+                  {t("construction.home.publishedOffers")}
                 </p>
               </div>
             </CardContent>
@@ -134,17 +177,17 @@ export function ConstructionHome({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-primary text-sm font-semibold">
-              {t("inline.professionals_and_materials_1d2igvn")}
+              {t("construction.home.professionalsAndMaterials")}
             </p>
             <h2 className="mt-1 text-2xl font-bold">
-              {t("inline.construction_marketplace_1d9og8y")}
+              {t("construction.home.constructionMarketplace")}
             </h2>
           </div>
           <Link
             href={`${routeBase}/market`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            {t("inline.view_all_offers_jpb7ai")}
+            {t("construction.home.viewAllOffers")}
             <ArrowRightIcon data-icon="inline-end" />
           </Link>
         </div>
@@ -153,12 +196,12 @@ export function ConstructionHome({
             role="alert"
             className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border p-4 text-sm"
           >
-            {t("inline.marketplace_listings_could_not_be_loaded_p_97902w")}
+            {t("marketplace.listings.loadError")}
           </p>
         )}
         {!unavailable && listings.length === 0 ? (
           <div className="text-muted-foreground rounded-2xl border border-dashed p-6 text-sm">
-            {t("inline.no_approved_construction_listings_yet_plea_eqf7os")}
+            {t("construction.home.emptyListings")}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -171,19 +214,18 @@ export function ConstructionHome({
                 <Card className="hover:border-primary/40 h-full transition-colors">
                   <ListingImage
                     listing={listing}
-                    alt={english ? listing.titleEn : listing.titleBn}
+                    alt={listing.title}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <CardHeader>
-                    <CardTitle>{english ? listing.titleEn : listing.titleBn}</CardTitle>
+                    <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {english ? listing.providerNameEn : listing.providerNameBn} ·{" "}
-                      {listing.district}
+                      {listing.providerName} · {listing.district}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground line-clamp-2 text-sm">
-                      {english ? listing.descriptionEn : listing.descriptionBn}
+                      {listing.description}
                     </p>
                     <p className="text-primary mt-3 font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
@@ -199,13 +241,11 @@ export function ConstructionHome({
       <section id="services" className="flex scroll-mt-24 flex-col gap-5">
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.8_construction_service_areas_1jvofqa")}
+            {t("construction.home.serviceAreaCount", { count: constructionServiceRegistry.length })}
           </p>
-          <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.what_do_you_need_for_your_project_1u3al0")}
-          </h2>
+          <h2 className="mt-1 text-2xl font-bold">{t("construction.services.title")}</h2>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-            {t("inline.browse_an_approved_provider_or_create_a_pr_kxlufj")}
+            {t("construction.services.description")}
           </p>
         </div>
         <div className="border-border/70 bg-card grid gap-3 rounded-2xl border p-4 sm:grid-cols-[minmax(0,1fr)_240px]">
@@ -217,28 +257,30 @@ export function ConstructionHome({
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={t("inline.search_construction_services_1cd8gib")}
-              aria-label={t("inline.search_construction_services_1cd8gib")}
+              placeholder={t("construction.home.searchConstructionServices")}
+              aria-label={t("construction.home.searchConstructionServices")}
               className="pl-9"
             />
           </div>
-          <select
+          <NativeSelect
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            aria-label={t("inline.filter_by_service_area_17ejr7w")}
+            aria-label={t("construction.home.filterByServiceArea")}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <option value="all">{t("inline.all_service_areas_1x8orpz")}</option>
+            <NativeSelectOption value="all">
+              {t("construction.home.allServiceAreas")}
+            </NativeSelectOption>
             {constructionServiceCategories.map((item) => (
-              <option key={item.id} value={item.id}>
-                {t(`constructionCategories.${item.id}` as never)}
-              </option>
+              <NativeSelectOption key={item.id} value={item.id}>
+                {t(`constructionCategories.${item.id}`)}
+              </NativeSelectOption>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         {services.length === 0 ? (
           <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-            {t("inline.no_service_areas_match_your_search_1n05vd6")}
+            {t("construction.services.empty")}
           </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -255,18 +297,18 @@ export function ConstructionHome({
                     </span>
                     <div>
                       <CardTitle className="text-base">
-                        {t(`constructionServices.${service.slug}.title` as never)}
+                        {t(`constructionServices.${service.slug}.title`)}
                       </CardTitle>
                       <CardDescription className="mt-2 line-clamp-2">
-                        {t(`constructionServices.${service.slug}.description` as never)}
+                        {t(`constructionServices.${service.slug}.description`)}
                       </CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent className="text-muted-foreground flex items-center justify-between text-xs">
                     <span>
                       {service.kind === "CONSTRUCTION_MATERIAL"
-                        ? t("inline.materials_1i2zdwy")
-                        : t("inline.find_professionals_1svymkf")}
+                        ? t("constructionCategories.materials")
+                        : t("construction.home.findProfessionals")}
                     </span>
                     <ArrowRightIcon aria-hidden="true" className="size-4" />
                   </CardContent>
@@ -277,100 +319,97 @@ export function ConstructionHome({
         )}
       </section>
 
-      <section id="how" className="flex flex-col gap-5">
-        <div>
-          <p className="text-primary text-sm font-semibold">
-            {t("inline.a_clear_way_to_organize_your_build_11mvr7p")}
-          </p>
-          <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.how_construction_projects_work_pdcpmd")}
-          </h2>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            {
-              icon: "📝",
-              titleEn: "Describe the work",
-              titleBn: "কাজের বিবরণ দিন",
-              bodyEn: "Create a private project with location, scope, budget, and dates.",
-              bodyBn: "অবস্থান, কাজের পরিধি, বাজেট ও তারিখ দিয়ে ব্যক্তিগত প্রকল্প তৈরি করুন।",
-            },
-            {
-              icon: "📨",
-              titleEn: "Invite providers",
-              titleBn: "সেবাদাতাদের আমন্ত্রণ",
-              bodyEn: "Share each work package with approved professionals or suppliers.",
-              bodyBn: "প্রতিটি কাজের প্যাকেজ অনুমোদিত পেশাজীবী বা সরবরাহকারীদের পাঠান।",
-            },
-            {
-              icon: "⚖️",
-              titleEn: "Compare and agree",
-              titleBn: "তুলনা করে সম্মত হন",
-              bodyEn: "Review scope, price, transport, and schedule before accepting a quote.",
-              bodyBn: "দরপ্রস্তাব গ্রহণের আগে কাজ, মূল্য, পরিবহন ও সময়সূচি তুলনা করুন।",
-            },
-            {
-              icon: "✅",
-              titleEn: "Track to handover",
-              titleBn: "কাজ শেষ করে হস্তান্তর",
-              bodyEn: "Follow milestones and payment records, then confirm completed work.",
-              bodyBn: "মাইলফলক ও পেমেন্টের তথ্য দেখুন, কাজ শেষে সম্পন্ন হওয়া নিশ্চিত করুন।",
-            },
-          ].map((step, index) => (
-            <Card key={step.titleEn}>
-              <CardContent className="flex h-full flex-col gap-3 p-5">
-                <span
-                  className="bg-primary/10 flex size-10 items-center justify-center rounded-full text-xl"
-                  aria-hidden="true"
-                >
-                  {step.icon}
-                </span>
-                <p className="text-primary text-xs font-semibold">{formatter.number(index + 1)}</p>
-                <h3 className="font-semibold">{english ? step.titleEn : step.titleBn}</h3>
-                <p className="text-muted-foreground text-sm leading-6">
-                  {english ? step.bodyEn : step.bodyBn}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      {!showDashboardBackLink && (
+        <section id="how" className="flex flex-col gap-5">
+          <div>
+            <p className="text-primary text-sm font-semibold">
+              {t("construction.home.workflowEyebrow")}
+            </p>
+            <h2 className="mt-1 text-2xl font-bold">{t("construction.home.workflowTitle")}</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                icon: "📝",
+                titleEn: "Describe the work",
+                titleBn: "কাজের বিবরণ দিন",
+                bodyEn: "Create a private project with location, scope, budget, and dates.",
+                bodyBn: "অবস্থান, কাজের পরিধি, বাজেট ও তারিখ দিয়ে ব্যক্তিগত প্রকল্প তৈরি করুন।",
+              },
+              {
+                icon: "📨",
+                titleEn: "Invite providers",
+                titleBn: "সেবাদাতাদের আমন্ত্রণ",
+                bodyEn: "Share each work package with approved professionals or suppliers.",
+                bodyBn: "প্রতিটি কাজের প্যাকেজ অনুমোদিত পেশাজীবী বা সরবরাহকারীদের পাঠান।",
+              },
+              {
+                icon: "⚖️",
+                titleEn: "Compare and agree",
+                titleBn: "তুলনা করে সম্মত হন",
+                bodyEn: "Review scope, price, transport, and schedule before accepting a quote.",
+                bodyBn: "দরপ্রস্তাব গ্রহণের আগে কাজ, মূল্য, পরিবহন ও সময়সূচি তুলনা করুন।",
+              },
+              {
+                icon: "✅",
+                titleEn: "Track to handover",
+                titleBn: "কাজ শেষ করে হস্তান্তর",
+                bodyEn: "Follow milestones and payment records, then confirm completed work.",
+                bodyBn: "মাইলফলক ও পেমেন্টের তথ্য দেখুন, কাজ শেষে সম্পন্ন হওয়া নিশ্চিত করুন।",
+              },
+            ].map((step, index) => (
+              <Card key={step.titleEn}>
+                <CardContent className="flex h-full flex-col gap-3 p-5">
+                  <span
+                    className="bg-primary/10 flex size-10 items-center justify-center rounded-full text-xl"
+                    aria-hidden="true"
+                  >
+                    {step.icon}
+                  </span>
+                  <p className="text-primary text-xs font-semibold">
+                    {formatter.number(index + 1)}
+                  </p>
+                  <h3 className="font-semibold">{locale === "bn" ? step.titleBn : step.titleEn}</h3>
+                  <p className="text-muted-foreground text-sm leading-6">
+                    {{ en: step.bodyEn, bn: step.bodyBn }[locale]}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
-      <section
-        id="commission"
-        className="bg-secondary/40 grid items-center gap-6 rounded-3xl border p-5 sm:p-8 lg:grid-cols-2"
-      >
-        <div>
-          <p className="text-primary text-sm font-semibold">
-            {t("inline.commission_calculator_1rnx2pf")}
-          </p>
-          <h2 className="mt-1 text-2xl font-bold">
-            {t("inline.estimate_the_platform_fee_uiwzmc")}
-          </h2>
-          <p className="text-muted-foreground mt-2 text-sm leading-6">
-            {t("inline.the_estimate_uses_the_current_construction_1fxpsqc")}
-          </p>
-        </div>
-        <ConstructionCommissionCalculator ratePercent={commissionRate} />
-      </section>
+      {!showDashboardBackLink && (
+        <section
+          id="commission"
+          className="bg-secondary/40 grid items-center gap-6 rounded-3xl border p-5 sm:p-8 lg:grid-cols-2"
+        >
+          <div>
+            <p className="text-primary text-sm font-semibold">
+              {t("common.labels.commissionCalculator")}
+            </p>
+            <h2 className="mt-1 text-2xl font-bold">{t("common.labels.estimateThePlatformFee")}</h2>
+            <p className="text-muted-foreground mt-2 text-sm leading-6">
+              {t("construction.home.commissionNotice")}
+            </p>
+          </div>
+          <ConstructionCommissionCalculator ratePercent={commissionRate} />
+        </section>
+      )}
 
       <section className="bg-card grid gap-4 rounded-3xl border p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-8">
         <div className="flex items-start gap-4">
           <Building2Icon aria-hidden="true" className="text-primary mt-1 size-8 shrink-0" />
           <div>
-            <h2 className="text-xl font-bold">
-              {t("inline.keep_your_project_in_one_place_r8vy6r")}
-            </h2>
+            <h2 className="text-xl font-bold">{t("construction.home.projectTitle")}</h2>
             <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-6">
-              {t("inline.track_providers_material_orders_project_mi_fmixtg")}
+              {t("construction.home.projectDescription")}
             </p>
           </div>
         </div>
-        <Link
-          href="/account/projects/new?service=contractors"
-          className={buttonVariants({ size: "lg" })}
-        >
-          {t("inline.create_a_project_dhtxqj")}
+        <Link href="/account/projects/new" className={buttonVariants({ size: "lg" })}>
+          {t("projects.actions.create")}
           <ArrowRightIcon data-icon="inline-end" />
         </Link>
       </section>

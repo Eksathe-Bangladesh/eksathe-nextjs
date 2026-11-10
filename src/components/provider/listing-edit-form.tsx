@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FormEvent, useActionState, useEffect, useRef, useState } from "react";
+import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import { updateListingAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
@@ -15,10 +16,8 @@ export type EditableListing = {
   id: string;
   sectorSlug: string;
   kind: string;
-  titleBn: string;
-  titleEn: string;
-  descriptionBn: string;
-  descriptionEn: string;
+  title: string;
+  description: string;
   category: string;
   district: string;
   unit: string;
@@ -44,7 +43,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
     }
   }, [state]);
 
-  async function prepareListingImage(event: FormEvent<HTMLFormElement>) {
+  async function prepareListingImage(event: SubmitEvent<HTMLFormElement>) {
     const file = fileInput.current?.files?.[0] ?? null;
     if (!file || uploadedFile.current === file) return;
     event.preventDefault();
@@ -85,25 +84,25 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
       <input type="hidden" name="sectorSlug" value={listing.sectorSlug} />
       <input type="hidden" name="kind" value={listing.kind} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id={`edit-title-bn-${listing.id}`} label={t("inline.name_bangla_1lm9czd")}>
+        <Field id={`edit-title-bn-${listing.id}`} label={t("common.fields.nameBangla")}>
           <Input
             id={`edit-title-bn-${listing.id}`}
             name="titleBn"
             required
             maxLength={120}
-            defaultValue={listing.titleBn}
+            defaultValue={listing.title}
           />
         </Field>
-        <Field id={`edit-title-en-${listing.id}`} label={t("inline.name_english_1odtjyj")}>
+        <Field id={`edit-title-en-${listing.id}`} label={t("common.fields.nameEnglish")}>
           <Input
             id={`edit-title-en-${listing.id}`}
             name="titleEn"
             required
             maxLength={120}
-            defaultValue={listing.titleEn}
+            defaultValue={listing.title}
           />
         </Field>
-        <Field id={`edit-category-${listing.id}`} label={t("inline.category_s1i10e")}>
+        <Field id={`edit-category-${listing.id}`} label={t("workflow.category")}>
           <Input
             id={`edit-category-${listing.id}`}
             name="category"
@@ -122,7 +121,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             <option value="Other / অন্যান্য" />
           </datalist>
         </Field>
-        <Field id={`edit-district-${listing.id}`} label={t("inline.district_135um58")}>
+        <Field id={`edit-district-${listing.id}`} label={t("workflow.district")}>
           <Input
             id={`edit-district-${listing.id}`}
             name="district"
@@ -131,7 +130,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             defaultValue={listing.district}
           />
         </Field>
-        <Field id={`edit-unit-${listing.id}`} label={t("inline.unit_x8dt8s")}>
+        <Field id={`edit-unit-${listing.id}`} label={t("workflow.unit")}>
           <Input
             id={`edit-unit-${listing.id}`}
             name="unit"
@@ -140,7 +139,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             defaultValue={listing.unit}
           />
         </Field>
-        <Field id={`edit-price-${listing.id}`} label={t("inline.price_per_unit_bdt_y28nlq")}>
+        <Field id={`edit-price-${listing.id}`} label={t("provider.listingEdit.pricePerUnitBdt")}>
           <Input
             id={`edit-price-${listing.id}`}
             name="unitPrice"
@@ -152,7 +151,7 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
           />
         </Field>
         {listing.kind === "PRODUCE" || listing.kind === "CONSTRUCTION_MATERIAL" ? (
-          <Field id={`edit-stock-${listing.id}`} label={t("inline.available_quantity_qdx72n")}>
+          <Field id={`edit-stock-${listing.id}`} label={t("workflow.stock")}>
             <Input
               id={`edit-stock-${listing.id}`}
               name="stock"
@@ -168,40 +167,39 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         )}
         <Field
           id={`edit-available-${listing.id}`}
-          label={t("inline.available_from_optional_dlhs2f")}
+          label={t("provider.labels.availableFromOptional")}
         >
-          <Input
+          <DatePicker
             id={`edit-available-${listing.id}`}
             name="availableFrom"
-            type="date"
             defaultValue={listing.availableFrom?.slice(0, 10) ?? ""}
           />
         </Field>
       </div>
-      <Field id={`edit-description-bn-${listing.id}`} label={t("inline.description_bangla_q8mmem")}>
+      <Field id={`edit-description-bn-${listing.id}`} label={t("workflow.descriptionBn")}>
         <textarea
           id={`edit-description-bn-${listing.id}`}
           name="descriptionBn"
           rows={3}
           maxLength={2000}
-          defaultValue={listing.descriptionBn}
+          defaultValue={listing.description}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field
         id={`edit-description-en-${listing.id}`}
-        label={t("inline.description_english_kxac9w")}
+        label={t("workflow.descriptionEn")}
       >
         <textarea
           id={`edit-description-en-${listing.id}`}
           name="descriptionEn"
           rows={3}
           maxLength={2000}
-          defaultValue={listing.descriptionEn}
+          defaultValue={listing.description}
           className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
-      <Field id={`edit-image-${listing.id}`} label={t("inline.replace_photo_optional_nnrkdd")}>
+      <Field id={`edit-image-${listing.id}`} label={t("provider.listingEdit.replacePhotoOptional")}>
         <Input
           ref={fileInput}
           id={`edit-image-${listing.id}`}
@@ -211,20 +209,20 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         />
       </Field>
       <p className="text-muted-foreground text-xs">
-        {t("inline.content_and_photo_edits_unpublish_the_list_o1vsj9")}{" "}
-        {listing.hasImage ? t("inline.the_current_photo_stays_if_you_do_not_choo_1inaw9o") : ""}
+        {t("provider.listingEdit.moderationNotice")}{" "}
+        {listing.hasImage ? t("provider.listingEdit.photoNotice") : ""}
       </p>
       <input type="hidden" name="imageKey" defaultValue="" />
       <input type="hidden" name="imageContentType" defaultValue="" />
       <input type="hidden" name="imageSizeBytes" defaultValue="" />
       {uploadError && (
         <p role="alert" className="text-destructive text-sm">
-          {t("inline.the_image_could_not_be_uploaded_please_try_bnuvif")}
+          {t("provider.upload.error")}
         </p>
       )}
       <ActionFeedback state={state} />
       <Button type="submit" variant="outline" disabled={pending || uploading}>
-        {uploading || pending ? t("inline.saving_1s7ccbq") : t("inline.save_for_review_mqzadk")}
+        {uploading || pending ? t("common.states.saving") : t("provider.listingEdit.saveForReview")}
       </Button>
     </form>
   );

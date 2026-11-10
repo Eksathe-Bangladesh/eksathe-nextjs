@@ -1,15 +1,22 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useTranslations } from "next-intl";
+import { useActionState, useSyncExternalStore } from "react";
 
 import { createMarketplaceRequestAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import type { PublicListing } from "@/lib/listings";
 import { initialWorkflowState } from "@/lib/workflow-state";
+
+// The min booking date depends on the current date, which only exists on the client.
+// Reading it through an external store keeps render pure and avoids hydration mismatches.
+const subscribeToDayChange = () => () => {};
+const getClientToday = () => new Date().toISOString().slice(0, 10);
+const getServerToday = () => "";
 
 export function ListingRequestForm({
   listing,
@@ -29,7 +36,7 @@ export function ListingRequestForm({
     createMarketplaceRequestAction,
     initialWorkflowState,
   );
-  const locale = useLocale();
+  const today = useSyncExternalStore(subscribeToDayChange, getClientToday, getServerToday);
   const isScheduled =
     listing.kind === "WORKER" ||
     listing.kind === "MACHINERY" ||
@@ -68,9 +75,7 @@ export function ListingRequestForm({
             required
           />
           <p className="text-muted-foreground text-xs">
-            {locale === "bn"
-              ? `উপলভ্য: ${listing.stock} ${listing.unit}`
-              : `Available: ${listing.stock} ${listing.unit}`}
+            {t("workflow.availableQuantity", { quantity: listing.stock, unit: listing.unit })}
           </p>
         </div>
       )}
@@ -89,30 +94,23 @@ export function ListingRequestForm({
           <>
             <div className="flex flex-col gap-2">
               <Label htmlFor="request-start">{t("workflow.startDate")}</Label>
-              <Input
+              <DatePicker
                 id="request-start"
                 name="requestedStart"
-                type="date"
-                min={new Date().toISOString().slice(0, 10)}
+                min={today || undefined}
                 required
               />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="request-end">{t("workflow.endDate")}</Label>
-              <Input
-                id="request-end"
-                name="requestedEnd"
-                type="date"
-                min={new Date().toISOString().slice(0, 10)}
-                required
-              />
+              <DatePicker id="request-end" name="requestedEnd" min={today || undefined} required />
             </div>
           </>
         )}
       </div>
       {isScheduled && (
         <p className="text-muted-foreground -mt-2 text-xs">
-          {t("inline.daily_rates_are_calculated_for_the_selecte_1ulrn0s")}
+          {t("marketplace.requestForm.dailyRateNotice")}
         </p>
       )}
       <div className="flex flex-col gap-2">
@@ -123,7 +121,7 @@ export function ListingRequestForm({
           maxLength={2000}
           rows={4}
           className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 resize-y rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
-          placeholder={t("inline.add_requirements_collection_or_transport_d_1cb1842")}
+          placeholder={t("marketplace.requestForm.requirementsPlaceholder")}
         />
       </div>
       <ActionFeedback state={state} />

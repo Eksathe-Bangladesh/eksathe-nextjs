@@ -19,11 +19,13 @@ export async function GET(
   const key = imageType === "profile" ? profile?.profileImageKey : profile?.coverImageKey;
   if (!key) return new NextResponse(null, { status: 404 });
   try {
-    const url = await createDownloadUrl(key);
+    const url = await createDownloadUrl(key, 3600);
     if (!url) return new NextResponse(null, { status: 404 });
     return NextResponse.redirect(url, {
       status: 302,
-      headers: { "Cache-Control": "public, max-age=30" },
+      headers: {
+        "Cache-Control": "public, max-age=3000, s-maxage=3000, stale-while-revalidate=86400",
+      },
     });
   } catch (error) {
     logError("provider.image_signing_failed", error);

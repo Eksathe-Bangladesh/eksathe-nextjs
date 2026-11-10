@@ -6,7 +6,13 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
 
 const [{ prisma }, agriculture, publishing] = await Promise.all([
   import("@/lib/prisma"),
@@ -29,6 +35,7 @@ const currentUser = (id: string, role = "customer") => ({
   phone: "+8801700000000",
   role,
   status: "active",
+  accountType: "customer",
 });
 const today = new Date().toISOString().slice(0, 10);
 
@@ -40,8 +47,6 @@ describe("PostgreSQL agriculture publishing", () => {
       create: {
         slug: "agriculture-labor",
         position: 4,
-        titleBn: "কৃষি ও শ্রমিক",
-        titleEn: "Agriculture & Labor",
         icon: "🌾",
         status: "LIVE",
       },
@@ -57,11 +62,7 @@ describe("PostgreSQL agriculture publishing", () => {
       update: { isActive: true, formVersion: 1 },
       create: {
         slug: "daily-market-price",
-        titleBn: "দৈনিক বাজারদর",
-        titleEn: "Daily market prices",
         category: "কৃষি",
-        descriptionBn: "বাজারদর জানান",
-        descriptionEn: "Report a market price",
         sectorSlug: "agriculture-labor",
         isActive: true,
       },
@@ -122,7 +123,7 @@ describe("PostgreSQL agriculture publishing", () => {
       status: "DRAFT",
     });
     const draftPrice = await prisma.agricultureMarketPrice.findFirstOrThrow({
-      where: { productEn: "Draft example" },
+      where: { translations: { some: { locale: "en", product: "Draft example" } } },
       select: { id: true },
     });
     priceIds.push(draftPrice.id);
@@ -138,7 +139,7 @@ describe("PostgreSQL agriculture publishing", () => {
       status: "PUBLISHED",
     });
     const stalePrice = await prisma.agricultureMarketPrice.findFirstOrThrow({
-      where: { productEn: "Stale rice" },
+      where: { translations: { some: { locale: "en", product: "Stale rice" } } },
       select: { id: true },
     });
     priceIds.push(stalePrice.id);
@@ -187,13 +188,13 @@ describe("PostgreSQL agriculture publishing", () => {
     expect(publicInfo.unavailable).toBe(false);
     expect(publicInfo.prices).toHaveLength(1);
     expect(publicInfo.prices[0]).toMatchObject({
-      productEn: "Rice",
+      product: "Rice",
       source: "Reviewed district market submission",
     });
     expect("sourceRequestId" in publicInfo.prices[0]!).toBe(false);
     expect(JSON.stringify(publicInfo.prices)).not.toContain("Private test farmer");
     expect(JSON.stringify(publicInfo.prices)).not.toContain("+8801888888888");
-    expect(publicInfo.updates.map((item) => item.titleEn)).toEqual(["Irrigation advice"]);
+    expect(publicInfo.updates.map((item) => item.title)).toEqual(["Irrigation advice"]);
     expect(publicInfo.support?.email).toBe("support@example.org");
     const afterPublish = await publishing.getAgriculturePublishingWorkspace(
       currentUser(staffId, "super_admin"),
@@ -202,7 +203,7 @@ describe("PostgreSQL agriculture publishing", () => {
   });
 
   it("blocks unapproved staff from publishing and staff members from changing public support settings", async () => {
-    await expect(
+    expect(
       publishing.saveAgriculturePublication(currentUser(otherUserId), "price", {}),
     ).rejects.toThrow("Permission denied");
     await prisma.staffGrant.create({
@@ -213,7 +214,7 @@ describe("PostgreSQL agriculture publishing", () => {
         permission: "OPERATIONS",
       },
     });
-    await expect(
+    expect(
       publishing.saveAgriculturePublication(currentUser(otherUserId, "staff"), "support", {
         phone: "",
         email: "",

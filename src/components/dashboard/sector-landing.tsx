@@ -2,14 +2,15 @@
 
 import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
-import Link from "next/link";
+import { useTranslations, useFormatter } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Link } from "@/i18n/navigation";
 import type { PublicListing } from "@/lib/listings";
 import type { agricultureListings, constructionListings, SectorDefinition } from "@/lib/sectors";
 
@@ -28,10 +29,9 @@ export function SectorLanding({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   const [query, setQuery] = useState("");
   const [district, setDistrict] = useState("");
-  const title = t(`sectors.${sector.slug}` as never);
+  const title = t(`sectors.${sector.slug}`);
   const price = (value: string) =>
     formatter.number(Number(value), {
       style: "currency",
@@ -45,12 +45,12 @@ export function SectorLanding({
   const term = query.trim().toLowerCase();
   const matches = (listing: PublicListing) => {
     const searchable =
-      `${listing.titleBn} ${listing.titleEn} ${listing.descriptionBn} ${listing.descriptionEn} ${listing.category} ${listing.district}`.toLowerCase();
+      `${listing.title} ${listing.description} ${listing.category} ${listing.district}`.toLowerCase();
     return (!term || searchable.includes(term)) && (!district || listing.district === district);
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-9 px-4 py-8 sm:px-6">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-9 px-4 py-8 sm:px-6">
       <Link
         href="/dashboard"
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
@@ -88,13 +88,13 @@ export function SectorLanding({
                 className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
               >
                 <span aria-hidden="true">{service.icon}</span>
-                {t(`marketplaceServices.${service.slug}` as never)}
+                {t(`marketplaceServices.${service.slug}`)}
               </a>
             ))}
             {sector.slug === "construction" && (
               <Link href="/account/projects/new" className={buttonVariants({ size: "sm" })}>
                 <PlusIcon data-icon="inline-start" />
-                {t("inline.create_a_project_dhtxqj")}
+                {t("projects.actions.create")}
               </Link>
             )}
           </div>
@@ -110,19 +110,19 @@ export function SectorLanding({
               placeholder={t("workflow.searchListings")}
               aria-label={t("workflow.searchListings")}
             />
-            <select
+            <NativeSelect
               value={district}
               onChange={(event) => setDistrict(event.target.value)}
               aria-label={t("workflow.district")}
               className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
             >
-              <option value="">{t("workflow.allDistricts")}</option>
+              <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
               {districts.map((item) => (
-                <option key={item} value={item}>
+                <NativeSelectOption key={item} value={item}>
                   {item}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </div>
           {unavailable && (
             <p
@@ -145,23 +145,21 @@ export function SectorLanding({
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
                     <h2 className="text-foreground text-xl font-bold">
-                      {t(`marketplaceServices.${service.slug}` as never)}
+                      {t(`marketplaceServices.${service.slug}`)}
                     </h2>
                     <p className="text-muted-foreground mt-1 text-sm">
-                      {serviceListings.length} {t("inline.available_listings_yzc9nu")}
+                      {t("dashboard.sector.availableListings", { count: serviceListings.length })}
                     </p>
                   </div>
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
                   <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
-                    <p className="text-muted-foreground text-sm">
-                      {t("inline.no_approved_listings_yet_apply_to_become_a_o0ezrc")}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{t("dashboard.sector.empty")}</p>
                     <Link
-                      href={`/register?next=${encodeURIComponent("/provider")}`}
+                      href="/provider"
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
                     >
-                      {t("inline.apply_to_provide_13ovigs")}
+                      {t("dashboard.sector.applyToProvide")}
                       <ArrowRightIcon data-icon="inline-end" />
                     </Link>
                   </div>
@@ -176,28 +174,25 @@ export function SectorLanding({
                         <Card className="hover:border-primary/40 h-full transition-colors">
                           <ListingImage
                             listing={listing}
-                            alt={locale === "bn" ? listing.titleBn : listing.titleEn}
+                            alt={listing.title}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <CardHeader>
-                            <CardTitle>
-                              {locale === "bn" ? listing.titleBn : listing.titleEn}
-                            </CardTitle>
+                            <CardTitle>{listing.title}</CardTitle>
                             <CardDescription>
-                              {locale === "bn" ? listing.providerNameBn : listing.providerNameEn} ·{" "}
-                              {listing.district}
+                              {listing.providerName} · {listing.district}
                             </CardDescription>
                           </CardHeader>
                           <CardContent>
                             <p className="text-muted-foreground line-clamp-2 text-sm">
-                              {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
+                              {listing.description}
                             </p>
                             <div className="mt-4 flex items-center justify-between gap-2">
                               <span className="text-primary font-semibold">
                                 {price(listing.unitPrice)} / {listing.unit}
                               </span>
                               <Button tabIndex={-1} size="sm" variant="outline">
-                                {t("inline.view_1ngfptr")}
+                                {t("common.actions.view")}
                                 <ArrowRightIcon data-icon="inline-end" />
                               </Button>
                             </div>

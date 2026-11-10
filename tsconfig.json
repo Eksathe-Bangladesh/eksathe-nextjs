@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -9,7 +13,9 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "types": ["bun-types"],
+    "types": [
+      "bun-types"
+    ],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -20,7 +26,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [
@@ -29,7 +37,17 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    ".next-e2e/types/**/*.ts",
+    ".next-e2e/dev/types/**/*.ts",
+    ".next-e2e-dev/types/**/*.ts",
+    ".next-e2e-dev/dev/types/**/*.ts",
+    ".next-e2e-webpack/types/**/*.ts",
+    ".next-e2e-webpack/dev/types/**/*.ts",
+    ".next-e2e-node/types/**/*.ts",
+    ".next-e2e-node/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

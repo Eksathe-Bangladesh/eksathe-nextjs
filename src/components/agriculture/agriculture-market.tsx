@@ -3,12 +3,13 @@
 import { cn } from "cn";
 import { ArrowLeftIcon, ArrowRightIcon, SearchIcon, StarIcon } from "lucide-react";
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import Link from "next/link";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Link } from "@/i18n/navigation";
 import type { AgricultureMarketFilters, AgricultureMarketResult } from "@/lib/listings";
 import type { AgricultureProductCategory } from "@/lib/listings";
 
@@ -52,23 +53,23 @@ export function AgricultureMarket({
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-4 py-8 sm:px-6">
+    <main className="mx-auto flex w-full max-w-360 flex-col gap-7 px-4 py-8 sm:px-6">
       <Link
         href={routeBase}
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-2 text-sm"
       >
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
-        {t("inline.back_to_agriculture_qogfrr")}
+        {t("agriculture.market.backToAgriculture")}
       </Link>
       <header>
         <p className="text-primary text-sm font-semibold">
-          {t("inline.agriculture_marketplace_1ufcijx")}
+          {t("agriculture.market.name")}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
-          {t("inline.find_farm_products_1659zjw")}
+          {t("agriculture.market.findFarmProducts")}
         </h1>
         <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
-          {t("inline.search_listings_by_seller_category_distric_tle0d8")}
+          {t("agriculture.market.description")}
         </p>
       </header>
       <form
@@ -85,43 +86,43 @@ export function AgricultureMarket({
             className="pl-9"
             name="q"
             defaultValue={filters.q}
-            placeholder={t("inline.search_products_or_sellers_xino0q")}
+            placeholder={t("agriculture.market.searchProductsOrSellers")}
           />
         </div>
-        <select
+        <NativeSelect
           name="category"
           defaultValue={filters.category ?? ""}
-          aria-label={t("inline.category_s1i10e")}
+          aria-label={t("workflow.category")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("inline.all_categories_1fiilwv")}</option>
+          <NativeSelectOption value="">{t("common.labels.allCategories")}</NativeSelectOption>
           {categoryOptions.map((item) => (
-            <option key={item.value} value={item.value}>
+            <NativeSelectOption key={item.value} value={item.value}>
               {bn ? item.bn : item.en}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
-        <select
+        </NativeSelect>
+        <NativeSelect
           name="district"
           defaultValue={filters.district ?? ""}
-          aria-label={t("inline.district_135um58")}
+          aria-label={t("workflow.district")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="">{t("workflow.allDistricts")}</option>
+          <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
           {result.districts.map((district) => (
-            <option key={district} value={district}>
+            <NativeSelectOption key={district} value={district}>
               {district}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
         <Input
           name="minPrice"
           type="number"
           min="0"
           step="0.01"
           defaultValue={filters.minPrice}
-          aria-label={t("inline.minimum_price_m3t2c3")}
-          placeholder={t("inline.min_bdt_1qs33m3")}
+          aria-label={t("common.labels.minimumPrice")}
+          placeholder={t("agriculture.market.minBdt")}
         />
         <Input
           name="maxPrice"
@@ -129,23 +130,27 @@ export function AgricultureMarket({
           min="0"
           step="0.01"
           defaultValue={filters.maxPrice}
-          aria-label={t("inline.maximum_price_x46h1l")}
-          placeholder={t("inline.max_bdt_1kgb5of")}
+          aria-label={t("common.labels.maximumPrice")}
+          placeholder={t("agriculture.market.maxBdt")}
         />
-        <select
+        <NativeSelect
           name="sort"
           defaultValue={filters.sort ?? "newest"}
-          aria-label={t("inline.sort_dj8kwt")}
+          aria-label={t("agriculture.market.sort")}
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <option value="newest">{t("inline.newest_1g4bhr8")}</option>
-          <option value="price-asc">{t("inline.price_low_to_high_186nc0k")}</option>
-          <option value="price-desc">{t("inline.price_high_to_low_1lcdsbe")}</option>
-        </select>
+          <NativeSelectOption value="newest">{t("common.labels.newest")}</NativeSelectOption>
+          <NativeSelectOption value="price-asc">
+            {t("common.labels.priceLowToHigh")}
+          </NativeSelectOption>
+          <NativeSelectOption value="price-desc">
+            {t("common.labels.priceHighToLow")}
+          </NativeSelectOption>
+        </NativeSelect>
         <input type="hidden" name="page" value="1" />
         <Button type="submit" className="lg:col-span-7">
           <SearchIcon data-icon="inline-start" />
-          {t("inline.search_1n7yeyu")}
+          {t("common.actions.search")}
         </Button>
       </form>
       {result.unavailable ? (
@@ -158,11 +163,11 @@ export function AgricultureMarket({
       ) : (
         <>
           <p className="text-muted-foreground text-sm">
-            {formatter.number(result.total)} {t("inline.listings_17wuylw")}
+            {t("marketplace.listingCount", { count: result.total })}
           </p>
           {result.items.length === 0 ? (
             <p className="border-border text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-              {t("inline.no_published_products_match_these_filters__12lylnw")}
+              {t("agriculture.market.empty")}
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -170,19 +175,19 @@ export function AgricultureMarket({
                 <Card key={listing.id} className="h-full overflow-hidden">
                   <ListingImage
                     listing={listing}
-                    alt={bn ? listing.titleBn : listing.titleEn}
+                    alt={listing.title}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <CardHeader>
-                    <CardTitle>{bn ? listing.titleBn : listing.titleEn}</CardTitle>
+                    <CardTitle>{listing.title}</CardTitle>
                     <CardDescription>
-                      {bn ? listing.providerNameBn : listing.providerNameEn} · {listing.district} ·{" "}
+                      {listing.providerName} · {listing.district} ·{" "}
                       {listing.category}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground line-clamp-2 text-sm">
-                      {bn ? listing.descriptionBn : listing.descriptionEn}
+                      {listing.description}
                     </p>
                     <div className="mt-4 flex items-center justify-between gap-3">
                       <span className="text-primary font-semibold">
@@ -203,13 +208,13 @@ export function AgricultureMarket({
                         className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                         href={`${routeBase}/listings/${listing.id}`}
                       >
-                        {t("inline.details_ccvazu")}
+                        {t("workflow.details")}
                       </Link>
                       <Link
                         className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
                         href={`${routeBase}/providers/${listing.providerId}`}
                       >
-                        {t("inline.seller_qlcxju")}
+                        {t("common.labels.seller")}
                       </Link>
                     </div>
                   </CardContent>
@@ -219,7 +224,7 @@ export function AgricultureMarket({
           )}
           {result.totalPages > 1 && (
             <nav
-              aria-label={t("inline.pagination_q63cg7")}
+              aria-label={t("common.labels.pagination")}
               className="flex flex-wrap items-center justify-center gap-3"
             >
               <Link
@@ -231,10 +236,10 @@ export function AgricultureMarket({
                 href={pageHref(Math.max(1, result.page - 1))}
               >
                 <ArrowLeftIcon data-icon="inline-start" />
-                {t("inline.previous_1rllagw")}
+                {t("common.labels.previous")}
               </Link>
               <span className="text-muted-foreground text-sm">
-                {t("inline.page_17ze4or")} {formatter.number(result.page)} /{" "}
+                {t("agriculture.market.page")} {formatter.number(result.page)} /{" "}
                 {formatter.number(result.totalPages)}
               </span>
               <Link
@@ -245,7 +250,7 @@ export function AgricultureMarket({
                 )}
                 href={pageHref(Math.min(result.totalPages, result.page + 1))}
               >
-                {t("inline.next_1vj0vil")}
+                {t("common.labels.next")}
                 <ArrowRightIcon data-icon="inline-end" />
               </Link>
             </nav>

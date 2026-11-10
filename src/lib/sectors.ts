@@ -1,6 +1,8 @@
+import type { SectorMessageKey } from "@/i18n/message-keys";
+
 export interface DashboardCategory {
   id: number;
-  slug: string;
+  slug: SectorMessageKey;
   icon: string;
   status: "live" | "coming-soon";
 }
@@ -96,24 +98,18 @@ export function isLiveSector(slug: string): slug is "agriculture-labor" | "const
 export const agricultureListings = [
   {
     slug: "produce-market",
-    titleEn: "Produce Marketplace",
-    titleBn: "কৃষিপণ্যের বাজার",
     kind: "PRODUCE",
     icon: "🥬",
     unit: "kg",
   },
   {
     slug: "farm-labour",
-    titleEn: "Farm Worker Booking",
-    titleBn: "কৃষিশ্রমিক বুকিং",
     kind: "WORKER",
     icon: "👨‍🌾",
     unit: "day",
   },
   {
     slug: "farm-machinery",
-    titleEn: "Farm Machinery Hire",
-    titleBn: "কৃষিযন্ত্র ভাড়া",
     kind: "MACHINERY",
     icon: "🚜",
     unit: "day",
@@ -123,16 +119,12 @@ export const agricultureListings = [
 export const constructionListings = [
   {
     slug: "construction-material",
-    titleEn: "Building Materials",
-    titleBn: "নির্মাণসামগ্রী",
     kind: "CONSTRUCTION_MATERIAL",
     icon: "🧱",
     unit: "piece",
   },
   {
     slug: "construction-service",
-    titleEn: "Construction Professionals",
-    titleBn: "নির্মাণ পেশাজীবী",
     kind: "CONSTRUCTION_SERVICE",
     icon: "👷",
     unit: "job",

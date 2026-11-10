@@ -2,7 +2,6 @@
 
 import { BellIcon, ChevronDownIcon, NewspaperIcon, PhoneCallIcon, UserIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useState } from "react";
 
 import { LanguageToggle } from "@/components/language-toggle";
@@ -14,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Link } from "@/i18n/navigation";
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -133,10 +133,10 @@ export function DashboardHeader({ userName, userRole = "admin" }: DashboardHeade
       <Dialog open={emergencyOpen} onOpenChange={setEmergencyOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("emergency.modalTitle")}</DialogTitle>
-            <DialogDescription>{t("emergency.modalSubtitle")}</DialogDescription>
+            <DialogTitle>{t("common.emergency.modalTitle")}</DialogTitle>
+            <DialogDescription>{t("common.emergency.modalSubtitle")}</DialogDescription>
           </DialogHeader>
-          <p className="text-muted-foreground text-sm">{t("emergency.modalDescription")}</p>
+          <p className="text-muted-foreground text-sm">{t("common.emergency.modalDescription")}</p>
         </DialogContent>
       </Dialog>
 

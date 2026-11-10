@@ -6,7 +6,13 @@ if (!testDatabaseUrl)
     "Set TEST_DATABASE_URL to a dedicated, migrated PostgreSQL test database before running integration tests.",
   );
 process.env.DATABASE_URL = testDatabaseUrl;
-mock.module("server-only", () => ({}));
+void mock.module("server-only", () => ({}));
+void mock.module("next/cache", () => ({
+  cacheLife: () => {},
+  cacheTag: () => {},
+  revalidatePath: () => {},
+  revalidateTag: () => {},
+}));
 
 const [{ prisma }, agriculture, workspaces] = await Promise.all([
   import("@/lib/prisma"),
@@ -27,10 +33,21 @@ const currentUser = (id: string, role = "customer") => ({
   phone: "+8801700000000",
   role,
   status: "active",
+  accountType: "customer",
 });
 
 describe("PostgreSQL agriculture service requests", () => {
   beforeAll(async () => {
+    await prisma.sector.upsert({
+      where: { slug: "agriculture-labor" },
+      update: { status: "LIVE" },
+      create: {
+        slug: "agriculture-labor",
+        position: 4,
+        icon: "🌾",
+        status: "LIVE",
+      },
+    });
     for (const user of [
       currentUser(customerId),
       currentUser(otherCustomerId),
@@ -43,11 +60,7 @@ describe("PostgreSQL agriculture service requests", () => {
       update: { isActive: true, formVersion: 1 },
       create: {
         slug: "crop-farming",
-        titleBn: "ফসল উৎপাদন ও চাষাবাদ",
-        titleEn: "Crop farming",
         category: "কৃষি",
-        descriptionBn: "ফসল পরিকল্পনা",
-        descriptionEn: "Crop planning",
         sectorSlug: "agriculture-labor",
         isActive: true,
       },
@@ -94,12 +107,12 @@ describe("PostgreSQL agriculture service requests", () => {
       privateLocale: "en",
     });
     const afterReview = await workspaces.getCustomerAgricultureRequest(customerId, result.id);
-    expect(
-      afterReview?.updates.some((update) => update.messageEn?.includes("Verify district")),
-    ).toBe(false);
+    expect(afterReview?.updates.some((update) => update.message?.includes("Verify district"))).toBe(
+      false,
+    );
     expect(
       afterReview?.updates.some((update) =>
-        update.messageEn?.includes("checking local availability"),
+        update.message?.includes("checking local availability"),
       ),
     ).toBe(true);
 
@@ -152,7 +165,7 @@ describe("PostgreSQL agriculture service requests", () => {
       select: { status: true },
     });
     expect(request?.status).toBe("CANCELLED");
-    await expect(
+    expect(
       agriculture.withdrawAgricultureServiceRequest(otherCustomerId, result.id),
     ).rejects.toMatchObject({ code: "notFound" });
   });

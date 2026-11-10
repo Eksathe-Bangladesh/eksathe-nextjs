@@ -1,16 +1,18 @@
 "use client";
 
 import { cn } from "cn";
-import { ArrowLeftIcon, MapPinIcon, StarIcon } from "lucide-react";
-import { useLocale, useTranslations, useFormatter } from "next-intl";
+import { ArrowLeftIcon, BadgeCheckIcon, MapPinIcon, StarIcon } from "lucide-react";
+import { useTranslations, useFormatter } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
+import { Link } from "@/i18n/navigation";
+import { verificationMessageKey } from "@/lib/construction/verification-labels";
 import type { PublicProvider } from "@/lib/listings";
 import type { SectorDefinition } from "@/lib/sectors";
 
@@ -27,7 +29,6 @@ export function ProviderProfile({
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
-  const locale = useLocale();
   if (unavailable)
     return (
       <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
@@ -53,7 +54,7 @@ export function ProviderProfile({
         {t("nav.browse")}
       </Link>
       <Card>
-        <div className="from-primary/10 via-secondary to-primary/20 relative h-40 overflow-hidden rounded-t-xl bg-gradient-to-br sm:h-56">
+        <div className="from-primary/10 via-secondary to-primary/20 relative h-40 overflow-hidden rounded-t-xl bg-linear-to-br sm:h-56">
           {provider.hasCoverImage && (
             <StorefrontPhoto
               providerId={provider.id}
@@ -85,9 +86,7 @@ export function ProviderProfile({
                 <span aria-hidden="true">👩‍🌾</span>
               )}
             </div>
-            <CardTitle className="text-3xl">
-              {locale === "bn" ? provider.nameBn : provider.nameEn}
-            </CardTitle>
+            <CardTitle className="text-3xl">{provider.name}</CardTitle>
           </div>
           <CardDescription className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-1">
@@ -98,21 +97,39 @@ export function ProviderProfile({
             {provider.averageRating !== null && (
               <span className="inline-flex items-center gap-1">
                 <StarIcon aria-hidden="true" className="size-4 fill-current text-amber-500" />
-                {provider.averageRating.toFixed(1)} · {provider.reviewCount}{" "}
-                {t("inline.reviews_265xd0")}
+                {provider.averageRating.toFixed(1)} ·{" "}
+                {t("marketplace.labels.reviews", { count: provider.reviewCount })}
               </span>
             )}
+            {provider.verifications.map((verification) => (
+              <Badge key={verification.type} variant="secondary" className="gap-1">
+                <BadgeCheckIcon aria-hidden="true" className="size-3.5" />
+                {verification.reviewedAt
+                  ? t("verification.public.verifiedOn", {
+                      type: t(`verification.types.${verificationMessageKey(verification.type)}`),
+                      date: formatter.dateTime(new Date(verification.reviewedAt), {
+                        dateStyle: "medium",
+                        timeZone: "Asia/Dhaka",
+                      }),
+                    })
+                  : t("verification.public.verified", {
+                      type: t(`verification.types.${verificationMessageKey(verification.type)}`),
+                    })}
+              </Badge>
+            ))}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm leading-7 whitespace-pre-line">
-            {locale === "bn" ? provider.bioBn : provider.bioEn}
+            {provider.bio}
           </p>
         </CardContent>
       </Card>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.services_and_listings_f1v32t")}</h2>
+        <h2 className="text-xl font-bold">
+          {t("marketplace.providerProfile.servicesAndListings")}
+        </h2>
         {provider.listings.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
             {t("workflow.noRecords")}
@@ -123,11 +140,11 @@ export function ProviderProfile({
               <Card key={listing.id}>
                 <ListingImage
                   listing={listing}
-                  alt={locale === "bn" ? listing.titleBn : listing.titleEn}
+                  alt={listing.title}
                   sizes="(max-width: 1024px) 100vw, 33vw"
                 />
                 <CardHeader>
-                  <CardTitle>{locale === "bn" ? listing.titleBn : listing.titleEn}</CardTitle>
+                  <CardTitle>{listing.title}</CardTitle>
                   <CardDescription className="flex items-center gap-2">
                     {listing.district} · {listing.category}
                     {listing.averageRating !== null && (
@@ -140,7 +157,7 @@ export function ProviderProfile({
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground line-clamp-3 text-sm">
-                    {locale === "bn" ? listing.descriptionBn : listing.descriptionEn}
+                    {listing.description}
                   </p>
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-primary text-sm font-semibold">
@@ -150,7 +167,7 @@ export function ProviderProfile({
                       href={`${base}/listings/${listing.id}`}
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                     >
-                      {t("inline.details_ccvazu")}
+                      {t("workflow.details")}
                     </Link>
                   </div>
                 </CardContent>
@@ -161,10 +178,10 @@ export function ProviderProfile({
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">{t("inline.customer_reviews_1gf1uai")}</h2>
+        <h2 className="text-xl font-bold">{t("marketplace.labels.customerReviews")}</h2>
         {provider.reviews.length === 0 ? (
           <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-            {t("inline.reviews_from_completed_orders_will_appear__1g9e5me")}
+            {t("marketplace.providerProfile.emptyReviews")}
           </p>
         ) : (
           provider.reviews.map((review, index) => (

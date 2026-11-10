@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import { Suspense } from "react";
 
 import { FooterContent } from "@/components/footer-content";
 
@@ -12,5 +13,9 @@ async function getCurrentYear() {
 export async function SiteFooter() {
   const year = await getCurrentYear();
 
-  return <FooterContent year={year} />;
+  return (
+    <Suspense fallback={null}>
+      <FooterContent year={year} />
+    </Suspense>
+  );
 }

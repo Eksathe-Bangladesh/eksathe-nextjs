@@ -1,15 +1,21 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
 import { useActionState } from "react";
 
 import { saveAgriculturePublicationAction } from "@/app/actions/agriculture-publishing";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@/i18n/navigation";
 import type {
   AgricultureMarketPriceRecord,
   AgriculturePublishingWorkspaceData,
@@ -30,27 +36,27 @@ export function AgriculturePublishingWorkspace({
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-primary text-sm font-semibold">
-            {t("inline.agriculture_operations_171enbn")}
+            {t("admin.publishing.agricultureOperations")}
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
-            {t("inline.publish_prices_and_updates_1h3g253")}
+            {t("admin.publishing.publishPricesAndUpdates")}
           </h1>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-            {t("inline.review_submitted_information_add_a_source__1o8xi6a")}
+            {t("admin.publishing.description")}
           </p>
         </div>
         <Link href="/admin" className="text-primary text-sm font-medium hover:underline">
-          {t("inline.back_to_administration_1395jov")}
+          {t("admin.publishing.backToAdministration")}
         </Link>
       </header>
 
       <section className="flex flex-col gap-4" aria-labelledby="price-heading">
         <div>
           <h2 id="price-heading" className="text-xl font-bold">
-            {t("inline.market_prices_1ahmufv")}
+            {t("agriculture.information.marketPrices")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.price_submissions_awaiting_review_9p0z43")}
+            {t("admin.publishing.priceSubmissionsAwaitingReview")}
           </p>
         </div>
         {data.requests.length > 0 && (
@@ -62,11 +68,11 @@ export function AgriculturePublishingWorkspace({
                     {request.referenceCode ?? `#${request.id}`} · {request.district}
                   </CardTitle>
                   <CardDescription>
-                    {t("inline.submitted_price_information_1vv4930")}
+                    {t("admin.publishing.submittedPriceInformation")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <pre className="bg-muted/60 max-h-36 overflow-auto rounded-lg p-3 text-xs break-words whitespace-pre-wrap">
+                  <pre className="bg-muted/60 max-h-36 overflow-auto rounded-lg p-3 text-xs wrap-break-word whitespace-pre-wrap">
                     {JSON.stringify(request.answers, null, 2)}
                   </pre>
                 </CardContent>
@@ -83,10 +89,10 @@ export function AgriculturePublishingWorkspace({
       <section className="flex flex-col gap-4" aria-labelledby="updates-heading">
         <div>
           <h2 id="updates-heading" className="text-xl font-bold">
-            {t("inline.news_advice_and_weather_alerts_vzz9rb")}
+            {t("admin.publishing.newsAdviceAndWeatherAlerts")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("inline.weather_alerts_require_an_expiry_date_13z2wta")}
+            {t("admin.publishing.weatherAlertsRequireAnExpiryDate")}
           </p>
         </div>
         {data.updates.map((update) => (
@@ -116,7 +122,7 @@ function PriceForm({
   const english = locale === "en";
   const prefix = `market-price-${initial?.id ?? "new"}`;
   const sourceOptions: [string, string][] = [
-    ["", t("inline.no_linked_request_1s729f4")],
+    ["", t("admin.publishing.noLinkedRequest")],
     ...requests.map(
       (request) =>
         [
@@ -131,7 +137,7 @@ function PriceForm({
   )
     sourceOptions.push([
       initial.sourceRequestId,
-      `${t("inline.linked_request_1rose97")} #${initial.sourceRequestId}`,
+      `${t("admin.publishing.linkedRequest")} #${initial.sourceRequestId}`,
     ]);
   return (
     <Card>
@@ -139,9 +145,9 @@ function PriceForm({
         <CardTitle className="text-base">
           {initial
             ? english
-              ? `Edit ${initial.productEn}`
-              : `${initial.productBn} সম্পাদনা`
-            : t("inline.add_market_price_aj2t35")}
+              ? `Edit ${initial.product}`
+              : `${initial.product} সম্পাদনা`
+            : t("admin.publishing.addMarketPrice")}
         </CardTitle>
         <CardDescription>
           {english
@@ -157,84 +163,83 @@ function PriceForm({
             <TextField
               id={`${prefix}-product-bn`}
               name="productBn"
-              label={t("inline.product_name_bangla_1ldtlug")}
-              defaultValue={initial?.productBn}
+              label={t("admin.publishing.productNameBangla")}
+              defaultValue={initial?.product}
               required
             />
             <TextField
               id={`${prefix}-product-en`}
               name="productEn"
-              label={t("inline.product_name_english_upxxr0")}
-              defaultValue={initial?.productEn}
+              label={t("admin.publishing.productNameEnglish")}
+              defaultValue={initial?.product}
               required
             />
             <TextField
               id={`${prefix}-market`}
               name="market"
-              label={t("inline.market_hegs9l")}
+              label={t("admin.publishing.marketLabel")}
               defaultValue={initial?.market}
               required
             />
             <TextField
               id={`${prefix}-district`}
               name="district"
-              label={t("inline.district_135um58")}
+              label={t("workflow.district")}
               defaultValue={initial?.district}
               required
             />
             <TextField
               id={`${prefix}-unit`}
               name="unit"
-              label={t("inline.unit_e_g_kg_im8c5r")}
+              label={t("admin.publishing.unitPlaceholder")}
               defaultValue={initial?.unit}
               required
             />
             <TextField
               id={`${prefix}-price`}
               name="price"
-              label={t("inline.price_bdt_swlqge")}
+              label={t("admin.publishing.priceBdt")}
               type="number"
               min="0"
               step="0.01"
               defaultValue={initial?.price}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-observed`}
               name="observedAt"
-              label={t("inline.observed_on_19fm3vl")}
-              type="date"
+              label={t("admin.publishing.observedOn")}
               defaultValue={initial?.observedAt}
               required
             />
             <TextField
               id={`${prefix}-source`}
               name="source"
-              label={t("inline.source_1d36x5a")}
+              label={t("common.labels.source")}
               defaultValue={initial?.source}
               required
             />
             <SelectField
               id={`${prefix}-status`}
               name="status"
-              label={t("inline.publication_status_1xsrx62")}
+              label={t("admin.publishing.publicationStatus")}
               defaultValue={initial?.status ?? "DRAFT"}
               options={[
-                ["DRAFT", t("inline.draft_1sgfgqc")],
-                ["PUBLISHED", t("inline.published_1fgctfu")],
+                ["DRAFT", t("admin.publishing.draft")],
+                ["PUBLISHED", t("common.labels.published")],
               ]}
             />
             <SelectField
               id={`${prefix}-request`}
               name="sourceRequestId"
-              label={t("inline.link_a_price_submission_1ux67p8")}
+              label={t("admin.publishing.linkAPriceSubmission")}
               defaultValue={initial?.sourceRequestId ?? ""}
               options={sourceOptions}
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving_4kkf1l") : t("inline.save_market_price_71w75p")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveMarketPrice")}
           </Button>
         </form>
       </CardContent>
@@ -257,9 +262,9 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
         <CardTitle className="text-base">
           {initial
             ? english
-              ? `Edit ${initial.titleEn}`
-              : `${initial.titleBn} সম্পাদনা`
-            : t("inline.add_an_update_1b5oi8t")}
+              ? `Edit ${initial.title}`
+              : `${initial.title} সম্পাদনা`
+            : t("admin.publishing.addAnUpdate")}
         </CardTitle>
         <CardDescription>
           {english
@@ -275,57 +280,55 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
             <SelectField
               id={`${prefix}-kind`}
               name="kind"
-              label={t("inline.type_nja194")}
+              label={t("common.labels.type")}
               defaultValue={initial?.kind ?? "NEWS"}
               options={[
-                ["NEWS", t("inline.news_330zsg")],
-                ["ADVICE", t("inline.advice_1ln74x8")],
-                ["WEATHER_ALERT", t("inline.weather_alert_j66p6a")],
+                ["NEWS", t("agriculture.information.news")],
+                ["ADVICE", t("agriculture.information.advice")],
+                ["WEATHER_ALERT", t("agriculture.information.weatherAlert")],
               ]}
             />
             <SelectField
               id={`${prefix}-status`}
               name="status"
-              label={t("inline.publication_status_1xsrx62")}
+              label={t("admin.publishing.publicationStatus")}
               defaultValue={initial?.status ?? "DRAFT"}
               options={[
-                ["DRAFT", t("inline.draft_1sgfgqc")],
-                ["PUBLISHED", t("inline.published_1fgctfu")],
+                ["DRAFT", t("admin.publishing.draft")],
+                ["PUBLISHED", t("common.labels.published")],
               ]}
             />
             <TextField
               id={`${prefix}-title-bn`}
               name="titleBn"
-              label={t("inline.title_bangla_iq0ud6")}
-              defaultValue={initial?.titleBn}
+              label={t("workflow.titleBn")}
+              defaultValue={initial?.title}
               required
             />
             <TextField
               id={`${prefix}-title-en`}
               name="titleEn"
-              label={t("inline.title_english_o28u0g")}
-              defaultValue={initial?.titleEn}
+              label={t("workflow.titleEn")}
+              defaultValue={initial?.title}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-published`}
               name="publishedAt"
-              label={t("inline.publication_date_e9a51j")}
-              type="date"
+              label={t("admin.publishing.publicationDate")}
               defaultValue={initial?.publishedAt}
               required
             />
-            <TextField
+            <DateField
               id={`${prefix}-expiry`}
               name="expiresAt"
-              label={t("inline.expiry_date_required_for_weather_alerts_104m02b")}
-              type="date"
+              label={t("admin.publishing.weatherExpiryLabel")}
               defaultValue={initial?.expiresAt}
             />
             <TextField
               id={`${prefix}-source`}
               name="source"
-              label={t("inline.source_1d36x5a")}
+              label={t("common.labels.source")}
               defaultValue={initial?.source}
               required
             />
@@ -333,22 +336,22 @@ function UpdateForm({ initial }: { initial?: AgricultureUpdateRecord }) {
               className="sm:col-span-2"
               id={`${prefix}-body-bn`}
               name="bodyBn"
-              label={t("inline.content_bangla_12pipiu")}
-              defaultValue={initial?.bodyBn}
+              label={t("admin.publishing.contentBangla")}
+              defaultValue={initial?.body}
               required
             />
             <TextAreaField
               className="sm:col-span-2"
               id={`${prefix}-body-en`}
               name="bodyEn"
-              label={t("inline.content_english_1hmolki")}
-              defaultValue={initial?.bodyEn}
+              label={t("admin.publishing.contentEnglish")}
+              defaultValue={initial?.body}
               required
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving_4kkf1l") : t("inline.save_update_kjovpe")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveUpdate")}
           </Button>
         </form>
       </CardContent>
@@ -365,9 +368,9 @@ function SupportForm({ initial }: { initial: AgriculturePublishingWorkspaceData[
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("inline.agriculture_support_contact_1q8h10x")}</CardTitle>
+        <CardTitle>{t("admin.publishing.agricultureSupportContact")}</CardTitle>
         <CardDescription>
-          {t("inline.these_details_appear_publicly_on_the_agric_1h7pwqe")}
+          {t("admin.support.visibilityNotice")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -377,34 +380,34 @@ function SupportForm({ initial }: { initial: AgriculturePublishingWorkspaceData[
             <TextField
               id="agriculture-support-phone"
               name="phone"
-              label={t("inline.phone_huhfp5")}
+              label={t("admin.publishing.phone")}
               defaultValue={initial?.phone}
             />
             <TextField
               id="agriculture-support-email"
               name="email"
               type="email"
-              label={t("inline.email_1e0eytg")}
+              label={t("admin.publishing.email")}
               defaultValue={initial?.email}
             />
             <TextAreaField
               className="sm:col-span-2"
               id="agriculture-support-bn"
               name="messageBn"
-              label={t("inline.support_message_bangla_1oh3kqd")}
+              label={t("admin.publishing.supportMessageBangla")}
               defaultValue={initial?.messageBn}
             />
             <TextAreaField
               className="sm:col-span-2"
               id="agriculture-support-en"
               name="messageEn"
-              label={t("inline.support_message_english_1uayqe7")}
+              label={t("admin.publishing.supportMessageEnglish")}
               defaultValue={initial?.messageEn}
             />
           </FieldGroup>
           <FormFeedback state={state.status} />
           <Button type="submit" disabled={pending}>
-            {pending ? t("inline.saving_4kkf1l") : t("inline.save_support_details_fn4rh4")}
+            {pending ? t("common.states.saving") : t("admin.publishing.saveSupportDetails")}
           </Button>
         </form>
       </CardContent>
@@ -443,6 +446,27 @@ function TextField({
         min={min}
         step={step}
       />
+    </Field>
+  );
+}
+
+function DateField({
+  id,
+  name,
+  label,
+  defaultValue,
+  required,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  defaultValue?: string;
+  required?: boolean;
+}) {
+  return (
+    <Field className="min-w-0">
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <DatePicker id={id} name={name} defaultValue={defaultValue} required={required} />
     </Field>
   );
 }
@@ -486,20 +510,20 @@ function SelectField({
   return (
     <Field className="min-w-0">
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      <select
+      <NativeSelect
         id={id}
         name={name}
         defaultValue={defaultValue}
         className="border-input bg-background h-9 w-full rounded-lg border px-3 text-sm"
       >
-        <optgroup label={label}>
+        <NativeSelectOptGroup label={label}>
           {options.map(([value, title]) => (
-            <option key={`${value}-${title}`} value={value}>
+            <NativeSelectOption key={`${value}-${title}`} value={value}>
               {title}
-            </option>
+            </NativeSelectOption>
           ))}
-        </optgroup>
-      </select>
+        </NativeSelectOptGroup>
+      </NativeSelect>
     </Field>
   );
 }
@@ -514,8 +538,8 @@ function FormFeedback({ state }: { state: "idle" | "success" | "error" }) {
       className={state === "error" ? "text-destructive text-sm" : "text-primary text-sm"}
     >
       {state === "error"
-        ? t("inline.could_not_save_check_the_fields_and_try_ag_1qzk9yl")
-        : t("inline.saved_19x43w9")}
+        ? t("admin.publishing.saveError")
+        : t("admin.publishing.saved")}
     </p>
   );
 }

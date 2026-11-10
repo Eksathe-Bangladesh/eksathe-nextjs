@@ -1,7 +1,10 @@
 import "server-only";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
+import { cache } from "react";
 
+import { defaultLocale, isLocale, type Locale } from "@/i18n/locales";
+import { localizedPath } from "@/i18n/paths";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sectors } from "@/lib/sectors";
@@ -14,9 +17,10 @@ export type CurrentUser = {
   phone: string;
   role: string;
   status: string;
+  accountType: string;
 };
 
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export const getCurrentUser = cache(async function getCurrentUser(): Promise<CurrentUser | null> {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) return null;
 
@@ -30,21 +34,34 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
       phone: true,
       role: true,
       status: true,
+      accountType: true,
     },
   });
-}
+});
 
 export async function requireUser(returnTo = "/account", verified = true) {
   const user = await getCurrentUser();
-  if (!user) redirect(`/login?next=${encodeURIComponent(returnTo)}`);
+  if (!user) {
+    const cookieStore = await cookies();
+    const cookieVal = cookieStore.get("NEXT_LOCALE")?.value;
+    const locale: Locale = isLocale(cookieVal) ? cookieVal : defaultLocale;
+    const dest = localizedPath(locale, returnTo);
+    redirect(localizedPath(locale, `/login?next=${encodeURIComponent(dest)}`));
+  }
   if (user.status !== "active") notFound();
-  if (verified && !user.emailVerified) redirect(`/verify?next=${encodeURIComponent(returnTo)}`);
+  if (verified && !user.emailVerified) {
+    const cookieStore = await cookies();
+    const cookieVal = cookieStore.get("NEXT_LOCALE")?.value;
+    const locale: Locale = isLocale(cookieVal) ? cookieVal : defaultLocale;
+    const dest = localizedPath(locale, returnTo);
+    redirect(localizedPath(locale, `/verify?next=${encodeURIComponent(dest)}`));
+  }
   return user;
 }
 
 export async function hasStaffPermission(
   user: CurrentUser,
-  permission: "OPERATIONS" | "FINANCE",
+  permission: "OPERATIONS" | "FINANCE" | "USERS" | "PANELS" | "REPORTS",
   sectorSlug?: string,
 ) {
   if (user.role === "super_admin") return true;
@@ -74,10 +91,15 @@ export type StaffAccess = {
   isSuperAdmin: boolean;
   operationSectors: string[];
   financeSectors: string[];
+  userManagementSectors: string[];
+  panelManagementSectors: string[];
+  reportSectors: string[];
   canManageStaff: boolean;
 };
 
-export async function getStaffAccess(user: CurrentUser): Promise<StaffAccess> {
+export const getStaffAccess = cache(async function getStaffAccess(
+  user: CurrentUser,
+): Promise<StaffAccess> {
   const isSuperAdmin = user.role === "super_admin";
   const liveSectorSlugs = sectors
     .filter((sector) => sector.status === "live")
@@ -87,6 +109,9 @@ export async function getStaffAccess(user: CurrentUser): Promise<StaffAccess> {
       isSuperAdmin,
       operationSectors: liveSectorSlugs,
       financeSectors: liveSectorSlugs,
+      userManagementSectors: liveSectorSlugs,
+      panelManagementSectors: liveSectorSlugs,
+      reportSectors: liveSectorSlugs,
       canManageStaff: true,
     };
   }
@@ -95,7 +120,7 @@ export async function getStaffAccess(user: CurrentUser): Promise<StaffAccess> {
     where: { userId: user.id },
     select: { scopeKey: true, sectorSlug: true, permission: true },
   });
-  const scopesFor = (permission: "OPERATIONS" | "FINANCE") => {
+  const scopesFor = (permission: "OPERATIONS" | "FINANCE" | "USERS" | "PANELS" | "REPORTS") => {
     const matching = grants.filter((grant) => grant.permission === permission);
     if (matching.some((grant) => grant.scopeKey === "global")) return liveSectorSlugs;
     return matching
@@ -107,9 +132,12 @@ export async function getStaffAccess(user: CurrentUser): Promise<StaffAccess> {
     isSuperAdmin,
     operationSectors: scopesFor("OPERATIONS"),
     financeSectors: scopesFor("FINANCE"),
+    userManagementSectors: scopesFor("USERS"),
+    panelManagementSectors: scopesFor("PANELS"),
+    reportSectors: scopesFor("REPORTS"),
     canManageStaff: false,
   };
-}
+});
 
 export async function requireAdmin() {
   const user = await requireUser("/admin");
@@ -117,7 +145,10 @@ export async function requireAdmin() {
   if (
     !access.isSuperAdmin &&
     access.operationSectors.length === 0 &&
-    access.financeSectors.length === 0
+    access.financeSectors.length === 0 &&
+    access.userManagementSectors.length === 0 &&
+    access.panelManagementSectors.length === 0 &&
+    access.reportSectors.length === 0
   )
     notFound();
   return { user, access };
@@ -129,14 +160,13 @@ export async function requireSuperAdmin() {
   return user;
 }
 
-export async function requireStaff(permission: "OPERATIONS" | "FINANCE", sectorSlug?: string) {
+export async function requireStaff(
+  permission: "OPERATIONS" | "FINANCE" | "USERS" | "PANELS" | "REPORTS",
+  sectorSlug?: string,
+) {
   const user = await requireUser("/admin");
   if (!(await hasStaffPermission(user, permission, sectorSlug))) notFound();
   return user;
 }
 
-export function safeNextPath(value: unknown, fallback: string) {
-  if (typeof value !== "string") return fallback;
-  if (!value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return fallback;
-  return value;
-}
+export { safeNextPath } from "@/i18n/paths";

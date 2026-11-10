@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocale, useTranslations, useFormatter } from "next-intl";
-import Link from "next/link";
 import { useActionState } from "react";
 
 import { withdrawAgricultureServiceRequestAction } from "@/app/actions/agriculture";
@@ -9,6 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
+import { Link } from "@/i18n/navigation";
 import { initialWorkflowState } from "@/lib/workflow-state";
 import type { getCustomerAgricultureRequest } from "@/lib/workspaces";
 
@@ -18,7 +18,6 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
   const formatter = useFormatter();
   const t = useTranslations();
   const locale = useLocale();
-  const english = locale === "en";
   const [state, action, pending] = useActionState(
     withdrawAgricultureServiceRequestAction,
     initialWorkflowState,
@@ -39,7 +38,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
         href="/account#agriculture-requests"
         className="text-muted-foreground hover:text-foreground text-sm"
       >
-        ← {t("inline.back_to_account_k3epiu")}
+        ← {t("account.agricultureRequest.backToAccount")}
       </Link>
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4">
@@ -49,7 +48,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
             </span>
             <div>
               <CardTitle className="text-2xl">
-                {english ? request.service.titleEn : request.service.titleBn}
+                {{ en: request.service.title, bn: request.service.title }[locale]}
               </CardTitle>
               <CardDescription className="mt-2">
                 {request.referenceCode ?? `AG-${request.id}`} · {request.district} ·{" "}
@@ -67,23 +66,23 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
         <CardContent className="flex flex-col gap-5">
           <div className="bg-muted/50 grid gap-3 rounded-xl p-4 sm:grid-cols-2">
             <p className="text-sm">
-              <span className="text-muted-foreground">{t("inline.contact_kqf8cd")}:</span>{" "}
+              <span className="text-muted-foreground">{t("account.agricultureRequest.contact")}:</span>{" "}
               {request.customerName} · {request.phone}
             </p>
             {request.budget && (
               <p className="text-sm">
-                <span className="text-muted-foreground">{t("inline.budget_1cc4s4c")}:</span> ৳
+                <span className="text-muted-foreground">{t("common.labels.budget")}:</span> ৳
                 {request.budget}
               </p>
             )}
             <p className="text-sm sm:col-span-2">
-              <span className="text-muted-foreground">{t("inline.requirement_14zq66t")}:</span>{" "}
+              <span className="text-muted-foreground">{t("account.agricultureRequest.requirement")}:</span>{" "}
               {request.details}
             </p>
           </div>
           {snapshot.fields?.some((field) => answers[field.name]) && (
             <section>
-              <h2 className="font-semibold">{t("inline.submitted_service_details_1wb3h0i")}</h2>
+              <h2 className="font-semibold">{t("account.agricultureRequest.submittedServiceDetails")}</h2>
               <dl className="mt-3 grid gap-2 sm:grid-cols-2">
                 {snapshot.fields
                   .filter((field) => answers[field.name])
@@ -93,10 +92,10 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
                     return (
                       <div key={field.name} className="rounded-lg border p-3">
                         <dt className="text-muted-foreground text-xs">
-                          {english ? field.labelEn : field.labelBn}
+                          {{ en: field.labelEn, bn: field.labelBn }[locale]}
                         </dt>
                         <dd className="mt-1 text-sm">
-                          {option ? (english ? option.labelEn : option.labelBn) : answer}
+                          {option ? { en: option.labelEn, bn: option.labelBn }[locale] : answer}
                         </dd>
                       </div>
                     );
@@ -106,7 +105,7 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
           )}
           {request.attachments.length > 0 && (
             <section>
-              <h2 className="font-semibold">{t("inline.private_attachments_fpiomb")}</h2>
+              <h2 className="font-semibold">{t("common.labels.privateAttachments")}</h2>
               <ul className="mt-2 space-y-2">
                 {request.attachments.map((attachment) => (
                   <li key={attachment.id}>
@@ -125,20 +124,18 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
             </section>
           )}
           <section>
-            <h2 className="font-semibold">{t("inline.updates_12jzrl0")}</h2>
+            <h2 className="font-semibold">{t("common.labels.updates")}</h2>
             {request.updates.length === 0 ? (
               <p className="text-muted-foreground mt-2 text-sm">
-                {t("inline.no_updates_yet_105bcq2")}
+                {t("account.agricultureRequest.noUpdatesYet")}
               </p>
             ) : (
               <ol className="mt-3 space-y-3 border-l pl-4">
                 {request.updates.map((update) => (
                   <li key={update.id} className="relative">
-                    <span className="bg-primary absolute top-1 -left-[21px] size-2 rounded-full" />
+                    <span className="bg-primary absolute top-1 left-[-21px] size-2 rounded-full" />
                     <p className="text-sm">
-                      {english
-                        ? (update.messageEn ?? update.messageBn)
-                        : (update.messageBn ?? update.messageEn)}
+                      {({ en: update.message ?? update.message, bn: update.message ?? update.message }[locale])}
                     </p>
                     <p className="text-muted-foreground mt-1 text-xs">
                       {update.createdAt
@@ -159,12 +156,12 @@ export function AgricultureRequestDetail({ request }: { request: RequestData }) 
               <input type="hidden" name="requestId" value={request.id} />
               <ActionFeedback state={state} />
               <Button type="submit" variant="outline" disabled={pending} className="w-fit">
-                {t("inline.withdraw_request_16j3pnu")}
+                {t("account.labels.withdrawRequest")}
               </Button>
             </form>
           )}
           <Link href="/agriculture" className={buttonVariants({ variant: "ghost", size: "sm" })}>
-            {t("inline.all_agriculture_services_170e4nu")}
+            {t("agriculture.services.all")}
           </Link>
         </CardContent>
       </Card>

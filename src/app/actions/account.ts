@@ -1,8 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
+import { revalidateLocalizedPath } from "@/i18n/revalidate";
+import { cacheTags } from "@/lib/cache-tags";
 import { requireUser } from "@/lib/dal";
 import { updateOwnProfile } from "@/lib/domain/account";
 import { logError } from "@/lib/logging";
@@ -32,7 +34,8 @@ export async function updateProfileAction(
     };
   try {
     await updateOwnProfile(user.id, parsed.data.name, parsed.data.phone);
-    revalidatePath("/account");
+    revalidateLocalizedPath("/account");
+    revalidateTag(cacheTags.providers, "max");
     return { status: "success", messageKey: "profileUpdated" };
   } catch (error) {
     logError("account.profile_update_failed", error);
@@ -53,8 +56,8 @@ export async function markNotificationReadAction(
       data: { readAt: new Date() },
     });
     if (result.count !== 1) return { status: "error", messageKey: "listingMissing" };
-    revalidatePath("/account");
-    revalidatePath("/provider");
+    revalidateLocalizedPath("/account");
+    revalidateLocalizedPath("/provider");
     return { status: "success", messageKey: "notificationRead" };
   } catch (error) {
     logError("account.notification_update_failed", error);

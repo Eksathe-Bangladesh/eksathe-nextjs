@@ -26,7 +26,7 @@ export function CommissionCalculator() {
 
   return (
     <div className="bg-card rounded-2xl border p-6 shadow-sm">
-      <Label htmlFor="grossAmount">{t("commission.amountLabel")}</Label>
+      <Label htmlFor="grossAmount">{t("common.commissionCalculator.amountLabel")}</Label>
       <Input
         id="grossAmount"
         type="number"
@@ -39,11 +39,15 @@ export function CommissionCalculator() {
 
       <div className="mt-5 space-y-3 text-sm">
         <div className="flex items-center justify-between gap-4">
-          <span className="text-muted-foreground">{t("commission.platformShare")}</span>
+          <span className="text-muted-foreground">
+            {t("common.commissionCalculator.platformShare")}
+          </span>
           <strong className="text-base">{formatMoney(commission, formatter)}</strong>
         </div>
         <div className="flex items-center justify-between gap-4">
-          <span className="text-muted-foreground">{t("commission.providerShare")}</span>
+          <span className="text-muted-foreground">
+            {t("common.commissionCalculator.providerShare")}
+          </span>
           <strong className="text-base">{formatMoney(provider, formatter)}</strong>
         </div>
       </div>
