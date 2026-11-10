@@ -1,0 +1,6 @@
+#!/bin/sh
+# Rebuild and commit the shared Graphify code graph with the changes it describes.
+if [ "${GRAPHIFY_SKIP_HOOK:-0}" != 1 ] && [ -f graphify-out/graph.json ] &&
+	! git diff --cached --quiet -- . ':!graphify-out/graph.json'; then
+	{ PYTHONHASHSEED=0 graphify update . && git add graphify-out/graph.json; } || exit 1
+fi

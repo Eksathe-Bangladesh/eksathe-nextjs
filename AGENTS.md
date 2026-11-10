@@ -25,4 +25,5 @@ Rules:
 - When `graphify-out/graph.json` exists, run `graphify query "<question>"` before grep, search, or source-file reads for codebase questions. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts; read raw source only for locations identified by the graph or earlier reads.
 - If `graphify-out/wiki/index.md` exists, use it for broad navigation. Read `graphify-out/GRAPH_REPORT.md` only for broad architecture review or when focused queries do not provide enough context.
 - Dirty graph files are expected after hooks or incremental updates. Skip Graphify only when investigating stale/incorrect graph output or when the user explicitly requests it.
-- After code changes, run `graphify update .` to keep the graph current and commit only `graphify-out/graph.json`. It is rewritten as a whole, so a large diff is expected.
+- Configure the shared hook once per clone with `git config core.hooksPath .githooks`. It runs `graphify update .` before commits that stage non-graph changes and stages only `graphify-out/graph.json`; install the Graphify CLI in the environment used for commits.
+- After code changes, keep `graphify-out/graph.json` current. It is rewritten as a whole, so a large diff is expected. Set `GRAPHIFY_SKIP_HOOK=1` only to intentionally bypass the rebuild.

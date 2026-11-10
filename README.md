@@ -230,9 +230,12 @@ graphify-out/       Tracked graph.json; generated reports and caches are local-o
 - Keep credentials, private documents, and user data out of source control and
   logs. Use private object storage and least-privilege credentials for deployed
   environments.
-- For codebase exploration, consult the tracked Graphify graph first. After
-  code changes, run `graphify update .` and include only
-  `graphify-out/graph.json` with the project update.
+- For codebase exploration, consult the tracked Graphify graph first. To enable
+  automatic graph updates, install the Graphify CLI (`uv tool install graphifyy`)
+  and configure the shared pre-commit hook once per clone:
+  `git config core.hooksPath .githooks`. It rebuilds and stages only
+  `graphify-out/graph.json` when non-graph files are staged. Set
+  `GRAPHIFY_SKIP_HOOK=1` only when intentionally skipping the rebuild.
 
 ## Further documentation
 
