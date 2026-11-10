@@ -137,6 +137,7 @@ export async function createProjectPackageAction(
     label: value(formData, "label"),
     description: value(formData, "description"),
     kind: value(formData, "kind"),
+    serviceSlug: value(formData, "serviceSlug"),
   });
   if (!parsed.success) return fail(parsed.error);
   return run(() => createProjectPackage(user.id, parsed.data), "packageCreated", [

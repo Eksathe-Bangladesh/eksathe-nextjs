@@ -59,10 +59,7 @@ export function ProjectDetail({
     ...new Map(
       project.orders
         .filter((order) => order.kind === "CONSTRUCTION_SERVICE" && order.status !== "CANCELLED")
-        .map((order) => [
-          order.providerId,
-          { id: order.providerId, name: order.providerName },
-        ]),
+        .map((order) => [order.providerId, { id: order.providerId, name: order.providerName }]),
     ).values(),
   ];
   const canUploadProjectPhotos =
@@ -127,9 +124,7 @@ export function ProjectDetail({
       <section className="flex flex-col gap-4">
         <div>
           <h2 className="text-xl font-bold">{t("projects.detail.quotesAndWorkPackages")}</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            {t("projects.quotes.description")}
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">{t("projects.quotes.description")}</p>
         </div>
         {project.packages.length === 0 ? (
           <Empty text={t("projects.packages.requiredNotice")} />
@@ -163,8 +158,17 @@ export function ProjectDetail({
                   );
                 })
               : [];
+            const broaderMatches = service
+              ? sameKindListings.filter(
+                  (listing) => !serviceMatches.some((match) => match.id === listing.id),
+                )
+              : [];
             const candidates = [
-              ...(serviceMatches.length > 0 ? serviceMatches : sameKindListings),
+              ...(service && serviceMatches.length > 0
+                ? serviceMatches
+                : broaderMatches.length > 0
+                  ? broaderMatches
+                  : sameKindListings),
             ].sort(
               (left, right) =>
                 Number(right.id === workPackage.preferredListingId) -
@@ -204,9 +208,7 @@ export function ProjectDetail({
                       <Card key={request.id}>
                         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
                           <div>
-                            <CardTitle className="text-lg">
-                              {request.listing.title}
-                            </CardTitle>
+                            <CardTitle className="text-lg">{request.listing.title}</CardTitle>
                             <CardDescription>
                               <Link
                                 href={`/construction/providers/${request.providerId}`}
@@ -307,37 +309,41 @@ export function ProjectDetail({
                     ) : candidates.length === 0 ? (
                       <Empty text={t("workflow.noRecords")} />
                     ) : (
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {candidates.map((listing) => (
-                          <div
-                            key={listing.id}
-                            className="border-border/70 bg-card flex items-center justify-between gap-3 rounded-xl border p-4"
-                          >
-                            <div>
-                              <p className="font-semibold">
-                                {listing.title}
-                              </p>
-                              <p className="text-muted-foreground mt-1 text-xs">
-                                {listing.providerName}{" "}
-                                · {listing.district}
-                              </p>
-                              <p className="text-primary mt-1 text-sm">
-                                {formatMoney(listing.unitPrice)} / {listing.unit}
-                              </p>
-                            </div>
-                            <Link
-                              className={cn(
-                                buttonVariants({ variant: "outline", size: "sm" }),
-                                "shrink-0 gap-1",
-                              )}
-                              href={`/construction/listings/${listing.id}?${new URLSearchParams({ projectId: project.id, packageId: workPackage.id }).toString()}`}
+                      <>
+                        {service && serviceMatches.length === 0 && (
+                          <p className="text-muted-foreground text-sm">
+                            {t("projects.packages.broaderMatchesNotice")}
+                          </p>
+                        )}
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {candidates.map((listing) => (
+                            <div
+                              key={listing.id}
+                              className="border-border/70 bg-card flex items-center justify-between gap-3 rounded-xl border p-4"
                             >
-                              {t("projects.detail.invite")}
-                              <ArrowRightIcon aria-hidden="true" className="size-4" />
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
+                              <div>
+                                <p className="font-semibold">{listing.title}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">
+                                  {listing.providerName} · {listing.district}
+                                </p>
+                                <p className="text-primary mt-1 text-sm">
+                                  {formatMoney(listing.unitPrice)} / {listing.unit}
+                                </p>
+                              </div>
+                              <Link
+                                className={cn(
+                                  buttonVariants({ variant: "outline", size: "sm" }),
+                                  "shrink-0 gap-1",
+                                )}
+                                href={`/construction/listings/${listing.id}?${new URLSearchParams({ projectId: project.id, packageId: workPackage.id }).toString()}`}
+                              >
+                                {t("projects.detail.invite")}
+                                <ArrowRightIcon aria-hidden="true" className="size-4" />
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      </>
                     )}
                   </div>
                 )}
@@ -571,9 +577,7 @@ function AcceptQuoteForm({ requestId }: { requestId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <ActionFeedback state={state} />
-      <p className="text-muted-foreground text-xs">
-        {t("projects.packages.acceptanceNotice")}
-      </p>
+      <p className="text-muted-foreground text-xs">{t("projects.packages.acceptanceNotice")}</p>
       <Button type="submit" size="sm" disabled={pending}>
         {pending ? t("common.loading") : t("workflow.acceptQuote")}
       </Button>

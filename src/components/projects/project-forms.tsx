@@ -20,6 +20,7 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { useRouter } from "@/i18n/navigation";
 import { uploadPrivateFile } from "@/lib/client-upload";
+import { constructionServiceRegistry } from "@/lib/construction/service-registry";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
 export function CreateProjectForm({
@@ -106,16 +107,22 @@ export function CreateProjectPackageForm({ projectId }: { projectId: string }) {
       <Field id={`package-kind-${projectId}`} label={t("projects.forms.packageType")}>
         <NativeSelect
           id={`package-kind-${projectId}`}
-          name="kind"
-          defaultValue="CONSTRUCTION_SERVICE"
+          name="serviceSlug"
+          defaultValue=""
+          required
           className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
         >
-          <NativeSelectOption value="CONSTRUCTION_SERVICE">
-            {t("projects.forms.professionalService")}
+          <NativeSelectOption value="" disabled>
+            {t("projects.forms.chooseWorkType")}
           </NativeSelectOption>
-          <NativeSelectOption value="CONSTRUCTION_MATERIAL">
-            {t("constructionServices.building-materials.title")}
-          </NativeSelectOption>
+          {constructionServiceRegistry.map((service) => (
+            <NativeSelectOption key={service.slug} value={service.slug}>
+              {t(`constructionServices.${service.slug}.title`)} ·{" "}
+              {service.kind === "CONSTRUCTION_MATERIAL"
+                ? t("constructionCategories.materials")
+                : t("projects.forms.professionalService")}
+            </NativeSelectOption>
+          ))}
         </NativeSelect>
       </Field>
       <Field id={`package-description-${projectId}`} label={t("workflow.projectDescription")}>

@@ -289,7 +289,8 @@ export const createProjectPackageSchema = z.strictObject({
   projectId: requiredText(64),
   label: requiredText(120),
   description: text(1200),
-  kind: z.enum(["CONSTRUCTION_SERVICE", "CONSTRUCTION_MATERIAL"]),
+  kind: z.enum(["CONSTRUCTION_SERVICE", "CONSTRUCTION_MATERIAL"]).optional(),
+  serviceSlug: text(80).optional(),
 });
 
 export const projectHandoverSchema = z.strictObject({ projectId: requiredText(64) });

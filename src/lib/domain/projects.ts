@@ -233,6 +233,8 @@ export async function createConstructionProject(actorId: string, input: CreatePr
 }
 
 export async function createProjectPackage(actorId: string, input: CreateProjectPackageInput) {
+  const service = input.serviceSlug ? getConstructionService(input.serviceSlug) : undefined;
+  if (input.serviceSlug && !service) throw new WorkflowError("invalidState");
   try {
     return await prisma.$transaction(async (tx) => {
       const project = await tx.constructionProject.findUnique({
@@ -248,7 +250,8 @@ export async function createProjectPackage(actorId: string, input: CreateProject
           projectId: project.id,
           label: input.label,
           description: input.description,
-          kind: input.kind,
+          kind: service?.kind ?? input.kind ?? "CONSTRUCTION_SERVICE",
+          serviceSlug: service?.slug,
         },
         select: { id: true },
       });

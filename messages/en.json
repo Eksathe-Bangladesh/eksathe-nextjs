@@ -703,6 +703,11 @@
       "filterByServiceArea": "Filter by service area",
       "allServiceAreas": "All service areas",
       "findProfessionals": "Find professionals",
+      "workspaceNavigation": "Construction workspace",
+      "findProfessionalsHelp": "Browse approved trades and service providers.",
+      "buyMaterials": "Buy materials",
+      "buyMaterialsHelp": "Compare suppliers, prices, and availability.",
+      "manageProjectsHelp": "Review your projects, quotes, and progress.",
       "workflowEyebrow": "A clear way to organize your build",
       "workflowTitle": "How construction projects work",
       "commissionNotice": "The estimate uses the current construction rate and excludes separately agreed transport charges.",
@@ -772,6 +777,7 @@
     "packages": {
       "description": "Compare several quotes per package. Create a new package for additional work after accepting a quote.",
       "requiredNotice": "Create a work package before inviting providers to quote.",
+      "broaderMatchesNotice": "No exact matches for this service yet. These other approved providers may still be relevant.",
       "noInvitations": "No provider invitations have been sent for this package yet.",
       "acceptanceNotice": "Only one quote can be accepted for this work package."
     },
@@ -790,6 +796,7 @@
     "forms": {
       "projectTypePlaceholder": "House, shop, renovation",
       "packageType": "Package type",
+      "chooseWorkType": "Choose a work type",
       "professionalService": "Professional service",
       "addWorkPackage": "Add work package",
       "chooseAProvider": "Choose a provider",

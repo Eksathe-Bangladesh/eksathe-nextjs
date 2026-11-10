@@ -28,6 +28,37 @@ for the sample scenarios available locally.
 - Private S3-compatible file uploads using short-lived presigned URLs.
 - Authentication, input validation, rate limiting, and health/readiness checks.
 
+## Construction project workflow
+
+Each project can contain multiple work items. Providers quote on invitations;
+accepting a quote creates an order for that work item. Payments are recorded and
+confirmed separately from order progress. Construction-service orders can also
+have milestones that providers submit for customer approval.
+
+```mermaid
+flowchart TD
+    A[Customer creates a project] --> B[Add work items: service or materials]
+    B --> C[Invite a provider from a listing]
+    C --> D[Provider submits a quote]
+    D --> E{Customer accepts quote?}
+    E -- No --> C
+    E -- Yes --> F[Order created for the work item]
+    F --> G[Provider and customer track order progress]
+    F -. separately .-> P[Record payment; both parties confirm]
+    F --> H{Construction service?}
+    H -- Yes, milestones needed --> I[Customer assigns milestones to engaged provider]
+    H -- Yes, none needed --> L
+    I --> J[Provider submits milestone for review]
+    J --> K[Customer approves milestone]
+    K -. repeat for remaining milestones .-> I
+    H -- No, or milestones complete --> L{All active orders completed and milestones approved?}
+    G --> L
+    K --> L
+    L -- No --> G
+    L -- Yes --> M[Customer confirms project handover]
+    B -. throughout project .-> N[Owner can record expenses and attach files/photos]
+```
+
 ## Tech stack
 
 - [Next.js 16](https://nextjs.org/) App Router and [React 19](https://react.dev/)

@@ -23,10 +23,8 @@ export function ConstructionServiceDetail({
   const formatter = useFormatter();
   const t = useTranslations();
   const projectHref = `/account/projects/new?service=${encodeURIComponent(service.slug)}`;
-  const marketParams = new URLSearchParams({
-    type: service.kind,
-    q: service.searchTerms[0] ?? service.slug,
-  });
+  const marketParams = new URLSearchParams({ type: service.kind });
+  for (const term of service.searchTerms) marketParams.append("term", term);
   const formatMoney = (amount: string) =>
     formatter.number(Number(amount), {
       style: "currency",

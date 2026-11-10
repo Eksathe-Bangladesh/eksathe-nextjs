@@ -30,6 +30,7 @@ export function ConstructionMarket({
   const pageHref = (page: number) => {
     const params = new URLSearchParams();
     if (filters.q) params.set("q", filters.q);
+    for (const term of filters.searchTerms ?? []) params.append("term", term);
     if (filters.kind) params.set("type", filters.kind);
     if (filters.category) params.set("category", filters.category);
     if (filters.district) params.set("district", filters.district);
@@ -74,6 +75,9 @@ export function ConstructionMarket({
         action={formAction}
         className="border-border/70 bg-card rounded-2xl border p-4 sm:p-5"
       >
+        {(filters.searchTerms ?? []).map((term) => (
+          <input key={term} type="hidden" name="term" value={term} />
+        ))}
         <FieldGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Field className="lg:col-span-2">
             <FieldLabel htmlFor="construction-search">
@@ -239,14 +243,11 @@ export function ConstructionMarket({
               <CardHeader>
                 <CardTitle>{listing.title}</CardTitle>
                 <CardDescription>
-                  {listing.providerName} · {listing.district} ·{" "}
-                  {listing.category}
+                  {listing.providerName} · {listing.district} · {listing.category}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground line-clamp-2 text-sm">
-                  {listing.description}
-                </p>
+                <p className="text-muted-foreground line-clamp-2 text-sm">{listing.description}</p>
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <span className="text-primary font-semibold">
                     {formatMoney(listing.unitPrice)} / {listing.unit}

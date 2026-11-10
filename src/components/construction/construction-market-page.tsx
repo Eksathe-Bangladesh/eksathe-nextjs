@@ -30,6 +30,15 @@ export async function ConstructionMarketPage({
   const rawPage = first(query.page);
   const filters: ConstructionMarketFilters = {
     ...(first(query.q)?.trim() ? { q: first(query.q)!.trim().slice(0, 100) } : {}),
+    ...(Array.isArray(query.term)
+      ? {
+          searchTerms: query.term
+            .filter((term): term is string => typeof term === "string")
+            .slice(0, 12),
+        }
+      : typeof query.term === "string"
+        ? { searchTerms: [query.term.slice(0, 80)] }
+        : {}),
     ...(rawKind && kinds.has(rawKind)
       ? { kind: rawKind as ConstructionMarketFilters["kind"] }
       : {}),
