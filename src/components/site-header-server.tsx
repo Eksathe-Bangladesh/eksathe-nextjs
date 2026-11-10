@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 import { SiteHeader, SiteHeaderUserMenu } from "@/components/site-header";
@@ -17,6 +18,7 @@ export function SiteHeaderFallback() {
 }
 
 export async function SiteHeaderUserServer() {
+  await connection();
   const user = await getCurrentUser();
   const activeUser = user?.status === "active" ? user : null;
   let canProvider = false;
