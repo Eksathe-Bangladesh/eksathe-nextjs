@@ -151,7 +151,7 @@ export default async function CommerceInvoicePage({ params }: Props) {
                 <input type="hidden" name="orderId" value={order.id} />
                 <input type="hidden" name="productId" value={item.productId} />
                 <span className="self-center text-sm">{item.title}</span>
-                <select name="rating" className="bg-background rounded-md border px-2 py-2">
+                <select name="rating" className="bg-background rounded-md border p-2">
                   <option value="5">5 ★</option>
                   <option value="4">4 ★</option>
                   <option value="3">3 ★</option>

@@ -12,9 +12,9 @@ requests, manage orders and projects, and follow work through quotes, payments,
 and milestones. Provider, verification, and scoped staff workspaces support the
 people operating those services.
 
-The application is available in English and Bangla. The current implementation
-includes agriculture and construction browsing and workflows; see the demo guide
-for the sample scenarios available locally.
+The application is available in English and Bangla. It includes agriculture and
+construction workflows, plus the native E-Commerce & B2B marketplace. See the
+demo guide for sample agriculture and construction scenarios available locally.
 
 ## Features
 

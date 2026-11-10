@@ -279,7 +279,12 @@ export async function addCommerceCartItemAction(data: FormData) {
     .object({ productId: commerceIdSchema, quantity: quantitySchema })
     .parse({ productId: field(data, "productId"), quantity: field(data, "quantity") });
   const product = await prisma.commerceProduct.findFirst({
-    where: { id: parsed.productId, status: "APPROVED", seller: { status: "APPROVED" } },
+    where: {
+      id: parsed.productId,
+      status: "APPROVED",
+      seller: { status: "APPROVED" },
+      category: { isActive: true },
+    },
     select: { id: true, stock: true },
   });
   if (!product || product.stock < parsed.quantity) throw new Error("পর্যাপ্ত মজুত নেই");
@@ -312,7 +317,12 @@ export async function toggleCommerceWishlistAction(data: FormData) {
     return;
   }
   const product = await prisma.commerceProduct.findFirst({
-    where: { id: productId, status: "APPROVED", seller: { status: "APPROVED" } },
+    where: {
+      id: productId,
+      status: "APPROVED",
+      seller: { status: "APPROVED" },
+      category: { isActive: true },
+    },
     select: { id: true },
   });
   if (!product) throw new Error("পণ্য পাওয়া যায়নি");
@@ -370,14 +380,22 @@ export async function checkoutCommerceCartAction(data: FormData) {
         where: { userId: user.id },
         include: {
           product: {
-            include: { seller: true, tierPrices: { orderBy: { minQty: "desc" } } },
+            include: {
+              seller: true,
+              category: true,
+              tierPrices: { orderBy: { minQty: "desc" } },
+            },
           },
         },
         orderBy: { id: "asc" },
       });
       if (!cart.length) throw new Error("কার্ট খালি");
       for (const item of cart) {
-        if (item.product.status !== "APPROVED" || item.product.seller.status !== "APPROVED")
+        if (
+          item.product.status !== "APPROVED" ||
+          item.product.seller.status !== "APPROVED" ||
+          !item.product.category.isActive
+        )
           throw new Error("কার্টের একটি পণ্য আর কেনার জন্য উপলভ্য নেই");
         if (item.product.seller.userId === user.id) throw new Error("নিজের পণ্য নিজে কেনা যাবে না");
         if (item.quantity > item.product.stock)
@@ -555,6 +573,7 @@ export async function createWholesaleRequestAction(data: FormData) {
       status: "APPROVED",
       seller: { status: "APPROVED" },
       minimumWholesale: { lte: request.quantity },
+      category: { isActive: true },
     },
     select: { id: true, seller: { select: { userId: true } } },
   });
@@ -579,7 +598,7 @@ export async function quoteWholesaleRequestAction(data: FormData) {
     where: {
       id: quote.requestId,
       status: "OPEN",
-      product: { sellerId: seller.id, status: "APPROVED" },
+      product: { sellerId: seller.id, status: "APPROVED", category: { isActive: true } },
     },
     select: { id: true, buyerId: true },
   });
@@ -637,7 +656,12 @@ export async function acceptWholesaleQuoteAction(data: FormData) {
         throw new Error("দরটি আর গ্রহণ করা যাবে না");
       const product = quote.request.product;
       const update = await tx.commerceProduct.updateMany({
-        where: { id: product.id, status: "APPROVED", stock: { gte: quote.request.quantity } },
+        where: {
+          id: product.id,
+          status: "APPROVED",
+          category: { isActive: true },
+          stock: { gte: quote.request.quantity },
+        },
         data: { stock: { decrement: quote.request.quantity } },
       });
       if (update.count !== 1) throw new Error("পর্যাপ্ত মজুত নেই");
@@ -699,7 +723,12 @@ export async function startCommerceConversationAction(data: FormData) {
   const user = await requireUser("/dashboard/ecommerce-b2b/messages");
   const productId = commerceIdSchema.parse(field(data, "productId"));
   const product = await prisma.commerceProduct.findFirst({
-    where: { id: productId, status: "APPROVED", seller: { status: "APPROVED" } },
+    where: {
+      id: productId,
+      status: "APPROVED",
+      seller: { status: "APPROVED" },
+      category: { isActive: true },
+    },
     select: { id: true, sellerId: true, seller: { select: { userId: true } } },
   });
   if (!product) throw new Error("পণ্য পাওয়া যায়নি");

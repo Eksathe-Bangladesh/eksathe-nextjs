@@ -329,7 +329,6 @@
     "permissionDenied": "You do not have permission to do that."
   },
   "header": {
-    "dashboard": "Dashboard",
     "services": "Services",
     "login": "Log In",
     "register": "Register",
