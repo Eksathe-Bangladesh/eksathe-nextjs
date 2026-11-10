@@ -330,6 +330,8 @@
   },
   "header": {
     "services": "সেবাসমূহ",
+    "primaryNavigation": "প্রধান নেভিগেশন",
+    "shopping": "পণ্য বাজার",
     "login": "লগইন",
     "register": "অ্যাকাউন্ট খুলুন",
     "switchLanguage": "ভাষা পরিবর্তন করুন",
@@ -341,9 +343,23 @@
     "supplierVerification": "নির্মাণসামগ্রী সরবরাহকারী যাচাইকরণ",
     "staffAccess": "কর্মী অ্যাক্সেস",
     "myRequests": "আমার অনুরোধ",
-    "myOrders": "আমার অর্ডার",
+    "myOrders": "সেবা অর্ডার",
+    "myProductOrders": "পণ্য অর্ডার",
     "myProjects": "আমার প্রকল্প",
-    "becomeProvider": "সেবাদাতা হিসেবে যোগ দিন"
+    "becomeProvider": "সেবাদাতা হিসেবে যোগ দিন",
+    "becomeSeller": "বিক্রেতা হিসেবে যোগ দিন",
+    "sellerApplication": "বিক্রেতা আবেদন",
+    "sellerWorkspace": "বিক্রেতা প্যানেল"
+  },
+  "commerceNavigation": {
+    "label": "পণ্য বাজার নেভিগেশন",
+    "market": "পণ্য",
+    "wholesale": "পাইকারি",
+    "cart": "কার্ট",
+    "wishlist": "ইচ্ছেতালিকা",
+    "orders": "পণ্য অর্ডার",
+    "messages": "বার্তা",
+    "seller": "বিক্রেতা প্যানেল"
   },
   "hero": {
     "badge": "🌱 কৃষি • বাজার • শ্রম",
@@ -451,6 +467,7 @@
     }
   },
   "admin": {
+    "commerceModeration": "ই-কমার্স ও B2B পর্যালোচনা",
     "publishing": {
       "marketLabel": "বাজার",
       "agricultureOperations": "কৃষি পরিচালনা",
@@ -573,6 +590,7 @@
     "tagline": "কৃষক • বাজার • শ্রম • সেবা"
   },
   "dashboard": {
+    "marketplaceEntryDescription": "খুচরা পণ্য কিনুন, পাইকারি অফার দেখুন অথবা বিক্রি শুরু করুন।",
     "tabDashboard": "ড্যাশবোর্ড",
     "tabAdmin": "অ্যাডমিন প্যানেল",
     "demoNotice": "এটি একটি ডেমো প্রোটোটাইপ; সব ডেটা নমুনা।",
@@ -597,6 +615,19 @@
   "account": {
     "workspace": {
       "accountNavigation": "অ্যাকাউন্ট নেভিগেশন",
+      "shopping": "কেনাকাটা",
+      "shoppingDescription": "পণ্য দেখুন এবং কেনাকাটা ও বিক্রেতা কার্যক্রম পরিচালনা করুন।",
+      "serviceOrders": "সেবা অর্ডার ও বুকিং",
+      "serviceOrdersDescription": "সেবার অর্ডার ও বুকিং পণ্য কেনাকাটা থেকে আলাদাভাবে দেখানো হয়।",
+      "shoppingLinks": {
+        "marketplace": "পণ্য বাজার দেখুন",
+        "productOrders": "পণ্য অর্ডার",
+        "cart": "কেনাকাটার কার্ট",
+        "wishlist": "ইচ্ছেতালিকা",
+        "wholesale": "পাইকারি অনুরোধ",
+        "messages": "বাজারের বার্তা",
+        "sellerWorkspace": "বিক্রেতা প্যানেল"
+      },
       "agricultureServiceRequests": "কৃষি সেবা অনুরোধ",
       "yourAccount": "আপনার একাউন্ট",
       "welcome": "স্বাগতম, {name}",

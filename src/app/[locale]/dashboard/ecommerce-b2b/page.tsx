@@ -3,19 +3,14 @@ export const instant = false;
 import { getLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
-import { getCurrentUser } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
 type Props = { searchParams: Promise<{ q?: string; category?: string }> };
 
 export default async function CommerceMarketPage({ searchParams }: Props) {
-  const [{ q, category }, locale, user] = await Promise.all([
-    searchParams,
-    getLocale(),
-    getCurrentUser(),
-  ]);
+  const [{ q, category }, locale] = await Promise.all([searchParams, getLocale()]);
   const search = q?.trim().slice(0, 100) ?? "";
-  const [categories, products, cartCount] = await Promise.all([
+  const [categories, products] = await Promise.all([
     prisma.commerceCategory.findMany({ where: { isActive: true }, orderBy: { titleEn: "asc" } }),
     prisma.commerceProduct.findMany({
       where: {
@@ -38,13 +33,12 @@ export default async function CommerceMarketPage({ searchParams }: Props) {
       orderBy: { createdAt: "desc" },
       take: 100,
     }),
-    user ? prisma.commerceCartItem.count({ where: { userId: user.id } }) : Promise.resolve(0),
   ]);
   const bn = locale === "bn";
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      <header className="flex flex-wrap items-end justify-between gap-4">
+      <header>
         <div>
           <p className="text-primary text-sm font-semibold">EKsathe • B2B</p>
           <h1 className="mt-1 text-3xl font-bold">{bn ? "পণ্য বাজার" : "Product marketplace"}</h1>
@@ -54,42 +48,6 @@ export default async function CommerceMarketPage({ searchParams }: Props) {
               : "Retail and wholesale products, sellers, RFQs, and orders in one place."}
           </p>
         </div>
-        <nav className="flex flex-wrap gap-2 text-sm">
-          <Link className="rounded-lg border px-3 py-2" href="/dashboard/ecommerce-b2b/cart">
-            {bn ? "কার্ট" : "Cart"}
-            {cartCount ? ` (${cartCount})` : ""}
-          </Link>
-          {user && (
-            <Link className="rounded-lg border px-3 py-2" href="/dashboard/ecommerce-b2b/wishlist">
-              {bn ? "ইচ্ছেতালিকা" : "Wishlist"}
-            </Link>
-          )}
-          <Link className="rounded-lg border px-3 py-2" href="/dashboard/ecommerce-b2b/wholesale">
-            {bn ? "পাইকারি ও RFQ" : "Wholesale & RFQs"}
-          </Link>
-          <Link className="rounded-lg border px-3 py-2" href="/dashboard/ecommerce-b2b/orders">
-            {bn ? "অর্ডার" : "Orders"}
-          </Link>
-          {user && (
-            <>
-              <Link
-                className="rounded-lg border px-3 py-2"
-                href="/dashboard/ecommerce-b2b/messages"
-              >
-                {bn ? "বার্তা" : "Messages"}
-              </Link>
-              <Link
-                className="rounded-lg border px-3 py-2"
-                href="/dashboard/ecommerce-b2b/notifications"
-              >
-                {bn ? "বিজ্ঞপ্তি" : "Notifications"}
-              </Link>
-            </>
-          )}
-          <Link className="rounded-lg border px-3 py-2" href="/dashboard/ecommerce-b2b/seller">
-            {bn ? "বিক্রেতা প্যানেল" : "Seller workspace"}
-          </Link>
-        </nav>
       </header>
 
       <form className="bg-card flex flex-wrap gap-3 rounded-xl border p-4">

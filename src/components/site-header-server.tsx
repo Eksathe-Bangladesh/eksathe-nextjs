@@ -20,6 +20,7 @@ export async function SiteHeaderUserServer() {
   const user = await getCurrentUser();
   const activeUser = user?.status === "active" ? user : null;
   let canProvider = false;
+  let commerceSellerStatus: string | null = null;
   let staffAccess = null;
   let providerSummary: {
     status: string;
@@ -28,7 +29,7 @@ export async function SiteHeaderUserServer() {
   } | null = null;
 
   if (activeUser) {
-    const [provider, access] = await Promise.all([
+    const [provider, access, commerceSeller] = await Promise.all([
       prisma.providerProfile.findUnique({
         where: { userId: activeUser.id },
         select: {
@@ -40,8 +41,13 @@ export async function SiteHeaderUserServer() {
         },
       }),
       getStaffAccess(activeUser),
+      prisma.commerceSeller.findUnique({
+        where: { userId: activeUser.id },
+        select: { status: true },
+      }),
     ]);
     canProvider = Boolean(provider);
+    commerceSellerStatus = commerceSeller?.status ?? null;
     if (provider) {
       providerSummary = {
         status: provider.status,
@@ -91,6 +97,7 @@ export async function SiteHeaderUserServer() {
       providerSummary={providerSummary}
       canAdmin={canAdmin}
       isAgroAdmin={isAgroAdmin}
+      commerceSellerStatus={commerceSellerStatus}
     />
   );
 }
