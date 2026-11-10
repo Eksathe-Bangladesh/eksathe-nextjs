@@ -17,6 +17,7 @@ export type CurrentUser = {
   phone: string;
   role: string;
   status: string;
+  accountType: string;
 };
 
 export const getCurrentUser = cache(async function getCurrentUser(): Promise<CurrentUser | null> {
@@ -33,6 +34,7 @@ export const getCurrentUser = cache(async function getCurrentUser(): Promise<Cur
       phone: true,
       role: true,
       status: true,
+      accountType: true,
     },
   });
 });

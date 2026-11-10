@@ -21,15 +21,34 @@ export async function SiteHeaderUserServer() {
   const activeUser = user?.status === "active" ? user : null;
   let canProvider = false;
   let staffAccess = null;
+  let providerSummary: {
+    status: string;
+    capabilities: { sectorSlug: string; kind: string; status: string }[];
+    verifications: { type: string; status: string }[];
+  } | null = null;
 
   if (activeUser) {
     const [provider, access] = await Promise.all([
-      prisma.providerProfile
-        .findUnique({ where: { userId: activeUser.id }, select: { id: true } })
-        .then(Boolean),
+      prisma.providerProfile.findUnique({
+        where: { userId: activeUser.id },
+        select: {
+          status: true,
+          capabilities: { select: { sectorSlug: true, kind: true, status: true } },
+          verificationApplications: {
+            select: { type: true, status: true },
+          },
+        },
+      }),
       getStaffAccess(activeUser),
     ]);
-    canProvider = provider;
+    canProvider = Boolean(provider);
+    if (provider) {
+      providerSummary = {
+        status: provider.status,
+        capabilities: provider.capabilities,
+        verifications: provider.verificationApplications,
+      };
+    }
     staffAccess = access;
   }
 
@@ -67,7 +86,9 @@ export async function SiteHeaderUserServer() {
     <SiteHeaderUserMenu
       userName={activeUser?.name}
       signedIn={Boolean(activeUser)}
+      accountType={activeUser?.accountType}
       canProvider={canProvider}
+      providerSummary={providerSummary}
       canAdmin={canAdmin}
       isAgroAdmin={isAgroAdmin}
     />

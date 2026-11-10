@@ -154,11 +154,9 @@ export function SectorLanding({
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
                   <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
-                    <p className="text-muted-foreground text-sm">
-                      {t("dashboard.sector.empty")}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{t("dashboard.sector.empty")}</p>
                     <Link
-                      href={`/register?next=${encodeURIComponent("/provider")}`}
+                      href="/provider"
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
                     >
                       {t("dashboard.sector.applyToProvide")}
@@ -180,12 +178,9 @@ export function SectorLanding({
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <CardHeader>
-                            <CardTitle>
-                              {listing.title}
-                            </CardTitle>
+                            <CardTitle>{listing.title}</CardTitle>
                             <CardDescription>
-                              {listing.providerName} ·{" "}
-                              {listing.district}
+                              {listing.providerName} · {listing.district}
                             </CardDescription>
                           </CardHeader>
                           <CardContent>

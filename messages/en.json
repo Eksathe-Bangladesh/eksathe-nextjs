@@ -122,7 +122,7 @@
     "existingAccount": "Already have an account?",
     "checkEmail": "Check your email. We sent a link to continue.",
     "genericError": "That request could not be completed. Please try again.",
-    "termsNote": "Your contact number is used for orders and bookings.",
+    "termsNote": "Your phone number is used for orders and bookings. To offer services, register first and then apply from the provider workspace.",
     "passwordMin": "Your password must be at least 10 characters.",
     "nameError": "Enter your name.",
     "phoneError": "Enter a valid mobile number."
@@ -332,7 +332,18 @@
     "services": "Services",
     "login": "Log In",
     "register": "Register",
-    "switchLanguage": "Switch Language"
+    "switchLanguage": "Switch Language",
+    "accountType": "Account type",
+    "standardAccount": "Standard account",
+    "providerAccess": "Provider access",
+    "providerProfile": "Provider profile",
+    "contractorVerification": "Construction services verification",
+    "supplierVerification": "Materials supplier verification",
+    "staffAccess": "Staff access",
+    "myRequests": "My requests",
+    "myOrders": "My orders",
+    "myProjects": "My projects",
+    "becomeProvider": "Become a provider"
   },
   "hero": {
     "badge": "🌱 Agriculture • Market • Labor",
@@ -572,7 +583,7 @@
     "adminRole": "Admin",
     "guestRole": "Guest",
     "actions": {
-      "back": "Back to dashboard"
+      "back": "Back to services"
     },
     "sector": {
       "availableListings": "{count, plural, one {# available listing} other {# available listings}}",
@@ -679,6 +690,7 @@
       "description": "Find approved professionals and material suppliers, compare project quotes, and keep work, milestones, and payments together.",
       "exploreConstructionMarketplace": "Explore construction marketplace",
       "startAProject": "Start a project",
+      "becomeAProvider": "Offer construction services",
       "constructionServiceAreas": "Construction service areas",
       "publishedOffers": "Published offers",
       "professionalsAndMaterials": "Professionals and materials",

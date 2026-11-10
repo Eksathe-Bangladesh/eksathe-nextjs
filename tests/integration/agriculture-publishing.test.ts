@@ -35,6 +35,7 @@ const currentUser = (id: string, role = "customer") => ({
   phone: "+8801700000000",
   role,
   status: "active",
+  accountType: "customer",
 });
 const today = new Date().toISOString().slice(0, 10);
 

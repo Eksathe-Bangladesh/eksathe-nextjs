@@ -11,18 +11,28 @@ import {
   XIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { signOutAction } from "@/app/actions/session";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Link } from "@/i18n/navigation";
+import { statusMessageKey } from "@/i18n/message-keys";
+import { Link, usePathname } from "@/i18n/navigation";
+
+type ProviderSummary = {
+  status: string;
+  capabilities: { sectorSlug: string; kind: string; status: string }[];
+  verifications: { type: string; status: string }[];
+};
 
 export type SiteHeaderUserProps = {
   userName?: string;
   signedIn?: boolean;
+  accountType?: string;
   canProvider?: boolean;
+  providerSummary?: ProviderSummary | null;
   canAdmin?: boolean;
   isAgroAdmin?: boolean;
 };
@@ -30,11 +40,33 @@ export type SiteHeaderUserProps = {
 export function SiteHeaderUserMenu({
   userName,
   signedIn = false,
+  accountType = "customer",
   canProvider = false,
+  providerSummary = null,
   canAdmin = false,
   isAgroAdmin = false,
 }: SiteHeaderUserProps) {
   const t = useTranslations();
+  const accountTypeLabels: Record<string, string> = {
+    customer: t("workflow.customerAccount"),
+    farmer: t("workflow.farmerAccount"),
+    agro_laborer: t("workflow.agroLaborerAccount"),
+    agronomist: t("workflow.agronomistAccount"),
+    veterinarian: t("workflow.veterinarianAccount"),
+    agro_seller: t("workflow.agroSellerAccount"),
+    agriculture_professional: t("workflow.agricultureProfessionalAccount"),
+  };
+  const capabilityLabels: Record<string, string> = {
+    PRODUCE: t("marketplaceServices.produce-market"),
+    WORKER: t("marketplaceServices.farm-labour"),
+    MACHINERY: t("marketplaceServices.farm-machinery"),
+    CONSTRUCTION_SERVICE: t("marketplaceServices.construction-service"),
+    CONSTRUCTION_MATERIAL: t("marketplaceServices.construction-material"),
+  };
+  const getStatusLabel = (status: string) => {
+    const key = statusMessageKey(status);
+    return key ? t(key) : status.replaceAll("_", " ").toLowerCase();
+  };
   const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const displayName = userName?.trim().split(/\s+/).slice(0, 2).join(" ");
@@ -88,7 +120,7 @@ export function SiteHeaderUserMenu({
       {menuOpen && (
         <div
           role="menu"
-          className="border-border bg-card text-foreground mt-2 flex min-w-48 flex-col gap-1 rounded-xl border p-2 shadow-lg xl:absolute xl:top-full xl:right-0"
+          className="border-border bg-card text-foreground mt-2 flex max-w-80 min-w-64 flex-col gap-1 rounded-xl border p-2 shadow-lg xl:absolute xl:top-full xl:right-0"
         >
           <Link
             role="menuitem"
@@ -99,6 +131,73 @@ export function SiteHeaderUserMenu({
             <UserRoundIcon aria-hidden="true" className="size-4" />
             {t("dashboard.profile")}
           </Link>
+          <div className="border-border/70 flex flex-col gap-1 border-y px-3 py-2 text-xs">
+            <p className="font-semibold">{t("header.accountType")}</p>
+            <p className="text-muted-foreground">
+              {accountTypeLabels[accountType] ?? t("header.standardAccount")}
+            </p>
+            {providerSummary && (
+              <>
+                <p className="mt-1 font-semibold">{t("header.providerAccess")}</p>
+                <p className="text-muted-foreground">
+                  {t("header.providerProfile")}: {getStatusLabel(providerSummary.status)}
+                </p>
+                {providerSummary.capabilities.map((capability) => (
+                  <p
+                    key={`${capability.sectorSlug}:${capability.kind}`}
+                    className="text-muted-foreground"
+                  >
+                    {capability.sectorSlug === "construction"
+                      ? t("home.construction")
+                      : capability.sectorSlug === "agriculture-labor"
+                        ? t("home.agriculture")
+                        : capability.sectorSlug}
+                    {capabilityLabels[capability.kind]
+                      ? ` · ${capabilityLabels[capability.kind]}`
+                      : ""}
+                    : {getStatusLabel(capability.status)}
+                  </p>
+                ))}
+                {providerSummary.verifications.map((verification) => (
+                  <p key={verification.type} className="text-muted-foreground">
+                    {verification.type === "CONTRACTOR"
+                      ? t("header.contractorVerification")
+                      : t("header.supplierVerification")}
+                    : {getStatusLabel(verification.status)}
+                  </p>
+                ))}
+              </>
+            )}
+            {canAdmin && (
+              <p className="text-muted-foreground mt-1">
+                {t("header.staffAccess")}: {isAgroAdmin ? t("workflow.agroAdmin") : t("nav.admin")}
+              </p>
+            )}
+          </div>
+          <Link
+            role="menuitem"
+            href="/account#requests"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+          >
+            {t("header.myRequests")}
+          </Link>
+          <Link
+            role="menuitem"
+            href="/account#orders"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+          >
+            {t("header.myOrders")}
+          </Link>
+          <Link
+            role="menuitem"
+            href="/account#projects"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted rounded-lg px-3 py-2 text-sm"
+          >
+            {t("header.myProjects")}
+          </Link>
           {canProvider && (
             <Link
               role="menuitem"
@@ -108,6 +207,17 @@ export function SiteHeaderUserMenu({
             >
               <BriefcaseBusinessIcon aria-hidden="true" className="size-4" />
               {t("nav.provider")}
+            </Link>
+          )}
+          {!canProvider && (
+            <Link
+              role="menuitem"
+              href="/provider"
+              onClick={() => setMenuOpen(false)}
+              className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+            >
+              <BriefcaseBusinessIcon aria-hidden="true" className="size-4" />
+              {t("header.becomeProvider")}
             </Link>
           )}
           {canAdmin && (
@@ -141,16 +251,51 @@ export type SiteHeaderProps = {
   userSlot?: ReactNode;
   userName?: string;
   signedIn?: boolean;
+  accountType?: string;
   canProvider?: boolean;
+  providerSummary?: ProviderSummary | null;
   canAdmin?: boolean;
   isAgroAdmin?: boolean;
 };
+
+function NavigationLinks({ pathname }: { pathname: string }) {
+  const t = useTranslations();
+  const items = [
+    { href: "/dashboard", label: t("header.services") },
+    { href: "/agriculture", label: t("home.agriculture") },
+    { href: "/construction", label: t("home.construction") },
+  ];
+
+  return (
+    <div className="flex min-w-0 flex-col gap-1 xl:flex-row xl:items-center xl:gap-2">
+      {items.map(({ href, label }) => {
+        const active = pathname.startsWith(href);
+        return (
+          <Link
+            key={href}
+            href={href}
+            aria-current={active ? "page" : undefined}
+            className={`inline-flex min-h-9 shrink-0 items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10 ${active ? "bg-white/15" : ""}`}
+          >
+            {label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
+function ActiveNavigationLinks() {
+  return <NavigationLinks pathname={usePathname()} />;
+}
 
 export function SiteHeader({
   userSlot,
   userName,
   signedIn = false,
+  accountType = "customer",
   canProvider = false,
+  providerSummary = null,
   canAdmin = false,
   isAgroAdmin = false,
 }: SiteHeaderProps) {
@@ -196,26 +341,9 @@ export function SiteHeader({
             }
           }}
         >
-          <div className="flex min-w-0 flex-col gap-1 xl:flex-row xl:items-center xl:gap-2">
-            <Link
-              href="/dashboard"
-              className="inline-flex min-h-9 shrink-0 items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10"
-            >
-              {t("header.dashboard")}
-            </Link>
-            <Link
-              href="/agriculture"
-              className="inline-flex min-h-9 shrink-0 items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10"
-            >
-              {t("home.agriculture")}
-            </Link>
-            <Link
-              href="/construction"
-              className="inline-flex min-h-9 shrink-0 items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10"
-            >
-              {t("home.construction")}
-            </Link>
-          </div>
+          <Suspense fallback={<NavigationLinks pathname="" />}>
+            <ActiveNavigationLinks />
+          </Suspense>
           <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-white/20 pt-3 xl:flex-nowrap xl:justify-self-end xl:border-0 xl:pt-0">
             <div className="hidden xl:block [&_button]:size-9">
               <ThemeToggle />
@@ -228,7 +356,9 @@ export function SiteHeader({
               <SiteHeaderUserMenu
                 userName={userName}
                 signedIn={signedIn}
+                accountType={accountType}
                 canProvider={canProvider}
+                providerSummary={providerSummary}
                 canAdmin={canAdmin}
                 isAgroAdmin={isAgroAdmin}
               />
@@ -246,9 +376,7 @@ export function SiteHeader({
             type="button"
             aria-controls="site-navigation"
             aria-expanded={navigationOpen}
-            aria-label={
-              navigationOpen ? t("nav.closeMenu") : t("nav.openMenu")
-            }
+            aria-label={navigationOpen ? t("nav.closeMenu") : t("nav.openMenu")}
             onClick={() => {
               setNavigationOpen((open) => !open);
             }}

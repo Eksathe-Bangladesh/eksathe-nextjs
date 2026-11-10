@@ -59,6 +59,17 @@ test("the service hub links to all 13 sector panels", async ({ page }) => {
   }
 });
 
+test("a construction visitor can find provider onboarding without guessing a route", async ({
+  page,
+}) => {
+  await page.goto("/en/construction");
+  await page.getByRole("link", { name: "Offer construction services" }).click();
+
+  await expect(page).toHaveURL(/\/(?:en|bn)\/login\?next=/);
+  const locale = new URL(page.url()).pathname.split("/")[1];
+  expect(new URL(page.url()).searchParams.get("next")).toBe(`/${locale}/provider`);
+});
+
 test("the readiness endpoint reports database availability", async ({ request }) => {
   const response = await request.get("/api/health/ready");
   expect(response.status()).toBe(200);
@@ -85,11 +96,11 @@ test("agriculture routes share the prototype service directory and old routes re
   await expect(page.getByRole("heading", { name: "কোন সেবাটি আপনার প্রয়োজন?" })).toBeVisible();
   await expect(page.getByRole("link", { name: /ফসল উৎপাদন ও চাষাবাদ/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /কৃষিশ্রমিক বুকিং/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveCount(0);
 
   await page.goto("/dashboard/agriculture");
   await expect(page.getByRole("heading", { name: "কোন সেবাটি আপনার প্রয়োজন?" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveAttribute(
     "href",
     "/bn/dashboard",
   );
@@ -159,7 +170,7 @@ test("construction home shares content across canonical and dashboard entries", 
   await expect
     .poll(() => page.evaluate(() => getComputedStyle(document.body).fontFamily))
     .toContain("Hind Siliguri");
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveCount(0);
   await expect(page.locator("header a[href='/bn/construction']")).toBeVisible();
   await expect(page.getByRole("link", { name: "ঠিকাদার ও নির্মাতা" })).toHaveAttribute(
     "href",
@@ -170,7 +181,7 @@ test("construction home shares content across canonical and dashboard entries", 
   await expect(
     page.getByRole("heading", { name: "পরিকল্পনা করুন, সঠিক নির্মাণসেবা খুঁজে নিন।" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "ড্যাশবোর্ডে ফিরে যান" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "সেবাসমূহে ফিরুন" })).toHaveAttribute(
     "href",
     "/bn/dashboard",
   );

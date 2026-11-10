@@ -560,6 +560,7 @@ describe("PostgreSQL marketplace transactions", () => {
       phone: "+8801700000000",
       role: "customer",
       status: "active",
+      accountType: "customer",
     };
     const operationsAccess = await getStaffAccess(operationsUser);
     expect(operationsAccess.operationSectors).toEqual(["construction"]);
@@ -633,6 +634,7 @@ describe("PostgreSQL marketplace transactions", () => {
       phone: "+8801700000000",
       role: "customer",
       status: "active",
+      accountType: "customer",
     };
     const financeWorkspace = await getAdminWorkspace(await getStaffAccess(financeUser));
     expect(

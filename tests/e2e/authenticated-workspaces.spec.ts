@@ -27,6 +27,21 @@ test("a customer sees their orders and project but cannot open administration", 
     page.locator('a[href="/en/account/projects/demo-project-family-home"]'),
   ).toBeVisible();
 
+  await page.getByRole("button", { name: /Demo Buyer/ }).click();
+  const menu = page.getByRole("menu");
+  await expect(menu.getByText("Account type")).toBeVisible();
+  await expect(menu.getByText("Customer", { exact: true })).toBeVisible();
+  await expect(menu.getByRole("menuitem", { name: "My requests" })).toBeVisible();
+  await expect(menu.getByRole("menuitem", { name: "My orders" })).toBeVisible();
+  await expect(menu.getByRole("menuitem", { name: "My projects" })).toBeVisible();
+  await expect(menu.getByRole("menuitem", { name: "Become a provider" })).toBeVisible();
+
+  await page.goto("/en/dashboard");
+  await expect(page.getByRole("link", { name: "Services", exact: true })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+
   await page.goto("/en/admin");
   await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
@@ -35,6 +50,12 @@ test("a construction provider sees their requests and engaged project, not agric
   page,
 }) => {
   await signIn(page, "demo.builder@example.com");
+  await page.getByRole("button", { name: /Demo Construction/ }).click();
+  const accountMenu = page.getByRole("menu");
+  await expect(accountMenu.getByText("Provider access")).toBeVisible();
+  await expect(accountMenu.getByText(/Provider profile:/)).toBeVisible();
+  await expect(accountMenu.getByRole("menuitem", { name: "Provider workspace" })).toBeVisible();
+
   await page.goto("/en/provider");
 
   await expect(page.getByRole("heading", { name: "Provider workspace" })).toBeVisible();

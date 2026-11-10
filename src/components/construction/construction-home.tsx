@@ -100,6 +100,9 @@ export function ConstructionHome({
             >
               {t("construction.home.startAProject")}
             </Link>
+            <Link href="/provider" className={buttonVariants({ variant: "ghost", size: "lg" })}>
+              {t("construction.home.becomeAProvider")}
+            </Link>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
