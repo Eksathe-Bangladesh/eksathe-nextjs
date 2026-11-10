@@ -1,6 +1,7 @@
 export const instant = false;
 
 import { getLocale } from "next-intl/server";
+import { connection } from "next/server";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/dal";
@@ -9,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 type Props = { searchParams: Promise<{ q?: string; category?: string }> };
 
 export default async function CommerceMarketPage({ searchParams }: Props) {
+  await connection();
   const [{ q, category }, locale, user] = await Promise.all([
     searchParams,
     getLocale(),
