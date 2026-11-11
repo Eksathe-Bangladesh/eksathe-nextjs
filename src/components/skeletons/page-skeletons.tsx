@@ -76,7 +76,7 @@ export function DetailPageSkeleton() {
 /** Grid page skeleton with filter bar for marketplaces and catalog discovery */
 export function GridPageSkeleton() {
   return (
-    <main className="mx-auto flex w-full max-w-360 flex-col gap-7 px-4 py-8 sm:px-6">
+    <div className="mx-auto flex w-full max-w-360 flex-col gap-7 px-4 py-8 sm:px-6">
       <Skeleton className="h-5 w-36" />
       <header className="space-y-2">
         <Skeleton className="h-4 w-28" />
@@ -108,7 +108,7 @@ export function GridPageSkeleton() {
           </div>
         ))}
       </div>
-    </main>
+    </div>
   );
 }
 

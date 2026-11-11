@@ -47,6 +47,7 @@
       "pagination": "পৃষ্ঠা নেভিগেশন",
       "previous": "আগের",
       "next": "পরের",
+      "pageOf": "পৃষ্ঠা {page} / {total}",
       "newest": "সর্বশেষ",
       "provider": "সেবাদাতা",
       "total": "মোট",
@@ -454,8 +455,16 @@
       "minBdt": "সর্বনিম্ন ৳",
       "maxBdt": "সর্বোচ্চ ৳",
       "sort": "সাজান",
-      "empty": "এই খোঁজে কোনো প্রকাশিত পণ্য নেই। ফিল্টার বদলে আবার চেষ্টা করুন।",
-      "page": "পৃষ্ঠা"
+      "categories": {
+        "grains": "শস্য",
+        "vegetables": "সবজি",
+        "fruits": "ফল",
+        "dairy": "দুগ্ধজাত",
+        "fish": "মাছ",
+        "spices": "মসলা",
+        "other": "অন্যান্য"
+      },
+      "empty": "এই খোঁজে কোনো প্রকাশিত পণ্য নেই। ফিল্টার বদলে আবার চেষ্টা করুন।"
     },
     "support": {
       "title": "কৃষি সহায়তা",
@@ -667,7 +676,8 @@
     },
     "listingCount": "{count, plural, other {#টি তালিকা}}",
     "actions": {
-      "browse": "মার্কেটপ্লেস দেখুন"
+      "browse": "মার্কেটপ্লেস দেখুন",
+      "clearFilters": "ফিল্টার মুছুন"
     },
     "listingDetail": {
       "bookingAvailability": "বুকিংয়ের উপলভ্যতা",
@@ -759,7 +769,6 @@
       "allConstructionListings": "সব নির্মাণ তালিকা",
       "professionalsServices": "পেশাজীবী ও সেবা",
       "sortBy": "সাজান",
-      "clearFilters": "ফিল্টার মুছুন",
       "unavailable": "তালিকা এখন পাওয়া যাচ্ছে না",
       "emptyAction": "প্রকল্প তৈরি করে দরপ্রস্তাব নিন",
       "empty": "এই ফিল্টারে কোনো অনুমোদিত তালিকা নেই। ফিল্টার বদলে আবার চেষ্টা করুন।"

@@ -1,4 +1,4 @@
-import { ConstructionMarket } from "@/components/construction/construction-market";
+import { MarketplaceView } from "@/components/marketplace/marketplace-view";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { getConstructionMarketListings, type ConstructionMarketFilters } from "@/lib/listings";
 
@@ -56,5 +56,12 @@ export async function ConstructionMarketPage({
     ...(rawPage && /^\d{1,6}$/.test(rawPage) ? { page: Math.max(1, Number(rawPage)) } : {}),
   };
   const result = await getConstructionMarketListings(filters, locale);
-  return <ConstructionMarket routeBase={routeBase} filters={filters} result={result} />;
+  return (
+    <MarketplaceView
+      sector="construction"
+      routeBase={routeBase}
+      filters={filters}
+      result={result}
+    />
+  );
 }

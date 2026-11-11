@@ -1,4 +1,4 @@
-import { AgricultureMarket } from "@/components/agriculture/agriculture-market";
+import { MarketplaceView } from "@/components/marketplace/marketplace-view";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import {
   getAgricultureMarketListings,
@@ -54,5 +54,7 @@ export async function AgricultureMarketPage({
     ...(rawPage && /^\d{1,6}$/.test(rawPage) ? { page: Math.max(1, Number(rawPage)) } : {}),
   };
   const result = await getAgricultureMarketListings(filters, locale);
-  return <AgricultureMarket routeBase={routeBase} filters={filters} result={result} />;
+  return (
+    <MarketplaceView sector="agriculture" routeBase={routeBase} filters={filters} result={result} />
+  );
 }

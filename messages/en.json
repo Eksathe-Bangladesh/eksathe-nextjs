@@ -47,6 +47,7 @@
       "pagination": "Pagination",
       "previous": "Previous",
       "next": "Next",
+      "pageOf": "Page {page} of {total}",
       "newest": "Newest",
       "provider": "Provider",
       "total": "Total",
@@ -454,8 +455,16 @@
       "minBdt": "Min BDT",
       "maxBdt": "Max BDT",
       "sort": "Sort",
-      "empty": "No published products match these filters. Adjust your search and try again.",
-      "page": "Page"
+      "categories": {
+        "grains": "Grains",
+        "vegetables": "Vegetables",
+        "fruits": "Fruits",
+        "dairy": "Dairy",
+        "fish": "Fish",
+        "spices": "Spices",
+        "other": "Other"
+      },
+      "empty": "No published products match these filters. Adjust your search and try again."
     },
     "support": {
       "title": "Agriculture support",
@@ -667,7 +676,8 @@
     },
     "listingCount": "{count, plural, one {# listing} other {# listings}}",
     "actions": {
-      "browse": "Browse marketplace"
+      "browse": "Browse marketplace",
+      "clearFilters": "Clear filters"
     },
     "listingDetail": {
       "bookingAvailability": "Booking availability",
@@ -759,7 +769,6 @@
       "allConstructionListings": "All construction listings",
       "professionalsServices": "Professionals & services",
       "sortBy": "Sort by",
-      "clearFilters": "Clear filters",
       "unavailable": "Listings are temporarily unavailable",
       "emptyAction": "Create a project to request quotes",
       "empty": "No approved listings match these filters. Adjust your search and try again."

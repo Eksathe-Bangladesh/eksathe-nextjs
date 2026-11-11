@@ -157,6 +157,41 @@ test("agriculture marketplace keeps filters in the direct and dashboard URL cont
   await expect(page.locator("form")).toHaveAttribute("action", "/dashboard/agriculture/market");
 });
 
+test("construction marketplace shares the responsive filter and result layout", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    "/en/construction/market?q=brick&type=CONSTRUCTION_MATERIAL&minPrice=10&maxPrice=100&sort=price-asc&term=brick&term=block",
+  );
+
+  await expect(
+    page.getByRole("heading", { name: "Find construction services and materials" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Search services, materials, or providers" }),
+  ).toHaveValue("brick");
+  await expect(page.getByLabel("Type")).toHaveValue("CONSTRUCTION_MATERIAL");
+  await expect(page.getByLabel("Minimum price")).toHaveValue("10");
+  await expect(page.getByLabel("Maximum price")).toHaveValue("100");
+  await expect(page.locator("main")).toHaveCount(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+
+  await expect(page.getByRole("link", { name: "Clear filters" })).toHaveAttribute(
+    "href",
+    "/en/construction/market",
+  );
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await expect(page).toHaveURL(/q=brick/);
+  await expect(page).toHaveURL(/type=CONSTRUCTION_MATERIAL/);
+  await expect(page).toHaveURL(/term=brick/);
+  await expect(page).toHaveURL(/term=block/);
+});
+
 test("construction home shares content across canonical and dashboard entries", async ({
   page,
 }) => {
