@@ -423,6 +423,23 @@ async function main() {
     });
   }
 
+  const commerceCategorySeeds = [
+    { slug: "food-grocery", titleBn: "খাদ্য ও মুদি", titleEn: "Food & grocery" },
+    {
+      slug: "agriculture-supplies",
+      titleBn: "কৃষি উপকরণ",
+      titleEn: "Agriculture supplies",
+    },
+    { slug: "apparel", titleBn: "পোশাক", titleEn: "Apparel" },
+  ];
+  for (const category of commerceCategorySeeds) {
+    await prisma.commerceCategory.upsert({
+      where: { slug: category.slug },
+      update: { titleBn: category.titleBn, titleEn: category.titleEn },
+      create: category,
+    });
+  }
+
   const commerceSeller = await prisma.commerceSeller.upsert({
     where: { userId: farmer.id },
     update: {},

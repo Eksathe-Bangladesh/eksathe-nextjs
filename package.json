@@ -66,7 +66,7 @@
     "@babel/parser": "8.1.0",
     "@formatjs/icu-messageformat-parser": "^3.5.23",
     "@playwright/test": "^1.65.0",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/turbopack": "^4.3.5",
     "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
