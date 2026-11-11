@@ -15,7 +15,7 @@
     "test:integration": "bun prisma/scripts/test-database.ts test",
     "test:e2e": "bun run db:test:setup && playwright test",
     "db:up": "docker compose up -d --wait",
-    "db:down": "docker compose down",
+    "db:down": "docker compose --profile test down",
     "db:logs": "docker compose logs -f db",
     "db:psql": "docker compose exec db psql -U eksathe -d eksathe",
     "db:reset": "docker compose down -v && docker compose up -d --wait && prisma migrate deploy && prisma db seed",
