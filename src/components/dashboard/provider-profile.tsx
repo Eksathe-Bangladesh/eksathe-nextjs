@@ -53,7 +53,7 @@ export function ProviderProfile({
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         {t("nav.browse")}
       </Link>
-      <Card>
+      <Card className="pt-0">
         <div className="from-primary/10 via-secondary to-primary/20 relative h-40 overflow-hidden rounded-t-xl bg-linear-to-br sm:h-56">
           {provider.hasCoverImage && (
             <StorefrontPhoto

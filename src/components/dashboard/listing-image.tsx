@@ -40,7 +40,7 @@ export function ListingImage({
   return (
     <div
       data-slot="listing-image"
-      className="bg-secondary/50 relative flex aspect-[16/9] items-center justify-center overflow-hidden rounded-t-xl"
+      className="bg-secondary/50 relative flex aspect-video items-center justify-center overflow-hidden rounded-t-xl"
     >
       {showPhoto ? (
         <Image

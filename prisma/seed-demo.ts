@@ -423,6 +423,117 @@ async function main() {
     });
   }
 
+  const commerceSeller = await prisma.commerceSeller.upsert({
+    where: { userId: farmer.id },
+    update: {},
+    create: {
+      userId: farmer.id,
+      displayName: "Green Fields Trading",
+      status: "APPROVED",
+    },
+  });
+  const commerceProducts = [
+    {
+      id: "demo-commerce-red-lentils",
+      categorySlug: "food-grocery",
+      titleBn: "দেশি মসুর ডাল",
+      titleEn: "Local Red Lentils",
+      descriptionBn: "বাছাই করা দেশি মসুর ডাল, খুচরা ও পাইকারি অর্ডারের জন্য।",
+      descriptionEn: "Carefully sorted local red lentils, available for retail and wholesale.",
+      unit: "kg",
+      price: "130",
+      stock: 500,
+      minimumWholesale: 10,
+      tierPrices: [
+        { minQty: 10, unitPrice: "122" },
+        { minQty: 50, unitPrice: "115" },
+      ],
+    },
+    {
+      id: "demo-commerce-mustard-oil",
+      categorySlug: "food-grocery",
+      titleBn: "ঘানিভাঙা সরিষার তেল",
+      titleEn: "Cold-Pressed Mustard Oil",
+      descriptionBn: "স্থানীয় সরিষা থেকে তৈরি খাঁটি ঘানিভাঙা তেল।",
+      descriptionEn: "Pure, cold-pressed oil made from locally grown mustard seeds.",
+      unit: "liter",
+      price: "340",
+      stock: 120,
+      minimumWholesale: 12,
+      tierPrices: [
+        { minQty: 12, unitPrice: "325" },
+        { minQty: 48, unitPrice: "310" },
+      ],
+    },
+    {
+      id: "demo-commerce-organic-compost",
+      categorySlug: "agriculture-supplies",
+      titleBn: "জৈব কম্পোস্ট সার",
+      titleEn: "Organic Compost Fertilizer",
+      descriptionBn: "সবজি ও ফলের বাগানের জন্য প্রাকৃতিক কম্পোস্ট সার।",
+      descriptionEn: "Natural compost fertilizer for vegetable and fruit gardens.",
+      unit: "25 kg sack",
+      price: "280",
+      stock: 200,
+      minimumWholesale: 5,
+      tierPrices: [
+        { minQty: 5, unitPrice: "265" },
+        { minQty: 20, unitPrice: "245" },
+      ],
+    },
+    {
+      id: "demo-commerce-jute-bags",
+      categorySlug: "apparel",
+      titleBn: "পাটের বাজারের ব্যাগ",
+      titleEn: "Reusable Jute Shopping Bags",
+      descriptionBn: "দৈনন্দিন বাজারের জন্য মজবুত, পুনর্ব্যবহারযোগ্য পাটের ব্যাগ।",
+      descriptionEn: "Durable reusable jute bags for everyday shopping.",
+      unit: "piece",
+      price: "95",
+      stock: 350,
+      minimumWholesale: 25,
+      tierPrices: [
+        { minQty: 25, unitPrice: "88" },
+        { minQty: 100, unitPrice: "80" },
+      ],
+    },
+  ];
+  for (const product of commerceProducts) {
+    const category = await prisma.commerceCategory.findUniqueOrThrow({
+      where: { slug: product.categorySlug },
+      select: { id: true },
+    });
+    await prisma.commerceProduct.upsert({
+      where: { id: product.id },
+      update: {},
+      create: {
+        id: product.id,
+        sellerId: commerceSeller.id,
+        categoryId: category.id,
+        titleBn: product.titleBn,
+        titleEn: product.titleEn,
+        descriptionBn: product.descriptionBn,
+        descriptionEn: product.descriptionEn,
+        unit: product.unit,
+        price: decimal(product.price),
+        stock: product.stock,
+        minimumWholesale: product.minimumWholesale,
+        status: "APPROVED",
+      },
+    });
+    for (const tierPrice of product.tierPrices) {
+      await prisma.commerceTierPrice.upsert({
+        where: { productId_minQty: { productId: product.id, minQty: tierPrice.minQty } },
+        update: {},
+        create: {
+          productId: product.id,
+          minQty: tierPrice.minQty,
+          unitPrice: decimal(tierPrice.unitPrice),
+        },
+      });
+    }
+  }
+
   const project = await prisma.constructionProject.upsert({
     where: { id: "demo-project-family-home" },
     update: {},
@@ -836,7 +947,7 @@ async function main() {
   }
 
   console.log(
-    "Loaded local EKsathe demo data: 4 accounts, 7 listings, 5 requests, 2 orders and 1 project.",
+    "Loaded local EKsathe demo data: 4 accounts, 7 listings, 4 marketplace products, 5 requests, 2 orders and 1 project.",
   );
   console.log("Demo account password: Demo-only-123!");
 }
