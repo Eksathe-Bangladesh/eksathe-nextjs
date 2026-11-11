@@ -55,7 +55,8 @@ test("the service hub links to all 13 sector panels", async ({ page }) => {
   for (const slug of sectors) {
     const route =
       slug === "agriculture-labor" ? "/bn/dashboard/agriculture" : `/bn/dashboard/${slug}`;
-    await expect(page.locator(`main a[href="${route}"]`)).toHaveCount(1);
+    const sectorCard = page.locator(`main a[href="${route}"]`).filter({ has: page.locator("h3") });
+    await expect(sectorCard).toHaveCount(1);
   }
 });
 
@@ -77,7 +78,7 @@ test("the readiness endpoint reports database availability", async ({ request })
 });
 
 test("planned sectors show a coming-soon page and unknown sectors return 404", async ({ page }) => {
-  await page.goto("/dashboard/ecommerce-b2b");
+  await page.goto("/dashboard/family-household");
   await expect(page.getByText("এই বিভাগে সেবা শিগগিরই চালু হবে।")).toBeVisible();
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",

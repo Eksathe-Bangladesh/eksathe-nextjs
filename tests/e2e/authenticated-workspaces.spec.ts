@@ -32,7 +32,14 @@ test("a customer sees their orders and project but cannot open administration", 
   await expect(menu.getByText("Account type")).toBeVisible();
   await expect(menu.getByText("Customer", { exact: true })).toBeVisible();
   await expect(menu.getByRole("menuitem", { name: "My requests" })).toBeVisible();
-  await expect(menu.getByRole("menuitem", { name: "My orders" })).toBeVisible();
+  await expect(menu.getByRole("menuitem", { name: "Service orders" })).toHaveAttribute(
+    "href",
+    "/en/account#orders",
+  );
+  await expect(menu.getByRole("menuitem", { name: "Product orders" })).toHaveAttribute(
+    "href",
+    "/en/dashboard/ecommerce-b2b/orders",
+  );
   await expect(menu.getByRole("menuitem", { name: "My projects" })).toBeVisible();
   await expect(menu.getByRole("menuitem", { name: "Become a provider" })).toBeVisible();
 
