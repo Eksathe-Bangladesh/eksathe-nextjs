@@ -86,6 +86,18 @@ test("the readiness endpoint reports database availability", async ({ request })
   await expect(response.json()).resolves.toMatchObject({ status: "ready" });
 });
 
+test("product cards align their view buttons across a row", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/en/dashboard/ecommerce-b2b");
+
+  const viewButtons = page.locator("main article").getByRole("link", { name: "View product" });
+  await expect(viewButtons).toHaveCount(4);
+  const yPositions = await viewButtons.evaluateAll((buttons) =>
+    buttons.slice(0, 3).map((button) => button.getBoundingClientRect().y),
+  );
+  expect(Math.max(...yPositions) - Math.min(...yPositions)).toBeLessThan(1);
+});
+
 test("planned sectors show a coming-soon page and unknown sectors return 404", async ({ page }) => {
   await page.goto("/dashboard/family-household");
   await expect(page.getByText("এই বিভাগে সেবা শিগগিরই চালু হবে।")).toBeVisible();

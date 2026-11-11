@@ -103,11 +103,11 @@ export default async function CommerceMarketPage({ searchParams }: Props) {
                   {product.stock} {bn ? "মজুত" : "in stock"}
                 </span>
               </div>
-              <p className="text-muted-foreground mt-2 text-xs">
+              <p className="text-muted-foreground my-2 text-xs">
                 {bn ? "বিক্রেতা" : "Seller"}: {product.seller.displayName}
               </p>
               <Link
-                className="bg-primary text-primary-foreground mt-4 rounded-md px-3 py-2 text-center text-sm"
+                className="bg-primary text-primary-foreground mt-auto rounded-md px-3 py-2 text-center text-sm"
                 href={`/dashboard/ecommerce-b2b/products/${product.id}`}
               >
                 {bn ? "বিস্তারিত দেখুন" : "View product"}
