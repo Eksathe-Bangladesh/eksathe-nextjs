@@ -2,7 +2,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ProviderProfileSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/paths";
 import { getPublicProviderProfile } from "@/lib/listings";
@@ -49,7 +49,7 @@ export default function PublicProviderPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ProviderProfileSkeleton />}>
       <PublicProviderContent params={params} searchParams={searchParams} />
     </Suspense>
   );

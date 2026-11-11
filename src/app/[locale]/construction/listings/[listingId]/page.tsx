@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { ConstructionListingPage } from "@/components/construction/construction-listing-page";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ListingDetailSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedCanonical } from "@/i18n/metadata";
 
@@ -58,7 +58,7 @@ export default function DirectListingPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ListingDetailSkeleton />}>
       <ConstructionListingContent params={params} searchParams={searchParams} />
     </Suspense>
   );

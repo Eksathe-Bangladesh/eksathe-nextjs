@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { ConstructionProviderPage } from "@/components/construction/construction-listing-page";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ProviderProfileSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedCanonical } from "@/i18n/metadata";
 
@@ -42,7 +42,7 @@ export default function DashboardProviderPage({
   params: Promise<{ locale: string; providerId: string }>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ProviderProfileSkeleton />}>
       <DashboardProviderContent params={params} />
     </Suspense>
   );

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ProjectDetail } from "@/components/projects/project-detail";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ProjectDetailSkeleton } from "@/components/skeletons/page-skeletons";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { requireUser } from "@/lib/dal";
@@ -10,7 +10,11 @@ import { getPublicListings } from "@/lib/listings";
 import { logError } from "@/lib/logging";
 import { getProjectWorkspace } from "@/lib/workspaces";
 
-async function ProjectContent({ params }: { params: Promise<{ locale: string; projectId: string }> }) {
+async function ProjectContent({
+  params,
+}: {
+  params: Promise<{ locale: string; projectId: string }>;
+}) {
   const { locale: routeLocale, projectId } = await params;
   const locale = getLocaleOrDefault(routeLocale);
   const user = await requireUser(`/account/projects/${projectId}`);
@@ -38,7 +42,7 @@ export default function ProjectPage({
   params: Promise<{ locale: string; projectId: string }>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ProjectDetailSkeleton />}>
       <ProjectContent params={params} />
     </Suspense>
   );

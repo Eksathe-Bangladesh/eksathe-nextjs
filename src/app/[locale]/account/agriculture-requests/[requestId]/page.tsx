@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { AgricultureRequestDetail } from "@/components/account/agriculture-request-detail";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { AgricultureRequestSkeleton } from "@/components/skeletons/page-skeletons";
 import { requireUser } from "@/lib/dal";
 import { getCustomerAgricultureRequest } from "@/lib/workspaces";
 
@@ -25,7 +25,7 @@ export default function CustomerAgricultureRequestPage({
   params: Promise<{ requestId: string }>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<AgricultureRequestSkeleton />}>
       <CustomerAgricultureRequestContent params={params} />
     </Suspense>
   );

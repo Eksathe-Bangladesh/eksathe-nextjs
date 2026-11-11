@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ProviderProfile } from "@/components/dashboard/provider-profile";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ProviderProfileSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { getPublicProviderProfile } from "@/lib/listings";
 import { getSector } from "@/lib/sectors";
@@ -34,7 +34,7 @@ export default function AgricultureProviderPage({
   params: Promise<{ locale: string; providerId: string }>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ProviderProfileSkeleton />}>
       <AgricultureProviderContent params={params} />
     </Suspense>
   );

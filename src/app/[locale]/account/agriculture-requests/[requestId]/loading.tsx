@@ -1,1 +1,1 @@
-export { DetailPageSkeleton as default } from "@/components/skeletons/page-skeletons";
+export { AgricultureRequestSkeleton as default } from "@/components/skeletons/page-skeletons";

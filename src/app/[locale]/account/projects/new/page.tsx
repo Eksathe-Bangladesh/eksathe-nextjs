@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { CreateProjectEntry } from "@/components/projects/create-project-entry";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ProjectFormSkeleton } from "@/components/skeletons/page-skeletons";
 import { resolveCatalogPair } from "@/i18n/catalog";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { getConstructionService } from "@/lib/construction/service-registry";
@@ -58,7 +58,7 @@ export default function CreateProjectPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ProjectFormSkeleton />}>
       <CreateProjectContent params={params} searchParams={searchParams} />
     </Suspense>
   );

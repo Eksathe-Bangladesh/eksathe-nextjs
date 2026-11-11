@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ListingDetailSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { getCurrentUser } from "@/lib/dal";
 import { getPublicListing, getPublicProviderProfile } from "@/lib/listings";
@@ -19,10 +19,7 @@ async function DashboardAgricultureListingContent({
   const locale = getLocaleOrDefault(routeLocale);
   const sector = getSector("agriculture-labor");
   if (!sector) notFound();
-  const [result, user] = await Promise.all([
-    getPublicListing(listingId, locale),
-    getCurrentUser(),
-  ]);
+  const [result, user] = await Promise.all([getPublicListing(listingId, locale), getCurrentUser()]);
   if (result.listing && result.listing.sectorSlug !== sector.slug) notFound();
   if (!result.listing && !result.unavailable) notFound();
   const providerResult = result.listing
@@ -58,7 +55,7 @@ export default function DashboardAgricultureListingPage({
   searchParams: Promise<{ projectId?: string | string[]; packageLabel?: string | string[] }>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ListingDetailSkeleton />}>
       <DashboardAgricultureListingContent params={params} searchParams={searchParams} />
     </Suspense>
   );

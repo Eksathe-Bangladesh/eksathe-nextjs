@@ -2,7 +2,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { ListingDetail } from "@/components/dashboard/listing-detail";
-import { DetailPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { ListingDetailSkeleton } from "@/components/skeletons/page-skeletons";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/paths";
 import { getCurrentUser } from "@/lib/dal";
@@ -37,10 +37,7 @@ async function ListingContent({
   }
   if (!sector || sector.status !== "live") notFound();
 
-  const [result, user] = await Promise.all([
-    getPublicListing(listingId, locale),
-    getCurrentUser(),
-  ]);
+  const [result, user] = await Promise.all([getPublicListing(listingId, locale), getCurrentUser()]);
   if (result.listing && result.listing.sectorSlug !== slug) notFound();
   if (!result.listing && !result.unavailable) notFound();
   const providerResult = result.listing
@@ -76,7 +73,7 @@ export default function ListingPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   return (
-    <Suspense fallback={<DetailPageSkeleton />}>
+    <Suspense fallback={<ListingDetailSkeleton />}>
       <ListingContent params={params} searchParams={searchParams} />
     </Suspense>
   );
