@@ -1,9 +1,11 @@
 "use client";
 
+import { cn } from "cn";
 import { ArrowUpRightIcon, SearchIcon, ShoppingBagIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { sectors } from "@/lib/sectors";
@@ -82,7 +84,10 @@ export function CategoryGrid() {
                     ? "/dashboard/agriculture"
                     : `/dashboard/${cat.slug}`
                 }
-                className="group border-border/70 bg-card hover:border-primary/40 relative flex flex-col items-center justify-between rounded-2xl border p-5 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:translate-y-0"
+                className={cn(
+                  "group border-border/70 bg-card hover:border-primary/40 relative flex flex-col items-center justify-between rounded-2xl border p-5 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:translate-y-0",
+                  cat.status === "live" && "border-primary/30 bg-primary/5 shadow-sm",
+                )}
               >
                 <div className="flex flex-1 flex-col items-center justify-center pt-1 pb-3">
                   <div className="transition-transform duration-200 group-hover:scale-105">
@@ -97,9 +102,21 @@ export function CategoryGrid() {
                 <span className="text-muted-foreground/70 text-xs font-medium tabular-nums">
                   {cat.id}
                 </span>
-                <span className="bg-muted text-muted-foreground mt-2 rounded-full px-2.5 py-1 text-[0.7rem] font-medium">
+                <Badge
+                  variant={cat.status === "live" ? "outline" : "secondary"}
+                  className={cn(
+                    "mt-2",
+                    cat.status === "live" && "gap-1.5 border-primary/35 bg-primary/10 text-primary",
+                  )}
+                >
+                  {cat.status === "live" && (
+                    <span
+                      aria-hidden="true"
+                      className="bg-primary size-1.5 rounded-full motion-safe:animate-pulse"
+                    />
+                  )}
                   {cat.status === "live" ? t("nav.live") : t("home.comingSoon")}
-                </span>
+                </Badge>
               </Link>
             );
           })}

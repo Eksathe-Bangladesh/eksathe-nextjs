@@ -58,6 +58,15 @@ test("the service hub links to all 13 sector panels", async ({ page }) => {
     const sectorCard = page.locator(`main a[href="${route}"]`).filter({ has: page.locator("h3") });
     await expect(sectorCard).toHaveCount(1);
   }
+
+  const liveSectorCard = page
+    .locator('main a[href="/bn/dashboard/agriculture"]')
+    .filter({ has: page.locator("h3") });
+  const plannedSectorCard = page
+    .locator('main a[href="/bn/dashboard/family-household"]')
+    .filter({ has: page.locator("h3") });
+  await expect(liveSectorCard.getByText("চালু", { exact: true })).toBeVisible();
+  await expect(plannedSectorCard.getByText("শিগগিরই আসছে", { exact: true })).toBeVisible();
 });
 
 test("a construction visitor can find provider onboarding without guessing a route", async ({
