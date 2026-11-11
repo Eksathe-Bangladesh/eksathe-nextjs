@@ -13,7 +13,7 @@
     "typecheck": "tsrs --noEmit --fast",
     "test:unit": "bun test src/lib prisma/scripts/test-database.test.ts",
     "test:integration": "bun prisma/scripts/test-database.ts test",
-    "test:e2e": "playwright test",
+    "test:e2e": "bun run db:test:setup && playwright test",
     "db:up": "docker compose up -d --wait",
     "db:down": "docker compose down",
     "db:logs": "docker compose logs -f db",

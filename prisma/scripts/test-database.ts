@@ -41,10 +41,10 @@ async function main() {
   const cwd = fileURLToPath(new URL("../../", import.meta.url));
   const env = { ...process.env, DATABASE_URL: databaseUrl, TEST_DATABASE_URL: databaseUrl };
 
-  async function run(command: string[]) {
+  async function run(command: string[], overrides: Record<string, string> = {}) {
     const child = Bun.spawn(command, {
       cwd,
-      env,
+      env: { ...env, ...overrides },
       stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
@@ -60,7 +60,12 @@ async function main() {
     const prisma = [process.execPath, "node_modules/prisma/build/index.js"];
     await run([...prisma, "generate", "--config", "prisma7.config.ts"]);
     await run([...prisma, "migrate", "deploy", "--config", "prisma7.config.ts"]);
-    console.log("Test database ready. Run: bun run test:integration");
+    await run([process.execPath, "prisma/seed.ts"]);
+    await run([process.execPath, "prisma/seed-demo.ts"], {
+      NODE_ENV: "test",
+      SEED_DEMO_DATA: "true",
+    });
+    console.log("Test database ready with the base catalog and E2E demo fixtures.");
   } else {
     await run([process.execPath, "test", "./tests/integration"]);
   }
