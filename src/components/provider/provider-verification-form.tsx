@@ -1,12 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState, useRef, useState, type ReactNode } from "react";
+import { useActionState, useRef, useState } from "react";
 
 import { submitProviderVerificationAction } from "@/app/actions/provider-verification";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
@@ -456,14 +456,5 @@ function ProviderVerificationForm({
         {pending ? t("common.loading") : t("verification.actions.submit")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }

@@ -4,6 +4,7 @@ import { useLocale, useTranslations, useFormatter } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
 import { AGRICULTURE_MARKET_PRICE_FRESHNESS_DAYS } from "@/lib/agriculture/publishing-constants";
@@ -39,9 +40,7 @@ export function AgriculturePublicInformationPage({
         {t("agriculture.information.backToAllAgricultureServices")}
       </Link>
       <header>
-        <p className="text-primary text-sm font-semibold">
-          {t("agriculture.information.eyebrow")}
-        </p>
+        <p className="text-primary text-sm font-semibold">{t("agriculture.information.eyebrow")}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {isPrices
             ? t("agriculture.information.marketPrices")
@@ -66,7 +65,10 @@ export function AgriculturePublicInformationPage({
         </p>
       ) : isPrices ? (
         info.prices.length === 0 ? (
-          <Empty text={t("agriculture.information.emptyPrices")} />
+          <EmptyState
+            text={t("agriculture.information.emptyPrices")}
+            className="border-border rounded-xl border p-8"
+          />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {info.prices.map((item) => (
@@ -93,7 +95,10 @@ export function AgriculturePublicInformationPage({
           </div>
         )
       ) : info.updates.length === 0 ? (
-        <Empty text={t("agriculture.information.noCurrentUpdatesOrAlerts")} />
+        <EmptyState
+          text={t("agriculture.information.noCurrentUpdatesOrAlerts")}
+          className="border-border rounded-xl border p-8"
+        />
       ) : (
         <div className="flex flex-col gap-4">
           {info.updates.map((item) => {
@@ -133,13 +138,5 @@ export function AgriculturePublicInformationPage({
         </div>
       )}
     </main>
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return (
-    <Card>
-      <CardContent className="text-muted-foreground p-8 text-sm">{text}</CardContent>
-    </Card>
   );
 }

@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { OrderCard } from "@/components/workflows/order-card";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
@@ -373,14 +374,6 @@ function ListingArchiveControl({ listingId }: { listingId: string }) {
         </Button>
       </form>
       <ActionFeedback state={state} />
-    </div>
-  );
-}
-
-function EmptyState({ text }: { text: string }) {
-  return (
-    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-      {text}
     </div>
   );
 }

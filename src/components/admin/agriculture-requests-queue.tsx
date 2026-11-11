@@ -4,14 +4,15 @@ import { useLocale, useTranslations, useFormatter } from "next-intl";
 import { useActionState } from "react";
 
 import { updateAgricultureServiceRequestAction } from "@/app/actions/agriculture";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { statusMessageKey } from "@/i18n/message-keys";
 import { Link } from "@/i18n/navigation";
@@ -36,7 +37,9 @@ export function AgricultureRequestsQueue({
   return (
     <section id="agriculture-requests" className="flex scroll-mt-24 flex-col gap-4">
       <div>
-        <h2 className="text-xl font-bold">{t("admin.agricultureRequests.agricultureServiceIntake")}</h2>
+        <h2 className="text-xl font-bold">
+          {t("admin.agricultureRequests.agricultureServiceIntake")}
+        </h2>
         <p className="text-muted-foreground mt-1 text-sm">
           {t("admin.agricultureRequests.description")}
         </p>
@@ -71,7 +74,9 @@ export function AgricultureRequestsQueue({
             defaultValue={filters.status ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="">{t("admin.agricultureRequests.allStatuses")}</NativeSelectOption>
+            <NativeSelectOption value="">
+              {t("admin.agricultureRequests.allStatuses")}
+            </NativeSelectOption>
             {["NEW", "REVIEWING", "ASSIGNED", "COMPLETED", "REJECTED", "CANCELLED"].map(
               (status) => (
                 <NativeSelectOption key={status} value={status}>
@@ -88,7 +93,9 @@ export function AgricultureRequestsQueue({
             defaultValue={filters.assigneeId ?? ""}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
-            <NativeSelectOption value="">{t("admin.agricultureRequests.anyone")}</NativeSelectOption>
+            <NativeSelectOption value="">
+              {t("admin.agricultureRequests.anyone")}
+            </NativeSelectOption>
             {staff.map((person) => (
               <NativeSelectOption key={person.id} value={person.id}>
                 {person.name} · {person.email}
@@ -115,9 +122,7 @@ export function AgricultureRequestsQueue({
         </div>
       </form>
       {requests.length === 0 ? (
-        <div className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-          {t("admin.agricultureRequests.empty")}
-        </div>
+        <EmptyState text={t("admin.agricultureRequests.empty")} />
       ) : (
         requests.map((request) => <RequestCard key={request.id} request={request} staff={staff} />)
       )}
@@ -148,7 +153,8 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
       <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
         <div>
           <CardTitle className="text-lg">
-            {request.service.icon} {{ en: request.service.title, bn: request.service.title }[locale]}
+            {request.service.icon}{" "}
+            {{ en: request.service.title, bn: request.service.title }[locale]}
           </CardTitle>
           <CardDescription>
             {request.referenceCode ?? `AG-${request.id}`} · {request.customerName} ·{" "}
@@ -214,7 +220,12 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         {request.marketplaceRequest && (
           <p className="text-sm">
             {t("admin.agricultureRequests.marketplaceMatch")}:{" "}
-            {{ en: request.marketplaceRequest.listing.title, bn: request.marketplaceRequest.listing.title }[locale]}
+            {
+              {
+                en: request.marketplaceRequest.listing.title,
+                bn: request.marketplaceRequest.listing.title,
+              }[locale]
+            }
           </p>
         )}
         {request.updates.map((update) => (
@@ -228,7 +239,11 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
                 : t("admin.agricultureRequests.customerUpdate")}
             </p>
             <p>
-              {{ en: update.message ?? update.message, bn: update.message ?? update.message }[locale]}
+              {
+                { en: update.message ?? update.message, bn: update.message ?? update.message }[
+                  locale
+                ]
+              }
             </p>
           </div>
         ))}
@@ -249,7 +264,10 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               ))}
             </NativeSelect>
           </Field>
-          <Field id={`ag-assignee-${request.id}`} label={t("admin.agricultureRequests.assignToStaff")}>
+          <Field
+            id={`ag-assignee-${request.id}`}
+            label={t("admin.agricultureRequests.assignToStaff")}
+          >
             <NativeSelect
               id={`ag-assignee-${request.id}`}
               name="assignedToId"
@@ -286,7 +304,10 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
               rows={2}
             />
           </Field>
-          <Field id={`ag-private-note-${request.id}`} label={t("admin.agricultureRequests.privateStaffNote")}>
+          <Field
+            id={`ag-private-note-${request.id}`}
+            label={t("admin.agricultureRequests.privateStaffNote")}
+          >
             <Textarea
               id={`ag-private-note-${request.id}`}
               name="privateNote"
@@ -303,15 +324,6 @@ function RequestCard({ request, staff }: { request: QueueRequest; staff: QueueSt
         </form>
       </CardContent>
     </Card>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }
 

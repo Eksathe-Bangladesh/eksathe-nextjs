@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { verificationMessageKey } from "@/lib/construction/verification-labels";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -30,9 +32,7 @@ export function ProviderVerificationReviewQueue({
         <p className="text-muted-foreground mt-1 text-sm">{t("verification.admin.description")}</p>
       </div>
       {!applications.length ? (
-        <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-          {t("workflow.noRecords")}
-        </p>
+        <EmptyState text={t("workflow.noRecords")} />
       ) : (
         applications.map((application) => (
           <VerificationApplicationCard
@@ -216,7 +216,7 @@ function VerificationApplicationCard({
                       <Label htmlFor={`verification-document-note-${document.id}`}>
                         {t("verification.admin.documentNote")}
                       </Label>
-                      <textarea
+                      <Textarea
                         id={`verification-document-note-${document.id}`}
                         value={decision?.note ?? ""}
                         maxLength={500}
@@ -230,7 +230,7 @@ function VerificationApplicationCard({
                             ),
                           )
                         }
-                        className="border-input bg-background rounded-lg border px-3 py-2 text-xs"
+                        className="text-xs"
                       />
                     </div>
                   ) : (
@@ -269,14 +269,13 @@ function VerificationApplicationCard({
               <Label htmlFor={`verification-note-${application.id}`}>
                 {t("verification.admin.reviewNote")}
               </Label>
-              <textarea
+              <Textarea
                 id={`verification-note-${application.id}`}
                 name="reviewNote"
                 value={note}
                 onChange={(event) => setNote(event.target.value)}
                 rows={3}
                 maxLength={1200}
-                className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
               />
             </div>
             <ActionFeedback state={state} />

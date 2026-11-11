@@ -13,6 +13,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type { AgriculturePublicService } from "@/lib/agriculture/admin";
 import type { AgriculturePublicInfo } from "@/lib/agriculture/publishing";
@@ -154,9 +155,7 @@ export function AgricultureHome({
           </p>
         )}
         {!unavailable && listings.length === 0 ? (
-          <div className="text-muted-foreground rounded-2xl border border-dashed p-6 text-sm">
-            {t("agriculture.home.emptyListings")}
-          </div>
+          <EmptyState text={t("agriculture.home.emptyListings")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {listings.slice(0, 3).map((listing) => (
@@ -231,9 +230,7 @@ export function AgricultureHome({
           </NativeSelect>
         </div>
         {services.length === 0 ? (
-          <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-            {t("agriculture.services.empty")}
-          </p>
+          <EmptyState text={t("agriculture.services.empty")} className="rounded-2xl border p-8" />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => {

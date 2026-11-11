@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import {
   agricultureAccountStatuses,
   agricultureAccountTypes,
@@ -64,9 +65,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
           <h2 className="text-xl font-bold">{t("workflow.agricultureUserManagement")}</h2>
           <CreateUserForm accountTypeOptions={accountTypeOptions} />
           {data.users.length === 0 ? (
-            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-              {t("workflow.noManagedAccounts")}
-            </p>
+            <EmptyState text={t("workflow.noManagedAccounts")} />
           ) : (
             data.users.map((user) => {
               const accountType = agricultureAccountTypes.find(
@@ -109,9 +108,7 @@ export function AgroAdminWorkspace({ data }: { data: AgricultureAdminWorkspace }
         <section id="panels" className="flex flex-col gap-4">
           <h2 className="text-xl font-bold">{t("workflow.agriculturePanelManagement")}</h2>
           {data.panels.length === 0 ? (
-            <p className="text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-              {t("workflow.noServicePanels")}
-            </p>
+            <EmptyState text={t("workflow.noServicePanels")} />
           ) : (
             <div className="grid gap-3 md:grid-cols-2">
               {data.panels.map((panel) => (
@@ -343,9 +340,7 @@ function PanelStatusForm({ panel }: { panel: AgricultureAdminWorkspace["panels"]
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">
-          {{ en: panel.title, bn: panel.title }[locale]}
-        </CardTitle>
+        <CardTitle className="text-base">{{ en: panel.title, bn: panel.title }[locale]}</CardTitle>
         <CardDescription>{panel.slug}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

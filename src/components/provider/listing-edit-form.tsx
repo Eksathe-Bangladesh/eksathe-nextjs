@@ -4,10 +4,11 @@ import { useTranslations } from "next-intl";
 import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import { updateListingAction } from "@/app/actions/marketplace";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -177,26 +178,21 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         </Field>
       </div>
       <Field id={`edit-description-bn-${listing.id}`} label={t("workflow.descriptionBn")}>
-        <textarea
+        <Textarea
           id={`edit-description-bn-${listing.id}`}
           name="descriptionBn"
           rows={3}
           maxLength={2000}
           defaultValue={listing.description}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
-      <Field
-        id={`edit-description-en-${listing.id}`}
-        label={t("workflow.descriptionEn")}
-      >
-        <textarea
+      <Field id={`edit-description-en-${listing.id}`} label={t("workflow.descriptionEn")}>
+        <Textarea
           id={`edit-description-en-${listing.id}`}
           name="descriptionEn"
           rows={3}
           maxLength={2000}
           defaultValue={listing.description}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id={`edit-image-${listing.id}`} label={t("provider.listingEdit.replacePhotoOptional")}>
@@ -225,14 +221,5 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
         {uploading || pending ? t("common.states.saving") : t("provider.listingEdit.saveForReview")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }

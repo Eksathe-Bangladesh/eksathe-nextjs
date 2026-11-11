@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import type { PublicListing } from "@/lib/listings";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -115,12 +116,12 @@ export function ListingRequestForm({
       )}
       <div className="flex flex-col gap-2">
         <Label htmlFor="request-details">{t("workflow.details")}</Label>
-        <textarea
+        <Textarea
           id="request-details"
           name="details"
           maxLength={2000}
           rows={4}
-          className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 min-h-24 resize-y rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
+          className="min-h-24 resize-y"
           placeholder={t("marketplace.requestForm.requirementsPlaceholder")}
         />
       </div>

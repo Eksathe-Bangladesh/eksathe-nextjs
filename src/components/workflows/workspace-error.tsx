@@ -2,14 +2,19 @@
 
 import { useTranslations } from "next-intl";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
 export function WorkspaceError() {
   const t = useTranslations();
   return (
-    <div
+    <Alert
+      variant="destructive"
       role="alert"
-      className="border-destructive/30 bg-destructive/5 text-destructive mx-auto max-w-3xl rounded-2xl border p-6 text-sm"
+      className="bg-destructive/5 border-destructive/30 mx-auto max-w-3xl rounded-2xl p-6"
     >
-      {t("workflow.dataUnavailable")}
-    </div>
+      <AlertDescription className="text-destructive">
+        {t("workflow.dataUnavailable")}
+      </AlertDescription>
+    </Alert>
   );
 }

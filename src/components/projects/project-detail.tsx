@@ -19,6 +19,7 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { Link } from "@/i18n/navigation";
 import { getConstructionService } from "@/lib/construction/service-registry";
@@ -127,7 +128,7 @@ export function ProjectDetail({
           <p className="text-muted-foreground mt-1 text-sm">{t("projects.quotes.description")}</p>
         </div>
         {project.packages.length === 0 ? (
-          <Empty text={t("projects.packages.requiredNotice")} />
+          <EmptyState text={t("projects.packages.requiredNotice")} />
         ) : (
           project.packages.map((workPackage) => {
             const requests = project.requests.filter(
@@ -201,7 +202,7 @@ export function ProjectDetail({
                   {acceptedOrder && <StatusBadge status={acceptedOrder.status} />}
                 </div>
                 {requests.length === 0 ? (
-                  <Empty text={t("projects.packages.noInvitations")} />
+                  <EmptyState text={t("projects.packages.noInvitations")} />
                 ) : (
                   <div className="grid gap-3 xl:grid-cols-2">
                     {requests.map((request) => (
@@ -307,7 +308,7 @@ export function ProjectDetail({
                         {t("workflow.dataUnavailable")}
                       </p>
                     ) : candidates.length === 0 ? (
-                      <Empty text={t("workflow.noRecords")} />
+                      <EmptyState text={t("workflow.noRecords")} />
                     ) : (
                       <>
                         {service && serviceMatches.length === 0 && (
@@ -367,22 +368,23 @@ export function ProjectDetail({
             provider={!project.isOwner}
           />
         ) : (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         )}
         {project.isOwner &&
           (milestoneProviders.length > 0 ? (
             <AddMilestoneForm projectId={project.id} providers={milestoneProviders} />
           ) : (
-            <p className="border-border text-muted-foreground rounded-xl border border-dashed p-4 text-sm">
-              {t("projects.milestones.quoteRequired")}
-            </p>
+            <EmptyState
+              text={t("projects.milestones.quoteRequired")}
+              className="rounded-xl border p-4"
+            />
           ))}
       </section>
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">{t("projects.detail.engagedProvidersAndMaterials")}</h2>
         {project.orders.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           project.orders.map((order) => (
             <Card key={order.id}>
@@ -473,7 +475,7 @@ export function ProjectDetail({
             </p>
           </div>
           {project.expenses.length === 0 ? (
-            <Empty text={t("workflow.noRecords")} />
+            <EmptyState text={t("workflow.noRecords")} />
           ) : (
             project.expenses.map((expense) => (
               <div
@@ -497,7 +499,7 @@ export function ProjectDetail({
           <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectDocumentsHelp")}</p>
         </div>
         {project.documents.length === 0 ? (
-          <Empty text={t("projects.files.empty")} />
+          <EmptyState text={t("projects.files.empty")} />
         ) : (
           project.documents.map((document) => (
             <a
@@ -518,7 +520,7 @@ export function ProjectDetail({
           <p className="text-muted-foreground mt-1 text-sm">{t("workflow.projectPhotosHelp")}</p>
         </div>
         {project.photos.length === 0 ? (
-          <Empty text={t("projects.photos.empty")} />
+          <EmptyState text={t("projects.photos.empty")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {project.photos.map((photo) => (
@@ -606,13 +608,5 @@ function paymentMethodText(method: string, locale: "bn" | "en") {
         OTHER: "Other",
       } as Record<string, string>
     )[method] ?? method
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return (
-    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-      {text}
-    </div>
   );
 }

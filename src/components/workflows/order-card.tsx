@@ -11,11 +11,12 @@ import {
   requestOrderCancellationAction,
   reviewOrderAction,
 } from "@/app/actions/marketplace";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { uploadPrivateFile } from "@/lib/client-upload";
@@ -131,8 +132,7 @@ export function OrderCard({
           )}
           {order.provider && (
             <p>
-              {t("common.labels.provider")}:{" "}
-              <strong>{order.provider.name}</strong>
+              {t("common.labels.provider")}: <strong>{order.provider.name}</strong>
             </p>
           )}
           {startsAt && (
@@ -465,13 +465,12 @@ function CancelOrderForm({ orderId, agree = false }: { orderId: string; agree?: 
         <input type="hidden" name="reason" value="Agreed to the cancellation" />
       ) : (
         <Field id={`cancel-reason-${orderId}`} label={t("workflow.cancelOrder")}>
-          <textarea
+          <Textarea
             id={`cancel-reason-${orderId}`}
             name="reason"
             required
             maxLength={1000}
             rows={2}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
       )}
@@ -496,13 +495,12 @@ function DisputeForm({ orderId }: { orderId: string }) {
       <form action={action} className="mt-3 flex flex-col gap-3">
         <input type="hidden" name="orderId" value={orderId} />
         <Field id={`dispute-reason-${orderId}`} label={t("workflow.dispute")}>
-          <textarea
+          <Textarea
             id={`dispute-reason-${orderId}`}
             name="reason"
             required
             maxLength={1000}
             rows={3}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
         <ActionFeedback state={state} />
@@ -511,15 +509,6 @@ function DisputeForm({ orderId }: { orderId: string }) {
         </Button>
       </form>
     </details>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }
 

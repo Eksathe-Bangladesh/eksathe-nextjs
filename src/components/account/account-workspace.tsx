@@ -15,12 +15,13 @@ import { useActionState } from "react";
 
 import { markNotificationReadAction, updateProfileAction } from "@/app/actions/account";
 import { acceptQuoteAction, cancelMarketplaceRequestAction } from "@/app/actions/marketplace";
+import { FormField as Field } from "@/components/forms/form-field";
 import { MilestoneList } from "@/components/projects/milestone-list";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { OrderCard } from "@/components/workflows/order-card";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
@@ -96,7 +97,7 @@ export function AccountWorkspace({
           <p className="text-muted-foreground mt-1 text-sm">{t("account.requests.description")}</p>
         </div>
         {workspace.agricultureRequests.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           workspace.agricultureRequests.map((request) => (
             <Card key={request.id}>
@@ -144,7 +145,7 @@ export function AccountWorkspace({
           </Link>
         </div>
         {workspace.requests.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           workspace.requests.map((request) => (
             <Card key={request.id}>
@@ -226,7 +227,7 @@ export function AccountWorkspace({
           </p>
         </div>
         {workspace.orders.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           workspace.orders.map((order) => (
             <OrderCard key={order.id} order={order} actorId={user.id} perspective="buyer" />
@@ -296,7 +297,7 @@ export function AccountWorkspace({
           </Link>
         </div>
         {workspace.projects.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           workspace.projects.map((project) => (
             <Card key={project.id}>
@@ -353,7 +354,7 @@ export function AccountWorkspace({
       <section id="notifications" className="flex scroll-mt-24 flex-col gap-3">
         <h2 className="text-xl font-bold">{t("dashboard.notifications")}</h2>
         {workspace.notifications.length === 0 ? (
-          <Empty text={t("workflow.noRecords")} />
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           workspace.notifications.map((notification) => (
             <div
@@ -481,35 +482,5 @@ function MarkReadForm({ notificationId }: { notificationId: string }) {
       </Button>
       <ActionFeedback state={state} />
     </form>
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return (
-    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-      {text}
-    </div>
-  );
-}
-
-function Field({
-  id,
-  label,
-  icon,
-  children,
-}: {
-  id: string;
-  label: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id} className="flex items-center gap-2">
-        {icon}
-        {label}
-      </Label>
-      {children}
-    </div>
   );
 }

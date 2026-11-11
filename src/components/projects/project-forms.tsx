@@ -12,11 +12,13 @@ import {
   recordProjectExpenseAction,
   updateMilestoneAction,
 } from "@/app/actions/projects";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { useRouter } from "@/i18n/navigation";
 import { uploadPrivateFile } from "@/lib/client-upload";
@@ -73,13 +75,13 @@ export function CreateProjectForm({
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor="project-description">{t("workflow.projectDescription")}</Label>
-        <textarea
+        <Textarea
           id="project-description"
           name="description"
           required
           maxLength={4000}
           rows={5}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
+          className="sm:col-span-2"
         />
       </div>
       <div className="flex flex-col gap-3 sm:col-span-2">
@@ -443,14 +445,5 @@ export function ProjectPhotoUploadForm({ projectId }: { projectId: string }) {
         {pending || uploading ? t("common.loading") : t("workflow.projectPhotos")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }

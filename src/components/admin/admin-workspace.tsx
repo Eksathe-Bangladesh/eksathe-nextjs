@@ -15,12 +15,13 @@ import {
 } from "@/app/actions/admin";
 import { AgricultureRequestsQueue } from "@/components/admin/agriculture-requests-queue";
 import { ProviderVerificationReviewQueue } from "@/components/admin/provider-verification-review";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { StatusBadge } from "@/components/workflows/status-badge";
 import { WorkspaceNavigation } from "@/components/workspaces/workspace-navigation";
 import { Link } from "@/i18n/navigation";
@@ -147,7 +148,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="provider-approvals" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("workflow.adminApprovals")}</h2>
             {data.capabilities.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.capabilities.map((capability) => (
                 <Card key={capability.id}>
@@ -186,7 +187,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="listing-moderation" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("admin.workspace.listingModeration")}</h2>
             {data.listings.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.listings.map((listing) => (
                 <Card key={listing.id}>
@@ -222,7 +223,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="requests" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("workflow.adminRequests")}</h2>
             {data.requests.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.requests.map((request) => (
                 <Card key={request.id}>
@@ -282,7 +283,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="disputes" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("admin.workspace.disputes")}</h2>
             {data.disputes.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.disputes.map((dispute) => (
                 <Card key={dispute.id}>
@@ -323,7 +324,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="payment-mismatches" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("admin.workspace.paymentConfirmations")}</h2>
             {data.paymentMismatches.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.paymentMismatches.map((payment) => (
                 <Card key={payment.id}>
@@ -369,7 +370,7 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
           <section id="commission" className="flex scroll-mt-24 flex-col gap-4">
             <h2 className="text-xl font-bold">{t("workflow.commissionsDue")}</h2>
             {data.commissions.length === 0 ? (
-              <Empty text={t("workflow.noRecords")} />
+              <EmptyState text={t("workflow.noRecords")} />
             ) : (
               data.commissions.map((commission) => (
                 <Card key={commission.id}>
@@ -675,22 +676,5 @@ function StaffGrantRow({ grant }: { grant: AdminWorkspaceData["staffGrants"][num
         </Button>
       </div>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return (
-    <div className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-      {text}
-    </div>
   );
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
@@ -67,13 +68,12 @@ export function QuoteForm({
       </div>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor={`quote-note-${request.id}`}>{t("workflow.quoteNote")}</Label>
-        <textarea
+        <Textarea
           id={`quote-note-${request.id}`}
           name="note"
           rows={3}
           maxLength={1200}
           defaultValue={request.quote?.note ?? ""}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </div>
       <div className="flex flex-col gap-3 sm:col-span-2">

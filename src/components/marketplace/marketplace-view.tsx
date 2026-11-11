@@ -9,6 +9,7 @@ import {
 } from "@/components/marketplace/marketplace-filters";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type {
   AgricultureMarketFilters,
@@ -208,9 +209,7 @@ export function MarketplaceView(props: MarketplaceViewProps) {
             {t("workflow.dataUnavailable")}
           </p>
         ) : result.items.length === 0 ? (
-          <p className="text-muted-foreground rounded-2xl border border-dashed px-5 py-8 text-center text-sm">
-            {emptyMessage}
-          </p>
+          <EmptyState text={emptyMessage} className="rounded-2xl border px-5 py-8" />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {result.items.map((listing) => (

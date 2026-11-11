@@ -4,9 +4,10 @@ import { useTranslations } from "next-intl";
 import { type SubmitEvent, useActionState, useEffect, useRef, useState } from "react";
 
 import { updateProviderStorefrontAction } from "@/app/actions/marketplace";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { initialWorkflowState } from "@/lib/workflow-state";
@@ -140,23 +141,21 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         </Field>
       </div>
       <Field id="storefront-bio-bn" label={t("provider.storefront.aboutTheStoreBangla")}>
-        <textarea
+        <Textarea
           id="storefront-bio-bn"
           name="bioBn"
           rows={3}
           maxLength={1200}
           defaultValue={profile.bio}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <Field id="storefront-bio-en" label={t("provider.storefront.aboutTheStoreEnglish")}>
-        <textarea
+        <Textarea
           id="storefront-bio-en"
           name="bioEn"
           rows={3}
           maxLength={1200}
           defaultValue={profile.bio}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
         />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -207,14 +206,5 @@ export function StorefrontForm({ profile }: { profile: StorefrontValues }) {
         {uploading || pending ? t("common.states.saving") : t("provider.storefront.saveStorefront")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }

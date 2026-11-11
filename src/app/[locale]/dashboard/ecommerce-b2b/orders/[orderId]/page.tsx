@@ -5,6 +5,14 @@ import { notFound } from "next/navigation";
 
 import { createCommerceReviewAction, setCommerceOrderStatusAction } from "@/app/actions/commerce";
 import { PrintButton } from "@/components/commerce/print-button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { requireUser } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
@@ -87,29 +95,29 @@ export default async function CommerceInvoicePage({ params }: Props) {
 
       <section className="bg-card mt-5 rounded-2xl border p-5">
         <h2 className="text-xl font-semibold">{bn ? "পণ্য তালিকা" : "Items"}</h2>
-        <div className="mt-3 overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="py-2">{bn ? "পণ্য" : "Product"}</th>
-                <th>{bn ? "পরিমাণ" : "Quantity"}</th>
-                <th>{bn ? "একক মূল্য" : "Unit price"}</th>
-                <th className="text-right">{bn ? "মোট" : "Subtotal"}</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="mt-3">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{bn ? "পণ্য" : "Product"}</TableHead>
+                <TableHead>{bn ? "পরিমাণ" : "Quantity"}</TableHead>
+                <TableHead>{bn ? "একক মূল্য" : "Unit price"}</TableHead>
+                <TableHead className="text-right">{bn ? "মোট" : "Subtotal"}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {order.items.map((item) => (
-                <tr key={item.id} className="border-b">
-                  <td className="py-3">{item.title}</td>
-                  <td>
+                <TableRow key={item.id}>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>
                     {item.quantity} {item.unit}
-                  </td>
-                  <td>৳ {item.unitPrice.toFixed(2)}</td>
-                  <td className="text-right">৳ {item.subtotal.toFixed(2)}</td>
-                </tr>
+                  </TableCell>
+                  <TableCell>৳ {item.unitPrice.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">৳ {item.subtotal.toFixed(2)}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
         <dl className="mt-4 ml-auto grid max-w-xs grid-cols-2 gap-2 text-sm">
           <dt>{bn ? "পণ্যের মোট" : "Subtotal"}</dt>

@@ -10,6 +10,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type { PublicListing } from "@/lib/listings";
 import type { agricultureListings, constructionListings, SectorDefinition } from "@/lib/sectors";
@@ -153,16 +154,19 @@ export function SectorLanding({
                   </div>
                 </div>
                 {serviceListings.length === 0 && !unavailable ? (
-                  <div className="border-border bg-card/70 rounded-2xl border border-dashed px-5 py-6">
-                    <p className="text-muted-foreground text-sm">{t("dashboard.sector.empty")}</p>
-                    <Link
-                      href="/provider"
-                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "mt-4")}
-                    >
-                      {t("dashboard.sector.applyToProvide")}
-                      <ArrowRightIcon data-icon="inline-end" />
-                    </Link>
-                  </div>
+                  <EmptyState
+                    text={t("dashboard.sector.empty")}
+                    className="border-border bg-card/70 rounded-2xl border px-5 py-6"
+                    action={
+                      <Link
+                        href="/provider"
+                        className={buttonVariants({ variant: "outline", size: "sm" })}
+                      >
+                        {t("dashboard.sector.applyToProvide")}
+                        <ArrowRightIcon data-icon="inline-end" />
+                      </Link>
+                    }
+                  />
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {serviceListings.map((listing) => (

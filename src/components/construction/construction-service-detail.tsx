@@ -7,6 +7,8 @@ import { useTranslations, useFormatter } from "next-intl";
 import { ListingImage } from "@/components/dashboard/listing-image";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyContent } from "@/components/ui/empty";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type { ConstructionService } from "@/lib/construction/service-registry";
 import type { ConstructionMarketResult } from "@/lib/listings";
@@ -97,13 +99,18 @@ export function ConstructionServiceDetail({
             {t("workflow.dataUnavailable")}
           </p>
         ) : result.items.length === 0 ? (
-          <div className="rounded-2xl border border-dashed p-7">
-            <p className="text-muted-foreground text-sm">{t("construction.serviceDetail.empty")}</p>
-            <Link href={projectHref} className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>
-              {t("projects.actions.create")}
-              <ArrowRightIcon data-icon="inline-end" />
-            </Link>
-          </div>
+          <EmptyState
+            text={t("construction.serviceDetail.empty")}
+            className="rounded-2xl border p-7"
+            action={
+              <EmptyContent>
+                <Link href={projectHref} className={cn(buttonVariants({ variant: "outline" }))}>
+                  {t("projects.actions.create")}
+                  <ArrowRightIcon data-icon="inline-end" />
+                </Link>
+              </EmptyContent>
+            }
+          />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {result.items.map((listing) => (

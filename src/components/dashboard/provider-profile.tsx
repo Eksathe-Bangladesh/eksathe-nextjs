@@ -10,6 +10,7 @@ import { ListingImage } from "@/components/dashboard/listing-image";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
 import { Link } from "@/i18n/navigation";
 import { verificationMessageKey } from "@/lib/construction/verification-labels";
@@ -131,9 +132,7 @@ export function ProviderProfile({
           {t("marketplace.providerProfile.servicesAndListings")}
         </h2>
         {provider.listings.length === 0 ? (
-          <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-            {t("workflow.noRecords")}
-          </p>
+          <EmptyState text={t("workflow.noRecords")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {provider.listings.map((listing) => (
@@ -180,9 +179,7 @@ export function ProviderProfile({
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">{t("marketplace.labels.customerReviews")}</h2>
         {provider.reviews.length === 0 ? (
-          <p className="border-border text-muted-foreground rounded-xl border border-dashed p-6 text-sm">
-            {t("marketplace.providerProfile.emptyReviews")}
-          </p>
+          <EmptyState text={t("marketplace.providerProfile.emptyReviews")} />
         ) : (
           provider.reviews.map((review, index) => (
             <Card key={`${review.createdAt}-${index}`}>

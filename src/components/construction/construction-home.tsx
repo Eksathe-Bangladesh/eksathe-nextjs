@@ -12,6 +12,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import {
   constructionServiceCategories,
@@ -200,9 +201,7 @@ export function ConstructionHome({
           </p>
         )}
         {!unavailable && listings.length === 0 ? (
-          <div className="text-muted-foreground rounded-2xl border border-dashed p-6 text-sm">
-            {t("construction.home.emptyListings")}
-          </div>
+          <EmptyState text={t("construction.home.emptyListings")} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {listings.slice(0, 3).map((listing) => (
@@ -279,9 +278,7 @@ export function ConstructionHome({
           </NativeSelect>
         </div>
         {services.length === 0 ? (
-          <p className="text-muted-foreground rounded-2xl border border-dashed p-8 text-center text-sm">
-            {t("construction.services.empty")}
-          </p>
+          <EmptyState text={t("construction.services.empty")} className="rounded-2xl border p-8" />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (

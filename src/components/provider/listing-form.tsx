@@ -4,11 +4,12 @@ import { useTranslations } from "next-intl";
 import { type SubmitEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 import { createListingAction } from "@/app/actions/marketplace";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
 import { agricultureListings, constructionListings } from "@/lib/sectors";
@@ -181,22 +182,10 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         </Field>
       </div>
       <Field id="listing-description-bn" label={t("workflow.descriptionBn")}>
-        <textarea
-          id="listing-description-bn"
-          name="descriptionBn"
-          rows={3}
-          maxLength={2000}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
-        />
+        <Textarea id="listing-description-bn" name="descriptionBn" rows={3} maxLength={2000} />
       </Field>
       <Field id="listing-description-en" label={t("workflow.descriptionEn")}>
-        <textarea
-          id="listing-description-en"
-          name="descriptionEn"
-          rows={3}
-          maxLength={2000}
-          className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
-        />
+        <Textarea id="listing-description-en" name="descriptionEn" rows={3} maxLength={2000} />
       </Field>
       <Field id="listing-image" label={t("workflow.listingImage")}>
         <Input
@@ -232,14 +221,5 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         {uploading || pending ? t("common.loading") : t("workflow.addListing")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }

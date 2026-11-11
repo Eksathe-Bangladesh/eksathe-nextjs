@@ -5,9 +5,17 @@ import { useActionState } from "react";
 
 import { applyProviderAction } from "@/app/actions/marketplace";
 import { DistrictCombobox } from "@/components/forms/district-combobox";
+import { FormField as Field } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Field as ShadcnField,
+  FieldLabel as ShadcnFieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { bangladeshDistrictNames } from "@/lib/bangladesh-districts";
 import { agricultureListings, constructionListings, sectors } from "@/lib/sectors";
@@ -83,28 +91,26 @@ export function ProviderApplicationForm({
           />
         </Field>
         <Field id="provider-bio-bn" label={t("provider.application.introductionBangla")}>
-          <textarea
+          <Textarea
             id="provider-bio-bn"
             name="bioBn"
             defaultValue={initial?.bioBn}
             maxLength={1200}
             rows={3}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
         <Field id="provider-bio-en" label={t("provider.application.introductionEnglish")}>
-          <textarea
+          <Textarea
             id="provider-bio-en"
             name="bioEn"
             defaultValue={initial?.bioEn}
             maxLength={1200}
             rows={3}
-            className="border-input bg-background rounded-lg border px-3 py-2 text-sm"
           />
         </Field>
       </div>
-      <fieldset className="flex flex-col gap-3">
-        <legend className="text-sm font-medium">{t("workflow.capabilities")}</legend>
+      <FieldSet className="flex flex-col gap-3">
+        <FieldLegend>{t("workflow.capabilities")}</FieldLegend>
         {sectors
           .filter((sector) => sector.status === "live")
           .map((sector) => {
@@ -115,41 +121,35 @@ export function ProviderApplicationForm({
                 <div className="grid gap-3 sm:grid-cols-2">
                   {options.map((option) => {
                     const token = `${option.sectorSlug}:${option.kind}`;
+                    const id = `provider-capability-${option.sectorSlug}-${option.kind}`;
                     return (
-                      <label
+                      <ShadcnField
                         key={token}
-                        className="bg-muted/50 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                        orientation="horizontal"
+                        className="bg-muted/50 rounded-lg px-3 py-2"
                       >
-                        <input
-                          type="checkbox"
+                        <Checkbox
+                          id={id}
                           name="capabilities"
                           value={token}
                           defaultChecked={initial?.capabilities.includes(token)}
-                          className="accent-primary size-4"
                         />
-                        <span aria-hidden="true">{option.icon}</span>
-                        <span>{t(`marketplaceServices.${option.slug}`)}</span>
-                      </label>
+                        <ShadcnFieldLabel htmlFor={id} className="flex items-center gap-3">
+                          <span aria-hidden="true">{option.icon}</span>
+                          <span>{t(`marketplaceServices.${option.slug}`)}</span>
+                        </ShadcnFieldLabel>
+                      </ShadcnField>
                     );
                   })}
                 </div>
               </div>
             );
           })}
-      </fieldset>
+      </FieldSet>
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending}>
         {pending ? t("common.loading") : t("workflow.submitApplication")}
       </Button>
     </form>
-  );
-}
-
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-    </div>
   );
 }
