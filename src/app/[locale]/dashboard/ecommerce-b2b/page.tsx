@@ -95,19 +95,21 @@ export default async function CommerceMarketPage({ searchParams }: Props) {
               <p className="text-muted-foreground mt-1 line-clamp-3 text-sm">
                 {bn ? product.descriptionBn : product.descriptionEn}
               </p>
-              <div className="mt-4 flex items-center justify-between">
-                <strong>
-                  ৳ {product.price.toFixed(2)} / {product.unit}
-                </strong>
-                <span className="text-muted-foreground text-xs">
-                  {product.stock} {bn ? "মজুত" : "in stock"}
-                </span>
+              <div className="mt-auto pt-4">
+                <div className="flex items-center justify-between">
+                  <strong>
+                    ৳ {product.price.toFixed(2)} / {product.unit}
+                  </strong>
+                  <span className="text-muted-foreground text-xs">
+                    {product.stock} {bn ? "মজুত" : "in stock"}
+                  </span>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  {bn ? "বিক্রেতা" : "Seller"}: {product.seller.displayName}
+                </p>
               </div>
-              <p className="text-muted-foreground my-2 text-xs">
-                {bn ? "বিক্রেতা" : "Seller"}: {product.seller.displayName}
-              </p>
               <Link
-                className="bg-primary text-primary-foreground mt-auto rounded-md px-3 py-2 text-center text-sm"
+                className="bg-primary text-primary-foreground mt-2 rounded-md px-3 py-2 text-center text-sm"
                 href={`/dashboard/ecommerce-b2b/products/${product.id}`}
               >
                 {bn ? "বিস্তারিত দেখুন" : "View product"}
