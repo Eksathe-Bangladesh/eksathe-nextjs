@@ -4,10 +4,12 @@ import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
 import { applyProviderAction } from "@/app/actions/marketplace";
+import { DistrictCombobox } from "@/components/forms/district-combobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
+import { bangladeshDistrictNames } from "@/lib/bangladesh-districts";
 import { agricultureListings, constructionListings, sectors } from "@/lib/sectors";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
@@ -63,12 +65,13 @@ export function ProviderApplicationForm({
           />
         </Field>
         <Field id="provider-district" label={t("workflow.district")}>
-          <Input
+          <DistrictCombobox
             id="provider-district"
             name="district"
+            districts={bangladeshDistrictNames}
             defaultValue={initial?.district}
+            placeholder={t("workflow.searchDistrict")}
             required
-            maxLength={80}
           />
         </Field>
         <Field id="provider-upazila" label={t("provider.application.upazilaOptional")}>

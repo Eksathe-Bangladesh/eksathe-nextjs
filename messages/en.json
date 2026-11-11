@@ -161,6 +161,8 @@
     "dataUnavailable": "We could not load marketplace data. Please refresh or try again later.",
     "searchListings": "Search listings",
     "allDistricts": "All districts",
+    "searchDistrict": "Search districts",
+    "noDistrictsFound": "No districts found.",
     "stockUnavailable": "That quantity is currently unavailable.",
     "bookingUnavailable": "Those dates are no longer available.",
     "amountMismatch": "The payment amount does not match the remaining balance.",

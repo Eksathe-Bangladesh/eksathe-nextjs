@@ -139,7 +139,7 @@ test("agriculture marketplace keeps filters in the direct and dashboard URL cont
   await expect(page.getByRole("heading", { name: "কৃষিপণ্য খুঁজুন" })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "পণ্য বা বিক্রেতা খুঁজুন" })).toHaveValue("rice");
   await expect(page.getByLabel("বিভাগ")).toHaveValue("grains");
-  await expect(page.getByLabel("জেলা")).toHaveValue("Dhaka");
+  await expect(page.getByLabel("জেলা")).toHaveValue("ঢাকা");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
@@ -271,7 +271,7 @@ test("construction marketplace keeps URL filters and route context", async ({ pa
     "engineer",
   );
   await expect(page.getByLabel("ধরন")).toHaveValue("CONSTRUCTION_SERVICE");
-  await expect(page.getByLabel("জেলা")).toHaveValue("Dhaka");
+  await expect(page.getByLabel("জেলা")).toHaveValue("ঢাকা");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

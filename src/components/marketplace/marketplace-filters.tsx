@@ -3,6 +3,7 @@
 import { SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { DistrictCombobox } from "@/components/forms/district-combobox";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -73,14 +74,14 @@ export function AgricultureMarketplaceFilters({
         </Field>
         <Field>
           <FieldLabel htmlFor="market-district">{t("workflow.district")}</FieldLabel>
-          <NativeSelect id="market-district" name="district" defaultValue={filters.district ?? ""}>
-            <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
-            {result.districts.map((district) => (
-              <NativeSelectOption key={district} value={district}>
-                {district}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+          <DistrictCombobox
+            id="market-district"
+            name="district"
+            districts={result.districts}
+            defaultValue={filters.district}
+            placeholder={t("workflow.searchDistrict")}
+            emptyOptionLabel={t("workflow.allDistricts")}
+          />
         </Field>
         <PriceField
           id="market-min-price"
@@ -164,14 +165,14 @@ export function ConstructionMarketplaceFilters({
         </Field>
         <Field>
           <FieldLabel htmlFor="market-district">{t("workflow.district")}</FieldLabel>
-          <NativeSelect id="market-district" name="district" defaultValue={filters.district ?? ""}>
-            <NativeSelectOption value="">{t("workflow.allDistricts")}</NativeSelectOption>
-            {result.districts.map((district) => (
-              <NativeSelectOption key={district} value={district}>
-                {district}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+          <DistrictCombobox
+            id="market-district"
+            name="district"
+            districts={result.districts}
+            defaultValue={filters.district}
+            placeholder={t("workflow.searchDistrict")}
+            emptyOptionLabel={t("workflow.allDistricts")}
+          />
         </Field>
         <PriceField
           id="market-min-price"

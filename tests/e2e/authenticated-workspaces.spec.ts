@@ -14,7 +14,7 @@ async function signIn(page: Page, email: string) {
   await expect(page).toHaveURL(/\/en\/account(?:\?|$)/, { timeout: 15_000 });
 }
 
-test("a customer sees their orders and project but cannot open administration", async ({
+test("a customer sees their account, can search provider districts, and cannot open administration", async ({
   page,
 }) => {
   await signIn(page, "demo.buyer@example.com");
@@ -42,6 +42,19 @@ test("a customer sees their orders and project but cannot open administration", 
   );
   await expect(menu.getByRole("menuitem", { name: "My projects" })).toBeVisible();
   await expect(menu.getByRole("menuitem", { name: "Become a provider" })).toBeVisible();
+
+  await page.goto("/bn/provider");
+  const district = page.getByLabel("জেলা", { exact: true });
+  await district.fill("রং");
+  await page.getByRole("option", { name: "রংপুর", exact: true }).click();
+  await expect(district).toHaveValue("রংপুর");
+  await expect
+    .poll(() =>
+      page
+        .locator("form")
+        .evaluate((form) => new FormData(form as HTMLFormElement).get("district")),
+    )
+    .toBe("Rangpur");
 
   await page.goto("/en/dashboard");
   await expect(page.getByRole("link", { name: "Services", exact: true })).toHaveAttribute(

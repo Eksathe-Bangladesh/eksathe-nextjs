@@ -161,6 +161,8 @@
     "dataUnavailable": "বাজারের তথ্য লোড করা যায়নি। রিফ্রেশ করুন বা পরে আবার চেষ্টা করুন।",
     "searchListings": "তালিকা খুঁজুন",
     "allDistricts": "সব জেলা",
+    "searchDistrict": "জেলা খুঁজুন",
+    "noDistrictsFound": "কোনো জেলা পাওয়া যায়নি।",
     "stockUnavailable": "এই পরিমাণ এখন উপলভ্য নয়।",
     "bookingUnavailable": "এই তারিখগুলো এখন আর খালি নেই।",
     "amountMismatch": "পরিশোধের পরিমাণ বাকি টাকার সঙ্গে মিলছে না।",
