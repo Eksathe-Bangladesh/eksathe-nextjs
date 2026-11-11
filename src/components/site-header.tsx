@@ -394,7 +394,7 @@ export function SiteHeader({
           className="flex min-w-0 items-center gap-3 leading-tight font-bold [&_img]:size-11"
           aria-label={t("common.brandName")}
         >
-          <BrandLogo />
+          <BrandLogo loading="eager" />
           <span className="hidden flex-col gap-1 sm:flex">
             <span className="text-sm sm:text-base">{t("common.brandName")}</span>
             <span className="hidden text-[0.65rem] font-normal text-white/70 sm:block">
