@@ -345,6 +345,7 @@ test("a construction project keeps its selected service through guest sign-in", 
 test("the sector hub switches to English at a mobile viewport", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/dashboard");
+  await expect(page.getByRole("link", { name: "একসাথে বাংলাদেশ", exact: true })).toBeVisible();
   const search = page.getByPlaceholder("বিভাগ খুঁজুন");
   await expect
     .poll(() => search.evaluate((input) => getComputedStyle(input).backdropFilter))
@@ -358,6 +359,7 @@ test("the sector hub switches to English at a mobile viewport", async ({ page })
     )
     .toBe("10");
   await page.getByRole("button", { name: "EN", exact: true }).click();
+  await expect(page.getByRole("link", { name: "EKsathe Bangladesh", exact: true })).toBeVisible();
   await expect(page.getByText("Family & Household")).toBeVisible();
   await expect(page.getByRole("link", { name: /Agriculture & Labor/ })).toHaveAttribute(
     "href",
