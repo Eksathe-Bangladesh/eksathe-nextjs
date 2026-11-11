@@ -11,12 +11,11 @@ import {
   commerceAddressSchema,
   commerceIdSchema,
   commerceProductSchema,
-  couponSchema,
   quantitySchema,
   wholesaleQuoteSchema,
   wholesaleRequestSchema,
 } from "@/lib/commerce-validation";
-import { requireSuperAdmin, requireUser } from "@/lib/dal";
+import { requireUser } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
 function field(data: FormData, key: string) {
@@ -30,12 +29,12 @@ async function redirectCommerce(href: string): Promise<never> {
 
 function revalidateCommerce() {
   for (const path of [
-    "/dashboard/ecommerce-b2b",
-    "/dashboard/ecommerce-b2b/seller",
-    "/dashboard/ecommerce-b2b/cart",
-    "/dashboard/ecommerce-b2b/orders",
-    "/dashboard/ecommerce-b2b/wholesale",
-    "/admin/ecommerce-b2b",
+    "/dashboard/ecommerce",
+    "/dashboard/ecommerce/seller",
+    "/dashboard/ecommerce/cart",
+    "/dashboard/ecommerce/orders",
+    "/dashboard/ecommerce/wholesale",
+    "/admin/ecommerce",
   ])
     revalidateLocalizedPath(path);
 }
@@ -90,7 +89,7 @@ async function notifyCommerce(userId: string, titleBn: string, titleEn: string, 
 }
 
 export async function applyAsCommerceSellerAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/seller");
+  const user = await requireUser("/dashboard/ecommerce/seller");
   const displayName = z.string().trim().min(2).max(120).parse(field(data, "displayName"));
   const existing = await prisma.commerceSeller.findUnique({
     where: { userId: user.id },
@@ -111,11 +110,11 @@ export async function applyAsCommerceSellerAction(data: FormData) {
     },
   });
   revalidateCommerce();
-  await redirectCommerce("/dashboard/ecommerce-b2b/seller?notice=application");
+  await redirectCommerce("/dashboard/ecommerce/seller?notice=application");
 }
 
 export async function createCommerceProductAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/seller");
+  const user = await requireUser("/dashboard/ecommerce/seller");
   const seller = await sellerFor(user.id);
   const product = commerceProductSchema.parse({
     categoryId: field(data, "categoryId"),
@@ -168,11 +167,11 @@ export async function createCommerceProductAction(data: FormData) {
     return newProduct;
   });
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/seller?product=${created.id}`);
+  await redirectCommerce(`/dashboard/ecommerce/seller?product=${created.id}`);
 }
 
 export async function updateCommerceInventoryAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/seller");
+  const user = await requireUser("/dashboard/ecommerce/seller");
   const seller = await sellerFor(user.id);
   const parsed = z
     .object({ productId: commerceIdSchema, stock: z.coerce.number().int().min(0).max(1_000_000) })
@@ -196,7 +195,7 @@ export async function updateCommerceInventoryAction(data: FormData) {
 }
 
 export async function updateCommerceProductDetailsAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/seller");
+  const user = await requireUser("/dashboard/ecommerce/seller");
   const seller = await sellerFor(user.id);
   const parsed = z
     .object({
@@ -274,7 +273,7 @@ export async function updateCommerceProductDetailsAction(data: FormData) {
 }
 
 export async function addCommerceCartItemAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/cart");
+  const user = await requireUser("/dashboard/ecommerce/cart");
   const parsed = z
     .object({ productId: commerceIdSchema, quantity: quantitySchema })
     .parse({ productId: field(data, "productId"), quantity: field(data, "quantity") });
@@ -297,14 +296,14 @@ export async function addCommerceCartItemAction(data: FormData) {
 }
 
 export async function removeCommerceCartItemAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/cart");
+  const user = await requireUser("/dashboard/ecommerce/cart");
   const productId = commerceIdSchema.parse(field(data, "productId"));
   await prisma.commerceCartItem.deleteMany({ where: { userId: user.id, productId } });
   revalidateCommerce();
 }
 
 export async function toggleCommerceWishlistAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b");
+  const user = await requireUser("/dashboard/ecommerce");
   const productId = commerceIdSchema.parse(field(data, "productId"));
   const existing = await prisma.commerceWishlistItem.findUnique({
     where: { userId_productId: { userId: user.id, productId } },
@@ -312,8 +311,8 @@ export async function toggleCommerceWishlistAction(data: FormData) {
   });
   if (existing) {
     await prisma.commerceWishlistItem.delete({ where: { id: existing.id } });
-    revalidateLocalizedPath("/dashboard/ecommerce-b2b");
-    revalidateLocalizedPath("/dashboard/ecommerce-b2b/wishlist");
+    revalidateLocalizedPath("/dashboard/ecommerce");
+    revalidateLocalizedPath("/dashboard/ecommerce/wishlist");
     return;
   }
   const product = await prisma.commerceProduct.findFirst({
@@ -327,11 +326,11 @@ export async function toggleCommerceWishlistAction(data: FormData) {
   });
   if (!product) throw new Error("পণ্য পাওয়া যায়নি");
   await prisma.commerceWishlistItem.create({ data: { userId: user.id, productId } });
-  revalidateLocalizedPath("/dashboard/ecommerce-b2b");
+  revalidateLocalizedPath("/dashboard/ecommerce");
 }
 
 export async function saveCommerceAddressAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/cart");
+  const user = await requireUser("/dashboard/ecommerce/cart");
   const address = commerceAddressSchema.parse({
     fullName: field(data, "fullName"),
     phone: field(data, "phone"),
@@ -353,11 +352,11 @@ export async function saveCommerceAddressAction(data: FormData) {
     });
   });
   revalidateCommerce();
-  await redirectCommerce("/dashboard/ecommerce-b2b/cart?notice=address");
+  await redirectCommerce("/dashboard/ecommerce/cart?notice=address");
 }
 
 export async function checkoutCommerceCartAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/cart");
+  const user = await requireUser("/dashboard/ecommerce/cart");
   const input = z
     .object({
       addressId: commerceIdSchema,
@@ -552,15 +551,15 @@ export async function checkoutCommerceCartAction(data: FormData) {
         seller.seller.userId,
         "নতুন অর্ডার এসেছে",
         "You received a new order",
-        `/dashboard/ecommerce-b2b/orders/${order.id}`,
+        `/dashboard/ecommerce/orders/${order.id}`,
       );
   }
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/orders/${createdOrders[0].id}`);
+  await redirectCommerce(`/dashboard/ecommerce/orders/${createdOrders[0].id}`);
 }
 
 export async function createWholesaleRequestAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/wholesale");
+  const user = await requireUser("/dashboard/ecommerce/wholesale");
   const request = wholesaleRequestSchema.parse({
     productId: field(data, "productId"),
     quantity: field(data, "quantity"),
@@ -583,11 +582,11 @@ export async function createWholesaleRequestAction(data: FormData) {
     data: { ...request, buyerId: user.id },
   });
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/wholesale?request=${created.id}`);
+  await redirectCommerce(`/dashboard/ecommerce/wholesale?request=${created.id}`);
 }
 
 export async function quoteWholesaleRequestAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/wholesale");
+  const user = await requireUser("/dashboard/ecommerce/wholesale");
   const seller = await sellerFor(user.id);
   const quote = wholesaleQuoteSchema.parse({
     requestId: field(data, "requestId"),
@@ -627,14 +626,14 @@ export async function quoteWholesaleRequestAction(data: FormData) {
     request.buyerId,
     "আপনার RFQ-তে নতুন দর এসেছে",
     "A seller sent a quote for your RFQ",
-    "/dashboard/ecommerce-b2b/wholesale",
+    "/dashboard/ecommerce/wholesale",
   );
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/wholesale?request=${request.id}`);
+  await redirectCommerce(`/dashboard/ecommerce/wholesale?request=${request.id}`);
 }
 
 export async function acceptWholesaleQuoteAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/wholesale");
+  const user = await requireUser("/dashboard/ecommerce/wholesale");
   const quoteId = commerceIdSchema.parse(field(data, "quoteId"));
   const order = await prisma.$transaction(
     async (tx) => {
@@ -713,14 +712,14 @@ export async function acceptWholesaleQuoteAction(data: FormData) {
     order.sellerUserId,
     "RFQ দর গ্রহণ করা হয়েছে",
     "Your wholesale quote was accepted",
-    `/dashboard/ecommerce-b2b/orders/${order.id}`,
+    `/dashboard/ecommerce/orders/${order.id}`,
   );
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/orders/${order.id}`);
+  await redirectCommerce(`/dashboard/ecommerce/orders/${order.id}`);
 }
 
 export async function startCommerceConversationAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/messages");
+  const user = await requireUser("/dashboard/ecommerce/messages");
   const productId = commerceIdSchema.parse(field(data, "productId"));
   const product = await prisma.commerceProduct.findFirst({
     where: {
@@ -746,11 +745,11 @@ export async function startCommerceConversationAction(data: FormData) {
     select: { id: true },
   });
   revalidateCommerce();
-  await redirectCommerce(`/dashboard/ecommerce-b2b/messages/${thread.id}`);
+  await redirectCommerce(`/dashboard/ecommerce/messages/${thread.id}`);
 }
 
 export async function sendCommerceMessageAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/messages");
+  const user = await requireUser("/dashboard/ecommerce/messages");
   const parsed = z
     .object({ conversationId: commerceIdSchema, body: z.string().trim().min(1).max(2000) })
     .parse({ conversationId: field(data, "conversationId"), body: field(data, "body") });
@@ -776,23 +775,23 @@ export async function sendCommerceMessageAction(data: FormData) {
     recipient,
     "নতুন মার্কেটপ্লেস বার্তা",
     "You have a new marketplace message",
-    `/dashboard/ecommerce-b2b/messages/${thread.id}`,
+    `/dashboard/ecommerce/messages/${thread.id}`,
   );
   revalidateCommerce();
 }
 
 export async function markCommerceNotificationReadAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/notifications");
+  const user = await requireUser("/dashboard/ecommerce/notifications");
   const notificationId = commerceIdSchema.parse(field(data, "notificationId"));
   await prisma.notification.updateMany({
     where: { id: notificationId, userId: user.id, readAt: null },
     data: { readAt: new Date() },
   });
-  revalidateLocalizedPath("/dashboard/ecommerce-b2b/notifications");
+  revalidateLocalizedPath("/dashboard/ecommerce/notifications");
 }
 
 export async function setCommerceOrderStatusAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/orders");
+  const user = await requireUser("/dashboard/ecommerce/orders");
   const parsed = z
     .object({
       orderId: commerceIdSchema,
@@ -830,13 +829,13 @@ export async function setCommerceOrderStatusAction(data: FormData) {
     order.buyerId,
     "আপনার অর্ডারের অবস্থা হালনাগাদ হয়েছে",
     "Your order status has been updated",
-    `/dashboard/ecommerce-b2b/orders/${order.id}`,
+    `/dashboard/ecommerce/orders/${order.id}`,
   );
   revalidateCommerce();
 }
 
 export async function createCommerceReviewAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/orders");
+  const user = await requireUser("/dashboard/ecommerce/orders");
   const parsed = z
     .object({
       orderId: commerceIdSchema,
@@ -866,7 +865,7 @@ export async function createCommerceReviewAction(data: FormData) {
 }
 
 export async function replyCommerceReviewAction(data: FormData) {
-  const user = await requireUser("/dashboard/ecommerce-b2b/seller");
+  const user = await requireUser("/dashboard/ecommerce/seller");
   const seller = await sellerFor(user.id);
   const parsed = z
     .object({ reviewId: commerceIdSchema, reply: z.string().trim().min(1).max(1000) })
@@ -876,187 +875,5 @@ export async function replyCommerceReviewAction(data: FormData) {
     data: { reply: parsed.reply },
   });
   if (updated.count !== 1) throw new Error("রিভিউটির উত্তর দেওয়ার অনুমতি নেই");
-  revalidateCommerce();
-}
-
-export async function moderateCommerceProductAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = z
-    .object({ productId: commerceIdSchema, status: z.enum(["APPROVED", "REJECTED"]) })
-    .parse({ productId: field(data, "productId"), status: field(data, "status") });
-  const product = await prisma.commerceProduct.findUnique({
-    where: { id: parsed.productId },
-    select: { id: true, seller: { select: { userId: true } } },
-  });
-  if (!product) throw new Error("পণ্য পাওয়া যায়নি");
-  await prisma.$transaction(async (tx) => {
-    const updated = await tx.commerceProduct.updateMany({
-      where: { id: parsed.productId, status: "PENDING" },
-      data: { status: parsed.status },
-    });
-    if (updated.count !== 1) throw new Error("পণ্যটি আর মডারেশনের অপেক্ষায় নেই");
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: `commerce.product.${parsed.status.toLowerCase()}`,
-        entityType: "commerce_product",
-        entityKey: parsed.productId,
-      },
-    });
-  });
-  await notifyCommerce(
-    product.seller.userId,
-    "আপনার পণ্য মডারেশন হয়েছে",
-    `Product moderation: ${parsed.status.toLowerCase()}`,
-    "/dashboard/ecommerce-b2b/seller",
-  );
-  revalidateCommerce();
-}
-
-export async function moderateCommerceSellerAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = z
-    .object({ sellerId: commerceIdSchema, status: z.enum(["APPROVED", "REJECTED"]) })
-    .parse({ sellerId: field(data, "sellerId"), status: field(data, "status") });
-  const seller = await prisma.commerceSeller.findUnique({
-    where: { id: parsed.sellerId },
-    select: { userId: true },
-  });
-  if (!seller) throw new Error("বিক্রেতা পাওয়া যায়নি");
-  await prisma.$transaction(async (tx) => {
-    const updated = await tx.commerceSeller.updateMany({
-      where: { id: parsed.sellerId, status: "PENDING" },
-      data: { status: parsed.status },
-    });
-    if (updated.count !== 1) throw new Error("বিক্রেতার আবেদন আর পর্যালোচনার অপেক্ষায় নেই");
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: `commerce.seller.${parsed.status.toLowerCase()}`,
-        entityType: "commerce_seller",
-        entityKey: parsed.sellerId,
-      },
-    });
-  });
-  await notifyCommerce(
-    seller.userId,
-    "বিক্রেতা আবেদন পর্যালোচনা হয়েছে",
-    `Seller application ${parsed.status.toLowerCase()}`,
-    "/dashboard/ecommerce-b2b/seller",
-  );
-  revalidateCommerce();
-}
-
-export async function createCommerceCategoryAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = z
-    .object({
-      slug: z
-        .string()
-        .trim()
-        .toLowerCase()
-        .regex(/^[a-z0-9-]{2,48}$/),
-      titleBn: z.string().trim().min(1).max(100),
-      titleEn: z.string().trim().min(1).max(100),
-    })
-    .parse({
-      slug: field(data, "slug"),
-      titleBn: field(data, "titleBn"),
-      titleEn: field(data, "titleEn"),
-    });
-  await prisma.$transaction(async (tx) => {
-    const category = await tx.commerceCategory.create({ data: parsed });
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: "commerce.category.created",
-        entityType: "commerce_category",
-        entityKey: category.id,
-      },
-    });
-  });
-  revalidateCommerce();
-}
-
-export async function setCommerceCategoryActiveAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = z
-    .object({ categoryId: commerceIdSchema, isActive: z.enum(["true", "false"]) })
-    .parse({ categoryId: field(data, "categoryId"), isActive: field(data, "isActive") });
-  await prisma.$transaction(async (tx) => {
-    const updated = await tx.commerceCategory.updateMany({
-      where: { id: parsed.categoryId },
-      data: { isActive: parsed.isActive === "true" },
-    });
-    if (updated.count !== 1) throw new Error("ক্যাটাগরি পাওয়া যায়নি");
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: "commerce.category.updated",
-        entityType: "commerce_category",
-        entityKey: parsed.categoryId,
-      },
-    });
-  });
-  revalidateCommerce();
-}
-
-export async function createCommerceCouponAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = couponSchema.parse({
-    code: field(data, "code"),
-    discountType: field(data, "discountType"),
-    discountValue: field(data, "discountValue"),
-    minimumSpend: field(data, "minimumSpend") || "0",
-    maximumDiscount: field(data, "maximumDiscount"),
-    maxUses: field(data, "maxUses"),
-    expiresAt: field(data, "expiresAt"),
-  });
-  if (parsed.discountType === "PERCENT" && Number(parsed.discountValue) > 100)
-    throw new Error("শতকরা ছাড় ১০০-এর বেশি হতে পারবে না");
-  await prisma.$transaction(async (tx) => {
-    const coupon = await tx.commerceCoupon.create({
-      data: {
-        code: parsed.code,
-        discountType: parsed.discountType,
-        discountValue: new Prisma.Decimal(parsed.discountValue),
-        minimumSpend: new Prisma.Decimal(parsed.minimumSpend),
-        maximumDiscount: parsed.maximumDiscount ? new Prisma.Decimal(parsed.maximumDiscount) : null,
-        maxUses: parsed.maxUses ? Number(parsed.maxUses) : null,
-        expiresAt: parsed.expiresAt ? new Date(`${parsed.expiresAt}T23:59:59.999+06:00`) : null,
-      },
-    });
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: "commerce.coupon.created",
-        entityType: "commerce_coupon",
-        entityKey: coupon.id,
-      },
-    });
-  });
-  revalidateCommerce();
-}
-
-export async function setCommerceCouponActiveAction(data: FormData) {
-  const admin = await requireSuperAdmin();
-  const parsed = z
-    .object({ couponId: commerceIdSchema, isActive: z.enum(["true", "false"]) })
-    .parse({ couponId: field(data, "couponId"), isActive: field(data, "isActive") });
-  await prisma.$transaction(async (tx) => {
-    const updated = await tx.commerceCoupon.updateMany({
-      where: { id: parsed.couponId },
-      data: { isActive: parsed.isActive === "true" },
-    });
-    if (updated.count !== 1) throw new Error("কুপন পাওয়া যায়নি");
-    await tx.auditLog.create({
-      data: {
-        userId: admin.id,
-        action: "commerce.coupon.updated",
-        entityType: "commerce_coupon",
-        entityKey: parsed.couponId,
-      },
-    });
-  });
   revalidateCommerce();
 }

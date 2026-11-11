@@ -88,7 +88,7 @@ test("the readiness endpoint reports database availability", async ({ request })
 
 test("product cards align their view buttons across a row", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/en/dashboard/ecommerce-b2b");
+  await page.goto("/en/dashboard/ecommerce");
 
   const viewButtons = page.locator("main article").getByRole("link", { name: "View product" });
   await expect(viewButtons).toHaveCount(4);

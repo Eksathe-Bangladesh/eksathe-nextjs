@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function CommerceMessagesPage() {
   const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/messages"),
+    requireUser("/dashboard/ecommerce/messages"),
     getLocale(),
   ]);
   const threads = await prisma.commerceConversation.findMany({
@@ -32,7 +32,7 @@ export default async function CommerceMessagesPage() {
           return (
             <li key={thread.id}>
               <Link
-                href={`/dashboard/ecommerce-b2b/messages/${thread.id}`}
+                href={`/dashboard/ecommerce/messages/${thread.id}`}
                 className="bg-card hover:bg-muted/50 block p-4"
               >
                 <p className="font-semibold">

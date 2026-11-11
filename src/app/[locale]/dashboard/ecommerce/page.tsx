@@ -110,7 +110,7 @@ export default async function CommerceMarketPage({ searchParams }: Props) {
               </div>
               <Link
                 className="bg-primary text-primary-foreground mt-2 rounded-md px-3 py-2 text-center text-sm"
-                href={`/dashboard/ecommerce-b2b/products/${product.id}`}
+                href={`/dashboard/ecommerce/products/${product.id}`}
               >
                 {bn ? "বিস্তারিত দেখুন" : "View product"}
               </Link>

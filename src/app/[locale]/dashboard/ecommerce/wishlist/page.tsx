@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function CommerceWishlistPage() {
   const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/wishlist"),
+    requireUser("/dashboard/ecommerce/wishlist"),
     getLocale(),
   ]);
   const items = await prisma.commerceWishlistItem.findMany({
@@ -24,7 +24,7 @@ export default async function CommerceWishlistPage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
       <header className="flex items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">{bn ? "ইচ্ছেতালিকা" : "Wishlist"}</h1>
-        <Link className="text-primary text-sm" href="/dashboard/ecommerce-b2b">
+        <Link className="text-primary text-sm" href="/dashboard/ecommerce">
           {bn ? "বাজার" : "Marketplace"}
         </Link>
       </header>
@@ -37,7 +37,7 @@ export default async function CommerceWishlistPage() {
             <div>
               <Link
                 className="font-semibold hover:underline"
-                href={`/dashboard/ecommerce-b2b/products/${product.id}`}
+                href={`/dashboard/ecommerce/products/${product.id}`}
               >
                 {bn ? product.titleBn : product.titleEn}
               </Link>

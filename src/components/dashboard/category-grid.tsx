@@ -27,7 +27,7 @@ export function CategoryGrid() {
   return (
     <div className="flex flex-col gap-4">
       <Link
-        href="/dashboard/ecommerce-b2b"
+        href="/dashboard/ecommerce"
         className="bg-primary/5 border-primary/20 hover:border-primary/40 flex items-center justify-between gap-4 rounded-2xl border p-4 transition-colors sm:p-5"
       >
         <span className="flex items-center gap-3">

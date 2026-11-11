@@ -245,31 +245,31 @@ export function AccountWorkspace({
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              href: "/dashboard/ecommerce-b2b",
+              href: "/dashboard/ecommerce",
               label: t("account.workspace.shoppingLinks.marketplace"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/orders",
+              href: "/dashboard/ecommerce/orders",
               label: t("account.workspace.shoppingLinks.productOrders"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/cart",
+              href: "/dashboard/ecommerce/cart",
               label: t("account.workspace.shoppingLinks.cart"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/wishlist",
+              href: "/dashboard/ecommerce/wishlist",
               label: t("account.workspace.shoppingLinks.wishlist"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/wholesale",
+              href: "/dashboard/ecommerce/wholesale",
               label: t("account.workspace.shoppingLinks.wholesale"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/messages",
+              href: "/dashboard/ecommerce/messages",
               label: t("account.workspace.shoppingLinks.messages"),
             },
             {
-              href: "/dashboard/ecommerce-b2b/seller",
+              href: "/dashboard/ecommerce/seller",
               label: t("account.workspace.shoppingLinks.sellerWorkspace"),
             },
           ].map(({ href, label }) => (

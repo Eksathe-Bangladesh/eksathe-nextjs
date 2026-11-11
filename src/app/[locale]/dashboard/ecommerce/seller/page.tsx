@@ -15,7 +15,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function CommerceSellerPage() {
   const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/seller"),
+    requireUser("/dashboard/ecommerce/seller"),
     getLocale(),
   ]);
   const [seller, categories] = await Promise.all([
@@ -26,7 +26,7 @@ export default async function CommerceSellerPage() {
   if (!seller || seller.status !== "APPROVED") {
     return (
       <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-        <Link className="text-primary text-sm" href="/dashboard/ecommerce-b2b">
+        <Link className="text-primary text-sm" href="/dashboard/ecommerce">
           {bn ? "← বাজারে ফিরুন" : "← Marketplace"}
         </Link>
         <section className="bg-card mt-5 rounded-2xl border p-6">
@@ -98,10 +98,7 @@ export default async function CommerceSellerPage() {
           <p className="text-primary text-sm">{seller.displayName}</p>
           <h1 className="text-3xl font-bold">{bn ? "বিক্রেতা কর্মক্ষেত্র" : "Seller workspace"}</h1>
         </div>
-        <Link
-          className="rounded-md border px-3 py-2 text-sm"
-          href="/dashboard/ecommerce-b2b/orders"
-        >
+        <Link className="rounded-md border px-3 py-2 text-sm" href="/dashboard/ecommerce/orders">
           {bn ? "সব অর্ডার" : "All orders"}
         </Link>
       </header>
@@ -357,7 +354,7 @@ export default async function CommerceSellerPage() {
               <div>
                 <Link
                   className="font-medium hover:underline"
-                  href={`/dashboard/ecommerce-b2b/orders/${order.id}`}
+                  href={`/dashboard/ecommerce/orders/${order.id}`}
                 >
                   #{order.id.slice(-8)}
                 </Link>

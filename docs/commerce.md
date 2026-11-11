@@ -15,7 +15,7 @@ bun run dev
 ```
 
 The dashboard's **E-Commerce & B2B** category links to
-`/dashboard/ecommerce-b2b`. The additive migration creates `commerce_*` tables
+`/dashboard/ecommerce`. The additive migration creates `commerce_*` tables
 and safely adds a nullable entity key to `audit_logs` so commerce actions can
 be traced. It does not reset or rewrite existing marketplace, order, or user
 data.
@@ -23,10 +23,12 @@ data.
 ## Seller and administrator workflows
 
 1. A verified account submits a seller application from **Seller workspace**.
-2. A super administrator reviews sellers and products at
-   `/admin/ecommerce-b2b` (or follows the E-Commerce & B2B moderation link in
-   the admin workspace). Sellers can then create bilingual listings, manage
-   stock and tier prices, and fulfill their orders.
+2. Staff with ecommerce-scoped **Operations** permission review sellers and
+   products at `/admin/ecommerce` (or use the E-Commerce link in the admin
+   navigation). **Panels** staff manage categories; **Finance** staff manage
+   coupons. Super administrators retain access to every section. Sellers can
+   then create bilingual listings, manage stock and tier prices, and fulfill
+   their orders.
 3. Product edits are returned to moderation. Existing order item titles and
    prices remain snapshots.
 4. Administrators can add/deactivate categories and create/disable coupons.

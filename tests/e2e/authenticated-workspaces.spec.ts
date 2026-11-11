@@ -38,7 +38,7 @@ test("a customer sees their account, can search provider districts, and cannot o
   );
   await expect(menu.getByRole("menuitem", { name: "Product orders" })).toHaveAttribute(
     "href",
-    "/en/dashboard/ecommerce-b2b/orders",
+    "/en/dashboard/ecommerce/orders",
   );
   await expect(menu.getByRole("menuitem", { name: "My projects" })).toBeVisible();
   await expect(menu.getByRole("menuitem", { name: "Become a provider" })).toBeVisible();
@@ -63,6 +63,14 @@ test("a customer sees their account, can search provider districts, and cannot o
   );
 
   await page.goto("/en/admin");
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
+
+  await page.goto("/en/dashboard/ecommerce-b2b?q=rice");
+  await expect(page).toHaveURL(/\/en\/dashboard\/ecommerce\?q=rice$/);
+  await expect(page.getByRole("heading", { name: "Product marketplace" })).toBeVisible();
+
+  await page.goto("/en/admin/ecommerce-b2b");
+  await expect(page).toHaveURL(/\/en\/admin\/ecommerce$/);
   await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
@@ -98,6 +106,8 @@ test("construction operations and finance remain sector-scoped", async ({ page }
   await expect(page.getByText("Agriculture intake", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Fresh Savar Aman Rice", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Manage staff", { exact: true })).toHaveCount(0);
+  await page.goto("/en/admin/ecommerce");
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 
   await page.goto("/en/admin/agriculture/management");
   await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();

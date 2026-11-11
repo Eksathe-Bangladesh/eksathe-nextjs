@@ -69,7 +69,7 @@ export default async function WholesaleBoardPage() {
               : "Compare tier pricing, request quotes, and accept supplier offers."}
           </p>
         </div>
-        <Link className="rounded-md border px-3 py-2 text-sm" href="/dashboard/ecommerce-b2b">
+        <Link className="rounded-md border px-3 py-2 text-sm" href="/dashboard/ecommerce">
           {bn ? "সব পণ্য" : "All products"}
         </Link>
       </header>

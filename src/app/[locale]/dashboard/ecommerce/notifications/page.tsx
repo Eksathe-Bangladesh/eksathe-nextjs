@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function CommerceNotificationsPage() {
   const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/notifications"),
+    requireUser("/dashboard/ecommerce/notifications"),
     getLocale(),
   ]);
   const notifications = await prisma.notification.findMany({
@@ -23,7 +23,7 @@ export default async function CommerceNotificationsPage() {
     <main className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
       <header className="flex items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">{bn ? "বিজ্ঞপ্তি" : "Notifications"}</h1>
-        <Link className="text-primary text-sm" href="/dashboard/ecommerce-b2b">
+        <Link className="text-primary text-sm" href="/dashboard/ecommerce">
           {bn ? "বাজারে ফিরুন" : "Marketplace"}
         </Link>
       </header>

@@ -399,7 +399,11 @@ export const staffGrantSchema = z.strictObject({
   scope: z
     .string()
     .refine(
-      (value) => value === "global" || value === "agriculture-labor" || value === "construction",
+      (value) =>
+        value === "global" ||
+        value === "agriculture-labor" ||
+        value === "construction" ||
+        value === "ecommerce-b2b",
     ),
 });
 

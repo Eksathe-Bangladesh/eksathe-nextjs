@@ -1,8 +1,8 @@
-import { getTranslations } from "next-intl/server";
+import { connection } from "next/server";
 
+import { AdminSectionNavigation } from "@/components/admin/admin-section-navigation";
 import { AdminWorkspace } from "@/components/admin/admin-workspace";
 import { WorkspaceError } from "@/components/workflows/workspace-error";
-import { Link } from "@/i18n/navigation";
 import { agricultureServiceRegistry } from "@/lib/agriculture/service-registry";
 import { requireAdmin } from "@/lib/dal";
 import { logError } from "@/lib/logging";
@@ -17,8 +17,13 @@ export default async function AdminPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  await connection();
   const { access } = await requireAdmin();
-  const t = await getTranslations();
+  const showCommerce =
+    access.isSuperAdmin ||
+    access.operationSectors.includes("ecommerce-b2b") ||
+    access.panelManagementSectors.includes("ecommerce-b2b") ||
+    access.financeSectors.includes("ecommerce-b2b");
   const params = await searchParams;
   const value = (key: string) => {
     const raw = params[key];
@@ -58,16 +63,9 @@ export default async function AdminPage({
   });
   if (!data) return <WorkspaceError />;
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6">
-      {access.isSuperAdmin && (
-        <Link
-          className="text-primary w-fit rounded-md border px-3 py-2 text-sm"
-          href="/admin/ecommerce-b2b"
-        >
-          {t("admin.commerceModeration")}
-        </Link>
-      )}
+    <>
+      <AdminSectionNavigation showCommerce={showCommerce} />
       <AdminWorkspace data={data} />
-    </div>
+    </>
   );
 }

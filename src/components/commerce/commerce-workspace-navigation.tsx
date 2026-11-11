@@ -8,13 +8,13 @@ export function CommerceWorkspaceNavigation() {
   const t = useTranslations("commerceNavigation");
   const pathname = usePathname();
   const destinations = [
-    { href: "/dashboard/ecommerce-b2b", key: "market", label: t("market") },
-    { href: "/dashboard/ecommerce-b2b/wholesale", key: "wholesale", label: t("wholesale") },
-    { href: "/dashboard/ecommerce-b2b/cart", key: "cart", label: t("cart") },
-    { href: "/dashboard/ecommerce-b2b/wishlist", key: "wishlist", label: t("wishlist") },
-    { href: "/dashboard/ecommerce-b2b/orders", key: "orders", label: t("orders") },
-    { href: "/dashboard/ecommerce-b2b/messages", key: "messages", label: t("messages") },
-    { href: "/dashboard/ecommerce-b2b/seller", key: "seller", label: t("seller") },
+    { href: "/dashboard/ecommerce", key: "market", label: t("market") },
+    { href: "/dashboard/ecommerce/wholesale", key: "wholesale", label: t("wholesale") },
+    { href: "/dashboard/ecommerce/cart", key: "cart", label: t("cart") },
+    { href: "/dashboard/ecommerce/wishlist", key: "wishlist", label: t("wishlist") },
+    { href: "/dashboard/ecommerce/orders", key: "orders", label: t("orders") },
+    { href: "/dashboard/ecommerce/messages", key: "messages", label: t("messages") },
+    { href: "/dashboard/ecommerce/seller", key: "seller", label: t("seller") },
   ] as const;
 
   return (

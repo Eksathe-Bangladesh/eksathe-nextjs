@@ -153,7 +153,7 @@ export function SiteHeaderUserMenu({
           </Link>
           <Link
             role="menuitem"
-            href="/dashboard/ecommerce-b2b"
+            href="/dashboard/ecommerce"
             onClick={() => setMenuOpen(false)}
             className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
@@ -223,7 +223,7 @@ export function SiteHeaderUserMenu({
           </Link>
           <Link
             role="menuitem"
-            href="/dashboard/ecommerce-b2b/orders"
+            href="/dashboard/ecommerce/orders"
             onClick={() => setMenuOpen(false)}
             className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
@@ -263,7 +263,7 @@ export function SiteHeaderUserMenu({
           )}
           <Link
             role="menuitem"
-            href="/dashboard/ecommerce-b2b/seller"
+            href="/dashboard/ecommerce/seller"
             onClick={() => setMenuOpen(false)}
             className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
           >
@@ -330,7 +330,7 @@ function NavigationLinks({ pathname }: { pathname: string }) {
     { href: "/dashboard", label: t("header.services") },
     { href: "/agriculture", label: t("home.agriculture") },
     { href: "/construction", label: t("home.construction") },
-    { href: "/dashboard/ecommerce-b2b", label: t("header.shopping") },
+    { href: "/dashboard/ecommerce", label: t("header.shopping") },
   ];
 
   return (
@@ -339,7 +339,7 @@ function NavigationLinks({ pathname }: { pathname: string }) {
         const active =
           href === "/dashboard"
             ? pathname === href ||
-              (pathname.startsWith(`${href}/`) && !pathname.startsWith("/dashboard/ecommerce-b2b"))
+              (pathname.startsWith(`${href}/`) && !pathname.startsWith("/dashboard/ecommerce"))
             : pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link

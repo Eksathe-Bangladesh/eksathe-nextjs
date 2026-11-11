@@ -139,8 +139,8 @@ export const getStaffAccess = cache(async function getStaffAccess(
   };
 });
 
-export async function requireAdmin() {
-  const user = await requireUser("/admin");
+export async function requireAdmin(returnTo = "/admin") {
+  const user = await requireUser(returnTo);
   const access = await getStaffAccess(user);
   if (
     !access.isSuperAdmin &&

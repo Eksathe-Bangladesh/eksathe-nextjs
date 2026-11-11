@@ -12,10 +12,7 @@ import { requireUser } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 
 export default async function CommerceCartPage() {
-  const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/cart"),
-    getLocale(),
-  ]);
+  const [user, locale] = await Promise.all([requireUser("/dashboard/ecommerce/cart"), getLocale()]);
   const [cart, addresses] = await Promise.all([
     prisma.commerceCartItem.findMany({
       where: { userId: user.id },
@@ -34,7 +31,7 @@ export default async function CommerceCartPage() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
       <header className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold">{bn ? "আপনার কার্ট" : "Your cart"}</h1>
-        <Link className="text-primary text-sm" href="/dashboard/ecommerce-b2b">
+        <Link className="text-primary text-sm" href="/dashboard/ecommerce">
           {bn ? "বাজারে ফিরুন" : "Continue shopping"}
         </Link>
       </header>
@@ -49,7 +46,7 @@ export default async function CommerceCartPage() {
                 <div>
                   <Link
                     className="font-semibold hover:underline"
-                    href={`/dashboard/ecommerce-b2b/products/${product.id}`}
+                    href={`/dashboard/ecommerce/products/${product.id}`}
                   >
                     {bn ? product.titleBn : product.titleEn}
                   </Link>

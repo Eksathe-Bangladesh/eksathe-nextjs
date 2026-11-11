@@ -13,7 +13,7 @@ type Props = { params: Promise<{ conversationId: string }> };
 export default async function CommerceConversationPage({ params }: Props) {
   const [{ conversationId }, user, locale] = await Promise.all([
     params,
-    requireUser("/dashboard/ecommerce-b2b/messages"),
+    requireUser("/dashboard/ecommerce/messages"),
     getLocale(),
   ]);
   const conversation = await prisma.commerceConversation.findFirst({
@@ -35,7 +35,7 @@ export default async function CommerceConversationPage({ params }: Props) {
   const bn = locale === "bn";
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
-      <Link className="text-primary text-sm" href="/dashboard/ecommerce-b2b/messages">
+      <Link className="text-primary text-sm" href="/dashboard/ecommerce/messages">
         {bn ? "← বার্তায় ফিরুন" : "← Messages"}
       </Link>
       <h1 className="mt-3 text-2xl font-bold">

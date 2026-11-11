@@ -80,13 +80,13 @@ instances. Keep hidden inputs native.
 The commerce routes contain a high concentration of one-off forms and controls.
 Migrate a route at a time, starting with:
 
-- `src/app/[locale]/dashboard/ecommerce-b2b/page.tsx`
-- `src/app/[locale]/dashboard/ecommerce-b2b/cart/page.tsx`
-- `src/app/[locale]/dashboard/ecommerce-b2b/seller/page.tsx`
-- `src/app/[locale]/dashboard/ecommerce-b2b/wholesale/page.tsx`
-- `src/app/[locale]/dashboard/ecommerce-b2b/products/[productId]/page.tsx`
-- `src/app/[locale]/dashboard/ecommerce-b2b/orders/[orderId]/page.tsx`
-- `src/app/[locale]/admin/ecommerce-b2b/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/cart/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/seller/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/wholesale/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/products/[productId]/page.tsx`
+- `src/app/[locale]/dashboard/ecommerce/orders/[orderId]/page.tsx`
+- `src/app/[locale]/admin/ecommerce/page.tsx`
 
 Use existing `Input`, `Textarea`, `NativeSelect`, `Button`, and `Card`.
 The order-detail item table now uses shadcn `Table`; prefer it over a
@@ -112,7 +112,7 @@ to `Tabs`.
 
 ### 5. Chat UI (optional)
 
-`src/app/[locale]/dashboard/ecommerce-b2b/messages/[conversationId]/page.tsx`
+`src/app/[locale]/dashboard/ecommerce/messages/[conversationId]/page.tsx`
 has hand-built message bubbles and a textarea composer. Consider shadcn
 `Message`/`Bubble` with `Textarea` and `Button`. Adopt `MessageScroller` only if
 its client-side scroll behavior is needed and verified against this page's

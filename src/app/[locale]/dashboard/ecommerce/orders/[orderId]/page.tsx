@@ -30,7 +30,7 @@ type AddressSnapshot = {
 export default async function CommerceInvoicePage({ params }: Props) {
   const [{ orderId }, user, locale] = await Promise.all([
     params,
-    requireUser("/dashboard/ecommerce-b2b/orders"),
+    requireUser("/dashboard/ecommerce/orders"),
     getLocale(),
   ]);
   const order = await prisma.commerceOrder.findFirst({

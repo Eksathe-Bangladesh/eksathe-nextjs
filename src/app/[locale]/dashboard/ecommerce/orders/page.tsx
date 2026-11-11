@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function CommerceOrdersPage() {
   const [user, locale] = await Promise.all([
-    requireUser("/dashboard/ecommerce-b2b/orders"),
+    requireUser("/dashboard/ecommerce/orders"),
     getLocale(),
   ]);
   const orders = await prisma.commerceOrder.findMany({
@@ -36,7 +36,7 @@ export default async function CommerceOrdersPage() {
               <div>
                 <Link
                   className="font-semibold hover:underline"
-                  href={`/dashboard/ecommerce-b2b/orders/${order.id}`}
+                  href={`/dashboard/ecommerce/orders/${order.id}`}
                 >
                   #{order.id.slice(-8)}
                 </Link>

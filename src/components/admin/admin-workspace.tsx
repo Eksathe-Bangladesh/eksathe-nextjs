@@ -38,10 +38,16 @@ export function AdminWorkspace({ data }: { data: AdminWorkspaceData }) {
       currency: "BDT",
       maximumFractionDigits: 2,
     });
-  const operationsEnabled = data.access.operationSectors.length > 0;
-  const constructionOperationsEnabled = data.access.operationSectors.includes("construction");
-  const agricultureOperationsEnabled = data.access.operationSectors.includes("agriculture-labor");
-  const financeEnabled = data.access.financeSectors.length > 0;
+  const serviceOperationSectors = data.access.operationSectors.filter(
+    (sector) => sector !== "ecommerce-b2b",
+  );
+  const serviceFinanceSectors = data.access.financeSectors.filter(
+    (sector) => sector !== "ecommerce-b2b",
+  );
+  const operationsEnabled = serviceOperationSectors.length > 0;
+  const constructionOperationsEnabled = serviceOperationSectors.includes("construction");
+  const agricultureOperationsEnabled = serviceOperationSectors.includes("agriculture-labor");
+  const financeEnabled = serviceFinanceSectors.length > 0;
   const agricultureManagementEnabled = [
     ...data.access.userManagementSectors,
     ...data.access.panelManagementSectors,
@@ -645,6 +651,9 @@ function StaffGrantForm() {
             {t("sectors.agriculture-labor")}
           </NativeSelectOption>
           <NativeSelectOption value="construction">{t("sectors.construction")}</NativeSelectOption>
+          <NativeSelectOption value="ecommerce-b2b">
+            {t("sectors.ecommerce-b2b")}
+          </NativeSelectOption>
         </NativeSelect>
       </Field>
       <div className="flex flex-col gap-2 sm:col-span-3">
