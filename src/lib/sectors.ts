@@ -83,6 +83,18 @@ export const sectors = [
     icon: "💳",
     status: "coming-soon",
   },
+  {
+    id: 14,
+    slug: "logistics-delivery",
+    icon: "\u{1F4E6}",
+    status: "coming-soon",
+  },
+  {
+    id: 15,
+    slug: "transport-vehicle-services",
+    icon: "\u{1F698}",
+    status: "coming-soon",
+  },
 ] as const satisfies readonly SectorDefinition[];
 
 export type SectorSlug = (typeof sectors)[number]["slug"];

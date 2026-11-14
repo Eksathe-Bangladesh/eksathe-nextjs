@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "brandName": "EKsathe Bangladesh",
     "brandSlogan": "Farmer • Market • Labor • Service",
@@ -1008,6 +1008,8 @@
     "agriculture-labor": "Agriculture & Labor",
     "construction": "Construction",
     "transport-bus": "Transport & Bus Tickets",
+    "transport-vehicle-services": "Transport & Vehicle Services",
+    "logistics-delivery": "Logistics & Delivery",
     "tourism": "Tourism",
     "healthcare": "Healthcare",
     "events": "Events",
