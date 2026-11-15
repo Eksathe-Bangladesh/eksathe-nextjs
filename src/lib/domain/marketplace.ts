@@ -7,6 +7,7 @@ import {
   calculateRemainingPayment,
 } from "@/lib/domain/money";
 import { prisma } from "@/lib/prisma";
+import type { MarketplaceListingKind as ListingKind } from "@/lib/sector-listing-kinds";
 import { validateStoredObject } from "@/lib/storage/s3";
 import type {
   CreateListingInput,
@@ -19,12 +20,6 @@ import type {
 } from "@/lib/validations/workflows";
 
 type Tx = Prisma.TransactionClient;
-type ListingKind =
-  | "PRODUCE"
-  | "WORKER"
-  | "MACHINERY"
-  | "CONSTRUCTION_MATERIAL"
-  | "CONSTRUCTION_SERVICE";
 
 export type WorkflowErrorCode =
   | "notFound"

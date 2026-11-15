@@ -12,11 +12,12 @@ import {
 } from "@/lib/construction/verification-policy";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
+import type { MarketplaceListingKind } from "@/lib/sector-listing-kinds";
 
 export type PublicListing = {
   id: string;
   sectorSlug: string;
-  kind: "PRODUCE" | "WORKER" | "MACHINERY" | "CONSTRUCTION_MATERIAL" | "CONSTRUCTION_SERVICE";
+  kind: MarketplaceListingKind;
   title: string;
   description: string;
   category: string;

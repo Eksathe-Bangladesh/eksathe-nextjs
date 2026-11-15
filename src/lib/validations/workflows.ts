@@ -2,6 +2,12 @@ import { z } from "zod";
 
 import { agricultureListings, constructionListings } from "@/lib/sectors";
 import {
+  isListingKindAllowedForSector,
+  isVehicleListingKind,
+  marketplaceListingKindValues,
+  marketplaceListingSectors,
+} from "@/lib/sector-listing-kinds";
+import {
   providerVerificationDocumentTypes,
   providerVerificationTypes,
 } from "@/lib/validations/provider-verification";
@@ -17,6 +23,16 @@ const stockAmount = z
   .string()
   .trim()
   .regex(/^(?:0|[1-9]\d{0,8})(?:\.\d{1,3})?$/);
+const positiveInteger = z
+  .string()
+  .trim()
+  .regex(/^[1-9]\d*$/)
+  .refine((value) => Number.isSafeInteger(Number(value)) && Number(value) <= 2_147_483_647);
+const positiveMeasurement = z
+  .string()
+  .trim()
+  .regex(/^(?:0|[1-9]\d{0,8})(?:\.\d{1,3})?$/)
+  .refine((value) => Number(value) > 0);
 const money = z
   .string()
   .trim()
@@ -46,9 +62,15 @@ export const profileSchema = z.strictObject({
     .regex(/^[0-9+ ()-]{7,30}$/),
 });
 
+const vehicleListingDetailsSchema = z.strictObject({
+  vehicleClass: requiredText(80),
+  passengerCapacity: positiveInteger.optional(),
+  cargoCapacityKg: positiveMeasurement.optional(),
+});
+
 const listingFields = {
-  sectorSlug: z.enum(["agriculture-labor", "construction"]),
-  kind: z.enum(["PRODUCE", "WORKER", "MACHINERY", "CONSTRUCTION_MATERIAL", "CONSTRUCTION_SERVICE"]),
+  sectorSlug: z.enum(marketplaceListingSectors),
+  kind: z.enum(marketplaceListingKindValues),
   titleBn: requiredText(120),
   titleEn: requiredText(120),
   descriptionBn: text(2000),
@@ -59,6 +81,7 @@ const listingFields = {
   unitPrice: money.refine((value) => Number(value) > 0),
   stock: stockAmount,
   availableFrom: optionalDate,
+  vehicleDetails: vehicleListingDetailsSchema.optional(),
   imageKey: text(240).optional(),
   imageContentType: z.enum(["image/jpeg", "image/png", "image/webp"]).optional(),
   imageSizeBytes: z
@@ -76,6 +99,26 @@ function validateListing(
       code: "custom",
       path: ["stock"],
       message: "Goods must have stock greater than zero.",
+    });
+  }
+  if (isListingKindAllowedForSector(value.sectorSlug, value.kind) === false) {
+    context.addIssue({
+      code: "custom",
+      path: ["kind"],
+      message: "The listing kind is not available in this sector.",
+    });
+  }
+  if (isVehicleListingKind(value.kind) && !value.vehicleDetails) {
+    context.addIssue({
+      code: "custom",
+      path: ["vehicleDetails"],
+      message: "Vehicle details are required for vehicle listings.",
+    });
+  } else if (!isVehicleListingKind(value.kind) && value.vehicleDetails) {
+    context.addIssue({
+      code: "custom",
+      path: ["vehicleDetails"],
+      message: "Vehicle details are only valid for vehicle listings.",
     });
   }
   const imageFields = [value.imageKey, value.imageContentType, value.imageSizeBytes].filter(
@@ -140,6 +183,19 @@ export const storefrontSchema = z.strictObject(storefrontFields).superRefine((va
   }
 });
 
+const marketplaceRequestDetailsSchema = z.strictObject({
+  pickupDistrict: requiredText(80),
+  pickupAddress: text(240).optional(),
+  destinationDistrict: requiredText(80),
+  destinationAddress: text(240).optional(),
+  cargoDescription: text(1200).optional(),
+  parcelCount: positiveInteger.optional(),
+  passengerCount: positiveInteger.optional(),
+  weightKg: positiveMeasurement.optional(),
+  volumeM3: positiveMeasurement.optional(),
+  handlingNotes: text(1200).optional(),
+});
+
 export const createRequestSchema = z
   .strictObject({
     listingId: requiredText(64),
@@ -150,6 +206,7 @@ export const createRequestSchema = z
     requestedEnd: optionalDate,
     projectId: text(64).optional(),
     packageId: text(64).optional(),
+    mobilityDetails: marketplaceRequestDetailsSchema.optional(),
   })
   .superRefine((value, context) => {
     if (Boolean(value.projectId) !== Boolean(value.packageId))
