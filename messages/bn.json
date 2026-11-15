@@ -1008,6 +1008,9 @@
     "agriculture-labor": "কৃষি ও শ্রমিক",
     "construction": "নির্মাণ",
     "transport-bus": "পরিবহন ও বাস টিকিট",
+
+    "transport-vehicle-services": "পরিবহন ও যানবাহন সেবা",
+    "logistics-delivery": "লজিস্টিকস ও ডেলিভারি",
     "tourism": "ট্যুরিজম",
     "healthcare": "স্বাস্থ্যসেবা",
     "events": "ইভেন্ট",
