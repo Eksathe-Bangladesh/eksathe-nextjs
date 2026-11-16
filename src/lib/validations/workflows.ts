@@ -165,7 +165,7 @@ export const createRequestSchema = z
         message: "Provide both booking dates.",
       });
     }
-    if (value.requestedStart && value.requestedEnd && value.requestedEnd <= value.requestedStart) {
+    if (value.requestedStart && value.requestedEnd && value.requestedEnd < value.requestedStart) {
       context.addIssue({
         code: "custom",
         path: ["requestedEnd"],

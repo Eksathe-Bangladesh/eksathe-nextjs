@@ -212,13 +212,11 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       cancelRequestedById: order.cancelRequestedById,
       listing: {
         ...order.listing,
-        title:
-          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
+        title: resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
       },
       provider: {
         ...order.provider,
-        name:
-          resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
+        name: resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
       },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
@@ -256,8 +254,7 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
         status: order.status,
         subtotal: order.subtotal.toString(),
         transportFee: order.transportFee.toString(),
-        title:
-          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
+        title: resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
         kind: order.listing.kind,
         providerName:
           resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
@@ -286,8 +283,7 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
         },
         providerId: request.provider.id,
         providerName:
-          resolveTranslation(request.provider.translations, locale, defaultLocale)?.name ??
-          "",
+          resolveTranslation(request.provider.translations, locale, defaultLocale)?.name ?? "",
         quote: request.quote
           ? {
               id: request.quote.id,
@@ -346,8 +342,7 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       },
       updates: request.updates.map((update) => ({
         id: update.id,
-        message:
-          resolveTranslation(update.translations, locale, defaultLocale)?.message ?? "",
+        message: resolveTranslation(update.translations, locale, defaultLocale)?.message ?? "",
         createdAt: iso(update.createdAt),
       })),
       attachments: request.attachments,
@@ -547,8 +542,7 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       listing: {
         ...order.listing,
         ...resolveTranslation(order.listing.translations, locale, defaultLocale),
-        title:
-          resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
+        title: resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
       },
       booking: order.booking
         ? { startsAt: iso(order.booking.startsAt), endsAt: iso(order.booking.endsAt) }
@@ -1092,7 +1086,11 @@ export async function getCustomerAgricultureRequest(userId: string, requestId: n
   };
 }
 
-export async function getProjectWorkspace(userId: string, projectId: string) {
+export async function getProjectWorkspace(
+  userId: string,
+  projectId: string,
+  locale: Locale = defaultLocale,
+) {
   const access = await prisma.constructionProject.findUnique({
     where: { id: projectId },
     select: { id: true, ownerId: true },
@@ -1210,16 +1208,14 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       requestedEnd: iso(request.requestedEnd),
       listing: {
         ...request.listing,
-        title:
-          resolveTranslation(request.listing.translations, defaultLocale, defaultLocale)?.title ??
-          "",
+        title: resolveTranslation(request.listing.translations, locale, defaultLocale)?.title ?? "",
         description:
-          resolveTranslation(request.listing.translations, defaultLocale, defaultLocale)
-            ?.description ?? "",
+          resolveTranslation(request.listing.translations, locale, defaultLocale)?.description ??
+          "",
       },
       providerId: request.provider.id,
       providerName:
-        resolveTranslation(request.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+        resolveTranslation(request.provider.translations, locale, defaultLocale)?.name ?? "",
       quote: request.quote
         ? {
             id: request.quote.id,
@@ -1238,14 +1234,13 @@ export async function getProjectWorkspace(userId: string, projectId: string) {
       status: order.status,
       subtotal: order.subtotal.toString(),
       transportFee: order.transportFee.toString(),
-      title:
-        resolveTranslation(order.listing.translations, defaultLocale, defaultLocale)?.title ?? "",
+      title: resolveTranslation(order.listing.translations, locale, defaultLocale)?.title ?? "",
       kind: order.listing.kind,
       providerId: order.provider.id,
       packageId: order.projectPackage?.id ?? null,
       packageLabel: order.projectPackage?.label ?? null,
       providerName:
-        resolveTranslation(order.provider.translations, defaultLocale, defaultLocale)?.name ?? "",
+        resolveTranslation(order.provider.translations, locale, defaultLocale)?.name ?? "",
       payments: order.payments.map((payment) => ({
         id: payment.id,
         amount: payment.amount.toString(),

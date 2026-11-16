@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useActionState, useRef, useState } from "react";
 
 import { submitProviderVerificationAction } from "@/app/actions/provider-verification";
@@ -80,6 +80,7 @@ function VerificationCard({
   application: VerificationApplication | null;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
   const canResubmit =
     !application ||
     ["CHANGES_REQUESTED", "REJECTED", "REVOKED", "EXPIRED"].includes(application.status);
@@ -105,7 +106,9 @@ function VerificationCard({
       {application?.expiresAt && application.status === "APPROVED" && (
         <p className="text-muted-foreground text-sm">
           {t("verification.provider.validUntil", {
-            date: new Date(application.expiresAt).toLocaleDateString(),
+            date: new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+              new Date(application.expiresAt),
+            ),
           })}
         </p>
       )}
@@ -125,11 +128,13 @@ function VerificationCard({
       ) : null}
       {canResubmit ? (
         <ProviderVerificationForm type={type} initial={application} />
-      ) : (
+      ) : application?.status === "APPROVED" ? (
+        <p className="text-muted-foreground text-sm">{t("verification.provider.approved")}</p>
+      ) : application?.status === "IN_REVIEW" || application?.status === "SUBMITTED" ? (
         <p className="text-muted-foreground text-sm">
           {t("verification.provider.waitingForReview")}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }

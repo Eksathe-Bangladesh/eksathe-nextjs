@@ -186,7 +186,7 @@ export async function createConstructionProject(actorId: string, input: CreatePr
             archivedAt: null,
             provider: { status: "APPROVED", user: { status: "active" } },
           },
-          select: { id: true, kind: true, titleEn: true },
+          select: { id: true, kind: true, translations: { select: { locale: true, title: true } } },
         })
       : null;
     if (input.listingId && !listing) throw new WorkflowError("notFound");
@@ -208,7 +208,11 @@ export async function createConstructionProject(actorId: string, input: CreatePr
                   label:
                     (service
                       ? resolveCatalogPair(`constructionServices.${service.slug}.title`).en
-                      : undefined) ?? listing!.titleEn,
+                      : undefined) ??
+                    listing!.translations.find((translation) => translation.locale === "en")
+                      ?.title ??
+                    listing!.translations[0]?.title ??
+                    "Construction listing",
                   description: input.description,
                   kind: service?.kind ?? listing!.kind,
                   serviceSlug: service?.slug,

@@ -18,6 +18,15 @@ export function ActionFeedback({ state }: { state: WorkflowState }) {
     >
       <AlertDescription className="text-inherit">
         {t(`workflow.${state.messageKey}`)}
+        {state.errors && Object.keys(state.errors).length > 0 && (
+          <ul className="mt-2 list-disc pl-5">
+            {Object.entries(state.errors).flatMap(([field, messages]) =>
+              (messages ?? []).map((message, index) => (
+                <li key={`${field}-${index}`}>{message}</li>
+              )),
+            )}
+          </ul>
+        )}
       </AlertDescription>
     </Alert>
   );

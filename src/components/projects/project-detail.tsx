@@ -217,7 +217,10 @@ export function ProjectDetail({
                               >
                                 {request.providerName}
                               </Link>{" "}
-                              · {request.listing.kind}
+                              ·{" "}
+                              {request.listing.kind === "CONSTRUCTION_MATERIAL"
+                                ? t("constructionServices.building-materials.title")
+                                : t("construction.serviceDetail.label")}
                             </CardDescription>
                           </div>
                           <StatusBadge status={request.status} />

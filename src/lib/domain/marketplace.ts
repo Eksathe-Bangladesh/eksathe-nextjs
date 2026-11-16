@@ -564,7 +564,11 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
       const startsAt = dateAtUtcStart(input.requestedStart);
       if (startsAt < dateAtUtcStart(new Date().toISOString().slice(0, 10))) fail("invalidState");
       if (listing.availableFrom && startsAt < listing.availableFrom) fail("unavailable");
-      requestedQuantity = new Prisma.Decimal(dayCount(input.requestedStart, input.requestedEnd));
+      requestedQuantity = new Prisma.Decimal(
+        listing.unit.toLowerCase() === "day"
+          ? dayCount(input.requestedStart, input.requestedEnd)
+          : input.quantity,
+      );
     } else if (requestedQuantity.greaterThan(listing.stock)) {
       fail("stockUnavailable");
     }

@@ -919,6 +919,7 @@
       },
       "reviewNote": "Latest review note",
       "validUntil": "Verification valid until {date}.",
+      "approved": "Your verification is approved and active until the date shown above.",
       "waitingForReview": "Your application is waiting for an administrator review.",
       "documentPrivacy": "Documents are private and are only shown to you and authorized construction reviewers. Upload PDF, JPG, PNG, or WebP files up to 10 MB."
     },

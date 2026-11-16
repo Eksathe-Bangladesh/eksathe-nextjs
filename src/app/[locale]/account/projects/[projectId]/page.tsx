@@ -18,7 +18,7 @@ async function ProjectContent({
   const { locale: routeLocale, projectId } = await params;
   const locale = getLocaleOrDefault(routeLocale);
   const user = await requireUser(`/account/projects/${projectId}`);
-  const project = await getProjectWorkspace(user.id, projectId).catch((error) => {
+  const project = await getProjectWorkspace(user.id, projectId, locale).catch((error) => {
     logError("workspace.project_query_failed", error);
     return undefined;
   });
