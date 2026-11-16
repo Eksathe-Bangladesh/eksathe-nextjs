@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { z } from "zod";
 
 import { revalidateLocalizedPath } from "@/i18n/revalidate";
@@ -88,7 +88,8 @@ async function run(
   try {
     const result = await operation();
     for (const path of refresh) revalidateLocalizedPath(path);
-    revalidateTag(cacheTags.listings, "max");
+    if (refresh.includes("/account")) revalidateLocalizedPath("/account/construction");
+    updateTag(cacheTags.listings);
     revalidateTag(cacheTags.providers, "max");
     return { status: "success", messageKey, entityId: result?.id };
   } catch (error) {
@@ -296,8 +297,14 @@ export async function createMarketplaceRequestAction(
     quantity: value(formData, "quantity") || "1",
     district: value(formData, "district"),
     details: value(formData, "details"),
+    deliveryAddress: value(formData, "deliveryAddress"),
+    deliveryInstructions: value(formData, "deliveryInstructions"),
+    unloadingArrangement: value(formData, "unloadingArrangement") || undefined,
     ...(rawStart ? { requestedStart: rawStart } : {}),
     ...(rawEnd ? { requestedEnd: rawEnd } : {}),
+    ...(value(formData, "requestedDeliveryDate")
+      ? { requestedDeliveryDate: value(formData, "requestedDeliveryDate") }
+      : {}),
     ...(rawProject ? { projectId: rawProject } : {}),
     ...(rawPackageId ? { packageId: rawPackageId } : {}),
   });

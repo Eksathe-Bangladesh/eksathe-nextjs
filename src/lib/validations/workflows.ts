@@ -146,6 +146,10 @@ export const createRequestSchema = z
     quantity,
     district: requiredText(80),
     details: text(2000),
+    deliveryAddress: text(500).optional(),
+    deliveryInstructions: text(1200).optional(),
+    requestedDeliveryDate: optionalDate,
+    unloadingArrangement: z.enum(["CUSTOMER", "SUPPLIER", "AGREE"]).optional(),
     requestedStart: optionalDate,
     requestedEnd: optionalDate,
     projectId: text(64).optional(),
@@ -170,6 +174,16 @@ export const createRequestSchema = z
         code: "custom",
         path: ["requestedEnd"],
         message: "The end date must be after the start date.",
+      });
+    }
+    const todayInDhaka = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dhaka" }).format(
+      new Date(),
+    );
+    if (value.requestedDeliveryDate && value.requestedDeliveryDate < todayInDhaka) {
+      context.addIssue({
+        code: "custom",
+        path: ["requestedDeliveryDate"],
+        message: "Choose today or a future delivery date.",
       });
     }
   });

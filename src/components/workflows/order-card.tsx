@@ -43,6 +43,10 @@ export type WorkspaceOrder = {
   unitPrice: string;
   subtotal: string;
   transportFee: string;
+  deliveryAddress?: string | null;
+  deliveryInstructions?: string | null;
+  requestedDeliveryDate?: string | null;
+  unloadingArrangement?: string | null;
   commissionAmount: string;
   listing: { title: string; kind: string; unit: string };
   provider?: { name: string; userId: string };
@@ -99,6 +103,21 @@ export function OrderCard({
       })
     : null;
   const title = order.listing.title;
+  const constructionMaterial = order.listing.kind === "CONSTRUCTION_MATERIAL";
+  const deliveryDate = order.requestedDeliveryDate
+    ? formatter.dateTime(new Date(order.requestedDeliveryDate), {
+        dateStyle: "medium",
+        timeZone: "Asia/Dhaka",
+      })
+    : null;
+  const unloadingKey =
+    order.unloadingArrangement === "CUSTOMER"
+      ? "constructionMaterials.unloadingCustomer"
+      : order.unloadingArrangement === "SUPPLIER"
+        ? "constructionMaterials.unloadingSupplier"
+        : order.unloadingArrangement === "AGREE"
+          ? "constructionMaterials.unloadingAgree"
+          : null;
 
   return (
     <Card>
@@ -109,7 +128,16 @@ export function OrderCard({
             {t("marketplace.order.order")} · {order.id}
           </CardDescription>
         </div>
-        <StatusBadge status={order.status} />
+        <StatusBadge
+          status={order.status}
+          label={
+            constructionMaterial && order.status === "IN_PROGRESS"
+              ? t("constructionMaterials.preparing")
+              : constructionMaterial && order.status === "AWAITING_CONFIRMATION"
+                ? t("constructionMaterials.awaitingReceipt")
+                : undefined
+          }
+        />
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <div className="bg-muted/50 grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-2">
@@ -161,15 +189,50 @@ export function OrderCard({
             {t("marketplace.order.balanceDue")}: <strong>{formatMoney(due)}</strong>
           </p>
         </div>
+        {constructionMaterial && (
+          <section className="bg-muted/50 flex flex-col gap-2 rounded-xl p-4 text-sm">
+            <h3 className="font-semibold">{t("constructionMaterials.deliveryDetails")}</h3>
+            <p className="break-words whitespace-pre-wrap">
+              {order.deliveryAddress || t("constructionMaterials.deliveryAddressMissing")}
+            </p>
+            {deliveryDate && (
+              <p>
+                {t("constructionMaterials.preferredDate")}: {deliveryDate}
+              </p>
+            )}
+            {unloadingKey && (
+              <p>
+                {t("constructionMaterials.unloading")}: {t(unloadingKey)}
+              </p>
+            )}
+            {order.deliveryInstructions && (
+              <p className="text-muted-foreground break-words whitespace-pre-wrap">
+                {order.deliveryInstructions}
+              </p>
+            )}
+          </section>
+        )}
 
         {perspective === "provider" && order.status === "CONFIRMED" && (
-          <ProgressForm orderId={order.id} intent="start" />
+          <ProgressForm
+            orderId={order.id}
+            intent="start"
+            constructionMaterial={constructionMaterial}
+          />
         )}
         {perspective === "provider" && order.status === "IN_PROGRESS" && (
-          <ProgressForm orderId={order.id} intent="submit" />
+          <ProgressForm
+            orderId={order.id}
+            intent="submit"
+            constructionMaterial={constructionMaterial}
+          />
         )}
         {perspective === "buyer" && order.status === "AWAITING_CONFIRMATION" && (
-          <ProgressForm orderId={order.id} intent="confirm" />
+          <ProgressForm
+            orderId={order.id}
+            intent="confirm"
+            constructionMaterial={constructionMaterial}
+          />
         )}
 
         {order.status !== "CANCELLED" && order.status !== "DISPUTED" && due > 0 && (
@@ -250,14 +313,21 @@ export function OrderCard({
 function ProgressForm({
   orderId,
   intent,
+  constructionMaterial,
 }: {
   orderId: string;
   intent: "start" | "submit" | "confirm";
+  constructionMaterial: boolean;
 }) {
   const [state, action, pending] = useActionState(progressOrderAction, initialWorkflowState);
   const t = useTranslations();
-  const label =
-    intent === "start"
+  const label = constructionMaterial
+    ? intent === "start"
+      ? t("constructionMaterials.prepareMaterials")
+      : intent === "submit"
+        ? t("constructionMaterials.deliveredMaterials")
+        : t("constructionMaterials.confirmReceipt")
+    : intent === "start"
       ? t("workflow.requestInProgress")
       : intent === "submit"
         ? t("workflow.completeWork")

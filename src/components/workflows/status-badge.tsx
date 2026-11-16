@@ -5,10 +5,10 @@ import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { statusMessageKey } from "@/i18n/message-keys";
 
-export function StatusBadge({ status }: { status: string }) {
+export function StatusBadge({ status, label }: { status: string; label?: string }) {
   const t = useTranslations();
   const key = statusMessageKey(status);
-  const label = key ? t(key) : status.replaceAll("_", " ").toLowerCase();
+  const text = label ?? (key ? t(key) : status.replaceAll("_", " ").toLowerCase());
   return (
     <Badge
       variant={
@@ -19,7 +19,7 @@ export function StatusBadge({ status }: { status: string }) {
             : "secondary"
       }
     >
-      {label}
+      {text}
     </Badge>
   );
 }

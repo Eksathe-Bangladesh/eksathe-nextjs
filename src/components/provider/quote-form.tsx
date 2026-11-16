@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
+import { useActionState, useState } from "react";
 
 import { submitQuoteAction } from "@/app/actions/marketplace";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,10 @@ export function QuoteForm({
 }) {
   const [state, action, pending] = useActionState(submitQuoteAction, initialWorkflowState);
   const t = useTranslations();
+  const formatter = useFormatter();
+  const [quantity, setQuantity] = useState(Number(request.quote?.quantity ?? request.quantity));
+  const [unitPrice, setUnitPrice] = useState(Number(request.quote?.unitPrice ?? 0));
+  const [transportFee, setTransportFee] = useState(Number(request.quote?.transportFee ?? 0));
   return (
     <form action={action} className="bg-muted/50 mt-4 grid gap-3 rounded-xl p-4 sm:grid-cols-2">
       <input type="hidden" name="requestId" value={request.id} />
@@ -36,6 +40,7 @@ export function QuoteForm({
           step="0.001"
           max={request.quantity}
           defaultValue={request.quote?.quantity ?? request.quantity}
+          onChange={(event) => setQuantity(Number(event.target.value) || 0)}
           required
         />
       </div>
@@ -48,6 +53,7 @@ export function QuoteForm({
           min="0.01"
           step="0.01"
           defaultValue={request.quote?.unitPrice ?? ""}
+          onChange={(event) => setUnitPrice(Number(event.target.value) || 0)}
           required
         />
       </div>
@@ -60,12 +66,23 @@ export function QuoteForm({
           min="0"
           step="0.01"
           defaultValue={request.quote?.transportFee ?? "0"}
+          onChange={(event) => setTransportFee(Number(event.target.value) || 0)}
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label htmlFor={`quote-expiry-${request.id}`}>{t("workflow.reference")}</Label>
+        <Label htmlFor={`quote-expiry-${request.id}`}>{t("common.labels.expires")}</Label>
         <DatePicker id={`quote-expiry-${request.id}`} name="expiresAt" />
       </div>
+      <p aria-live="polite" className="bg-background rounded-lg px-3 py-2 text-sm sm:col-span-2">
+        {t("account.workspace.quotedTotal")}:{" "}
+        <strong>
+          {formatter.number(quantity * unitPrice + transportFee, {
+            style: "currency",
+            currency: "BDT",
+            maximumFractionDigits: 2,
+          })}
+        </strong>
+      </p>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <Label htmlFor={`quote-note-${request.id}`}>{t("workflow.quoteNote")}</Label>
         <Textarea

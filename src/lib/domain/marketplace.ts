@@ -558,6 +558,12 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
     await requireLiveSector(tx, listing.sectorSlug);
     await assertConstructionVerification(tx, listing.providerId, listing.sectorSlug, listing.kind);
 
+    const isConstructionMaterial =
+      listing.sectorSlug === "construction" && listing.kind === "CONSTRUCTION_MATERIAL";
+    if (isConstructionMaterial && (!input.deliveryAddress?.trim() || !input.unloadingArrangement)) {
+      fail("invalidState");
+    }
+
     let requestedQuantity = new Prisma.Decimal(input.quantity);
     if (isScheduled(listing.kind)) {
       if (!input.requestedStart || !input.requestedEnd) fail("invalidState");
@@ -607,6 +613,16 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
         quantity: requestedQuantity,
         district: input.district,
         details: input.details,
+        ...(isConstructionMaterial
+          ? {
+              deliveryAddress: input.deliveryAddress?.trim(),
+              deliveryInstructions: input.deliveryInstructions?.trim() || null,
+              requestedDeliveryDate: input.requestedDeliveryDate
+                ? dateAtUtcStart(input.requestedDeliveryDate)
+                : null,
+              unloadingArrangement: input.unloadingArrangement,
+            }
+          : {}),
         requestedStart: input.requestedStart ? dateAtUtcStart(input.requestedStart) : null,
         requestedEnd: input.requestedEnd ? dateAtUtcStart(input.requestedEnd) : null,
       },
@@ -792,6 +808,10 @@ export async function acceptQuote(actorId: string, requestId: string) {
             unitPrice: request.quote.unitPrice,
             subtotal,
             transportFee: request.quote.transportFee,
+            deliveryAddress: request.deliveryAddress,
+            deliveryInstructions: request.deliveryInstructions,
+            requestedDeliveryDate: request.requestedDeliveryDate,
+            unloadingArrangement: request.unloadingArrangement,
             commissionRate,
             commissionAmount,
             providerAmount: subtotal.minus(commissionAmount).plus(request.quote.transportFee),

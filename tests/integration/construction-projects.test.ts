@@ -87,6 +87,10 @@ async function invite(
     quantity: "1",
     district: "Dhaka",
     details: "Integration project invitation",
+    deliveryAddress: "House 12, Road 4, Dhaka",
+    deliveryInstructions: "Call at the gate",
+    requestedDeliveryDate: futureDate(),
+    unloadingArrangement: "AGREE",
     projectId,
     packageId,
     ...(date ? { requestedStart: date, requestedEnd: date } : {}),
@@ -283,6 +287,16 @@ describe("PostgreSQL construction project workflows", () => {
       "CONSTRUCTION_MATERIAL",
       "Cement supply",
     );
+    expect(
+      marketplace.createMarketplaceRequest(ownerId, {
+        listingId: materialListing,
+        quantity: "1",
+        district: "Dhaka",
+        details: "Missing required delivery information",
+        projectId,
+        packageId: materialPackage.id,
+      }),
+    ).rejects.toMatchObject({ code: "invalidState" });
     const [serviceRequestOne, serviceRequestTwo, materialRequest] = await Promise.all([
       invite(serviceListingOne, servicePackage.id, serviceOneUserId, true),
       invite(serviceListingTwo, servicePackage.id, serviceTwoUserId, true),
@@ -295,6 +309,8 @@ describe("PostgreSQL construction project workflows", () => {
         quantity: "1",
         district: "Dhaka",
         details: "Wrong package kind",
+        deliveryAddress: "House 12, Road 4, Dhaka",
+        unloadingArrangement: "AGREE",
         projectId,
         packageId: servicePackage.id,
       }),
@@ -344,6 +360,21 @@ describe("PostgreSQL construction project workflows", () => {
     const materialOrder = await marketplace.acceptQuote(ownerId, materialRequest);
     orderIds.push(materialOrder.id);
     expect(await prisma.order.count({ where: { projectId } })).toBe(3);
+    const deliverySnapshot = await prisma.order.findUniqueOrThrow({
+      where: { id: materialOrder.id },
+      select: {
+        deliveryAddress: true,
+        deliveryInstructions: true,
+        requestedDeliveryDate: true,
+        unloadingArrangement: true,
+      },
+    });
+    expect(deliverySnapshot).toMatchObject({
+      deliveryAddress: "House 12, Road 4, Dhaka",
+      deliveryInstructions: "Call at the gate",
+      unloadingArrangement: "AGREE",
+    });
+    expect(deliverySnapshot.requestedDeliveryDate).toBeInstanceOf(Date);
     expect(await getProjectWorkspace(outsiderId, projectId)).toBeNull();
     const serviceProviderUserId =
       serviceOrder.providerId === serviceOneProviderId ? serviceOneUserId : serviceTwoUserId;

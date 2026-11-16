@@ -256,7 +256,7 @@
     "addListing": "Save listing",
     "listingImage": "Listing photo (optional)",
     "listingImageHelp": "JPG, PNG or WebP, up to 5 MB.",
-    "listingSaved": "The listing was saved for publication.",
+    "listingSaved": "Your listing was saved. Staff must approve it before it appears in the marketplace.",
     "stockUpdated": "Available quantity updated.",
     "profileSaved": "Your storefront has been updated.",
     "incomingRequests": "Incoming requests",
@@ -329,7 +329,8 @@
     "commissionsDue": "Commission due",
     "markCollected": "Mark as collected",
     "reference": "Reference",
-    "permissionDenied": "You do not have permission to do that."
+    "permissionDenied": "You do not have permission to do that.",
+    "submitListingForReview": "Submit for review"
   },
   "header": {
     "services": "Services",
@@ -875,7 +876,7 @@
       "storefront": "Storefront",
       "businessOperations": "Business operations",
       "suspendedNotice": "This provider profile is suspended. It cannot publish listings or accept new requests; contact the administration team.",
-      "moderationNotice": "New listings are reviewed by the operations team before publication.",
+      "moderationNotice": "New listings have a separate operations review before publication; this is separate from construction-provider verification.",
       "addAListing": "Add a listing",
       "customerWorkspace": "Customer workspace",
       "commissionRecords": "Commission records",
@@ -1868,5 +1869,33 @@
     "CHANGES_REQUESTED": "Changes requested",
     "EXPIRED": "Expired",
     "REVOKED": "Revoked"
+  },
+  "constructionMaterials": {
+    "categoryPlaceholder": "e.g. cement, bricks and blocks, sand, steel",
+    "unitPlaceholder": "bag, piece, kg, tonne, cubic foot",
+    "deliveryDetails": "Delivery details",
+    "address": "Delivery address",
+    "preferredDate": "Preferred delivery date (optional)",
+    "unloading": "Unloading arrangement",
+    "unloadingAgree": "To be agreed with supplier",
+    "unloadingCustomer": "Customer will arrange unloading",
+    "unloadingSupplier": "Supplier to arrange unloading",
+    "accessInstructions": "Landmark and access instructions (optional)",
+    "accessPlaceholder": "Gate width, floor, site access, or contact instructions",
+    "estimatedSubtotal": "Estimated materials subtotal",
+    "subtotalNotice": "Delivery fee is confirmed in the quote",
+    "requestQuote": "Request a quote",
+    "viewRequest": "View your construction request",
+    "requestWorkspace": "Construction requests and orders",
+    "requests": "Requests",
+    "orders": "Orders",
+    "requestWorkspaceDescription": "Track construction materials and professional service requests, quotes, and orders.",
+    "deliveryAddressMissing": "Delivery details not provided",
+    "prepareMaterials": "Start preparing materials",
+    "deliveredMaterials": "Mark materials delivered",
+    "confirmReceipt": "Confirm materials received",
+    "preparing": "Preparing materials",
+    "awaitingReceipt": "Awaiting receipt confirmation",
+    "materialCategory": "Material category"
   }
 }

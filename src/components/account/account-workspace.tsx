@@ -68,12 +68,18 @@ export function AccountWorkspace({
         { id: "notifications", label: t("dashboard.notifications"), icon: BellIcon },
       ]}
     >
-      <div>
-        <p className="text-primary text-sm">{t("account.workspace.yourAccount")}</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">
-          {t("account.workspace.welcome", { name: user.name })}
-        </h1>
-        <p className="text-muted-foreground mt-2 text-sm">{user.email}</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-primary text-sm">{t("account.workspace.yourAccount")}</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight">
+            {t("account.workspace.welcome", { name: user.name })}
+          </h1>
+          <p className="text-muted-foreground mt-2 text-sm">{user.email}</p>
+        </div>
+        <Link href="/account/construction" className={buttonVariants({ variant: "outline" })}>
+          <HardHatIcon aria-hidden="true" className="size-4" />
+          {t("constructionMaterials.requestWorkspace")}
+        </Link>
       </div>
 
       <section id="profile" className="scroll-mt-24">

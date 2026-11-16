@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { useActionState } from "react";
 
 import { archiveListingAction, updateListingStockAction } from "@/app/actions/marketplace";
@@ -32,6 +32,7 @@ export function ProviderWorkspace({
   actorId: string;
 }) {
   const t = useTranslations();
+  const formatter = useFormatter();
   const capabilities = workspace.capabilities.filter(
     (capability) => capability.status === "APPROVED",
   );
@@ -153,6 +154,40 @@ export function ProviderWorkspace({
                     {t("workflow.startDate")}: {request.requestedStart?.slice(0, 10)} –{" "}
                     {request.requestedEnd?.slice(0, 10)}
                   </p>
+                )}
+                {request.listing.kind === "CONSTRUCTION_MATERIAL" && (
+                  <div className="bg-muted/50 mt-3 flex flex-col gap-2 rounded-xl p-4 text-sm">
+                    <h3 className="font-semibold">{t("constructionMaterials.deliveryDetails")}</h3>
+                    <p className="break-words whitespace-pre-wrap">
+                      {request.deliveryAddress || t("constructionMaterials.deliveryAddressMissing")}
+                    </p>
+                    {request.requestedDeliveryDate && (
+                      <p>
+                        {t("constructionMaterials.preferredDate")}:{" "}
+                        {formatter.dateTime(new Date(request.requestedDeliveryDate), {
+                          dateStyle: "medium",
+                          timeZone: "Asia/Dhaka",
+                        })}
+                      </p>
+                    )}
+                    {request.unloadingArrangement && (
+                      <p>
+                        {t("constructionMaterials.unloading")}:{" "}
+                        {t(
+                          request.unloadingArrangement === "CUSTOMER"
+                            ? "constructionMaterials.unloadingCustomer"
+                            : request.unloadingArrangement === "SUPPLIER"
+                              ? "constructionMaterials.unloadingSupplier"
+                              : "constructionMaterials.unloadingAgree",
+                        )}
+                      </p>
+                    )}
+                    {request.deliveryInstructions && (
+                      <p className="text-muted-foreground break-words whitespace-pre-wrap">
+                        {request.deliveryInstructions}
+                      </p>
+                    )}
+                  </div>
                 )}
                 {request.status !== "ACCEPTED" && <QuoteForm request={request} />}
               </CardContent>

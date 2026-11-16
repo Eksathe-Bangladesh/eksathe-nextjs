@@ -25,6 +25,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState(createListingAction, initialWorkflowState);
   const [sectorSlug, setSectorSlug] = useState(capabilities[0]?.sectorSlug ?? "agriculture-labor");
+  const [listingKind, setListingKind] = useState(capabilities[0]?.kind ?? "");
   const [uploadError, setUploadError] = useState<"uploadFailed" | "invalidUpload" | null>(null);
   const [uploading, setUploading] = useState(false);
   const uploadedFile = useRef<File | null>(null);
@@ -41,6 +42,19 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         (item) => item.sectorSlug === service.sectorSlug && item.kind === service.kind,
       ),
   );
+  useEffect(() => {
+    if (!serviceOptions.some((service) => service.kind === listingKind)) {
+      setListingKind(serviceOptions[0]?.kind ?? "");
+    }
+  }, [listingKind, serviceOptions]);
+  const categoryPlaceholder =
+    sectorSlug === "construction"
+      ? t("constructionMaterials.categoryPlaceholder")
+      : t("provider.listingForm.categoryPlaceholder");
+  const unitPlaceholder =
+    sectorSlug === "construction"
+      ? t("constructionMaterials.unitPlaceholder")
+      : t("provider.listingForm.unitPlaceholder");
 
   useEffect(() => {
     if (state.status !== "success") return;
@@ -110,6 +124,8 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             id="listing-kind"
             name="kind"
             required
+            value={listingKind}
+            onChange={(event) => setListingKind(event.target.value)}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {serviceOptions.map((service) => (
@@ -125,24 +141,48 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         <Field id="listing-title-en" label={t("common.fields.nameEnglish")}>
           <Input id="listing-title-en" name="titleEn" required maxLength={120} />
         </Field>
-        <Field id="listing-category" label={t("workflow.category")}>
+        <Field
+          id="listing-category"
+          label={
+            sectorSlug === "construction" && listingKind === "CONSTRUCTION_MATERIAL"
+              ? t("constructionMaterials.materialCategory")
+              : t("workflow.category")
+          }
+        >
           <Input
             id="listing-category"
             name="category"
-            list="agriculture-category-options"
+            list={
+              sectorSlug === "construction"
+                ? "construction-category-options"
+                : "agriculture-category-options"
+            }
             required
             maxLength={80}
-            placeholder={t("provider.listingForm.categoryPlaceholder")}
+            placeholder={categoryPlaceholder}
           />
-          <datalist id="agriculture-category-options">
-            <option value="Grains / শস্য" />
-            <option value="Vegetables / সবজি" />
-            <option value="Fruits / ফল" />
-            <option value="Dairy / দুগ্ধজাত" />
-            <option value="Fish / মাছ" />
-            <option value="Spices / মসলা" />
-            <option value="Other / অন্যান্য" />
-          </datalist>
+          {sectorSlug === "construction" ? (
+            <datalist id="construction-category-options">
+              <option value="Cement" />
+              <option value="Bricks and blocks" />
+              <option value="Sand and aggregates" />
+              <option value="Steel" />
+              <option value="Timber" />
+              <option value="Roofing" />
+              <option value="Electrical" />
+              <option value="Plumbing" />
+            </datalist>
+          ) : (
+            <datalist id="agriculture-category-options">
+              <option value="Grains / শস্য" />
+              <option value="Vegetables / সবজি" />
+              <option value="Fruits / ফল" />
+              <option value="Dairy / দুগ্ধজাত" />
+              <option value="Fish / মাছ" />
+              <option value="Spices / মসলা" />
+              <option value="Other / অন্যান্য" />
+            </datalist>
+          )}
         </Field>
         <Field id="listing-district" label={t("workflow.district")}>
           <Input id="listing-district" name="district" required maxLength={80} />
@@ -153,8 +193,19 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             name="unit"
             required
             maxLength={30}
-            placeholder={t("provider.listingForm.unitPlaceholder")}
+            list={sectorSlug === "construction" ? "construction-unit-options" : undefined}
+            placeholder={unitPlaceholder}
           />
+          {sectorSlug === "construction" && (
+            <datalist id="construction-unit-options">
+              <option value="bag" />
+              <option value="piece" />
+              <option value="kg" />
+              <option value="tonne" />
+              <option value="cubic foot" />
+              <option value="cubic metre" />
+            </datalist>
+          )}
         </Field>
         <Field id="listing-unit-price" label={t("workflow.price")}>
           <Input
@@ -218,7 +269,7 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
       <p className="text-muted-foreground text-xs">{t("workflow.pendingApproval")}</p>
       <ActionFeedback state={state} />
       <Button type="submit" disabled={pending || uploading}>
-        {uploading || pending ? t("common.loading") : t("workflow.addListing")}
+        {uploading || pending ? t("common.loading") : t("workflow.submitListingForReview")}
       </Button>
     </form>
   );

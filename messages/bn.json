@@ -256,7 +256,7 @@
     "addListing": "তালিকা সংরক্ষণ করুন",
     "listingImage": "তালিকার ছবি (ঐচ্ছিক)",
     "listingImageHelp": "৫ এমবির মধ্যে JPG, PNG বা WebP ছবি দিন।",
-    "listingSaved": "তালিকাটি প্রকাশের জন্য সংরক্ষিত হয়েছে।",
+    "listingSaved": "তালিকাটি সংরক্ষিত হয়েছে। বাজারে দেখানোর আগে কর্মীদের অনুমোদন লাগবে।",
     "stockUpdated": "উপলভ্য পরিমাণ হালনাগাদ হয়েছে।",
     "profileSaved": "আপনার স্টোরফ্রন্ট হালনাগাদ হয়েছে।",
     "incomingRequests": "নতুন অনুরোধ",
@@ -329,7 +329,8 @@
     "commissionsDue": "আদায়যোগ্য কমিশন",
     "markCollected": "কমিশন আদায় হয়েছে",
     "reference": "রেফারেন্স নম্বর",
-    "permissionDenied": "এই কার্যক্রমের অনুমতি নেই।"
+    "permissionDenied": "এই কার্যক্রমের অনুমতি নেই।",
+    "submitListingForReview": "পর্যালোচনার জন্য জমা দিন"
   },
   "header": {
     "services": "সেবাসমূহ",
@@ -875,7 +876,7 @@
       "storefront": "স্টোরফ্রন্ট",
       "businessOperations": "ব্যবসা পরিচালনা",
       "suspendedNotice": "এই প্রোফাইল থেকে নতুন অনুরোধ নেওয়া বা তালিকা প্রকাশ করা স্থগিত আছে। প্রশাসনিক দলের সঙ্গে যোগাযোগ করুন।",
-      "moderationNotice": "তালিকা প্রকাশের আগে প্রশাসনিক পর্যালোচনা হবে।",
+      "moderationNotice": "নতুন তালিকা প্রকাশের আগে আলাদা প্রশাসনিক পর্যালোচনা হবে; এটি নির্মাণসেবা প্রদানকারীর যাচাই থেকে আলাদা।",
       "addAListing": "নতুন তালিকা যোগ করুন",
       "customerWorkspace": "গ্রাহক প্যানেল",
       "commissionRecords": "কমিশন",
@@ -1868,5 +1869,33 @@
     "CHANGES_REQUESTED": "সংশোধন চাওয়া হয়েছে",
     "EXPIRED": "মেয়াদ শেষ",
     "REVOKED": "বাতিল"
+  },
+  "constructionMaterials": {
+    "categoryPlaceholder": "যেমন: সিমেন্ট, ইট ও ব্লক, বালু, রড",
+    "unitPlaceholder": "বস্তা, পিস, কেজি, টন, ঘনফুট",
+    "deliveryDetails": "ডেলিভারির তথ্য",
+    "address": "ডেলিভারির ঠিকানা",
+    "preferredDate": "পছন্দের ডেলিভারির তারিখ (ঐচ্ছিক)",
+    "unloading": "মাল নামানোর ব্যবস্থা",
+    "unloadingAgree": "সরবরাহকারীর সঙ্গে ঠিক হবে",
+    "unloadingCustomer": "গ্রাহক মাল নামানোর ব্যবস্থা করবেন",
+    "unloadingSupplier": "সরবরাহকারী মাল নামানোর ব্যবস্থা করবেন",
+    "accessInstructions": "চেনার স্থান ও প্রবেশের নির্দেশনা (ঐচ্ছিক)",
+    "accessPlaceholder": "গেটের প্রস্থ, তলা, সাইটে প্রবেশ বা যোগাযোগের নির্দেশনা",
+    "estimatedSubtotal": "আনুমানিক পণ্যমূল্য",
+    "subtotalNotice": "ডেলিভারি খরচ কোটেশনে নিশ্চিত হবে",
+    "requestQuote": "দাম জানতে অনুরোধ করুন",
+    "viewRequest": "নির্মাণ অনুরোধ দেখুন",
+    "requestWorkspace": "নির্মাণ অনুরোধ ও অর্ডার",
+    "requests": "অনুরোধ",
+    "orders": "অর্ডার",
+    "requestWorkspaceDescription": "নির্মাণসামগ্রী ও পেশাদার সেবার অনুরোধ, কোটেশন এবং অর্ডারের অবস্থা দেখুন।",
+    "deliveryAddressMissing": "ডেলিভারির তথ্য দেওয়া হয়নি",
+    "prepareMaterials": "পণ্য প্রস্তুত শুরু করুন",
+    "deliveredMaterials": "পণ্য পৌঁছে দেওয়া হয়েছে",
+    "confirmReceipt": "পণ্য পাওয়া নিশ্চিত করুন",
+    "preparing": "পণ্য প্রস্তুত হচ্ছে",
+    "awaitingReceipt": "পণ্য পাওয়া নিশ্চিতকরণের অপেক্ষায়",
+    "materialCategory": "সামগ্রীর ধরন"
   }
 }

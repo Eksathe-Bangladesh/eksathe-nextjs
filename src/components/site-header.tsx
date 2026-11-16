@@ -5,6 +5,7 @@ import {
   ChevronDownIcon,
   ClipboardListIcon,
   FolderKanbanIcon,
+  HardHatIcon,
   LogOutIcon,
   LoaderCircleIcon,
   MenuIcon,
@@ -220,6 +221,15 @@ export function SiteHeaderUserMenu({
           >
             <ShoppingBagIcon aria-hidden="true" className="size-4" />
             {t("header.myOrders")}
+          </Link>
+          <Link
+            role="menuitem"
+            href="/account/construction"
+            onClick={() => setMenuOpen(false)}
+            className="hover:bg-muted inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+          >
+            <HardHatIcon aria-hidden="true" className="size-4" />
+            {t("constructionMaterials.requestWorkspace")}
           </Link>
           <Link
             role="menuitem"
