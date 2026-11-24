@@ -1,5 +1,5 @@
 import { ListingKind as PrismaListingKind } from "@/generated/prisma/enums";
-import { agricultureListings, constructionListings } from "@/lib/sectors";
+import { agricultureListings, constructionListings, deliveryMobilityListings } from "@/lib/sectors";
 
 export const deliveryMobilityListingKinds = {
   DELIVERY_SERVICE: "DELIVERY_SERVICE",
@@ -43,8 +43,37 @@ export const listingKindsBySector = {
   readonly (PrismaListingKind | DeliveryMobilityListingKind)[]
 >;
 
+export type MarketplaceListingService =
+  | (typeof agricultureListings)[number]
+  | (typeof constructionListings)[number]
+  | (typeof deliveryMobilityListings)[number];
+
+const marketplaceListingServices: readonly MarketplaceListingService[] = [
+  ...agricultureListings,
+  ...constructionListings,
+  ...deliveryMobilityListings,
+];
+
 const listingKindsBySectorLookup: Readonly<Record<string, readonly string[]>> =
   listingKindsBySector;
+
+export function isMarketplaceListingSector(
+  sectorSlug: string,
+): sectorSlug is MarketplaceListingSector {
+  return Object.prototype.hasOwnProperty.call(listingKindsBySectorLookup, sectorSlug);
+}
+
+export function getMarketplaceDiscoveryForSector(sectorSlug: string) {
+  if (!isMarketplaceListingSector(sectorSlug)) return null;
+
+  const listingKinds = listingKindsBySector[sectorSlug];
+  return {
+    listingKinds,
+    services: marketplaceListingServices.filter((service) =>
+      listingKinds.some((kind) => kind === service.kind),
+    ),
+  };
+}
 
 export function isListingKindAllowedForSector(sectorSlug: string, kind: string) {
   return listingKindsBySectorLookup[sectorSlug]?.includes(kind) ?? false;

@@ -3,7 +3,10 @@ import { describe, expect, test } from "bun:test";
 import {
   createListingSchema,
   createRequestSchema,
+  mapCreateRequestFormData,
+  providerApplicationSchema,
   staffGrantSchema,
+  uploadPresignSchema,
   updateListingSchema,
 } from "@/lib/validations/workflows";
 
@@ -47,6 +50,69 @@ const requestInput = {
   district: "Dhaka",
   details: "",
 };
+
+describe("provider application capability validation", () => {
+  const providerApplicationInput = {
+    nameBn: "পরীক্ষার সেবা",
+    nameEn: "Test Provider",
+    bioBn: "",
+    bioEn: "",
+    district: "Dhaka",
+    upazila: "",
+  };
+
+  test("accepts each Delivery and Mobility capability mapping", () => {
+    expect(
+      providerApplicationSchema.safeParse({
+        ...providerApplicationInput,
+        capabilities: [
+          "logistics-delivery:DELIVERY_SERVICE",
+          "logistics-delivery:FREIGHT_TRANSPORT",
+          "transport-vehicle-services:VEHICLE_RENTAL",
+          "transport-vehicle-services:PRIVATE_VEHICLE_CHARTER",
+        ],
+      }).success,
+    ).toBe(true);
+  });
+
+  test("rejects mismatched Delivery and Mobility sector-kind pairs", () => {
+    expect(
+      providerApplicationSchema.safeParse({
+        ...providerApplicationInput,
+        capabilities: ["logistics-delivery:VEHICLE_RENTAL"],
+      }).success,
+    ).toBe(false);
+  });
+});
+
+describe("listing image upload validation", () => {
+  const uploadInput = {
+    purpose: "listing-image",
+    contentType: "image/jpeg",
+    sizeBytes: 1024,
+  } as const;
+
+  test.each([
+    ["agriculture-labor", "PRODUCE"],
+    ["construction", "CONSTRUCTION_SERVICE"],
+    ["logistics-delivery", "DELIVERY_SERVICE"],
+    ["logistics-delivery", "FREIGHT_TRANSPORT"],
+    ["transport-vehicle-services", "VEHICLE_RENTAL"],
+    ["transport-vehicle-services", "PRIVATE_VEHICLE_CHARTER"],
+  ] as const)("accepts %s / %s", (sectorSlug, kind) => {
+    expect(uploadPresignSchema.safeParse({ ...uploadInput, sectorSlug, kind }).success).toBe(true);
+  });
+
+  test("rejects mismatched sector-kind pairs", () => {
+    expect(
+      uploadPresignSchema.safeParse({
+        ...uploadInput,
+        sectorSlug: "logistics-delivery",
+        kind: "VEHICLE_RENTAL",
+      }).success,
+    ).toBe(false);
+  });
+});
 
 describe("Delivery and mobility listing validation", () => {
   test.each([
@@ -228,5 +294,65 @@ describe("Delivery and mobility request details validation", () => {
       }).success,
     ).toBe(true);
     expect(createRequestSchema.safeParse(requestInput).success).toBe(true);
+  });
+
+  test("maps mobility request fields from FormData and validates the mapped request", () => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries({
+      listingId: "listing-1",
+      quantity: "3",
+      district: "Dhaka",
+      requestedStart: "2026-11-18",
+      requestedEnd: "2026-11-20",
+      projectId: "project-1",
+      packageId: "package-1",
+      pickupDistrict: "Dhaka",
+      pickupAddress: "1 Main Street",
+      destinationDistrict: "Chattogram",
+      destinationAddress: "Port",
+      cargoDescription: "Boxes",
+      parcelCount: "2",
+      weightKg: "12.5",
+      volumeM3: "1.25",
+      handlingNotes: "Keep dry",
+      passengerCount: "4",
+    })) {
+      formData.set(key, value);
+    }
+
+    const mapped = mapCreateRequestFormData(formData);
+    expect(mapped).toMatchObject({
+      listingId: "listing-1",
+      quantity: "3",
+      district: "Dhaka",
+      requestedStart: "2026-11-18",
+      requestedEnd: "2026-11-20",
+      projectId: "project-1",
+      packageId: "package-1",
+      mobilityDetails: {
+        pickupDistrict: "Dhaka",
+        pickupAddress: "1 Main Street",
+        destinationDistrict: "Chattogram",
+        destinationAddress: "Port",
+        cargoDescription: "Boxes",
+        parcelCount: "2",
+        passengerCount: "4",
+        weightKg: "12.5",
+        volumeM3: "1.25",
+        handlingNotes: "Keep dry",
+      },
+    });
+    expect(createRequestSchema.safeParse(mapped).success).toBe(true);
+  });
+
+  test("rejects invalid mapped charter passenger counts", () => {
+    const formData = new FormData();
+    formData.set("listingId", "listing-1");
+    formData.set("district", "Dhaka");
+    formData.set("pickupDistrict", "Dhaka");
+    formData.set("destinationDistrict", "Chattogram");
+    formData.set("passengerCount", "0");
+
+    expect(createRequestSchema.safeParse(mapCreateRequestFormData(formData)).success).toBe(false);
   });
 });

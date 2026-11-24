@@ -18,7 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { bangladeshDistrictNames } from "@/lib/bangladesh-districts";
-import { agricultureListings, constructionListings, sectors } from "@/lib/sectors";
+import {
+  agricultureListings,
+  constructionListings,
+  deliveryMobilityListings,
+  sectors,
+} from "@/lib/sectors";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
 const capabilityOptions = [
@@ -30,6 +35,15 @@ const capabilityOptions = [
   })),
   ...constructionListings.map((service) => ({
     sectorSlug: "construction",
+    kind: service.kind,
+    slug: service.slug,
+    icon: service.icon,
+  })),
+  ...deliveryMobilityListings.map((service) => ({
+    sectorSlug:
+      service.kind === "DELIVERY_SERVICE" || service.kind === "FREIGHT_TRANSPORT"
+        ? "logistics-delivery"
+        : "transport-vehicle-services",
     kind: service.kind,
     slug: service.slug,
     icon: service.icon,

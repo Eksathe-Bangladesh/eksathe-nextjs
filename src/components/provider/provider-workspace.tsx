@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
 import { archiveListingAction, updateListingStockAction } from "@/app/actions/marketplace";
+import { MobilityDetails } from "@/components/mobility/mobility-details";
 import { MilestoneList } from "@/components/projects/milestone-list";
 import { ListingEditForm } from "@/components/provider/listing-edit-form";
 import { ListingForm } from "@/components/provider/listing-form";
@@ -148,6 +149,11 @@ export function ProviderWorkspace({
                 <p className="text-muted-foreground text-sm whitespace-pre-line">
                   {request.details || t("common.labels.noAdditionalDetailsProvided")}
                 </p>
+                <MobilityDetails
+                  kind={request.listing.kind}
+                  vehicleDetails={request.listing.vehicleDetails}
+                  mobilityDetails={request.mobilityDetails}
+                />
                 {(request.requestedStart || request.requestedEnd) && (
                   <p className="mt-2 text-sm">
                     {t("workflow.startDate")}: {request.requestedStart?.slice(0, 10)} –{" "}

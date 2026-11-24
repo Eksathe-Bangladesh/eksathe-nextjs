@@ -12,13 +12,20 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Textarea } from "@/components/ui/textarea";
 import { ActionFeedback } from "@/components/workflows/action-feedback";
 import { uploadPrivateFile } from "@/lib/client-upload";
-import { agricultureListings, constructionListings } from "@/lib/sectors";
+import { agricultureListings, constructionListings, deliveryMobilityListings } from "@/lib/sectors";
 import { initialWorkflowState } from "@/lib/workflow-state";
 
 type Capability = { sectorSlug: string; kind: string };
 const services = [
   ...agricultureListings.map((service) => ({ ...service, sectorSlug: "agriculture-labor" })),
   ...constructionListings.map((service) => ({ ...service, sectorSlug: "construction" })),
+  ...deliveryMobilityListings.map((service) => ({
+    ...service,
+    sectorSlug:
+      service.kind === "DELIVERY_SERVICE" || service.kind === "FREIGHT_TRANSPORT"
+        ? "logistics-delivery"
+        : "transport-vehicle-services",
+  })),
 ];
 
 export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
@@ -41,6 +48,9 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
         (item) => item.sectorSlug === service.sectorSlug && item.kind === service.kind,
       ),
   );
+  const [selectedKind, setSelectedKind] = useState<string>(serviceOptions[0]?.kind ?? "");
+  const isVehicleListing =
+    selectedKind === "VEHICLE_RENTAL" || selectedKind === "PRIVATE_VEHICLE_CHARTER";
 
   useEffect(() => {
     if (state.status !== "success") return;
@@ -95,12 +105,29 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             id="listing-sector"
             name="sectorSlug"
             value={sectorSlug}
-            onChange={(event) => setSectorSlug(event.target.value)}
+            onChange={(event) => {
+              const nextSectorSlug = event.target.value;
+              const nextService = services.find(
+                (service) =>
+                  service.sectorSlug === nextSectorSlug &&
+                  capabilities.some(
+                    (item) => item.sectorSlug === service.sectorSlug && item.kind === service.kind,
+                  ),
+              );
+              setSectorSlug(nextSectorSlug);
+              setSelectedKind(nextService?.kind ?? "");
+            }}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {sectorOptions.map((sector) => (
               <NativeSelectOption key={sector} value={sector}>
-                {sector === "construction" ? t("home.construction") : t("home.agriculture")}
+                {sector === "construction"
+                  ? t("home.construction")
+                  : sector === "logistics-delivery"
+                    ? t("home.delivery")
+                    : sector === "transport-vehicle-services"
+                      ? t("home.transport")
+                      : t("home.agriculture")}
               </NativeSelectOption>
             ))}
           </NativeSelect>
@@ -110,6 +137,8 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             id="listing-kind"
             name="kind"
             required
+            value={selectedKind}
+            onChange={(event) => setSelectedKind(event.target.value)}
             className="border-input bg-background h-9 rounded-lg border px-3 text-sm"
           >
             {serviceOptions.map((service) => (
@@ -119,6 +148,35 @@ export function ListingForm({ capabilities }: { capabilities: Capability[] }) {
             ))}
           </NativeSelect>
         </Field>
+        {isVehicleListing && (
+          <>
+            <Field id="listing-vehicle-class" label={t("provider.listingForm.vehicleClass")}>
+              <Input id="listing-vehicle-class" name="vehicleClass" required maxLength={80} />
+            </Field>
+            <Field
+              id="listing-passenger-capacity"
+              label={t("provider.listingForm.passengerCapacity")}
+            >
+              <Input
+                id="listing-passenger-capacity"
+                name="passengerCapacity"
+                type="number"
+                min="1"
+                max="2147483647"
+                step="1"
+              />
+            </Field>
+            <Field id="listing-cargo-capacity-kg" label={t("provider.listingForm.cargoCapacityKg")}>
+              <Input
+                id="listing-cargo-capacity-kg"
+                name="cargoCapacityKg"
+                type="number"
+                min="0.001"
+                step="0.001"
+              />
+            </Field>
+          </>
+        )}
         <Field id="listing-title-bn" label={t("common.fields.nameBangla")}>
           <Input id="listing-title-bn" name="titleBn" required maxLength={120} />
         </Field>

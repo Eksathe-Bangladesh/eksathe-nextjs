@@ -10,11 +10,17 @@ import {
   verifiedConstructionListingWhere,
   verifiedConstructionProviderWhere,
 } from "@/lib/construction/verification-policy";
+import {
+  getListingFulfillment,
+  getListingKindsForFulfillment,
+} from "@/lib/domain/marketplace-rules";
 import { logError } from "@/lib/logging";
+import { serializeVehicleDisplay, type VehicleDisplay } from "@/lib/mobility-display";
 import { prisma } from "@/lib/prisma";
 import type { MarketplaceListingKind } from "@/lib/sector-listing-kinds";
 
 export type PublicListing = {
+  vehicleDetails?: VehicleDisplay | null;
   id: string;
   sectorSlug: string;
   kind: MarketplaceListingKind;
@@ -69,6 +75,9 @@ function publicSelect(locale: Locale) {
     stock: true,
     availableFrom: true,
     imageKey: true,
+    vehicleDetails: {
+      select: { vehicleClass: true, passengerCapacity: true, cargoCapacityKg: true },
+    },
     provider: {
       select: {
         id: true,
@@ -92,21 +101,30 @@ type PublicListingRow = Prisma.MarketplaceListingGetPayload<{
   select: ReturnType<typeof publicSelect>;
 }>;
 
-const productKinds = ["PRODUCE", "CONSTRUCTION_MATERIAL"] as const;
-const scheduledKinds = ["WORKER", "MACHINERY", "CONSTRUCTION_SERVICE"] as const;
+const stockKinds = getListingKindsForFulfillment("finite-stock");
+const nonStockKinds = [
+  ...getListingKindsForFulfillment("scheduled"),
+  ...getListingKindsForFulfillment("quote"),
+];
 const publicAvailabilityWhere = (
-  kind?: PublicListing["kind"],
-): Prisma.MarketplaceListingWhereInput =>
-  kind
-    ? productKinds.includes(kind as (typeof productKinds)[number])
-      ? { stock: { gt: 0 } }
-      : {}
-    : {
-        OR: [
-          { kind: { in: [...productKinds] }, stock: { gt: 0 } },
-          { kind: { in: [...scheduledKinds] } },
-        ],
-      };
+  kinds?: readonly PublicListing["kind"][],
+): Prisma.MarketplaceListingWhereInput => {
+  const availableStockKinds = kinds
+    ? kinds.filter((kind) => getListingFulfillment(kind) === "finite-stock")
+    : stockKinds;
+  const availableNonStockKinds = kinds
+    ? kinds.filter((kind) => getListingFulfillment(kind) !== "finite-stock")
+    : nonStockKinds;
+
+  if (availableStockKinds.length === 0) return {};
+
+  return {
+    OR: [
+      { kind: { in: availableStockKinds }, stock: { gt: 0 } },
+      ...(availableNonStockKinds.length ? [{ kind: { in: availableNonStockKinds } }] : []),
+    ],
+  };
+};
 
 function andConditions(
   where: Prisma.MarketplaceListingWhereInput,
@@ -134,6 +152,7 @@ function toPublicListing(row: PublicListingRow, locale: Locale): PublicListing {
     stock: row.stock.toString(),
     availableFrom: row.availableFrom?.toISOString() ?? null,
     hasImage: Boolean(row.imageKey),
+    vehicleDetails: serializeVehicleDisplay(row.kind, row.vehicleDetails),
     providerId: row.provider.id,
     providerName,
     averageRating: null,
@@ -177,19 +196,21 @@ function withListingRatings(
 async function queryPublicListings(
   sectorSlug: string,
   locale: Locale,
-  kind?: PublicListing["kind"],
+  kind?: PublicListing["kind"] | readonly PublicListing["kind"][],
 ): Promise<PublicListingsResult> {
   "use cache";
   cacheLife("minutes");
   cacheTag(cacheTags.listings);
 
+  const kinds = kind === undefined ? undefined : typeof kind === "string" ? [kind] : [...kind];
   const select = publicSelect(locale);
   const verificationAsOf =
     sectorSlug === "construction" ? await constructionVerificationAsOf() : new Date(0);
   const constructionVerificationFilter =
     sectorSlug === "construction"
-      ? kind === "CONSTRUCTION_SERVICE" || kind === "CONSTRUCTION_MATERIAL"
-        ? [verifiedConstructionListingWhere(kind, verificationAsOf)]
+      ? kinds?.length === 1 &&
+        (kinds[0] === "CONSTRUCTION_SERVICE" || kinds[0] === "CONSTRUCTION_MATERIAL")
+        ? [verifiedConstructionListingWhere(kinds[0], verificationAsOf)]
         : [
             {
               OR: [
@@ -202,8 +223,8 @@ async function queryPublicListings(
   const rows = await prisma.marketplaceListing.findMany({
     where: {
       sectorSlug,
-      ...(kind ? { kind } : {}),
-      ...publicAvailabilityWhere(kind),
+      ...(kinds ? { kind: { in: kinds } } : {}),
+      ...publicAvailabilityWhere(kinds),
       isPublished: true,
       archivedAt: null,
       moderationStatus: "APPROVED",
@@ -236,7 +257,7 @@ async function queryPublicListings(
 export async function getPublicListings(
   sectorSlug: string,
   locale: Locale,
-  kind?: PublicListing["kind"],
+  kind?: PublicListing["kind"] | readonly PublicListing["kind"][],
 ): Promise<PublicListingsResult> {
   try {
     return await queryPublicListings(sectorSlug, locale, kind);
@@ -339,9 +360,7 @@ async function queryAgricultureMarketListings(
     });
   const where: Prisma.MarketplaceListingWhereInput = {
     ...base,
-    ...(and.length
-      ? { AND: [...andConditions(base), ...and] }
-      : {}),
+    ...(and.length ? { AND: [...andConditions(base), ...and] } : {}),
   };
   const orderBy =
     filters.sort === "price-asc"
@@ -530,9 +549,7 @@ async function queryConstructionMarketListings(
   }
   const where: Prisma.MarketplaceListingWhereInput = {
     ...verifiedBase,
-    ...(and.length
-      ? { AND: [...andConditions(verifiedBase), ...and] }
-      : {}),
+    ...(and.length ? { AND: [...andConditions(verifiedBase), ...and] } : {}),
   };
   const orderBy =
     filters.sort === "price-asc"
@@ -776,6 +793,9 @@ async function queryPublicProviderProfile(
           stock: true,
           availableFrom: true,
           imageKey: true,
+          vehicleDetails: {
+            select: { vehicleClass: true, passengerCapacity: true, cargoCapacityKg: true },
+          },
         },
       },
       reviews: {
@@ -805,6 +825,7 @@ async function queryPublicProviderProfile(
         stock: listing.stock.toString(),
         availableFrom: listing.availableFrom?.toISOString() ?? null,
         hasImage: Boolean(listing.imageKey),
+        vehicleDetails: serializeVehicleDisplay(listing.kind, listing.vehicleDetails),
         providerId: profile.id,
         providerName,
         averageRating: null,

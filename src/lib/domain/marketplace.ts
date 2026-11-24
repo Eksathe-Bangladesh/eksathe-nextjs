@@ -6,8 +6,14 @@ import {
   calculateCommissionReduction,
   calculateRemainingPayment,
 } from "@/lib/domain/money";
+import {
+  getListingFulfillment,
+  isCharterPassengerCountValid,
+  isMobilityListingKind,
+} from "@/lib/domain/marketplace-rules";
 import { prisma } from "@/lib/prisma";
 import type { MarketplaceListingKind as ListingKind } from "@/lib/sector-listing-kinds";
+import { isListingKindAllowedForSector, isVehicleListingKind } from "@/lib/sector-listing-kinds";
 import { validateStoredObject } from "@/lib/storage/s3";
 import type {
   CreateListingInput,
@@ -199,11 +205,69 @@ async function notify(tx: Tx, userId: string, type: NotificationType, href: stri
 }
 
 function isFiniteStock(kind: ListingKind) {
-  return kind === "PRODUCE" || kind === "CONSTRUCTION_MATERIAL";
+  return getListingFulfillmentOrFail(kind) === "finite-stock";
 }
 
 function isScheduled(kind: ListingKind) {
-  return kind === "WORKER" || kind === "MACHINERY" || kind === "CONSTRUCTION_SERVICE";
+  return getListingFulfillmentOrFail(kind) === "scheduled";
+}
+
+function getListingFulfillmentOrFail(kind: string) {
+  const fulfillment = getListingFulfillment(kind);
+  if (!fulfillment) fail("notAllowed");
+  return fulfillment;
+}
+
+function assertListingKindAllowedForSector(
+  sectorSlug: string,
+  kind: string,
+): asserts kind is ListingKind {
+  if (!isListingKindAllowedForSector(sectorSlug, kind)) fail("notAllowed");
+}
+
+function assertVehicleDetailsForKind(
+  kind: ListingKind,
+  details: CreateListingInput["vehicleDetails"],
+) {
+  if (isVehicleListingKind(kind) !== Boolean(details)) fail("invalidState");
+  if (details && !details.vehicleClass.trim()) fail("invalidState");
+}
+
+function vehicleListingDetailsData(details: NonNullable<CreateListingInput["vehicleDetails"]>) {
+  return {
+    vehicleClass: details.vehicleClass.trim(),
+    passengerCapacity: details.passengerCapacity ? Number(details.passengerCapacity) : null,
+    cargoCapacityKg: details.cargoCapacityKg
+      ? new Prisma.Decimal(details.cargoCapacityKg)
+      : null,
+  };
+}
+
+type MobilityRequestDetailsInput = NonNullable<CreateRequestInput["mobilityDetails"]>;
+
+function assertMobilityRequestDetailsForKind(
+  kind: ListingKind,
+  details: CreateRequestInput["mobilityDetails"],
+) {
+  if (isMobilityListingKind(kind) !== Boolean(details)) fail("invalidState");
+  if (!details) return;
+  if (!details.pickupDistrict.trim() || !details.destinationDistrict.trim()) fail("invalidState");
+  if (!isCharterPassengerCountValid(kind, details.passengerCount)) fail("invalidState");
+}
+
+function mobilityRequestDetailsData(details: MobilityRequestDetailsInput) {
+  return {
+    pickupDistrict: details.pickupDistrict.trim(),
+    pickupAddress: details.pickupAddress || null,
+    destinationDistrict: details.destinationDistrict.trim(),
+    destinationAddress: details.destinationAddress || null,
+    cargoDescription: details.cargoDescription || null,
+    parcelCount: details.parcelCount ? Number(details.parcelCount) : null,
+    passengerCount: details.passengerCount ? Number(details.passengerCount) : null,
+    weightKg: details.weightKg ? new Prisma.Decimal(details.weightKg) : null,
+    volumeM3: details.volumeM3 ? new Prisma.Decimal(details.volumeM3) : null,
+    handlingNotes: details.handlingNotes || null,
+  };
 }
 
 async function assertApprovedCapability(
@@ -212,6 +276,7 @@ async function assertApprovedCapability(
   sectorSlug: string,
   kind: ListingKind,
 ) {
+  assertListingKindAllowedForSector(sectorSlug, kind);
   const capability = await tx.providerCapability.findFirst({
     where: {
       providerId,
@@ -269,7 +334,9 @@ export async function applyForProvider(actorId: string, input: ProviderApplicati
     }
 
     for (const capabilityValue of new Set(input.capabilities)) {
-      const [sectorSlug, kind] = capabilityValue.split(":") as [string, ListingKind];
+      const [sectorSlug, kind, extra] = capabilityValue.split(":");
+      if (!sectorSlug || !kind || extra) fail("notAllowed");
+      assertListingKindAllowedForSector(sectorSlug, kind);
       await requireLiveSector(tx, sectorSlug);
       const existing = await tx.providerCapability.findUnique({
         where: { providerId_sectorSlug_kind: { providerId: profile.id, sectorSlug, kind } },
@@ -331,6 +398,8 @@ export async function updateProviderStorefront(actorId: string, input: Storefron
 }
 
 export async function createProviderListing(actorId: string, input: CreateListingInput) {
+  assertListingKindAllowedForSector(input.sectorSlug, input.kind);
+  assertVehicleDetailsForKind(input.kind, input.vehicleDetails);
   if (input.imageKey) {
     const profile = await prisma.providerProfile.findUnique({
       where: { userId: actorId },
@@ -352,10 +421,6 @@ export async function createProviderListing(actorId: string, input: CreateListin
   }
   return prisma.$transaction(async (tx) => {
     await requireLiveSector(tx, input.sectorSlug);
-    const expectedSector = input.kind.startsWith("CONSTRUCTION_")
-      ? "construction"
-      : "agriculture-labor";
-    if (input.sectorSlug !== expectedSector) fail("unavailable");
 
     const profile = await tx.providerProfile.findUnique({
       where: { userId: actorId },
@@ -377,6 +442,9 @@ export async function createProviderListing(actorId: string, input: CreateListin
         stock: new Prisma.Decimal(input.stock),
         availableFrom: input.availableFrom ? dateAtUtcStart(input.availableFrom) : null,
         imageKey: input.imageKey ?? null,
+        ...(input.vehicleDetails
+          ? { vehicleDetails: { create: vehicleListingDetailsData(input.vehicleDetails) } }
+          : {}),
       },
       select: { id: true, sectorSlug: true },
     });
@@ -427,7 +495,10 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
       select: { id: true, sectorSlug: true, kind: true },
     });
     if (!listing) fail("notFound");
+    assertListingKindAllowedForSector(listing.sectorSlug, listing.kind);
     if (listing.sectorSlug !== input.sectorSlug || listing.kind !== input.kind) fail("notAllowed");
+    assertVehicleDetailsForKind(listing.kind, input.vehicleDetails);
+    await requireLiveSector(tx, listing.sectorSlug);
     await assertApprovedCapability(tx, profile.id, listing.sectorSlug, listing.kind);
     await assertConstructionVerification(tx, profile.id, listing.sectorSlug, listing.kind);
     const updated = await tx.marketplaceListing.update({
@@ -440,6 +511,16 @@ export async function updateProviderListing(actorId: string, input: UpdateListin
         stock: new Prisma.Decimal(input.stock),
         availableFrom: input.availableFrom ? dateAtUtcStart(input.availableFrom) : null,
         ...(input.imageKey ? { imageKey: input.imageKey } : {}),
+        ...(input.vehicleDetails
+          ? {
+              vehicleDetails: {
+                upsert: {
+                  create: vehicleListingDetailsData(input.vehicleDetails),
+                  update: vehicleListingDetailsData(input.vehicleDetails),
+                },
+              },
+            }
+          : {}),
         moderationStatus: "PENDING",
         isPublished: false,
       },
@@ -539,6 +620,8 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
       },
     });
     if (!listing) fail("notFound");
+    assertListingKindAllowedForSector(listing.sectorSlug, listing.kind);
+    assertMobilityRequestDetailsForKind(listing.kind, input.mobilityDetails);
     if (listing.provider.userId === actorId) fail("notAllowed");
     if (
       listing.provider.capabilities.every(
@@ -554,13 +637,17 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
     await assertConstructionVerification(tx, listing.providerId, listing.sectorSlug, listing.kind);
 
     let requestedQuantity = new Prisma.Decimal(input.quantity);
-    if (isScheduled(listing.kind)) {
+    const fulfillment = getListingFulfillmentOrFail(listing.kind);
+    if (fulfillment === "scheduled") {
       if (!input.requestedStart || !input.requestedEnd) fail("invalidState");
       const startsAt = dateAtUtcStart(input.requestedStart);
       if (startsAt < dateAtUtcStart(new Date().toISOString().slice(0, 10))) fail("invalidState");
       if (listing.availableFrom && startsAt < listing.availableFrom) fail("unavailable");
       requestedQuantity = new Prisma.Decimal(dayCount(input.requestedStart, input.requestedEnd));
-    } else if (requestedQuantity.greaterThan(listing.stock)) {
+    } else if (
+      fulfillment === "finite-stock" &&
+      requestedQuantity.greaterThan(listing.stock)
+    ) {
       fail("stockUnavailable");
     }
 
@@ -600,6 +687,9 @@ export async function createMarketplaceRequest(actorId: string, input: CreateReq
         details: input.details,
         requestedStart: input.requestedStart ? dateAtUtcStart(input.requestedStart) : null,
         requestedEnd: input.requestedEnd ? dateAtUtcStart(input.requestedEnd) : null,
+        ...(input.mobilityDetails
+          ? { mobilityDetails: { create: mobilityRequestDetailsData(input.mobilityDetails) } }
+          : {}),
       },
       select: { id: true, provider: { select: { userId: true } } },
     });
@@ -637,6 +727,7 @@ export async function submitQuote(actorId: string, input: CreateQuoteInput) {
         sectorSlug: true,
         quantity: true,
         listing: { select: { kind: true } },
+        mobilityDetails: { select: { passengerCount: true } },
         status: true,
         quote: { select: { id: true, status: true } },
         buyer: { select: { id: true } },
@@ -649,6 +740,14 @@ export async function submitQuote(actorId: string, input: CreateQuoteInput) {
     });
     if (!profile || profile.id !== request.providerId || profile.status !== "APPROVED")
       fail("notAllowed");
+    if (
+      !isCharterPassengerCountValid(
+        request.listing.kind,
+        request.mobilityDetails?.passengerCount,
+      )
+    )
+      fail("invalidState");
+    await requireLiveSector(tx, request.sectorSlug);
     await assertApprovedCapability(tx, profile.id, request.sectorSlug, request.listing.kind);
     await assertConstructionVerification(tx, profile.id, request.sectorSlug, request.listing.kind);
     if (request.status !== "OPEN" && request.status !== "QUOTED") fail("invalidState");
@@ -697,6 +796,7 @@ export async function acceptQuote(actorId: string, requestId: string) {
           include: {
             quote: true,
             listing: true,
+            mobilityDetails: { select: { passengerCount: true } },
             sector: true,
             provider: { select: { id: true, userId: true, status: true } },
           },
@@ -706,6 +806,14 @@ export async function acceptQuote(actorId: string, requestId: string) {
         if (request.status !== "QUOTED" || request.quote.status !== "PENDING") fail("invalidState");
         if (request.quote.expiresAt && request.quote.expiresAt < new Date()) fail("unavailable");
         if (request.provider.status !== "APPROVED") fail("notAllowed");
+        if (
+          !isCharterPassengerCountValid(
+            request.listing.kind,
+            request.mobilityDetails?.passengerCount,
+          )
+        )
+          fail("invalidState");
+        await requireLiveSector(tx, request.sectorSlug);
         if (request.packageId) {
           const accepted = await tx.order.findFirst({
             where: { packageId: request.packageId, status: { not: "CANCELLED" } },
@@ -733,8 +841,9 @@ export async function acceptQuote(actorId: string, requestId: string) {
                 request.requestedEnd.toISOString().slice(0, 10),
               )
             : null;
-        if (isScheduled(request.listing.kind) && !bookingDates) fail("invalidState");
-        if (bookingDates && isScheduled(request.listing.kind)) {
+        const scheduled = isScheduled(request.listing.kind);
+        if (scheduled && !bookingDates) fail("invalidState");
+        if (bookingDates && scheduled) {
           const overlap = await tx.booking.findFirst({
             where: {
               startsAt: { lt: bookingDates.endsAt },
@@ -742,7 +851,10 @@ export async function acceptQuote(actorId: string, requestId: string) {
               order: {
                 providerId: request.providerId,
                 status: { not: "CANCELLED" },
-                ...(request.listing.kind === "MACHINERY" ? { listingId: request.listingId } : {}),
+                ...(request.listing.kind === "MACHINERY" ||
+                request.listing.kind === "VEHICLE_RENTAL"
+                  ? { listingId: request.listingId }
+                  : {}),
               },
             },
             select: { id: true },
@@ -786,7 +898,7 @@ export async function acceptQuote(actorId: string, requestId: string) {
             commissionRate,
             commissionAmount,
             providerAmount: subtotal.minus(commissionAmount).plus(request.quote.transportFee),
-            ...(bookingDates ? { booking: { create: bookingDates } } : {}),
+            ...(scheduled && bookingDates ? { booking: { create: bookingDates } } : {}),
           },
           select: { id: true },
         });

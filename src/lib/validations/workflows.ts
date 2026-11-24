@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-import { agricultureListings, constructionListings } from "@/lib/sectors";
 import {
   isListingKindAllowedForSector,
   isVehicleListingKind,
   marketplaceListingKindValues,
   marketplaceListingSectors,
 } from "@/lib/sector-listing-kinds";
+import { agricultureListings, constructionListings, deliveryMobilityListings } from "@/lib/sectors";
 import {
   providerVerificationDocumentTypes,
   providerVerificationTypes,
@@ -42,6 +42,14 @@ const optionalDate = z.iso.date().optional();
 export const capabilityOptions = [
   ...agricultureListings.map((service) => `${"agriculture-labor"}:${service.kind}`),
   ...constructionListings.map((service) => `${"construction"}:${service.kind}`),
+  ...deliveryMobilityListings.map(
+    (service) =>
+      `${
+        service.kind === "DELIVERY_SERVICE" || service.kind === "FREIGHT_TRANSPORT"
+          ? "logistics-delivery"
+          : "transport-vehicle-services"
+      }:${service.kind}`,
+  ),
 ] as const;
 
 export const providerApplicationSchema = z.strictObject({
@@ -231,57 +239,114 @@ export const createRequestSchema = z
     }
   });
 
-export const uploadPresignSchema = z.discriminatedUnion("purpose", [
-  z.strictObject({
-    purpose: z.literal("provider-verification-document"),
-    verificationType: z.enum(providerVerificationTypes),
-    documentType: z.enum(providerVerificationDocumentTypes),
-    contentType: z.enum(["application/pdf", "image/jpeg", "image/png", "image/webp"]),
-    sizeBytes: z.number().int().positive().max(10_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("listing-image"),
-    sectorSlug: z.enum(["agriculture-labor", "construction"]),
-    kind: z.enum([
-      "PRODUCE",
-      "WORKER",
-      "MACHINERY",
-      "CONSTRUCTION_MATERIAL",
-      "CONSTRUCTION_SERVICE",
-    ]),
-    contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
-    sizeBytes: z.number().int().positive().max(5_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("provider-storefront-image"),
-    imageType: z.enum(["profile", "cover"]),
-    contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
-    sizeBytes: z.number().int().positive().max(5_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("project-document"),
-    projectId: requiredText(64),
-    contentType: z.literal("application/pdf"),
-    sizeBytes: z.number().int().positive().max(10_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("project-photo"),
-    projectId: requiredText(64),
-    contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
-    sizeBytes: z.number().int().positive().max(5_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("payment-receipt"),
-    orderId: requiredText(64),
-    contentType: z.enum(["image/jpeg", "image/png", "image/webp", "application/pdf"]),
-    sizeBytes: z.number().int().positive().max(10_000_000),
-  }),
-  z.strictObject({
-    purpose: z.literal("crop-disease-photo"),
-    contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
-    sizeBytes: z.number().int().positive().max(5_000_000),
-  }),
-]);
+export function mapCreateRequestFormData(formData: FormData) {
+  const value = (key: string) => {
+    const entry = formData.get(key);
+    return typeof entry === "string" ? entry.trim() : "";
+  };
+  const optionalValue = (key: string) => {
+    const entry = value(key);
+    return entry ? { [key]: entry } : {};
+  };
+  const hasMobilityDetails = [
+    "pickupDistrict",
+    "pickupAddress",
+    "destinationDistrict",
+    "destinationAddress",
+    "cargoDescription",
+    "parcelCount",
+    "passengerCount",
+    "weightKg",
+    "volumeM3",
+    "handlingNotes",
+  ].some((key) => formData.has(key));
+
+  return {
+    listingId: value("listingId"),
+    quantity: value("quantity") || "1",
+    district: value("district"),
+    details: value("details"),
+    ...(value("requestedStart") ? { requestedStart: value("requestedStart") } : {}),
+    ...(value("requestedEnd") ? { requestedEnd: value("requestedEnd") } : {}),
+    ...(value("projectId") ? { projectId: value("projectId") } : {}),
+    ...(value("packageId") ? { packageId: value("packageId") } : {}),
+    ...(hasMobilityDetails
+      ? {
+          mobilityDetails: {
+            pickupDistrict: value("pickupDistrict"),
+            destinationDistrict: value("destinationDistrict"),
+            ...optionalValue("pickupAddress"),
+            ...optionalValue("destinationAddress"),
+            ...optionalValue("cargoDescription"),
+            ...optionalValue("parcelCount"),
+            ...optionalValue("passengerCount"),
+            ...optionalValue("weightKg"),
+            ...optionalValue("volumeM3"),
+            ...optionalValue("handlingNotes"),
+          },
+        }
+      : {}),
+  };
+}
+
+export const uploadPresignSchema = z
+  .discriminatedUnion("purpose", [
+    z.strictObject({
+      purpose: z.literal("provider-verification-document"),
+      verificationType: z.enum(providerVerificationTypes),
+      documentType: z.enum(providerVerificationDocumentTypes),
+      contentType: z.enum(["application/pdf", "image/jpeg", "image/png", "image/webp"]),
+      sizeBytes: z.number().int().positive().max(10_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("listing-image"),
+      sectorSlug: z.enum(marketplaceListingSectors),
+      kind: z.enum(marketplaceListingKindValues),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+      sizeBytes: z.number().int().positive().max(5_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("provider-storefront-image"),
+      imageType: z.enum(["profile", "cover"]),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+      sizeBytes: z.number().int().positive().max(5_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("project-document"),
+      projectId: requiredText(64),
+      contentType: z.literal("application/pdf"),
+      sizeBytes: z.number().int().positive().max(10_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("project-photo"),
+      projectId: requiredText(64),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+      sizeBytes: z.number().int().positive().max(5_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("payment-receipt"),
+      orderId: requiredText(64),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp", "application/pdf"]),
+      sizeBytes: z.number().int().positive().max(10_000_000),
+    }),
+    z.strictObject({
+      purpose: z.literal("crop-disease-photo"),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+      sizeBytes: z.number().int().positive().max(5_000_000),
+    }),
+  ])
+  .superRefine((value, context) => {
+    if (
+      value.purpose === "listing-image" &&
+      !isListingKindAllowedForSector(value.sectorSlug, value.kind)
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["kind"],
+        message: "The listing kind is not available in this sector.",
+      });
+    }
+  });
 
 export const attachProjectDocumentSchema = z.strictObject({
   projectId: requiredText(64),

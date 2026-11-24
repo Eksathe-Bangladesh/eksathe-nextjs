@@ -142,3 +142,30 @@ export const constructionListings = [
     unit: "job",
   },
 ] as const;
+
+export const deliveryMobilityListings = [
+  {
+    slug: "delivery-service",
+    kind: "DELIVERY_SERVICE",
+    icon: "truck",
+    unit: "parcel",
+  },
+  {
+    slug: "freight-transport",
+    kind: "FREIGHT_TRANSPORT",
+    icon: "truck",
+    unit: "ton",
+  },
+  {
+    slug: "vehicle-rental",
+    kind: "VEHICLE_RENTAL",
+    icon: "car",
+    unit: "day",
+  },
+  {
+    slug: "private-vehicle-charter",
+    kind: "PRIVATE_VEHICLE_CHARTER",
+    icon: "car",
+    unit: "trip",
+  },
+] as const;
