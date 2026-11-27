@@ -33,6 +33,7 @@ import {
   storefrontSchema,
   createQuoteSchema,
   createRequestSchema,
+  mapCreateRequestFormData,
   orderCancellationSchema,
   orderIdSchema,
   paymentConfirmationSchema,
@@ -137,6 +138,23 @@ export async function createListingAction(
     unit: value(formData, "unit"),
     unitPrice: value(formData, "unitPrice"),
     stock: value(formData, "stock"),
+    ...(value(formData, "vehicleClass")
+      ? {
+          vehicleDetails: {
+            vehicleClass: value(formData, "vehicleClass"),
+            ...(value(formData, "passengerCapacity")
+              ? {
+                  passengerCapacity: value(formData, "passengerCapacity"),
+                }
+              : {}),
+            ...(value(formData, "cargoCapacityKg")
+              ? {
+                  cargoCapacityKg: value(formData, "cargoCapacityKg"),
+                }
+              : {}),
+          },
+        }
+      : {}),
     ...(rawAvailableFrom ? { availableFrom: rawAvailableFrom } : {}),
     ...(value(formData, "imageKey")
       ? {
@@ -177,6 +195,23 @@ export async function updateListingAction(
     unit: value(formData, "unit"),
     unitPrice: value(formData, "unitPrice"),
     stock: value(formData, "stock"),
+    ...(value(formData, "vehicleClass")
+      ? {
+          vehicleDetails: {
+            vehicleClass: value(formData, "vehicleClass"),
+            ...(value(formData, "passengerCapacity")
+              ? {
+                  passengerCapacity: value(formData, "passengerCapacity"),
+                }
+              : {}),
+            ...(value(formData, "cargoCapacityKg")
+              ? {
+                  cargoCapacityKg: value(formData, "cargoCapacityKg"),
+                }
+              : {}),
+          },
+        }
+      : {}),
     ...(rawAvailableFrom ? { availableFrom: rawAvailableFrom } : {}),
     ...(value(formData, "imageKey")
       ? {
@@ -288,26 +323,7 @@ export async function createMarketplaceRequestAction(
 ): Promise<WorkflowState> {
   const returnTo = safeNextPath(value(formData, "returnTo"), "/dashboard");
   const user = await requireUser(returnTo);
-  const rawStart = value(formData, "requestedStart");
-  const rawEnd = value(formData, "requestedEnd");
-  const rawProject = value(formData, "projectId");
-  const rawPackageId = value(formData, "packageId");
-  const parsed = createRequestSchema.safeParse({
-    listingId: value(formData, "listingId"),
-    quantity: value(formData, "quantity") || "1",
-    district: value(formData, "district"),
-    details: value(formData, "details"),
-    deliveryAddress: value(formData, "deliveryAddress"),
-    deliveryInstructions: value(formData, "deliveryInstructions"),
-    unloadingArrangement: value(formData, "unloadingArrangement") || undefined,
-    ...(rawStart ? { requestedStart: rawStart } : {}),
-    ...(rawEnd ? { requestedEnd: rawEnd } : {}),
-    ...(value(formData, "requestedDeliveryDate")
-      ? { requestedDeliveryDate: value(formData, "requestedDeliveryDate") }
-      : {}),
-    ...(rawProject ? { projectId: rawProject } : {}),
-    ...(rawPackageId ? { packageId: rawPackageId } : {}),
-  });
+  const parsed = createRequestSchema.safeParse(mapCreateRequestFormData(formData));
   if (!parsed.success) return failure(parsed.error);
   return run(() => createMarketplaceRequest(user.id, parsed.data), "requestSent", [
     "/account",

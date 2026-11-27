@@ -6,6 +6,7 @@ import { useTranslations, useFormatter } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
+import { MobilityDetails } from "@/components/mobility/mobility-details";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,9 +14,8 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { EmptyState } from "@/components/workflows/empty-state";
 import { Link } from "@/i18n/navigation";
 import type { PublicListing } from "@/lib/listings";
-import type { agricultureListings, constructionListings, SectorDefinition } from "@/lib/sectors";
-
-type Service = (typeof agricultureListings)[number] | (typeof constructionListings)[number];
+import type { MarketplaceListingService } from "@/lib/sector-listing-kinds";
+import type { SectorDefinition } from "@/lib/sectors";
 
 export function SectorLanding({
   sector,
@@ -26,7 +26,7 @@ export function SectorLanding({
   sector: SectorDefinition;
   listings: PublicListing[];
   unavailable?: boolean;
-  services: Service[];
+  services: MarketplaceListingService[];
 }) {
   const formatter = useFormatter();
   const t = useTranslations();
@@ -191,6 +191,10 @@ export function SectorLanding({
                             <p className="text-muted-foreground line-clamp-2 text-sm">
                               {listing.description}
                             </p>
+                            <MobilityDetails
+                              kind={listing.kind}
+                              vehicleDetails={listing.vehicleDetails}
+                            />
                             <div className="mt-4 flex items-center justify-between gap-2">
                               <span className="text-primary font-semibold">
                                 {price(listing.unitPrice)} / {listing.unit}

@@ -77,6 +77,8 @@
     "browse": "সব সেবা দেখুন",
     "agriculture": "কৃষি ও শ্রমিক",
     "construction": "নির্মাণ",
+    "delivery": "ডেলিভারি ও লজিস্টিকস",
+    "transport": "পরিবহন ও যানবাহন সেবা",
     "agricultureDescription": "কৃষিপণ্য, কৃষিশ্রমিক ও যন্ত্র ভাড়ার সেবা দেখুন।",
     "agricultureServicesCount": "কৃষি সেবা",
     "constructionDescription": "নির্মাণসামগ্রী, দক্ষ পেশাজীবী ও প্রকল্প পরিচালনা করুন।",
@@ -704,7 +706,17 @@
     },
     "requestForm": {
       "dailyRateNotice": "দৈনিক ভাড়ার পরিমাণ তারিখের ব্যবধান অনুযায়ী হিসাব হবে।",
-      "requirementsPlaceholder": "প্রয়োজনীয় শর্ত, সংগ্রহ বা পরিবহনের তথ্য লিখুন"
+      "requirementsPlaceholder": "প্রয়োজনীয় শর্ত, সংগ্রহ বা পরিবহনের তথ্য লিখুন",
+      "pickupDistrict": "পিকআপ জেলা",
+      "pickupAddress": "পিকআপের ঠিকানা (ঐচ্ছিক)",
+      "destinationDistrict": "গন্তব্য জেলা",
+      "destinationAddress": "গন্তব্যের ঠিকানা (ঐচ্ছিক)",
+      "cargoDescription": "পণ্যের বিবরণ (ঐচ্ছিক)",
+      "parcelCount": "পার্সেলের সংখ্যা (ঐচ্ছিক)",
+      "passengerCount": "যাত্রীর সংখ্যা",
+      "weightKg": "ওজন (কেজি, ঐচ্ছিক)",
+      "volumeM3": "আয়তন (ঘনমিটার, ঐচ্ছিক)",
+      "handlingNotes": "পরিচালনার নির্দেশনা (ঐচ্ছিক)"
     },
     "order": {
       "order": "অর্ডার",
@@ -863,7 +875,10 @@
       "serviceSector": "সেবা বিভাগ",
       "categoryPlaceholder": "যেমন: সবজি, ইট, রাজমিস্ত্রি",
       "unitPlaceholder": "কেজি, দিন, বস্তা",
-      "stockHelp": "পণ্য বিক্রির জন্য মজুত দিন। শ্রমিক ও যন্ত্রপাতির তালিকায় মজুত ০ হতে পারে; বুকিংয়ের তারিখ অনুযায়ী উপলভ্যতা যাচাই হয়।"
+      "stockHelp": "পণ্য বিক্রির জন্য মজুত দিন। শ্রমিক ও যন্ত্রপাতির তালিকায় মজুত ০ হতে পারে; বুকিংয়ের তারিখ অনুযায়ী উপলভ্যতা যাচাই হয়।",
+      "vehicleClass": "যানবাহনের ধরন",
+      "passengerCapacity": "যাত্রী ধারণক্ষমতা",
+      "cargoCapacityKg": "মালামাল বহনক্ষমতা (কেজি)"
     },
     "application": {
       "description": "একটি ব্যবসায়িক প্রোফাইল থেকে কৃষি বা নির্মাণ বিভাগে সেবা দেওয়ার জন্য আবেদন করুন। প্রশাসনিক দল আপনার সেবার সক্ষমতা পর্যালোচনা করবে।",
@@ -1010,6 +1025,9 @@
     "agriculture-labor": "কৃষি ও শ্রমিক",
     "construction": "নির্মাণ",
     "transport-bus": "পরিবহন ও বাস টিকিট",
+
+    "transport-vehicle-services": "পরিবহন ও যানবাহন সেবা",
+    "logistics-delivery": "লজিস্টিকস ও ডেলিভারি",
     "tourism": "ট্যুরিজম",
     "healthcare": "স্বাস্থ্যসেবা",
     "events": "ইভেন্ট",
@@ -1839,7 +1857,11 @@
     "farm-labour": "কৃষিশ্রমিক বুকিং",
     "farm-machinery": "কৃষিযন্ত্র ভাড়া",
     "construction-material": "নির্মাণসামগ্রী",
-    "construction-service": "নির্মাণ পেশাজীবী"
+    "construction-service": "নির্মাণ পেশাজীবী",
+    "delivery-service": "ডেলিভারি সেবা",
+    "freight-transport": "মালবাহী পরিবহন",
+    "vehicle-rental": "যানবাহন ভাড়া",
+    "private-vehicle-charter": "ব্যক্তিগত গাড়ি চার্টার"
   },
   "statuses": {
     "PENDING": "পর্যালোচনাধীন",
@@ -1897,5 +1919,21 @@
     "preparing": "পণ্য প্রস্তুত হচ্ছে",
     "awaitingReceipt": "পণ্য পাওয়া নিশ্চিতকরণের অপেক্ষায়",
     "materialCategory": "সামগ্রীর ধরন"
+  },
+  "mobilityDisplay": {
+    "availabilityOnRequest": "পরিবহনকারীর সঙ্গে প্রাপ্যতা নিশ্চিত হবে",
+    "vehicleClass": "যানের ধরন",
+    "passengerCapacity": "যাত্রী ধারণক্ষমতা",
+    "cargoCapacityKg": "মালামাল বহনক্ষমতা (কেজি)",
+    "pickupDistrict": "যাত্রা শুরুর জেলা",
+    "pickupAddress": "যাত্রা শুরুর ঠিকানা",
+    "destinationDistrict": "গন্তব্য জেলা",
+    "destinationAddress": "গন্তব্যের ঠিকানা",
+    "passengerCount": "প্রয়োজনীয় যাত্রীর সংখ্যা",
+    "cargoDescription": "মালামালের বিবরণ",
+    "parcelCount": "পার্সেলের সংখ্যা",
+    "weightKg": "প্রয়োজনীয় ওজন (কেজি)",
+    "volumeM3": "প্রয়োজনীয় আয়তন (ঘনমিটার)",
+    "handlingNotes": "মালামাল ব্যবহারের নির্দেশনা"
   }
 }

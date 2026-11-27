@@ -54,7 +54,7 @@ const REFERENCE_NAMESPACES = new Set([
 ]);
 // These calls use validated helpers rather than directly visible template literals.
 // Exact coverage is checked by registry parity and status-key tests.
-const DYNAMIC_NAMESPACES = new Set(["agricultureServices", "statuses"]);
+const DYNAMIC_NAMESPACES = new Set(["agricultureServices", "mobilityDisplay", "statuses"]);
 
 // Values that are intentionally identical across locales.
 const UNTRANSLATED_ALLOWLIST = new Set(["common.brandName", "requestForm.phonePlaceholder"]);

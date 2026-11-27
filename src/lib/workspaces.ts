@@ -1,8 +1,10 @@
-import "server-only";
 import type { RequestStatus } from "@/generated/prisma/client";
+import "server-only";
+
 import { resolveTranslation, translationLocalesFor } from "@/i18n/content";
 import { defaultLocale, type Locale } from "@/i18n/locales";
 import type { StaffAccess } from "@/lib/dal";
+import { serializeVehicleDisplay, serializeMobilityRequestDisplay } from "@/lib/mobility-display";
 import { prisma } from "@/lib/prisma";
 
 const decimal = (value: { toString(): string } | null | undefined) => value?.toString() ?? null;
@@ -15,6 +17,7 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       where: { buyerId: userId },
       orderBy: { createdAt: "desc" },
       include: {
+        mobilityDetails: true,
         listing: {
           select: {
             kind: true,
@@ -178,6 +181,10 @@ export async function getCustomerWorkspace(userId: string, locale: Locale) {
       deliveryInstructions: request.deliveryInstructions,
       requestedDeliveryDate: iso(request.requestedDeliveryDate),
       unloadingArrangement: request.unloadingArrangement,
+      mobilityDetails: serializeMobilityRequestDisplay(
+        request.listing.kind,
+        request.mobilityDetails,
+      ),
       requestedStart: iso(request.requestedStart),
       requestedEnd: iso(request.requestedEnd),
       createdAt: iso(request.createdAt),
@@ -367,6 +374,7 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       listings: {
         orderBy: { createdAt: "desc" },
         include: {
+          vehicleDetails: true,
           translations: {
             where: { locale: translationLocales },
             select: { locale: true, title: true, description: true },
@@ -392,9 +400,13 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       where: { providerId: profile.id, status: { in: ["OPEN", "QUOTED"] } },
       orderBy: { createdAt: "desc" },
       include: {
+        mobilityDetails: true,
         buyer: { select: { name: true } },
         listing: {
           select: {
+            vehicleDetails: {
+              select: { vehicleClass: true, passengerCapacity: true, cargoCapacityKg: true },
+            },
             kind: true,
             unit: true,
             translations: {
@@ -508,6 +520,13 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       stock: listing.stock.toString(),
       availableFrom: iso(listing.availableFrom),
       hasImage: Boolean(listing.imageKey),
+      vehicleDetails: listing.vehicleDetails
+        ? {
+            vehicleClass: listing.vehicleDetails.vehicleClass,
+            passengerCapacity: listing.vehicleDetails.passengerCapacity,
+            cargoCapacityKg: listing.vehicleDetails.cargoCapacityKg?.toString() ?? null,
+          }
+        : null,
       archivedAt: iso(listing.archivedAt),
       moderationStatus: listing.moderationStatus,
       isPublished: listing.isPublished,
@@ -522,11 +541,19 @@ export async function getProviderWorkspace(userId: string, locale: Locale) {
       deliveryInstructions: request.deliveryInstructions,
       requestedDeliveryDate: iso(request.requestedDeliveryDate),
       unloadingArrangement: request.unloadingArrangement,
+      mobilityDetails: serializeMobilityRequestDisplay(
+        request.listing.kind,
+        request.mobilityDetails,
+      ),
       requestedStart: iso(request.requestedStart),
       requestedEnd: iso(request.requestedEnd),
       buyerName: request.buyer.name,
       listing: {
         ...request.listing,
+        vehicleDetails: serializeVehicleDisplay(
+          request.listing.kind,
+          request.listing.vehicleDetails,
+        ),
         ...resolveTranslation(request.listing.translations, locale, defaultLocale),
       },
       quote: request.quote

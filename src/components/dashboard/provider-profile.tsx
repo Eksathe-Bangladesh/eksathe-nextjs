@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { ListingImage } from "@/components/dashboard/listing-image";
+import { MobilityDetails } from "@/components/mobility/mobility-details";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -158,6 +159,7 @@ export function ProviderProfile({
                   <p className="text-muted-foreground line-clamp-3 text-sm">
                     {listing.description}
                   </p>
+                  <MobilityDetails kind={listing.kind} vehicleDetails={listing.vehicleDetails} />
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-primary text-sm font-semibold">
                       {formatMoney(listing.unitPrice)} / {listing.unit}
