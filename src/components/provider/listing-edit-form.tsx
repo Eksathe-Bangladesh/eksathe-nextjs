@@ -26,6 +26,11 @@ export type EditableListing = {
   stock: string;
   availableFrom: string | null;
   hasImage: boolean;
+  vehicleDetails: {
+    vehicleClass: string;
+    passengerCapacity: number | null;
+    cargoCapacityKg: string | null;
+  } | null;
 };
 
 export function ListingEditForm({ listing }: { listing: EditableListing }) {
@@ -33,6 +38,8 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
   const [state, action, pending] = useActionState(updateListingAction, initialWorkflowState);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(false);
+  const isVehicleListing =
+    listing.kind === "VEHICLE_RENTAL" || listing.kind === "PRIVATE_VEHICLE_CHARTER";
   const formRef = useRef<HTMLFormElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const uploadedFile = useRef<File | null>(null);
@@ -140,6 +147,49 @@ export function ListingEditForm({ listing }: { listing: EditableListing }) {
             defaultValue={listing.unit}
           />
         </Field>
+        {isVehicleListing && (
+          <>
+            <Field
+              id={`edit-vehicle-class-${listing.id}`}
+              label={t("provider.listingForm.vehicleClass")}
+            >
+              <Input
+                id={`edit-vehicle-class-${listing.id}`}
+                name="vehicleClass"
+                required
+                maxLength={80}
+                defaultValue={listing.vehicleDetails?.vehicleClass ?? ""}
+              />
+            </Field>
+            <Field
+              id={`edit-passenger-capacity-${listing.id}`}
+              label={t("provider.listingForm.passengerCapacity")}
+            >
+              <Input
+                id={`edit-passenger-capacity-${listing.id}`}
+                name="passengerCapacity"
+                type="number"
+                min="1"
+                max="2147483647"
+                step="1"
+                defaultValue={listing.vehicleDetails?.passengerCapacity ?? ""}
+              />
+            </Field>
+            <Field
+              id={`edit-cargo-capacity-kg-${listing.id}`}
+              label={t("provider.listingForm.cargoCapacityKg")}
+            >
+              <Input
+                id={`edit-cargo-capacity-kg-${listing.id}`}
+                name="cargoCapacityKg"
+                type="number"
+                min="0.001"
+                step="0.001"
+                defaultValue={listing.vehicleDetails?.cargoCapacityKg ?? ""}
+              />
+            </Field>
+          </>
+        )}
         <Field id={`edit-price-${listing.id}`} label={t("provider.listingEdit.pricePerUnitBdt")}>
           <Input
             id={`edit-price-${listing.id}`}

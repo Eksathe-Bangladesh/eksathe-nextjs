@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { SectorLanding } from "@/components/dashboard/sector-landing";
 import { getLocaleOrDefault } from "@/i18n/locales";
 import { getPublicListings } from "@/lib/listings";
-import { getSector, agricultureListings, constructionListings, sectors } from "@/lib/sectors";
+import { getMarketplaceDiscoveryForSector } from "@/lib/sector-listing-kinds";
+import { getSector, sectors } from "@/lib/sectors";
 
 export function generateStaticParams() {
   return sectors.map((s) => ({ slug: s.slug }));
@@ -37,15 +38,16 @@ export default async function SectorPage({ params }: SectorPageProps) {
     return <SectorLanding sector={sector} listings={[]} services={[]} />;
   }
 
-  const isAgriculture = slug === "agriculture-labor";
-  const services = isAgriculture ? agricultureListings : constructionListings;
-  const listingResult = await getPublicListings(slug, locale);
+  const discovery = getMarketplaceDiscoveryForSector(slug);
+  if (!discovery) return <SectorLanding sector={sector} listings={[]} services={[]} />;
+
+  const listingResult = await getPublicListings(slug, locale, discovery.listingKinds);
   return (
     <SectorLanding
       sector={sector}
       listings={listingResult.items}
       unavailable={listingResult.unavailable}
-      services={[...services]}
+      services={[...discovery.services]}
     />
   );
 }

@@ -83,6 +83,18 @@ export const sectors = [
     icon: "💳",
     status: "coming-soon",
   },
+  {
+    id: 14,
+    slug: "logistics-delivery",
+    icon: "\u{1F4E6}",
+    status: "coming-soon",
+  },
+  {
+    id: 15,
+    slug: "transport-vehicle-services",
+    icon: "\u{1F698}",
+    status: "coming-soon",
+  },
 ] as const satisfies readonly SectorDefinition[];
 
 export type SectorSlug = (typeof sectors)[number]["slug"];
@@ -128,5 +140,32 @@ export const constructionListings = [
     kind: "CONSTRUCTION_SERVICE",
     icon: "👷",
     unit: "job",
+  },
+] as const;
+
+export const deliveryMobilityListings = [
+  {
+    slug: "delivery-service",
+    kind: "DELIVERY_SERVICE",
+    icon: "truck",
+    unit: "parcel",
+  },
+  {
+    slug: "freight-transport",
+    kind: "FREIGHT_TRANSPORT",
+    icon: "truck",
+    unit: "ton",
+  },
+  {
+    slug: "vehicle-rental",
+    kind: "VEHICLE_RENTAL",
+    icon: "car",
+    unit: "day",
+  },
+  {
+    slug: "private-vehicle-charter",
+    kind: "PRIVATE_VEHICLE_CHARTER",
+    icon: "car",
+    unit: "trip",
   },
 ] as const;

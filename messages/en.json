@@ -77,6 +77,8 @@
     "browse": "Browse all services",
     "agriculture": "Agriculture & Labor",
     "construction": "Construction",
+    "delivery": "Delivery & Logistics",
+    "transport": "Transport & Vehicle Services",
     "agricultureDescription": "Browse produce, farm workers, and equipment hire.",
     "agricultureServicesCount": "agriculture services",
     "constructionDescription": "Find materials and professionals, then track project progress.",
@@ -703,7 +705,17 @@
     },
     "requestForm": {
       "dailyRateNotice": "Daily rates are calculated for the selected date range.",
-      "requirementsPlaceholder": "Add requirements, collection, or transport details"
+      "requirementsPlaceholder": "Add requirements, collection, or transport details",
+      "pickupDistrict": "Pickup district",
+      "pickupAddress": "Pickup address (optional)",
+      "destinationDistrict": "Destination district",
+      "destinationAddress": "Destination address (optional)",
+      "cargoDescription": "Cargo description (optional)",
+      "parcelCount": "Parcel count (optional)",
+      "passengerCount": "Passenger count",
+      "weightKg": "Weight in kg (optional)",
+      "volumeM3": "Volume in m³ (optional)",
+      "handlingNotes": "Handling notes (optional)"
     },
     "order": {
       "order": "Order",
@@ -862,7 +874,10 @@
       "serviceSector": "Service sector",
       "categoryPlaceholder": "e.g. vegetables, bricks, masonry",
       "unitPlaceholder": "kg, day, bag",
-      "stockHelp": "Goods need stock to sell. Worker and machinery listings may use zero stock; booking dates determine availability."
+      "stockHelp": "Goods need stock to sell. Worker and machinery listings may use zero stock; booking dates determine availability.",
+      "vehicleClass": "Vehicle Class",
+      "passengerCapacity": "Passenger Capacity",
+      "cargoCapacityKg": "Cargo Capacity (kg)"
     },
     "application": {
       "description": "Apply once to serve customers in agriculture or construction. The operations team will review your requested capabilities.",
@@ -1008,6 +1023,8 @@
     "agriculture-labor": "Agriculture & Labor",
     "construction": "Construction",
     "transport-bus": "Transport & Bus Tickets",
+    "transport-vehicle-services": "Transport & Vehicle Services",
+    "logistics-delivery": "Logistics & Delivery",
     "tourism": "Tourism",
     "healthcare": "Healthcare",
     "events": "Events",
@@ -1837,7 +1854,11 @@
     "farm-labour": "Farm Worker Booking",
     "farm-machinery": "Farm Machinery Hire",
     "construction-material": "Building Materials",
-    "construction-service": "Construction Professionals"
+    "construction-service": "Construction Professionals",
+    "delivery-service": "Delivery Service",
+    "freight-transport": "Freight Transport",
+    "vehicle-rental": "Vehicle Rental",
+    "private-vehicle-charter": "Private Vehicle Charter"
   },
   "statuses": {
     "PENDING": "Pending review",
@@ -1867,5 +1888,21 @@
     "CHANGES_REQUESTED": "Changes requested",
     "EXPIRED": "Expired",
     "REVOKED": "Revoked"
+  },
+  "mobilityDisplay": {
+    "availabilityOnRequest": "Availability confirmed by the provider",
+    "vehicleClass": "Vehicle type",
+    "passengerCapacity": "Passenger capacity",
+    "cargoCapacityKg": "Cargo capacity (kg)",
+    "pickupDistrict": "Pickup district",
+    "pickupAddress": "Pickup address",
+    "destinationDistrict": "Destination district",
+    "destinationAddress": "Destination address",
+    "passengerCount": "Requested passengers",
+    "cargoDescription": "Cargo description",
+    "parcelCount": "Parcel count",
+    "weightKg": "Requested weight (kg)",
+    "volumeM3": "Requested volume (m?)",
+    "handlingNotes": "Handling requirements"
   }
 }

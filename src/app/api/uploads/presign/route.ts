@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/dal";
+import { hasApprovedListingImageCapability } from "@/lib/domain/upload-authorization";
 import { logError } from "@/lib/logging";
 import { prisma } from "@/lib/prisma";
 import { enforceRateLimit } from "@/lib/rate-limit";
@@ -76,23 +77,18 @@ export async function POST(request: Request) {
       );
     key = `provider-verification/${profile.id}/${parsed.data.verificationType}/${user.id}/${crypto.randomUUID()}.${extensions[parsed.data.contentType]}`;
   } else if (parsed.data.purpose === "listing-image") {
-    const expectedSector = parsed.data.kind.startsWith("CONSTRUCTION_")
-      ? "construction"
-      : "agriculture-labor";
-    if (parsed.data.sectorSlug !== expectedSector)
-      return NextResponse.json({ error: "The listing category is invalid." }, { status: 400 });
     const profile = await prisma.providerProfile.findUnique({
       where: { userId: user.id },
       select: {
         id: true,
         status: true,
         capabilities: {
-          where: { sectorSlug: parsed.data.sectorSlug, kind: parsed.data.kind, status: "APPROVED" },
-          select: { id: true },
+          where: { sectorSlug: parsed.data.sectorSlug, kind: parsed.data.kind },
+          select: { sectorSlug: true, kind: true, status: true },
         },
       },
     });
-    if (!profile || profile.status !== "APPROVED" || !profile.capabilities.length) {
+    if (!hasApprovedListingImageCapability(profile, parsed.data.sectorSlug, parsed.data.kind)) {
       return NextResponse.json(
         { error: "An approved provider capability is required." },
         { status: 403 },
